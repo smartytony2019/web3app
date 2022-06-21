@@ -49,7 +49,7 @@ class Trx {
                 },
                 {
                     type:'uint256',
-                    value:amount
+                    value:this.tronWeb.toHex(amount)
                 }
             ]
             const transaction = await this.tronWeb.transactionBuilder.triggerSmartContract(this.contractAddress, "transfer(address,uint256)", {},parameter,this.tronWeb.address.toHex(fromAddress))
@@ -80,7 +80,7 @@ class Trx {
           const privateKey = "f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703"; 
           var fromAddress = "TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu"; //address _from
           var toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe"; //address _to
-          var amount = 10000000; //amount
+          var amount = 1000000; //amount
           console.log('current block', await this.tronWeb.trx.getCurrentBlock());
           //创建一个未签名的TRX转账交易
           const tradeobj = await this.tronWeb.transactionBuilder.sendTrx(
@@ -104,7 +104,7 @@ class Trx {
     }
 
 
-    async sendTrx(to,amount,from, privateKey) {
+    async sendTrx(to,amount,from, privateKey, remark) {
       try {
         console.log('------------ 创建交易  -----------------')
         let unsignedTxn = await this.tronWeb.transactionBuilder.sendTrx(to,amount,from)
@@ -119,11 +119,93 @@ class Trx {
         console.log('------------ 广播交易  -----------------')
         const receipt = await this.tronWeb.trx.sendRawTransaction(signedTxn);
         console.log(receipt)
-
       }catch(e) {
         console.error("sendTrx error",e)
       }
 
+    }
+
+    async test(fromAddress,privateKey,toAddress,amount,remark) {
+
+      /*let contract = await this.tronWeb.contract().at("TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR");
+      let result = await contract.transfer(
+        toAddress,
+         this.tronWeb.toHex(55 * Math.pow(10,18))
+       ).send({
+         feeLimit: 10000000
+       }).then(output => {console.log('- Output:', output, '\n');});
+       console.log('result: ', result);*/
+
+      //转账方式2
+      const parameter = [{type:'address',value:toAddress},{type:'uint256',value:this.tronWeb.toHex(33 * Math.pow(10,18))}]
+      var tx  = await this.tronWeb.transactionBuilder.triggerSmartContract("TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR", "transfer(address,uint256)", {},parameter,this.tronWeb.address.toHex(fromAddress));
+      // await this.tronWeb.transactionBuilder.addUpdateData(tx.transaction, this.tronWeb.address.toHex("123456"));
+      tx.transaction.data = remark
+      console.log(tx);
+      var signedTx = await this.tronWeb.trx.sign(tx.transaction, privateKey);
+      var broastTx = await this.tronWeb.trx.sendRawTransaction(signedTx);
+      console.log(broastTx)
+
+      // var contractAddress = "TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR";
+      // //选择合约方法
+      // let functionSelector = "transfer(address,uint256)"; 
+      //   //根据方法构造参数
+      // let parameter = [
+      //   {type: "address",value: toAddress},
+      //   { type: "uint256", value: Math.ceil(amount) }
+      // ];
+      // //额外参数
+      // let options = {
+      //    shouldPollResponse: false,
+      //    feeLimit: 1000000 //1Trx
+      // };
+      // // const transaction = await this.tronWeb.transactionBuilder.triggerSmartContract(this.contractAddress, "transfer(address,uint256)", {},parameter,this.tronWeb.address.toHex(fromAddress))
+           
+      // // 构造智能合约交易信息
+      // let res = await this.tronWeb.transactionBuilder.triggerSmartContract(contractAddress, functionSelector, options, parameter,this.tronWeb.address.toHex(fromAddress))
+      //     .catch(err1 => {
+      //       console.log(err1)
+      //      // 构建交易信息失败
+      //     return false;
+      //   });
+
+      //   console.log('1111', res);
+      // // 向转账交易信息中追加 备注信息 
+      // await this.tronWeb.transactionBuilder.addUpdateData(res.transaction, "备注信息", 'utf8');
+      // console.log('22222')
+      // // 对已经添加备注的交易信息进行签名
+      // let sign = await this.tronWeb.trx.sign(res.transaction,privateKey).catch(err2 => {
+      //   console.log('err2', err2)
+      //   //签名失败
+      //   return false;
+      // });
+      // console.log(sign)
+      // // 将签名交易广播上链
+      // let a = await this.tronWeb.trx.sendRawTransaction(sign).catch(outputErr => {
+      //   //交易广播出错
+      //   console.log(outputErr);
+      //   return false;
+      // });
+
+      // console.log('result',a)
+
+    }
+
+    async getBalanceOfContract(fromAddress) {
+const trc20ContractAddress = "TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR";//contract address
+
+const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+
+    try {
+        this.tronWeb.setPrivateKey('f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703')
+        let contract = await this.tronWeb.contract().at(trc20ContractAddress);
+        //Use call to execute a pure or view smart contract method.
+        // These methods do not modify the blockchain, do not cost anything to execute and are also not broadcasted to the network.
+        let result = await contract.balanceOf(fromAddress).call();
+        console.log('result: ', web3.utils.fromWei(`${result.toString()}`, 'ether'));
+    } catch(error) {
+        console.error("trigger smart contract error",error)
+    }
     }
 
 }
@@ -139,24 +221,34 @@ const Web3 = require('web3');
     let from = 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu';
     let to = 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe';
     let value = "1";
-    let amount = web3.utils.toWei(value,'ether');
-    let tokenID = '1000086'
+    let amount = web3.utils.toWei(value,'Mwei');
     let privateKey = 'f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703';
 
     //let contractAddress = 'TEEgkVMvVoyp3gNyDE7mj3odJXKVNs1bgd';
     //let contractAddress = '412ecde7f620e4106c4904308ce4a12c7703d57307';
 
     // console.log(instance.address.toHex('TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR'))
-    let contractAddress = instance.address.toHex('TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR');
+    let contractAddress = 'TZ4FhfFGWz2Bei7ixX4UT9dj91NqoHTWBR';
+    // let contractAddress = instance.address.toHex('TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR');
+    // console.log(contractAddress);
 
     let trx = new Trx(instance,contractAddress);
+
+
+    // trx.test(from, privateKey, to, '1000000', "helloworld");
     
     //TRC20转帐
-    // let a = await trx.sendRawTransaction(address, privateKey, to, amount, "helloworld")
+    // let a = await trx.sendRawTransaction(from, privateKey, to, 1000000, "helloworld")
     // console.log(a)
 
     trx.transfer();
-    // trx.sendTrx(to,100000, from, privateKey)
+    // trx.sendTrx(to,1000000, from, privateKey, "helloworld")
+
+
+    // trx.getBalanceOfContract(from);
+
+
+
 
 
 })()
