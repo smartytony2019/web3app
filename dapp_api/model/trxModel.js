@@ -3,6 +3,22 @@ const tronWeb = require("../helper/trxHelper").getTronWeb();
 const config = require("../config/config");
 
 module.exports = {
+
+  /**
+   * 创建帐号
+   * @returns Object
+   */
+  async createAccount() {
+    let result = null;
+    try {
+      result = await tronWeb.createAccount();
+    } catch(error) {
+      console.error("createAccount error", error);
+    }
+    return result;
+  },
+
+
   /**
    * 获取TRX余额
    * @param {String} address 地址
@@ -124,6 +140,22 @@ module.exports = {
     }
     return result;
   },
+
+
+  /**
+   * 获取交易信息
+   * @param {String} txID 交易ID
+   * @returns Object
+   */
+  async getTransactionInfo(txID) {
+    let result = null;
+    try {
+      result = await tronWeb.trx.getTransactionInfo(txID);
+    }catch(error) {
+      console.error("transactionOfTrc20 error", error);
+    }
+    return result;
+  }
 
 
 };

@@ -192,21 +192,32 @@ class Trx {
     }
 
     async getBalanceOfContract(fromAddress) {
-const trc20ContractAddress = "TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR";//contract address
+      const trc20ContractAddress = "TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR";//contract address
 
-const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+      const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 
-    try {
-        this.tronWeb.setPrivateKey('f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703')
-        let contract = await this.tronWeb.contract().at(trc20ContractAddress);
-        //Use call to execute a pure or view smart contract method.
-        // These methods do not modify the blockchain, do not cost anything to execute and are also not broadcasted to the network.
-        let result = await contract.balanceOf(fromAddress).call();
-        console.log('result: ', web3.utils.fromWei(`${result.toString()}`, 'ether'));
-    } catch(error) {
-        console.error("trigger smart contract error",error)
+      try {
+          this.tronWeb.setPrivateKey('f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703')
+          let contract = await this.tronWeb.contract().at(trc20ContractAddress);
+          //Use call to execute a pure or view smart contract method.
+          // These methods do not modify the blockchain, do not cost anything to execute and are also not broadcasted to the network.
+          let result = await contract.balanceOf(fromAddress).call();
+          console.log('result: ', web3.utils.fromWei(`${result.toString()}`, 'ether'));
+      } catch(error) {
+          console.error("trigger smart contract error",error)
+      }
     }
+
+    async createAccount() {
+      let account = await instance.createAccount();
+      console.log(account);
     }
+
+    async info() {
+      let info = await this.tronWeb.trx.getTransactionInfo("2e5955d546aa725fd26532045c186b9bd1558dd034cb8ad1404fd4cad91dc1bb");
+      console.log(info);
+    }
+
 
 }
 
@@ -235,13 +246,15 @@ const Web3 = require('web3');
     let trx = new Trx(instance,contractAddress);
 
 
+    trx.info();
+
     // trx.test(from, privateKey, to, '1000000', "helloworld");
     
     //TRC20转帐
     // let a = await trx.sendRawTransaction(from, privateKey, to, 1000000, "helloworld")
     // console.log(a)
 
-    trx.transfer();
+    // trx.transfer();
     // trx.sendTrx(to,1000000, from, privateKey, "helloworld")
 
 
