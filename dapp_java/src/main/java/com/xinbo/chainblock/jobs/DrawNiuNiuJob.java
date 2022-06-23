@@ -4,12 +4,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
- * @author 熊二
+ * @author tony
  * @date 6/23/22 4:48 下午
  * @desc file desc
  */
 @Service
-public class LotteryNiuNiuJob {
+public class DrawNiuNiuJob {
 
     @Scheduled(cron = "30 * * * * ?")
     public void NuiNiu() {

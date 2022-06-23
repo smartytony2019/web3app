@@ -40,24 +40,12 @@ class ChainblockApplicationTests {
     private String toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe";
     private String privateKey = "f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703";
 
-
-    @Test
-    void gettransactioninfobyid() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("value", "29343be4b368bf47918d29957e3ed38c5204bb0bbcbb13a504ef3fb9092dfe2a");
-        String json = jsonObject.toJSONString();
-        String body = HttpUtil.post(URL + "gettransactioninfobyid", json);
-        System.out.println(body);
-    }
-
-
     /**
      * 获取转帐信息
      */
     @Test
     void getRecordTrc20() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-
         long minTimestamp = new Date().getTime() - (60*60*1000);
         String url = String.format("%s/accounts/%s/transactions/trc20?only_confirmed=true&only_to=true&limit=200&min_timestamp=%s", API, account, minTimestamp);
         RestTemplate restTemplate = new RestTemplate();
