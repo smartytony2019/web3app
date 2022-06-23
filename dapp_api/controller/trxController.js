@@ -25,6 +25,7 @@ module.exports = {
   async getBalanceOfTrx (ctx) {
     let data = ctx.request.body
     let fromAddress = data.fromAddress
+    console.log('getBalanceOfTrx', fromAddress);
     let isValid = await trxModel.checkAddressIsValid(fromAddress);
     if(!isValid) {
       ctx.body = R.fail('地址不合法')
