@@ -245,8 +245,10 @@ const Web3 = require('web3');
 
     let trx = new Trx(instance,contractAddress);
 
+    let b = 1000;
+    console.log(privateKey.length)
 
-    trx.info();
+    // trx.info();
 
     // trx.test(from, privateKey, to, '1000000', "helloworld");
     

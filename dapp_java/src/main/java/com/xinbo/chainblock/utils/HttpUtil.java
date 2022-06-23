@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -111,9 +112,11 @@ public class HttpUtil {
             	    .build();
             HttpPost httpPost = new HttpPost(url);
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-            for (Iterator<String> iterator = params.keySet().iterator(); iterator.hasNext(); ) {
-                String key = iterator.next();
-                parameters.add(new BasicNameValuePair(key, params.get(key).toString()));
+            if(!ObjectUtils.isEmpty(params)) {
+                for (Iterator<String> iterator = params.keySet().iterator(); iterator.hasNext(); ) {
+                    String key = iterator.next();
+                    parameters.add(new BasicNameValuePair(key, params.get(key).toString()));
+                }
             }
             UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(parameters, CHARSET);
             httpPost.setEntity(uefEntity);
