@@ -42,10 +42,10 @@ module.exports = {
    * @param {string} address 地址
    * @returns USDT余额
    */
-  async getBalanceOfTrc20(address) {
+  async getBalanceOfTrc20(address, privateKey) {
     let result = 0;
     try {
-      tronWeb.setPrivateKey(config.privateKey);
+      tronWeb.setPrivateKey(privateKey);
       let contract = await tronWeb.contract().at(config.contractAddress);
       let balance = await contract.balanceOf(address).call();
       result = web3.utils.fromWei(`${balance.toString()}`, "ether");
@@ -62,9 +62,10 @@ module.exports = {
    * @param {String} fromAddress 转款帐户
    * @param {String} amount 金额
    * @param {String} toAddress 收款帐户
+   * @param {String} privateKey 私钥
    * @returns Object
    */
-  async transactionOfTrx(fromAddress, amount, toAddress) {
+  async transactionOfTrx(fromAddress, amount, toAddress, privateKey) {
     let result = null;
     try {
       //Step 1: 创建一个未签名的TRX转账交易
@@ -78,7 +79,7 @@ module.exports = {
       }
 
       //Step 2: 签名
-      const signedtxn = await tronWeb.trx.sign(tradeobj, config.privateKey);
+      const signedtxn = await tronWeb.trx.sign(tradeobj, privateKey);
       if (signedtxn == null || signedtxn.txID == null) {
         throw "签名失败";
       }
@@ -102,9 +103,10 @@ module.exports = {
    * @param {String} fromAddress 转款帐户
    * @param {String} amount 金额
    * @param {String} toAddress 收款帐户
+   * @param {String} privateKey 私钥
    * @returns Object
    */
-  async transactionOfTrc20(contractAddress, fromAddress, amount, toAddress) {
+  async transactionOfTrc20(contractAddress, fromAddress, amount, toAddress, privateKey) {
     let result = null;
     try {
       //Step 1: 调用智能合约
@@ -120,7 +122,7 @@ module.exports = {
 
 
       //Step 2: 交易签名
-      var signedTx = await tronWeb.trx.sign(tx.transaction, config.privateKey);
+      var signedTx = await tronWeb.trx.sign(tx.transaction, privateKey);
       console.log("signedTx", signedTx);
       if(signedTx == null || signedTx.txID == null) {
         throw '交易签名失败';
@@ -155,7 +157,49 @@ module.exports = {
       console.error("transactionOfTrc20 error", error);
     }
     return result;
-  }
+  },
 
+
+  /**
+   * 检查地址是否合法
+   * @param {String} address 地址
+   * @returns Boolean
+   */
+  async checkAddressIsValid(address) {
+    if(address == null || address == "" || typeof address != 'string') {
+      return false;
+    }
+
+    let firstWorld = address.substring(0, 1);
+    if(firstWorld !== 'T') {
+      return false;
+    }
+
+    let len = address.length
+    if(len != 34) {
+      return false;
+    }
+
+    return true;
+  },
+
+
+  /**
+   * 检查私钥是否合法
+   * @param {String} address 地址
+   * @returns Boolean
+   */
+  async decodePrivateKey(privateKey) {
+    if(privateKey == null || privateKey == "" || typeof privateKey != 'string') {
+      return null;
+    }
+
+    let len = privateKey.length
+    if(len != 64) {
+      return null;
+    }
+
+    return privateKey;
+  }
 
 };
