@@ -2,7 +2,7 @@ package com.xinbo.chainblock.core;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.xinbo.chainblock.entity.ResponseEntity;
+import com.xinbo.chainblock.entity.terminal.ResponseEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

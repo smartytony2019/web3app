@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.entity.terminal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

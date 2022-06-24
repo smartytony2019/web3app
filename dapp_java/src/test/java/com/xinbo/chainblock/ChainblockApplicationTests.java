@@ -1,15 +1,13 @@
 package com.xinbo.chainblock;
 
-import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.xinbo.chainblock.entity.ResponseEntity;
+import com.xinbo.chainblock.entity.terminal.ResponseEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
-import com.xinbo.chainblock.utils.HttpUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +16,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 @RunWith(SpringRunner.class)
@@ -46,8 +43,9 @@ class ChainblockApplicationTests {
     @Test
     void getRecordTrc20() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-        long minTimestamp = new Date().getTime() - (60*60*1000);
-        String url = String.format("%s/accounts/%s/transactions/trc20?only_confirmed=true&only_to=true&limit=200&min_timestamp=%s", API, account, minTimestamp);
+        long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
+        //&min_timestamp=%s
+        String url = String.format("%s/accounts/%s/transactions/trc20?only_confirmed=true&only_to=true&limit=200", API, account, minTimestamp);
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.getForObject(url, String.class);
 
