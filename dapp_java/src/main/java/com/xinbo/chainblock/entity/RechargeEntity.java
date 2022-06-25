@@ -41,7 +41,7 @@ public class RechargeEntity {
      * 位数
      */
     @TableField("token_decimals")
-    private String tokenDecimals;
+    private Integer tokenDecimals;
 
     /**
      * 币种名
@@ -50,20 +50,28 @@ public class RechargeEntity {
     private String tokenName;
 
     /**
+     * 币种名
+     */
+    @TableField("token_address")
+    private String tokenAddress;
+
+    /**
      * 块时间戳
      */
     @TableField("block_timestamp")
-    private String blockTimestamp;
+    private Long blockTimestamp;
 
     /**
      * 转帐地址
      */
-    private String from;
+    @TableField("from_address")
+    private String fromAddress;
 
     /**
      * 收款地址
      */
-    private String to;
+    @TableField("to_address")
+    private String toAddress;
 
     /**
      * 转帐类型
@@ -73,6 +81,6 @@ public class RechargeEntity {
     /**
      * 转帐金额
      */
-    private double value;
+    private Double value;
 
 }

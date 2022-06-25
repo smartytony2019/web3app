@@ -2,11 +2,8 @@ package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.RechargeEntity;
-import com.xinbo.chainblock.entity.UserEntity;
 import com.xinbo.chainblock.mapper.RechargeMapper;
-import com.xinbo.chainblock.mapper.UserMapper;
 import com.xinbo.chainblock.service.RechargeService;
-import com.xinbo.chainblock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RechargeServiceImpl extends ServiceImpl<RechargeMapper, RechargeEntity> implements RechargeService {
 
+
     @Autowired
-    private RechargeService rechargeService;
+    private RechargeMapper rechargeMapper;
 
-
-    public boolean create() {
-        return true;
+    public boolean save(RechargeEntity entity) {
+        int insert = rechargeMapper.insert(entity);
+        return insert > 0;
     }
 
 

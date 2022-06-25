@@ -2,6 +2,10 @@ package com.xinbo.chainblock.utils;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+
 @Service
 public class CommonUtils {
 
@@ -18,7 +22,8 @@ public class CommonUtils {
         return value * Math.pow(10, 18);
     }
 
-    public double fromTrc20(double value) {
-        return value / Math.pow(10, 18);
+    public BigDecimal fromTrc20(BigDecimal value) {
+        BigDecimal bigInteger = new BigDecimal(String.valueOf(Math.pow(10, 18)));
+        return value.divide(bigInteger,6, RoundingMode.CEILING);
     }
 }

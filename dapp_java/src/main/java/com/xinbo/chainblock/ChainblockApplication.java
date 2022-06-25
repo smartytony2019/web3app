@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.TimeZone;
 
 @EnableScheduling
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 public class ChainblockApplication {
 
     public static void main(String[] args) {
