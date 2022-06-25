@@ -23,6 +23,7 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, UserEntity> implem
     private UserMapper userMapper;
 
 
+    @Override
     public boolean create() {
         UserEntity entity = UserEntity.builder()
                 .username("jack").createTime(new Date()).money(1000F).salt("123").version(1)
@@ -31,8 +32,16 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, UserEntity> implem
         return true;
     }
 
+    @Override
+    public UserEntity findById(int id) {
+        return userMapper.selectById(id);
+    }
 
-
+    @Override
+    public boolean increment(UserEntity entity) {
+        int increment = userMapper.increment(entity);
+        return increment > 0;
+    }
 
 
 }

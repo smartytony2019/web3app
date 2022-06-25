@@ -3,6 +3,10 @@
 <mapper namespace="com.xinbo.chainblock.mapper.UserMapper">
 
 
+    <!-- 更新赛事状态 -->
+<!--    <update id="updateMatchStatus" parameterType="com.xinbo.cloud.service.sport.match.result.entity.SportMatchResultEntity">-->
+<!--        update t_sport_match_result set status = #{entity.status} where sport_type = #{entity.sportType} and gid = #{entity.gid};-->
+<!--    </update>-->
 
 
 </mapper>

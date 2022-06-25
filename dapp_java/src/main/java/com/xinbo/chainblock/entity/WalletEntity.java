@@ -32,7 +32,7 @@ public class WalletEntity {
     /**
      * 用户id
      */
-    private String uid;
+    private Integer uid;
 
     /**
      * 位数
