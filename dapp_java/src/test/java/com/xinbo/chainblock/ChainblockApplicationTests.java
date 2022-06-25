@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Date;
 import java.util.TimeZone;
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest
 class ChainblockApplicationTests {
 
@@ -106,7 +106,6 @@ class ChainblockApplicationTests {
         jsonObject.put("amount", 1000000);
         jsonObject.put("toAddress", toAddress);
         jsonObject.put("privateKey", privateKey);
-
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);

@@ -23,6 +23,11 @@ public class TransactionRecordApiEntity {
     public class Data {
         private String transaction_id;
         private TokenInfo token_info;
+        private Long block_timestamp;
+        private String from;
+        private String to;
+        private String type;
+        private String value;
 
         @lombok.Data
         public class TokenInfo {

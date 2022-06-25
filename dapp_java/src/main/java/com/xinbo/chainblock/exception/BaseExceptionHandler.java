@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.ConstraintViolationException;
 
 /**
- * @author 熊二
+ * @author tony
  * @date 2021/2/7 21:50
  * @desc 全局异常拦截器
  */

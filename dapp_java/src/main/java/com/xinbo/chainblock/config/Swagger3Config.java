@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author 熊二
+ * @author tony
  * @date 2021/2/3 18:28
  * @desc Swagger3配置
  */

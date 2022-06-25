@@ -1,13 +1,13 @@
 package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.entity.RechargeEntity;
 import com.xinbo.chainblock.entity.UserEntity;
+import com.xinbo.chainblock.mapper.RechargeMapper;
 import com.xinbo.chainblock.mapper.UserMapper;
+import com.xinbo.chainblock.service.RechargeService;
 import com.xinbo.chainblock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 /**
  * @author tony
@@ -15,19 +15,13 @@ import java.util.Date;
  * @desc file desc
  */
 //@Service
-public class UserServiceImpl  extends ServiceImpl<UserMapper, UserEntity> implements UserService {
-
-
+public class RechargeServiceImpl extends ServiceImpl<RechargeMapper, RechargeEntity> implements RechargeService {
 
     @Autowired
-//    private UserMapper userMapper;
+    private RechargeService rechargeService;
 
 
     public boolean create() {
-//        UserEntity entity = UserEntity.builder()
-//                .name("jack").createTime(new Date()).money(1000F).salt("123").version(1)
-//                .build();
-//        userMapper.insert(entity);
         return true;
     }
 
