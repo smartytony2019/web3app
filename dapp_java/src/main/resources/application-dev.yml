@@ -12,9 +12,9 @@ trx:
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/cb?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&tinyInt1isBit=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.0.150:3306/cb?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&tinyInt1isBit=false&serverTimezone=Asia/Shanghai
     username: root
-    password: ^qaz123@hm!@#$
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
@@ -33,8 +33,8 @@ spring:
 
   redis:
     database: 0
-    host: 127.0.0.1
-    port: 6380
+    host: 192.168.0.150
+    port: 6379
     jedis:
       pool:
         max-active: 8
