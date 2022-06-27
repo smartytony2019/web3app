@@ -1,5 +1,5 @@
-const web3 = require("../helper/web3Helper").getWeb3();
-const tronWeb = require("../helper/trxHelper").getTronWeb();
+const web3 = require("../utils/web3Util").getWeb3();
+const tronWeb = require("../utils/trxUtil").getTronWeb();
 const config = require("../config/config");
 
 module.exports = {

@@ -1,39 +1,8 @@
-// const sqlite3 = require('sqlite3').verbose()
-// var db = new sqlite3.Database(
-//     './sqlite3/api.db', 
-//     sqlite3.OPEN_READWRITE, 
-//     function (err) {
-//         if (err) {
-//             return console.log(err.message)
-//         }
-//         console.log('connect database successfully')
-//     }
-// )
-
-// db.run('CREATE TABLE t_expect(game_id int, num varchar(10), start_time varchar(20), end_time varchar(20))', function (err) {
-//     if (err) {
-//         return console.log(err)
-//     }
-//     console.log('create table user')
-// })
-
-// db.run('INSERT INTO t_expect(game_id, num, start_time, end_time) VALUES(?)', ['jack_tony'], function (err) {
-//     if (err) {
-//         return console.log('insert data error: ', err.message)
-//     }
-//     console.log('insert data: ', this)
-// })
-
-
-// db.all("select * from t_expect limit 2",function(err,row) {
-//     console.log(row);
-// })
-
-
 (async ()=>{
 
     let sqlite = require("./utils/sqlite3Util")
-    let commonHelper = require("./utils/commonUtil")
+    let common = require("./utils/commonUtil")
+    let dayjs = require('dayjs')
 
 
     //判断表是否存在(没有则创建)
@@ -48,16 +17,16 @@
     query = `SELECT name FROM sqlite_master WHERE type='table' AND name='t_open_result'`;
     result = await sqlite.hasTable(query);
     if(result == false) {
-        query = 'CREATE TABLE t_open_result(game_id int, num varchar(10), hash_code varchar(70), open_time timestamp)';
-        var r = await sqlite.run(query)
+        query = 'CREATE TABLE t_open_result(game_id int, num varchar(10), block_hash varchar(70), block_height varchar(70), open_time timestamp, open_timestamp bigint)';
+        let r = await sqlite.run(query)
         if(r) console.log("t_open_result table created")
     }
 
-    let minute = 1;
-    let gameId = 1;
+    let minute = 5;
+    let gameId = 5;
     let end = 60 * 24 / minute;
-    let fixed = 4;
-    let rr = await commonHelper.genExpect(gameId, end, fixed, minute)
+    let fixed = 3;
+    let rr = await common.genExpect(gameId, end, fixed, minute)
     for(let i=0; i<rr.length; i++) {
         let item = rr[i];
         let values = `${item.gameId}, '${item.num}', '${item.endTime}', '${item.endTimestamp}'`;
@@ -66,9 +35,11 @@
     }
 
 
-    // let values = `5, '0279', '345988d3e54976500fb2bcdd91b4048033b737b30c2aa93204ba66657bc12670', '2022-06-27 00:00:00'`;
-    // query = `INSERT INTO t_open_result(game_id, num, hash_code, open_time) VALUES(${values})`;
-    // await sqlite.run(query)
+    let open_time = "2022-06-27 16:00:00";
+    let open_timestamp = await common.parseTimestamp(open_time);
+    let values = `5, '279', 'b91aa7385e39beb5944ac64410fbbd2ffd67f1c1678df0715559c7138f38a74a', '27464550', '${open_time}', ${open_timestamp}`;
+    query = `INSERT INTO t_open_result(game_id, num, block_hash, block_height, open_time, open_timestamp) VALUES(${values})`;
+    await sqlite.run(query)
 
 
 

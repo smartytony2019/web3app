@@ -46,5 +46,35 @@ module.exports = {
         const minute = parseInt(mm, 10) || 0;
         const second = parseInt(ss, 10) || 0;
         return (hour*3600) + (minute*60) + (second);
+    },
+
+    /**
+     * 日期转换为时间戳(毫秒)
+     * @param {String} strtime 转换日期(为YYYY-MM-dd HH:mm:ss格式)
+     * @returns Long
+     */
+    async parseTimestamp(strtime) {
+        //时间转换
+        var date = new Date(strtime);
+        //获取时间戳
+        return Date.parse(date);
+    },
+
+
+    
+    async currentEnv() {
+      let result = 'dev'
+      const args = process.argv.slice(2)
+      if(args.length <= 0) {
+        return result;
+      }
+
+      let args0 = args[0];
+      if(['dev','prod','test'].indexOf(args0) <= -1) {
+        return result;
+      }
+
+      return args0;
     }
+
 }

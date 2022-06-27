@@ -9,6 +9,7 @@ app.use(koaBody({
   multipart: true
 }));
 
+console.log(process.env.NODE_ENV);
 
 // 初始化路由中间件
 app.use(routers.routes()).use(routers.allowedMethods())
