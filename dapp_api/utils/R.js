@@ -1,4 +1,4 @@
-const constant = require("./constant")
+const constant = require("../config/constant")
 module.exports = {
 
   success(data,msg) {

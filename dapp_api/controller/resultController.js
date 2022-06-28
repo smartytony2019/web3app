@@ -1,7 +1,7 @@
 
 
 const resultModel = require("../model/resultModel")
-const R = require("../config/R")
+const R = require("../utils/R")
 
 module.exports = {
     async result (ctx) {

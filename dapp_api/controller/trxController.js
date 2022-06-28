@@ -1,6 +1,5 @@
-
 const trxModel = require("../model/trxModel")
-const R = require("../config/R")
+const R = require("../utils/R")
 
 // let fromAddress = "TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu"; //address _from
 // let toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe"; //address _to
