@@ -61,16 +61,16 @@ module.exports = {
     },
 
 
-    
-    async currentEnv() {
-      let result = 'dev'
+
+    env() {
+      let result = 'development'
       const args = process.argv.slice(2)
       if(args.length <= 0) {
         return result;
       }
 
       let args0 = args[0];
-      if(['dev','prod','test'].indexOf(args0) <= -1) {
+      if(['development','test','production'].indexOf(args0) <= -1) {
         return result;
       }
 

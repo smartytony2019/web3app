@@ -22,6 +22,8 @@
         if(r) console.log("t_open_result table created")
     }
 
+
+    
     let minute = 5;
     let gameId = 5;
     let end = 60 * 24 / minute;
