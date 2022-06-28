@@ -3,15 +3,13 @@ package com.xinbo.chainblock;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.xinbo.chainblock.entity.terminal.ResponseEntity;
+import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -66,7 +64,7 @@ class ChainblockApplicationTests {
         String url = String.format("%s%s", T_API, "/trx/createAccount");
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, "", String.class);
-        ResponseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<AccountApiEntity>>() {});
+        BaseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<AccountApiEntity>>() {});
         System.out.println(entity);
     }
 
@@ -78,7 +76,7 @@ class ChainblockApplicationTests {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("fromAddress", fromAddress);
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        ResponseEntity<String> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<String>>() {});
+        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {});
         System.out.println(entity);
     }
 
@@ -93,7 +91,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        ResponseEntity<String> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<String>>() {});
+        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {});
         System.out.println(entity);
     }
 
@@ -109,7 +107,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        ResponseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<TransactionTrxApiEntity>>() {});
+        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {});
         System.out.println(entity);
     }
 
@@ -126,7 +124,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        ResponseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<TransactionTrxApiEntity>>() {});
+        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {});
         System.out.println(entity);
     }
 
@@ -139,7 +137,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        ResponseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<TransactionInfoApiEntity>>() {});
+        BaseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionInfoApiEntity>>() {});
         System.out.println(entity);
     }
 

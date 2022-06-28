@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * @author tony
@@ -47,7 +45,7 @@ public class TrxApi {
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.CREATE_ACCOUNT);
             String res = restTemplate.postForObject(url, "", String.class);
-            ResponseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<AccountApiEntity>>() {});
+            BaseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<AccountApiEntity>>() {});
             if(!ObjectUtils.isEmpty(entity) && entity.getCode() == 0 && !ObjectUtils.isEmpty(entity.getData())) {
                 result = entity.getData();
             }
@@ -70,7 +68,7 @@ public class TrxApi {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("fromAddress", fromAddress);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-            ResponseEntity<String> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<String>>() {});
+            BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {});
             if(!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
             }
@@ -96,7 +94,7 @@ public class TrxApi {
             jsonObject.put("fromAddress", fromAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-            ResponseEntity<String> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<String>>() {});
+            BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {});
             if(!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
             }
@@ -126,7 +124,7 @@ public class TrxApi {
             jsonObject.put("toAddress", toAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-            ResponseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<TransactionTrxApiEntity>>() {});
+            BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {});
             if(!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
             }
@@ -159,7 +157,7 @@ public class TrxApi {
             jsonObject.put("toAddress", toAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-            ResponseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<TransactionTrxApiEntity>>() {});
+            BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {});
             if(!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
             }
@@ -182,7 +180,7 @@ public class TrxApi {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("txID", txID);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-            ResponseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<ResponseEntity<TransactionInfoApiEntity>>() {});
+            BaseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionInfoApiEntity>>() {});
             if(!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
                 result = entity.getData();
             }

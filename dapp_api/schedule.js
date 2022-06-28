@@ -63,7 +63,6 @@ class Result {
       let values = `${this.game_id}, ${expect.num}, '${result.txid}', '', '${open_time}', ${open_timestamp}, '${network}'`;
       query = `INSERT INTO t_open_result(game_id, num, block_hash, block_height, open_time, open_timestamp, network) VALUES(${values})`;
       await sqlite.run(query)
-  
     }catch(error) {
       console.error(error);
     }

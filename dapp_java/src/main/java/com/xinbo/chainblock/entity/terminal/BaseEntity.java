@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseEntity<T> {
+public class BaseEntity<T> {
 
     private Integer code;
 

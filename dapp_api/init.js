@@ -23,7 +23,7 @@
     }
 
 
-    
+
     let minute = 5;
     let gameId = 5;
     let end = 60 * 24 / minute;
@@ -37,11 +37,11 @@
     }
 
 
-    let open_time = "2022-06-27 16:00:00";
-    let open_timestamp = await common.parseTimestamp(open_time);
-    let values = `5, '279', 'b91aa7385e39beb5944ac64410fbbd2ffd67f1c1678df0715559c7138f38a74a', '27464550', '${open_time}', ${open_timestamp}, 'nile'`;
-    query = `INSERT INTO t_open_result(game_id, num, block_hash, block_height, open_time, open_timestamp, network) VALUES(${values})`;
-    await sqlite.run(query)
+    // let open_time = "2022-06-27 16:00:00";
+    // let open_timestamp = await common.parseTimestamp(open_time);
+    // let values = `5, '279', 'b91aa7385e39beb5944ac64410fbbd2ffd67f1c1678df0715559c7138f38a74a', '27464550', '${open_time}', ${open_timestamp}, 'nile'`;
+    // query = `INSERT INTO t_open_result(game_id, num, block_hash, block_height, open_time, open_timestamp, network) VALUES(${values})`;
+    // await sqlite.run(query)
 
 
 
