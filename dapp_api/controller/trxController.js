@@ -43,8 +43,16 @@ module.exports = {
    */
   async getBalanceOfTrc20 (ctx) {
     let data = ctx.request.body
+
+    let contractAddress = data.contractAddress
+    let isValid = await trxModel.checkAddressIsValid(contractAddress);
+    if(!isValid) {
+      ctx.body = R.fail('合约地址不合法')
+      return;
+    }
+
     let fromAddress = data.fromAddress
-    let isValid = await trxModel.checkAddressIsValid(fromAddress);
+    isValid = await trxModel.checkAddressIsValid(fromAddress);
     if(!isValid) {
       ctx.body = R.fail('地址不合法')
       return;
@@ -56,9 +64,7 @@ module.exports = {
       return;
     }
 
-
-
-    let result = await trxModel.getBalanceOfTrc20(fromAddress, privateKey);
+    let result = await trxModel.getBalanceOfTrc20(contractAddress, fromAddress, privateKey);
     ctx.body = R.success(result)
   },
 

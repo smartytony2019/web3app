@@ -7,7 +7,7 @@ let trxModel = require("./model/trxModel")
 
 //开奖
 schedule.scheduleJob('0/5 * * * * *', async function(){
-  console.log('************** 2 - starting...  '+dayjs().format("YYYY-MM-DD HH:mm:ss"));
+  console.log('************** 开奖 - starting...  '+dayjs().format("YYYY-MM-DD HH:mm:ss"));
 
   let game_id = 5;
   try {
@@ -39,6 +39,7 @@ schedule.scheduleJob('0/5 * * * * *', async function(){
     }
 
     //Step 3.2: 转帐
+    let network = account.network;
     let fromAddress = account.fromAddress;
     let amount = parseInt(expect.num);
     let toAddress = account.toAddress;
@@ -51,18 +52,19 @@ schedule.scheduleJob('0/5 * * * * *', async function(){
     //Step 4: 保存数据库
     let open_time = dayjs().format("YYYY-MM-DD HH:mm:ss");
     open_timestamp = await common.parseTimestamp(open_time);
-    let values = `${game_id}, ${expect.num}, '${result.txid}', '', '${open_time}', ${open_timestamp}`;
-    query = `INSERT INTO t_open_result(game_id, num, block_hash, block_height, open_time, open_timestamp) VALUES(${values})`;
+    let values = `${game_id}, ${expect.num}, '${result.txid}', '', '${open_time}', ${open_timestamp}, '${network}'`;
+    query = `INSERT INTO t_open_result(game_id, num, block_hash, block_height, open_time, open_timestamp, network) VALUES(${values})`;
     await sqlite.run(query)
 
   }catch(error) {
     console.error(error);
   }
 
-  console.log('************** 2   -    end...  '+dayjs().format("YYYY-MM-DD HH:mm:ss"));
+  console.log('************** 开奖   -    end...  '+dayjs().format("YYYY-MM-DD HH:mm:ss"));
 });
 
-//查询块高度
+
+//***********************  查询块高度  ***********************
 schedule.scheduleJob('0/3 * * * * *', async function(){
   console.log('************** 查询块高度 - starting...  '+dayjs().format("YYYY-MM-DD HH:mm:ss"));
   let query = `select * from t_open_result where block_height = '' limit 1`;

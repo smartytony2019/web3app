@@ -9,9 +9,8 @@ app.use(koaBody({
   multipart: true
 }));
 
-console.log(process.env.NODE_ENV);
-
 // 初始化路由中间件
 app.use(routers.routes()).use(routers.allowedMethods())
-app.listen(3333);
-console.log('server is starting at port 3333')
+let port = process.env.PORT || 3333;
+app.listen(port);
+console.log(`server is starting at port ${port}`)

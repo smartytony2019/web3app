@@ -39,18 +39,20 @@ module.exports = {
   
   /**
    * 获取TRC20余额(USDT)
-   * @param {string} address 地址
+   * @param {string} contractAddress 合约地址
+   * @param {string} address 查询地址
+   * @param {string} privateKey 私钥
    * @returns USDT余额
    */
-  async getBalanceOfTrc20(address, privateKey) {
+  async getBalanceOfTrc20(contractAddress, address, privateKey) {
     let result = 0;
     try {
       tronWeb.setPrivateKey(privateKey);
-      let contract = await tronWeb.contract().at(config.contractAddress);
+      let contract = await tronWeb.contract().at(contractAddress);
       let balance = await contract.balanceOf(address).call();
       result = web3.utils.fromWei(`${balance.toString()}`, "ether");
     } catch (error) {
-      console.error("getBalanceOfUSDT error", error);
+      console.error("getBalanceOfTrc20 error", error);
     }
     return result;
   },

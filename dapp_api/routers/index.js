@@ -1,6 +1,7 @@
 const router = require('koa-router')()
 
 const trxController = require("../controller/trxController")
+const resultController = require("../controller/resultController")
 
 /*  ****** TRX API ****** */
 //- 创建帐号
@@ -20,5 +21,12 @@ router.post('/trx/transactionOfTrc20', trxController.transactionOfTrc20);
 
 //- 获取交易信息
 router.post('/trx/getTransactionInfo', trxController.getTransactionInfo);
+
+
+
+/*  ****** TRX API ****** */
+//- 获取开奖结果
+router.get('/result/:game_id', resultController.result);
+
 
 module.exports = router
