@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.TrxApiConst;
+import com.xinbo.chainblock.entity.HashResultEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
+import com.xinbo.chainblock.service.HashResultService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author tony
@@ -34,6 +37,9 @@ public class OpenResultJob {
 
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
+
+    @Autowired
+    private HashResultService hashResultService;
 
 
     @Autowired
@@ -75,12 +81,27 @@ public class OpenResultJob {
 
             //Step 3: 需要开奖数据
             for(HashResultApiEntity entity : records) {
-                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
-            }
+                HashResultEntity hashResultEntity = HashResultEntity.builder()
+                        .gameId(entity.getGameId())
+                        .num(entity.getNum())
+                        .blockHash(entity.getBlockHash())
+                        .blockHeight(entity.getBlockHeight())
+                        .openTime(entity.getOpenTime())
+                        .openTimestamp(entity.getOpenTimestamp())
+                        .network(entity.getNetwork())
+                        .isSettle(false)
+                        .build();
 
+                boolean isSuccess = hashResultService.insert(hashResultEntity);
+                if(!isSuccess) {
+                    continue;
+                }
+
+                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
+                redisTemplate.opsForValue().set(key, "", 1L, TimeUnit.DAYS);
+            }
         }catch (Exception ex) {
             log.error("result", ex);
         }
     }
-
 }

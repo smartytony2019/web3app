@@ -23,7 +23,7 @@ public class HashResultApiEntity {
     @JSONField(name="game_id")
     private Integer gameId;
 
-    private Integer num;
+    private String num;
 
     @JSONField(name="block_hash")
     private String blockHash;
