@@ -1,6 +1,7 @@
-package com.xinbo.chainblock.vo;
+package com.xinbo.chainblock.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -17,30 +18,34 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_hash_result")
-public class HashResultVo {
+@TableName("t_lottery_play_code")
+public class LotteryPlayCodeEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 地址
+     * 玩法编码(对应t_lottery_play.play_code字段)
      */
-    private String address;
+    @TableField("play_code")
+    private Integer playCode;
 
     /**
-     * 用户id
+     * 玩法名称编码
      */
-    private Integer uid;
+    @TableField("name_code")
+    private String name_code;
 
     /**
-     * 位数
+     * 玩法默认名称
      */
-    private String username;
+    @TableField("name_default")
+    private String name_default;
 
     /**
-     * 钱包类型 1: trx,2: eth
+     * 赔率
      */
-    private Integer type;
+    @TableField("odds")
+    private Float odds;
 
 }
