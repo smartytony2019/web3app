@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.TrxApiConst;
-import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
-import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
+import com.xinbo.chainblock.modal.Do.HashResultDo;
+import com.xinbo.chainblock.modal.Do.terminal.BaseEntity;
+import com.xinbo.chainblock.modal.Do.terminal.HashResultApiEntity;
 import com.xinbo.chainblock.service.HashResultService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -81,7 +80,7 @@ public class HashResultJob {
 
             //Step 3: 需要开奖数据
             for (HashResultApiEntity entity : records) {
-                HashResultEntity hashResultEntity = HashResultEntity.builder()
+                HashResultDo hashResultEntity = HashResultDo.builder()
                         .gameId(entity.getGameId())
                         .num(entity.getNum())
                         .txID(entity.getTxID())

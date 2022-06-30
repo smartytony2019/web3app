@@ -1,15 +1,14 @@
 package com.xinbo.chainblock.controller.api;
 
-import cn.hutool.core.date.DateUtil;
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.entity.*;
+import com.xinbo.chainblock.modal.Do.*;
+import com.xinbo.chainblock.modal.Dto.LotteryBetDto;
+import com.xinbo.chainblock.modal.Vo.BetVo;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.R;
-import com.xinbo.chainblock.vo.BetVo;
+import com.xinbo.chainblock.modal.Vo.BetSubmitVo;
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,34 +37,34 @@ public class BetController {
 
     @Operation(summary = "submit")
     @PostMapping("submit")
-    public R<Object> submit(@RequestBody @Valid BetVo vo) {
+    public R<Object> submit(@RequestBody @Valid BetSubmitVo vo) {
         R<Object> r = R.builder().code(StatusCode.FAILURE).build();
 
         try {
             //判断数据是否合法
-            UserEntity userEntity = UserEntity.builder()
+            UserDo userEntity = UserDo.builder()
                     .username("jack")
                     .id(1)
                     .version(1)
                     .build();
 
 
-            LotteryGameEntity gameEntity = lotteryGameService.findById(vo.getGameId());
+            LotteryGameDo gameEntity = lotteryGameService.findById(vo.getGameId());
             if(ObjectUtils.isEmpty(gameEntity) || gameEntity.getId()<=0) {
                 throw new RuntimeException("lottery game not found");
             }
 
-            LotteryPlayEntity playEntity = lotteryPlayService.findById(vo.getPlayId());
+            LotteryPlayDo playEntity = lotteryPlayService.findById(vo.getPlayId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play not found");
             }
 
-            LotteryPlayCodeEntity playCodeEntity = lotteryPlayCodeService.findById(vo.getPlayCodeId());
+            LotteryPlayCodeDo playCodeEntity = lotteryPlayCodeService.findById(vo.getPlayCodeId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play code not found");
             }
 
-            LotteryBetEntity betEntity = LotteryBetEntity.builder()
+            LotteryBetDto betDto = LotteryBetDto.builder()
                     .uid(userEntity.getId())
                     .username(userEntity.getUsername())
                     .cateId(gameEntity.getCateId())
@@ -80,13 +79,13 @@ public class BetController {
                     .playCodeId(playCodeEntity.getId())
                     .playCodeNameCode(playCodeEntity.getNameCode())
                     .playCodeNameDefault(playCodeEntity.getNameDefault())
-                    .betOdds(playCodeEntity.getOdds())
-                    .betMoney(vo.getBetMoney())
+                    .num(vo.getNum())
+                    .odds(playCodeEntity.getOdds())
+                    .money(vo.getMoney())
                     .createTime(new Date())
                     .build();
 
-            boolean isSuccess = lotteryBetService.insert(betEntity);
-
+            boolean isSuccess = lotteryBetService.insert(betDto);
             if(isSuccess) {
                 r.setCode(StatusCode.SUCCESS);
             }
@@ -95,4 +94,19 @@ public class BetController {
         }
         return r;
     }
+
+
+    @Operation(summary = "find", description = "获取注单")
+    @PostMapping("find")
+    public R<Object> find(@RequestBody BetVo vo) {
+        R<Object> r = R.builder().build();
+
+        LotteryBetDto dto = LotteryBetDto.builder()
+                .gameId(vo.getGameId())
+                .build();
+        List<LotteryBetDto> lotteryBetDtoList = lotteryBetService.find(dto);
+
+        return R.builder().data(lotteryBetDtoList).build();
+    }
+
 }

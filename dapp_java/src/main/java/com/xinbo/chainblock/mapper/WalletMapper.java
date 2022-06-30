@@ -1,8 +1,7 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinbo.chainblock.entity.RechargeEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.modal.Do.WalletDo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,5 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @desc file desc
  */
 @Mapper
-public interface WalletMapper extends BaseMapper<WalletEntity> {
+public interface WalletMapper extends BaseMapper<WalletDo> {
 }

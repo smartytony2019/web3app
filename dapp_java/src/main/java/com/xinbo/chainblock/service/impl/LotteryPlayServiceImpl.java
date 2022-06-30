@@ -3,11 +3,8 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.LotteryGameEntity;
-import com.xinbo.chainblock.entity.LotteryPlayEntity;
-import com.xinbo.chainblock.mapper.LotteryGameMapper;
+import com.xinbo.chainblock.modal.Do.LotteryPlayDo;
 import com.xinbo.chainblock.mapper.LotteryPlayMapper;
-import com.xinbo.chainblock.service.LotteryGameService;
 import com.xinbo.chainblock.service.LotteryPlayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,20 +19,20 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, LotteryPlayEntity> implements LotteryPlayService {
+public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, LotteryPlayDo> implements LotteryPlayService {
 
     @Autowired
     private LotteryPlayMapper lotteryPlayMapper;
 
 
     @Override
-    public LotteryPlayEntity findById(int id) {
+    public LotteryPlayDo findById(int id) {
         return lotteryPlayMapper.selectById(id);
     }
 
     @Override
-    public List<LotteryPlayEntity> findAll() {
-        return lotteryPlayMapper.selectList(createWrapper(LotteryPlayEntity.builder().build()));
+    public List<LotteryPlayDo> findAll() {
+        return lotteryPlayMapper.selectList(createWrapper(LotteryPlayDo.builder().build()));
     }
 
 
@@ -45,13 +42,13 @@ public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, Lotte
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<LotteryPlayEntity> createWrapper(LotteryPlayEntity entity) {
-        LambdaQueryWrapper<LotteryPlayEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<LotteryPlayDo> createWrapper(LotteryPlayDo entity) {
+        LambdaQueryWrapper<LotteryPlayDo> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getNameCode())) {
-            wrappers.eq(LotteryPlayEntity::getNameCode, entity.getNameCode());
+            wrappers.eq(LotteryPlayDo::getNameCode, entity.getNameCode());
         }
         return wrappers;
     }

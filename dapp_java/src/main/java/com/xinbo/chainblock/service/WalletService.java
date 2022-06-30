@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.modal.Do.WalletDo;
 
 /**
  * @author tony
@@ -9,6 +9,6 @@ import com.xinbo.chainblock.entity.WalletEntity;
  */
 public interface WalletService {
 
-    WalletEntity findByAddress(String address);
+    WalletDo findByAddress(String address);
 
 }

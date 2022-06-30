@@ -1,16 +1,13 @@
-package com.xinbo.chainblock.vo;
+package com.xinbo.chainblock.modal.Vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BetVo {
+public class BetSubmitVo {
 
     private int gameId;
 
@@ -18,6 +15,8 @@ public class BetVo {
 
     private int playCodeId;
 
-    private float betMoney;
+    private String num;
+
+    private float money;
 
 }

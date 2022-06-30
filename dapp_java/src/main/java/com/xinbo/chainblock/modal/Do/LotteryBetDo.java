@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.modal.Do;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -21,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @TableName("t_lottery_bet")
-public class LotteryBetEntity {
+public class LotteryBetDo {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -114,16 +114,20 @@ public class LotteryBetEntity {
     private String hashResult;
 
     /**
+     * 期号
+     */
+    @TableField("num")
+    private String num;
+
+    /**
      * 注单赔率
      */
-    @TableField("bet_odds")
-    private Float betOdds;
+    private Float odds;
 
     /**
      * 注单金额
      */
-    @TableField("bet_money")
-    private Float betMoney;
+    private Float money;
 
     /**
      * 创建时间

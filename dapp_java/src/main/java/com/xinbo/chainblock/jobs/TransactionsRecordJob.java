@@ -1,10 +1,10 @@
 package com.xinbo.chainblock.jobs;
 
 import com.xinbo.chainblock.core.TrxApi;
-import com.xinbo.chainblock.entity.RechargeEntity;
-import com.xinbo.chainblock.entity.UserEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
+import com.xinbo.chainblock.modal.Do.RechargeDo;
+import com.xinbo.chainblock.modal.Do.UserDo;
+import com.xinbo.chainblock.modal.Do.WalletDo;
+import com.xinbo.chainblock.modal.Do.terminal.TransactionRecordApiEntity;
 import com.xinbo.chainblock.service.RechargeService;
 import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.service.WalletService;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
@@ -87,7 +86,7 @@ public class TransactionsRecordJob {
 
 
                 //根据充值地址找到用户钱包
-                WalletEntity walletEntity = walletService.findByAddress(data.getFrom());
+                WalletDo walletEntity = walletService.findByAddress(data.getFrom());
                 if(ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
                     continue;
                 }
@@ -96,7 +95,7 @@ public class TransactionsRecordJob {
                 BigDecimal bigDecimal = new BigDecimal(data.getValue());
                 BigDecimal value = commonUtils.fromTrc20(bigDecimal);
 
-                UserEntity userEntity = userService.findById(walletEntity.getUid());
+                UserDo userEntity = userService.findById(walletEntity.getUid());
                 userEntity.setMoney(value.floatValue());
                 boolean isSuccess = userService.increment(userEntity);
                 if(!isSuccess) {
@@ -104,7 +103,7 @@ public class TransactionsRecordJob {
                 }
 
 
-                RechargeEntity entity = RechargeEntity.builder()
+                RechargeDo entity = RechargeDo.builder()
                         .transactionId(data.getTransactionId())
                         .tokenSymbol(data.getTokenInfo().getSymbol())
                         .tokenAddress(data.getTokenInfo().getAddress())

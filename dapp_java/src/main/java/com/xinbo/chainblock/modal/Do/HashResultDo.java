@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.modal.Do;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -21,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @TableName("t_hash_result")
-public class HashResultEntity {
+public class HashResultDo {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

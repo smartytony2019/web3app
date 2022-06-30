@@ -1,8 +1,6 @@
-package com.xinbo.chainblock.entity.terminal;
+package com.xinbo.chainblock.modal.Do.terminal;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author tony

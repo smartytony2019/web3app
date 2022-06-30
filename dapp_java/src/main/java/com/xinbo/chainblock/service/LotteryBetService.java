@@ -1,7 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.LotteryBetEntity;
-import com.xinbo.chainblock.entity.LotteryPlayEntity;
+import com.xinbo.chainblock.modal.Dto.LotteryBetDto;
 
 import java.util.List;
 
@@ -12,6 +11,8 @@ import java.util.List;
  */
 public interface LotteryBetService {
 
-    boolean insert(LotteryBetEntity entity);
+    boolean insert(LotteryBetDto dto);
+
+    List<LotteryBetDto> find(LotteryBetDto dto);
 
 }

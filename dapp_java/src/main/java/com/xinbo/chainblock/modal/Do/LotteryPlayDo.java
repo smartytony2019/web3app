@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.modal.Do;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author tony
  * @date 6/25/22 4:10 下午
@@ -20,22 +18,21 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_lottery_category")
-public class LotteryCategoryEntity {
+@TableName("t_lottery_play")
+public class LotteryPlayDo {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 类目编码
+     * 玩法名称编码
      */
     @TableField("name_code")
     private String nameCode;
 
     /**
-     * 类目默认名称
+     * 玩法默认名称
      */
     @TableField("name_default")
     private String nameDefault;
-
 }

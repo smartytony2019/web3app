@@ -1,8 +1,7 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.modal.Do.HashResultDo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @desc file desc
  */
 @Mapper
-public interface HashResultMapper extends BaseMapper<HashResultEntity> {
+public interface HashResultMapper extends BaseMapper<HashResultDo> {
 
 
 

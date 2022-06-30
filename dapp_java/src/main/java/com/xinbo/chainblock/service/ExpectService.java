@@ -1,7 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.ExpectEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.modal.Do.ExpectDo;
 
 /**
  * @author tony
@@ -10,6 +9,6 @@ import com.xinbo.chainblock.entity.WalletEntity;
  */
 public interface ExpectService {
 
-    boolean insert(ExpectEntity entity);
+    boolean insert(ExpectDo entity);
 
 }

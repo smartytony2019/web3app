@@ -3,12 +3,9 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.LotteryCategoryEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.modal.Do.LotteryCategoryDo;
 import com.xinbo.chainblock.mapper.LotteryCategoryMapper;
-import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.LotteryCategoryService;
-import com.xinbo.chainblock.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -20,7 +17,7 @@ import org.springframework.util.StringUtils;
  * @desc file desc
  */
 @Service
-public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMapper, LotteryCategoryEntity> implements LotteryCategoryService {
+public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMapper, LotteryCategoryDo> implements LotteryCategoryService {
 
     @Autowired
     private LotteryCategoryMapper lotteryCategoryMapper;
@@ -28,7 +25,7 @@ public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMappe
 
 
     @Override
-    public LotteryCategoryEntity findById(int id) {
+    public LotteryCategoryDo findById(int id) {
         return lotteryCategoryMapper.selectById(id);
     }
 
@@ -39,13 +36,13 @@ public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMappe
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<LotteryCategoryEntity> createWrapper(LotteryCategoryEntity entity) {
-        LambdaQueryWrapper<LotteryCategoryEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<LotteryCategoryDo> createWrapper(LotteryCategoryDo entity) {
+        LambdaQueryWrapper<LotteryCategoryDo> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getNameCode())) {
-            wrappers.eq(LotteryCategoryEntity::getNameCode, entity.getNameCode());
+            wrappers.eq(LotteryCategoryDo::getNameCode, entity.getNameCode());
         }
         return wrappers;
     }

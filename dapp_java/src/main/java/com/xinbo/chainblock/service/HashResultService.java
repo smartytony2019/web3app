@@ -1,7 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.modal.Do.HashResultDo;
 
 /**
  * @author tony
@@ -10,6 +9,6 @@ import com.xinbo.chainblock.entity.WalletEntity;
  */
 public interface HashResultService {
 
-    boolean insert(HashResultEntity entity);
+    boolean insert(HashResultDo entity);
 
 }

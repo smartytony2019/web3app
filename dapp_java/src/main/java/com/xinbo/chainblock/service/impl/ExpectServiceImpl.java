@@ -3,12 +3,9 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.ExpectEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.modal.Do.ExpectDo;
 import com.xinbo.chainblock.mapper.ExpectMapper;
-import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.ExpectService;
-import com.xinbo.chainblock.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -20,13 +17,13 @@ import org.springframework.util.StringUtils;
  * @desc file desc
  */
 @Service
-public class ExpectServiceImpl extends ServiceImpl<ExpectMapper, ExpectEntity> implements ExpectService {
+public class ExpectServiceImpl extends ServiceImpl<ExpectMapper, ExpectDo> implements ExpectService {
 
     @Autowired
     private ExpectMapper expectMapper;
 
     @Override
-    public boolean insert(ExpectEntity entity) {
+    public boolean insert(ExpectDo entity) {
         return expectMapper.insert(entity) > 0;
     }
 
@@ -36,16 +33,16 @@ public class ExpectServiceImpl extends ServiceImpl<ExpectMapper, ExpectEntity> i
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<ExpectEntity> createWrapper(ExpectEntity entity) {
-        LambdaQueryWrapper<ExpectEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<ExpectDo> createWrapper(ExpectDo entity) {
+        LambdaQueryWrapper<ExpectDo> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getGameId())) {
-            wrappers.eq(ExpectEntity::getGameId, entity.getGameId());
+            wrappers.eq(ExpectDo::getGameId, entity.getGameId());
         }
         if (!StringUtils.isEmpty(entity.getNum())) {
-            wrappers.eq(ExpectEntity::getNum, entity.getNum());
+            wrappers.eq(ExpectDo::getNum, entity.getNum());
         }
         return wrappers;
     }

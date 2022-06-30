@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.LotteryGameEntity;
+import com.xinbo.chainblock.modal.Do.LotteryGameDo;
 
 /**
  * @author tony
@@ -9,6 +9,6 @@ import com.xinbo.chainblock.entity.LotteryGameEntity;
  */
 public interface LotteryGameService {
 
-    LotteryGameEntity findById(int id);
+    LotteryGameDo findById(int id);
 
 }
