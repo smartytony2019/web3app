@@ -58,6 +58,4 @@ public class LotteryGameEntity {
      * 是否开启
      */
     private Boolean enable;
-
-
 }

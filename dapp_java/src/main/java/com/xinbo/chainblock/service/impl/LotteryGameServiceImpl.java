@@ -28,6 +28,12 @@ public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, Lotte
 
 
 
+    @Override
+    public LotteryGameEntity findById(int id) {
+        return lotteryGameMapper.selectById(id);
+    }
+
+
     /**
      * 创建查询条件
      *
@@ -44,8 +50,4 @@ public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, Lotte
         }
         return wrappers;
     }
-
-
-
-
 }

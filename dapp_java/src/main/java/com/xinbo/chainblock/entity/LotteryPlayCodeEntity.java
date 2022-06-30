@@ -25,22 +25,22 @@ public class LotteryPlayCodeEntity {
     private Integer id;
 
     /**
-     * 玩法编码(对应t_lottery_play.play_code字段)
+     * 玩法id
      */
-    @TableField("play_code")
-    private Integer playCode;
+    @TableField("play_id")
+    private Integer playId;
 
     /**
      * 玩法名称编码
      */
     @TableField("name_code")
-    private String name_code;
+    private String nameCode;
 
     /**
      * 玩法默认名称
      */
     @TableField("name_default")
-    private String name_default;
+    private String nameDefault;
 
     /**
      * 赔率

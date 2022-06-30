@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -25,6 +27,16 @@ public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, Lotte
     @Autowired
     private LotteryPlayMapper lotteryPlayMapper;
 
+
+    @Override
+    public LotteryPlayEntity findById(int id) {
+        return lotteryPlayMapper.selectById(id);
+    }
+
+    @Override
+    public List<LotteryPlayEntity> findAll() {
+        return lotteryPlayMapper.selectList(createWrapper(LotteryPlayEntity.builder().build()));
+    }
 
 
     /**
@@ -43,8 +55,4 @@ public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, Lotte
         }
         return wrappers;
     }
-
-
-
-
 }

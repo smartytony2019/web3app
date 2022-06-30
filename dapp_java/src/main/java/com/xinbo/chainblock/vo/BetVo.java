@@ -14,12 +14,10 @@ public class BetVo {
 
     private int gameId;
 
-    private int playCode;
+    private int playId;
 
-    private int betCode;
+    private int playCodeId;
 
     private float betMoney;
-
-    private float betOdds;
 
 }

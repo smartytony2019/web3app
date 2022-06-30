@@ -27,6 +27,12 @@ public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMappe
 
 
 
+    @Override
+    public LotteryCategoryEntity findById(int id) {
+        return lotteryCategoryMapper.selectById(id);
+    }
+
+
     /**
      * 创建查询条件
      *
@@ -43,8 +49,4 @@ public class LotteryCategoryServiceImpl extends ServiceImpl<LotteryCategoryMappe
         }
         return wrappers;
     }
-
-
-
-
 }

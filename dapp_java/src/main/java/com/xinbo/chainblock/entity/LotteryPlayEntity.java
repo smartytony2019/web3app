@@ -35,28 +35,4 @@ public class LotteryPlayEntity {
      */
     @TableField("name_default")
     private String nameDefault;
-
-    /**
-     * 彩种id
-     */
-    @TableField("game_id")
-    private Integer gameId;
-
-    /**
-     * 游戏名称编码
-     */
-    @TableField("game_name_code")
-    private String gameNameCode;
-
-    /**
-     * 游戏默认名称
-     */
-    @TableField("game_name_default")
-    private String gameNameDefault;
-
-    /**
-     * 玩法编码
-     */
-    @TableField("play_code")
-    private Integer playCode;
 }

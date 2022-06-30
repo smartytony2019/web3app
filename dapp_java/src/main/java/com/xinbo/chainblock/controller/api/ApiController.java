@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.controller;
+package com.xinbo.chainblock.controller.api;
 
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.TrxApi;
