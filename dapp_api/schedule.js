@@ -74,24 +74,31 @@ class Result {
    * 查询块高度
    * @returns void
    */
-  async queryBlockHeight() {
+  async queryBlockInfo() {
     try {
       console.log('************** 查询块高度 - starting...  '+dayjs().format("YYYY-MM-DD HH:mm:ss"));
-      let query = `select * from t_open_result where block_height = '' limit 1`;
+      let query = `select * from t_hash_result where block_height = '' limit 1`;
       let result = await sqlite.get(query)
-      if(result == undefined || result.block_hash == '') {
+      console.log(result);
+      if(result == undefined || result.txID == '') {
         return;
       }
     
-      let info = await trxModel.getTransactionInfo(result.block_hash);
-      if(info == undefined || info.id == undefined) {
+      let transactionInfo = await trxModel.getTransactionInfo(result.txID);
+      if(transactionInfo == undefined || transactionInfo.id == undefined) {
+        return;
+      }
+
+      let blockInfo = await trxModel.getBlockHash(transactionInfo.blockNumber);
+      console.log("blockInfo", blockInfo);
+      if(blockInfo == undefined || blockInfo.blockID == undefined) {
         return;
       }
     
-      query = `update t_open_result set block_height = '${info.blockNumber}' where block_hash = '${info.id}'`;
+      query = `update t_hash_result set block_height = '${transactionInfo.blockNumber}', block_hash = '${blockInfo.blockID}' where txID = '${transactionInfo.id}'`;
       await sqlite.run(query);
     
-      console.log('************** 查询块高度   -    end...  '+info.id);
+      console.log('************** 查询块高度   -    end...  '+transactionInfo.id);
     } catch(error) {
       console.error(error);
     }
@@ -107,8 +114,8 @@ schedule.scheduleJob('0/5 * * * * *', async function(){
 });
 
 
-//***********************  查询块高度  ***********************
-schedule.scheduleJob('0/3 * * * * *', async function() {
+//***********************  查询块信息  ***********************
+schedule.scheduleJob('0/5 * * * * *', async function() {
   let result = new Result();
-  await result.queryBlockHeight();
+  await result.queryBlockInfo();
 });

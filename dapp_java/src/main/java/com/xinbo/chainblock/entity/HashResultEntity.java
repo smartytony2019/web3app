@@ -38,6 +38,12 @@ public class HashResultEntity {
     private String num;
 
     /**
+     * 交易id
+     */
+    @TableField("txID")
+    private String txID;
+
+    /**
      * 哈希码
      */
     @TableField("block_hash")

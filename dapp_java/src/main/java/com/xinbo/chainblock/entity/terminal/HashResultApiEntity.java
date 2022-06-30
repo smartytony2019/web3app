@@ -25,6 +25,8 @@ public class HashResultApiEntity {
 
     private String num;
 
+    private String txID;
+
     @JSONField(name="block_hash")
     private String blockHash;
 

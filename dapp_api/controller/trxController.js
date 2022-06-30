@@ -24,7 +24,6 @@ module.exports = {
   async getBalanceOfTrx (ctx) {
     let data = ctx.request.body
     let fromAddress = data.fromAddress
-    console.log('getBalanceOfTrx', fromAddress);
     let isValid = await trxModel.checkAddressIsValid(fromAddress);
     if(!isValid) {
       ctx.body = R.fail('地址不合法')
@@ -158,6 +157,17 @@ module.exports = {
     let data = ctx.request.body
     let txID = data.txID;
     let result = await trxModel.getTransactionInfo(txID);
+    ctx.body = R.success(result)
+  },
+
+  /**
+   * 获取块哈希
+   * @param {Object} ctx 
+   */
+  async getBlockHash(ctx) {
+    let data = ctx.request.body
+    let blockHeight = data.blockHeight;
+    let result = await trxModel.getBlockHash(blockHeight);
     ctx.body = R.success(result)
   }
 }

@@ -245,7 +245,6 @@ const Web3 = require('web3');
 
     let trx = new Trx(instance,contractAddress);
 
-
     let tmp = await instance.trx.getBlock(27464550);
     console.log(tmp);
 

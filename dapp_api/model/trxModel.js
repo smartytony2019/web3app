@@ -117,7 +117,6 @@ module.exports = {
         { type: "uint256", value: tronWeb.toHex(amount) },
       ];
       var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress, "transfer(address,uint256)", {}, parameter, tronWeb.address.toHex(fromAddress));
-      console.log("tx", tx);
       if(tx == null || tx.result == null || tx.result.result != true) {
         throw '调用智能合约失败';
       }
@@ -161,6 +160,20 @@ module.exports = {
     return result;
   },
 
+  /**
+   * 获取块哈希
+   * @param {Integer} blockHeight 块高度
+   * @returns Object
+   */
+  async getBlockHash(blockHeight) {
+    let result = null;
+    try {
+      result = await tronWeb.trx.getBlock(blockHeight);
+    }catch(error) {
+      console.error("getBlockHash error", error);
+    }
+    return result;
+  },
 
   /**
    * 检查地址是否合法
@@ -203,5 +216,7 @@ module.exports = {
 
     return privateKey;
   }
+
+
 
 };

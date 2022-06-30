@@ -22,6 +22,9 @@ router.post('/trx/transactionOfTrc20', trxController.transactionOfTrc20);
 //- 获取交易信息
 router.post('/trx/getTransactionInfo', trxController.getTransactionInfo);
 
+//- 获取块哈希
+router.post('/trx/getBlockHash', trxController.getBlockHash);
+
 
 
 /*  ****** TRX API ****** */
