@@ -1,6 +1,7 @@
-package com.xinbo.chainblock.modal.Do;
+package com.xinbo.chainblock.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -17,30 +18,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_wallet")
-public class WalletDo {
+@TableName("t_expect")
+public class ExpectEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
+     * 彩种id
+     */
+    @TableField("game_id")
+    private Integer gameId;
+
+    /**
      * 地址
      */
-    private String address;
+    private String num;
 
     /**
-     * 用户id
+     * 开始时间
      */
-    private Integer uid;
+    @TableField("start_time")
+    private String startTime;
 
     /**
-     * 位数
+     * 结束时间
      */
-    private String username;
-
-    /**
-     * 钱包类型 1: trx,2: eth
-     */
-    private Integer type;
+    @TableField("end_time")
+    private String endTime;
 
 }

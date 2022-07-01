@@ -3,7 +3,7 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.modal.Do.LotteryGameDo;
+import com.xinbo.chainblock.entity.LotteryGameEntity;
 import com.xinbo.chainblock.mapper.LotteryGameMapper;
 import com.xinbo.chainblock.service.LotteryGameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
  * @desc file desc
  */
 @Service
-public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, LotteryGameDo> implements LotteryGameService {
+public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, LotteryGameEntity> implements LotteryGameService {
 
     @Autowired
     private LotteryGameMapper lotteryGameMapper;
@@ -25,7 +25,7 @@ public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, Lotte
 
 
     @Override
-    public LotteryGameDo findById(int id) {
+    public LotteryGameEntity findById(int id) {
         return lotteryGameMapper.selectById(id);
     }
 
@@ -36,13 +36,13 @@ public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, Lotte
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<LotteryGameDo> createWrapper(LotteryGameDo entity) {
-        LambdaQueryWrapper<LotteryGameDo> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<LotteryGameEntity> createWrapper(LotteryGameEntity entity) {
+        LambdaQueryWrapper<LotteryGameEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getNameCode())) {
-            wrappers.eq(LotteryGameDo::getNameCode, entity.getNameCode());
+            wrappers.eq(LotteryGameEntity::getNameCode, entity.getNameCode());
         }
         return wrappers;
     }

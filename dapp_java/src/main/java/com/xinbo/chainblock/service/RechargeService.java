@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.modal.Do.RechargeDo;
+import com.xinbo.chainblock.entity.RechargeEntity;
 
 /**
  * @author tony
@@ -9,6 +9,6 @@ import com.xinbo.chainblock.modal.Do.RechargeDo;
  */
 public interface RechargeService {
 
-    boolean save(RechargeDo entity);
+    boolean save(RechargeEntity entity);
 
 }

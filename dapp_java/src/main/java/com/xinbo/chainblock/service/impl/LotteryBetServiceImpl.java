@@ -3,9 +3,9 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.modal.Do.LotteryBetDo;
+import com.xinbo.chainblock.dto.LotteryBetDto;
+import com.xinbo.chainblock.entity.LotteryBetEntity;
 import com.xinbo.chainblock.mapper.LotteryBetMapper;
-import com.xinbo.chainblock.modal.Dto.LotteryBetDto;
 import com.xinbo.chainblock.service.LotteryBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +22,28 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, LotteryBetDo> implements LotteryBetService {
+public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, LotteryBetEntity> implements LotteryBetService {
 
     @Autowired
     private LotteryBetMapper lotteryBetMapper;
 
 
     @Override
+    public LotteryBetDto findById(int id) {
+        LotteryBetEntity entity = lotteryBetMapper.selectById(id);
+        return MapperUtil.to(entity, LotteryBetDto.class);
+    }
+
+    @Override
     public boolean insert(LotteryBetDto dto) {
-        LotteryBetDo entity = MapperUtil.to(dto, LotteryBetDo.class);
+        LotteryBetEntity entity = MapperUtil.to(dto, LotteryBetEntity.class);
         return lotteryBetMapper.insert(entity)> 0;
     }
 
     @Override
     public List<LotteryBetDto> find(LotteryBetDto dto) {
-        LotteryBetDo entity = MapperUtil.to(dto, LotteryBetDo.class);
-        List<LotteryBetDo> betEntityList = lotteryBetMapper.selectList(this.createWrapper(entity));
+        LotteryBetEntity entity = MapperUtil.to(dto, LotteryBetEntity.class);
+        List<LotteryBetEntity> betEntityList = lotteryBetMapper.selectList(this.createWrapper(entity));
         return MapperUtil.many(betEntityList, LotteryBetDto.class);
     }
 
@@ -48,22 +54,22 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<LotteryBetDo> createWrapper(LotteryBetDo entity) {
-        LambdaQueryWrapper<LotteryBetDo> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<LotteryBetEntity> createWrapper(LotteryBetEntity entity) {
+        LambdaQueryWrapper<LotteryBetEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getUid())) {
-            wrappers.eq(LotteryBetDo::getUid, entity.getUid());
+            wrappers.eq(LotteryBetEntity::getUid, entity.getUid());
         }
         if (!StringUtils.isEmpty(entity.getNum())) {
-            wrappers.eq(LotteryBetDo::getNum, entity.getNum());
+            wrappers.eq(LotteryBetEntity::getNum, entity.getNum());
         }
         if (!StringUtils.isEmpty(entity.getHashResult())) {
-            wrappers.eq(LotteryBetDo::getHashResult, entity.getHashResult());
+            wrappers.eq(LotteryBetEntity::getHashResult, entity.getHashResult());
         }
         if (!StringUtils.isEmpty(entity.getGameId())) {
-            wrappers.eq(LotteryBetDo::getGameId, entity.getGameId());
+            wrappers.eq(LotteryBetEntity::getGameId, entity.getGameId());
         }
         return wrappers;
     }

@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.modal.Dto.LotteryBetDto;
+import com.xinbo.chainblock.dto.LotteryBetDto;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import java.util.List;
  * @desc file desc
  */
 public interface LotteryBetService {
+
+    LotteryBetDto findById(int id);
 
     boolean insert(LotteryBetDto dto);
 

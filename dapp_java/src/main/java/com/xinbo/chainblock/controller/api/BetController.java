@@ -1,23 +1,33 @@
 package com.xinbo.chainblock.controller.api;
 
+import cn.hutool.core.io.resource.ResourceUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.xinbo.chainblock.annotation.Log;
+import com.xinbo.chainblock.annotation.RedisHandel;
+import com.xinbo.chainblock.annotation.Translate;
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.modal.Do.*;
-import com.xinbo.chainblock.modal.Dto.LotteryBetDto;
-import com.xinbo.chainblock.modal.Vo.BetVo;
+import com.xinbo.chainblock.dto.LotteryBetDto;
+import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.service.*;
+import com.xinbo.chainblock.utils.CommonUtils;
 import com.xinbo.chainblock.utils.R;
-import com.xinbo.chainblock.modal.Vo.BetSubmitVo;
+import com.xinbo.chainblock.vo.BetSubmitVo;
+import com.xinbo.chainblock.vo.BetVo;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/bet")
@@ -42,24 +52,24 @@ public class BetController {
 
         try {
             //判断数据是否合法
-            UserDo userEntity = UserDo.builder()
+            UserEntity userEntity = UserEntity.builder()
                     .username("jack")
                     .id(1)
                     .version(1)
                     .build();
 
 
-            LotteryGameDo gameEntity = lotteryGameService.findById(vo.getGameId());
+            LotteryGameEntity gameEntity = lotteryGameService.findById(vo.getGameId());
             if(ObjectUtils.isEmpty(gameEntity) || gameEntity.getId()<=0) {
                 throw new RuntimeException("lottery game not found");
             }
 
-            LotteryPlayDo playEntity = lotteryPlayService.findById(vo.getPlayId());
+            LotteryPlayEntity playEntity = lotteryPlayService.findById(vo.getPlayId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play not found");
             }
 
-            LotteryPlayCodeDo playCodeEntity = lotteryPlayCodeService.findById(vo.getPlayCodeId());
+            LotteryPlayCodeEntity playCodeEntity = lotteryPlayCodeService.findById(vo.getPlayCodeId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play code not found");
             }
@@ -99,14 +109,18 @@ public class BetController {
     @Operation(summary = "find", description = "获取注单")
     @PostMapping("find")
     public R<Object> find(@RequestBody BetVo vo) {
-        R<Object> r = R.builder().build();
-
         LotteryBetDto dto = LotteryBetDto.builder()
                 .gameId(vo.getGameId())
                 .build();
         List<LotteryBetDto> lotteryBetDtoList = lotteryBetService.find(dto);
-
         return R.builder().data(lotteryBetDtoList).build();
+    }
+
+    @Operation(summary = "test", description = "获取注单")
+    @GetMapping("test/{language}/{key}")
+    public R<Object> test(@PathVariable("language")String language, @PathVariable("key")String key) {
+        String values = CommonUtils.translate(language, key);
+        return R.builder().data(values).build();
     }
 
 }

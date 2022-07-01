@@ -1,5 +1,8 @@
-package com.xinbo.chainblock.modal.Dto;
+package com.xinbo.chainblock.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xinbo.chainblock.annotation.RedisHandel;
+import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,11 +40,13 @@ public class LotteryBetDto {
     /**
      * 类目编码
      */
+    @Translate
     private String cateNameCode;
 
     /**
      * 类目默认名称
      */
+    @JsonIgnore
     private String cateNameDefault;
 
     /**
@@ -52,11 +57,13 @@ public class LotteryBetDto {
     /**
      * 彩种id
      */
+    @Translate
     private String gameNameCode;
 
     /**
      * 彩种id
      */
+    @JsonIgnore
     private String gameNameDefault;
 
     /**
@@ -67,11 +74,13 @@ public class LotteryBetDto {
     /**
      * 玩法编码
      */
+    @Translate
     private String playNameCode;
 
     /**
      * 玩法编码
      */
+    @JsonIgnore
     private String playNameDefault;
 
     /**
@@ -82,11 +91,13 @@ public class LotteryBetDto {
     /**
      * 玩法编码id
      */
+    @Translate
     private String playCodeNameCode;
 
     /**
      * 玩法编码id
      */
+    @JsonIgnore
     private String playCodeNameDefault;
 
     /**
@@ -127,5 +138,6 @@ public class LotteryBetDto {
     /**
      * 备注
      */
+    @JsonIgnore
     private String remark;
 }

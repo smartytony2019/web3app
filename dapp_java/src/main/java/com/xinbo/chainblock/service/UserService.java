@@ -1,6 +1,5 @@
 package com.xinbo.chainblock.service;
-
-import com.xinbo.chainblock.modal.Do.UserDo;
+import com.xinbo.chainblock.entity.UserEntity;
 
 /**
  * @author tony
@@ -12,8 +11,8 @@ public interface UserService {
     boolean create();
 
 
-    UserDo findById(int id);
+    UserEntity findById(int id);
 
-    boolean increment(UserDo entity);
+    boolean increment(UserEntity entity);
 
 }

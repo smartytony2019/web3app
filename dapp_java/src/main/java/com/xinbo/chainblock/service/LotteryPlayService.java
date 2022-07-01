@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.modal.Do.LotteryPlayDo;
+import com.xinbo.chainblock.entity.LotteryPlayEntity;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import java.util.List;
  */
 public interface LotteryPlayService {
 
-    LotteryPlayDo findById(int id);
+    LotteryPlayEntity findById(int id);
 
-    List<LotteryPlayDo> findAll();
+    List<LotteryPlayEntity> findAll();
 
 }

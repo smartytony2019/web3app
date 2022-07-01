@@ -2,9 +2,9 @@ package com.xinbo.chainblock.controller.api;
 
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.TrxApi;
-import com.xinbo.chainblock.modal.Do.terminal.AccountApiEntity;
-import com.xinbo.chainblock.modal.Do.terminal.TransactionInfoApiEntity;
-import com.xinbo.chainblock.modal.Do.terminal.TransactionTrxApiEntity;
+import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

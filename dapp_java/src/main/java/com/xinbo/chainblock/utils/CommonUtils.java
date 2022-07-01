@@ -1,7 +1,16 @@
 package com.xinbo.chainblock.utils;
 
+import cn.hutool.core.io.resource.ResourceUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -26,4 +35,18 @@ public class CommonUtils {
         BigDecimal bigInteger = new BigDecimal(String.valueOf(Math.pow(10, 18)));
         return value.divide(bigInteger,6, RoundingMode.CEILING);
     }
+
+    public static String translate(String language, String key) {
+        String result = "";
+        try {
+            String path = String.format("classpath:json/%s.json", language);
+            String str = ResourceUtil.readUtf8Str(path);
+            JSONObject jsonObject = JSON.parseObject(str);
+            result = jsonObject.get(key).toString();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+
 }

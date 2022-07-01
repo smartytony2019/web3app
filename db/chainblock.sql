@@ -273,8 +273,8 @@ create table t_lottery_bet (
   num varchar(10) comment '期号',
   odds decimal(10,4) comment '赔率',
   money decimal(10,4) comment '投注金额',
-  create_time timestamp comment '创建时间',
-  update_time timestamp comment '更新时间',
+  create_time timestamp null default null comment '创建时间',
+  update_time timestamp null default null comment '更新时间',
   status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
   remark varchar(100) comment '备注'
 ) comment '彩票注单';
@@ -290,8 +290,8 @@ create table t_draw_bet (
   amount varchar(100) comment '金额',
   symbol varchar(50) comment '货币',
   hash_result varchar(50) comment '开奖结果',
-  create_time timestamp comment '创建时间',
-  update_time timestamp comment '更新时间',
+  create_time timestamp null default null comment '创建时间',
+  update_time timestamp null default null comment '更新时间',
   status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
   remark varchar(100) comment '备注'
 ) comment '抽奖注单';

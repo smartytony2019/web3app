@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.modal.Do;
+package com.xinbo.chainblock.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -22,7 +22,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @TableName("t_user")
-public class UserDo {
+public class UserEntity {
 
 
     @TableId(value = "id", type = IdType.AUTO)

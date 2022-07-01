@@ -1,7 +1,7 @@
 package com.xinbo.chainblock;
 
 import cn.hutool.core.date.*;
-import com.xinbo.chainblock.modal.Do.ExpectDo;
+import com.xinbo.chainblock.entity.ExpectEntity;
 import com.xinbo.chainblock.service.ExpectService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class ExpectTest {
             String endTime = DateUtil.format(offset, "HH:mm:ss");
             System.out.println(num + " - " + startTime + " - " + endTime);
 
-            ExpectDo entity = ExpectDo.builder()
+            ExpectEntity entity = ExpectEntity.builder()
                     .gameId(gameId)
                     .num(num)
                     .startTime(startTime)
@@ -71,7 +71,7 @@ public class ExpectTest {
             String endTime = DateUtil.format(offset, "HH:mm:ss");
             System.out.println(num + " - " + startTime + " - " + endTime);
 
-            ExpectDo entity = ExpectDo.builder()
+            ExpectEntity entity = ExpectEntity.builder()
                     .gameId(gameId)
                     .num(num)
                     .startTime(startTime)
@@ -101,7 +101,7 @@ public class ExpectTest {
             String endTime = DateUtil.format(offset, "HH:mm:ss");
             System.out.println(num + " - " + startTime + " - " + endTime);
 
-            ExpectDo entity = ExpectDo.builder()
+            ExpectEntity entity = ExpectEntity.builder()
                     .gameId(gameId)
                     .num(num)
                     .startTime(startTime)

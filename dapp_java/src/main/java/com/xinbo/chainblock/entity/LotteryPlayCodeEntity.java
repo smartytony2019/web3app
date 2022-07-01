@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.modal.Do;
+package com.xinbo.chainblock.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -18,44 +18,34 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_lottery_game")
-public class LotteryGameDo {
+@TableName("t_lottery_play_code")
+public class LotteryPlayCodeEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 游戏名称编码
+     * 玩法id
+     */
+    @TableField("play_id")
+    private Integer playId;
+
+    /**
+     * 玩法名称编码
      */
     @TableField("name_code")
     private String nameCode;
 
     /**
-     * 游戏默认名称
+     * 玩法默认名称
      */
     @TableField("name_default")
     private String nameDefault;
 
     /**
-     * 类目id
+     * 赔率
      */
-    @TableField("cate_id")
-    private Integer cateId;
+    @TableField("odds")
+    private Float odds;
 
-    /**
-     * 类目编码
-     */
-    @TableField("cate_name_code")
-    private String cateNameCode;
-
-    /**
-     * 类目默认名称
-     */
-    @TableField("cate_name_default")
-    private String cateNameDefault;
-
-    /**
-     * 是否开启
-     */
-    private Boolean enable;
 }

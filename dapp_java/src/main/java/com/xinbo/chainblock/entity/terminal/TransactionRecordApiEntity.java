@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.modal.Do.terminal;
+package com.xinbo.chainblock.entity.terminal;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;

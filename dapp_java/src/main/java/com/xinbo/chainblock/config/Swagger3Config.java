@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.config;
 
+import cn.hutool.core.util.ArrayUtil;
 import io.swagger.models.auth.In;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,17 +61,21 @@ public class Swagger3Config {
      * 设置授权信息
      */
     private List<SecurityScheme> securitySchemes(){
-        ApiKey apiKey = new ApiKey("Authorization", "token", In.HEADER.toValue());
-        return Collections.singletonList(apiKey);
+        ApiKey token = new ApiKey("Authorization", "token", In.HEADER.toValue());
+        ApiKey language = new ApiKey("language", "language", In.HEADER.toValue());
+        return Arrays.asList(token, language);
     }
 
     /**
      * 授权信息全局应用
      */
     private List<SecurityContext> securityContexts(){
+        List<SecurityReference> securityReferences = Arrays.asList(new SecurityReference("Authorization", new AuthorizationScope[]{new AuthorizationScope("global", "")}),
+                new SecurityReference("language", new AuthorizationScope[]{new AuthorizationScope("global", "")})
+                );
         return Collections.singletonList(
                 SecurityContext.builder()
-                        .securityReferences(Collections.singletonList(new SecurityReference("Authorization", new AuthorizationScope[]{new AuthorizationScope("global", "")})))
+                        .securityReferences(securityReferences)
                         .build()
         );
     }

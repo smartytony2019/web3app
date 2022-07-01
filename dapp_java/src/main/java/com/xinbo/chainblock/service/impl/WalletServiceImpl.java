@@ -3,7 +3,7 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.modal.Do.WalletDo;
+import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
  * @desc file desc
  */
 @Service
-public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletDo> implements WalletService {
+public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> implements WalletService {
 
     @Autowired
     private WalletMapper walletMapper;
@@ -25,9 +25,9 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletDo> imple
 
 
 
-    public WalletDo findByAddress(String address) {
-        WalletDo entity = WalletDo.builder().address(address).build();
-        LambdaQueryWrapper<WalletDo> wrappers = this.createWrapper(entity);
+    public WalletEntity findByAddress(String address) {
+        WalletEntity entity = WalletEntity.builder().address(address).build();
+        LambdaQueryWrapper<WalletEntity> wrappers = this.createWrapper(entity);
         return walletMapper.selectOne(wrappers);
     }
 
@@ -38,16 +38,16 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletDo> imple
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<WalletDo> createWrapper(WalletDo entity) {
-        LambdaQueryWrapper<WalletDo> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<WalletEntity> createWrapper(WalletEntity entity) {
+        LambdaQueryWrapper<WalletEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getUsername())) {
-            wrappers.eq(WalletDo::getUsername, entity.getUsername());
+            wrappers.eq(WalletEntity::getUsername, entity.getUsername());
         }
         if (!StringUtils.isEmpty(entity.getAddress())) {
-            wrappers.eq(WalletDo::getAddress, entity.getAddress());
+            wrappers.eq(WalletEntity::getAddress, entity.getAddress());
         }
         return wrappers;
     }

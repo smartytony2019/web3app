@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.modal.Do.UserDo;
+import com.xinbo.chainblock.entity.UserEntity;
 import com.xinbo.chainblock.mapper.UserMapper;
 import com.xinbo.chainblock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Date;
  * @desc file desc
  */
 @Service
-public class UserServiceImpl  extends ServiceImpl<UserMapper, UserDo> implements UserService {
+public class UserServiceImpl  extends ServiceImpl<UserMapper, UserEntity> implements UserService {
 
 
 
@@ -25,7 +25,7 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, UserDo> implements
 
     @Override
     public boolean create() {
-        UserDo entity = UserDo.builder()
+        UserEntity entity = UserEntity.builder()
                 .username("jack").createTime(new Date()).money(1000F).salt("123").version(1)
                 .build();
         userMapper.insert(entity);
@@ -33,12 +33,12 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, UserDo> implements
     }
 
     @Override
-    public UserDo findById(int id) {
+    public UserEntity findById(int id) {
         return userMapper.selectById(id);
     }
 
     @Override
-    public boolean increment(UserDo entity) {
+    public boolean increment(UserEntity entity) {
         int increment = userMapper.increment(entity);
         return increment > 0;
     }

@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.modal.Do;
+package com.xinbo.chainblock.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @TableName("t_lottery_category")
-public class LotteryCategoryDo {
+public class LotteryCategoryEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.modal.Do.terminal;
+package com.xinbo.chainblock.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,18 +6,18 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author tony
- * @date 6/23/22 2:53 下午
+ * @date 6/30/22 6:27 下午
  * @desc file desc
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseEntity<T> {
+public class BetVo {
 
-    private Integer code;
+    private int uid;
 
-    private T data;
+    private String num;
 
-    private String msg;
+    private int gameId;
 
 }

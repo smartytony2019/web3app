@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.TrxApiConst;
-import com.xinbo.chainblock.modal.Do.HashResultDo;
-import com.xinbo.chainblock.modal.Do.terminal.BaseEntity;
-import com.xinbo.chainblock.modal.Do.terminal.HashResultApiEntity;
+import com.xinbo.chainblock.entity.HashResultEntity;
+import com.xinbo.chainblock.entity.terminal.BaseEntity;
+import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
 import com.xinbo.chainblock.service.HashResultService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +80,7 @@ public class HashResultJob {
 
             //Step 3: 需要开奖数据
             for (HashResultApiEntity entity : records) {
-                HashResultDo hashResultEntity = HashResultDo.builder()
+                HashResultEntity hashResultEntity = HashResultEntity.builder()
                         .gameId(entity.getGameId())
                         .num(entity.getNum())
                         .txID(entity.getTxID())

@@ -1,22 +1,33 @@
 package com.xinbo.chainblock;
 
+import cn.hutool.core.io.resource.Resource;
+import cn.hutool.core.io.resource.ResourceUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.xinbo.chainblock.modal.Do.terminal.BaseEntity;
-import com.xinbo.chainblock.modal.Do.terminal.AccountApiEntity;
-import com.xinbo.chainblock.modal.Do.terminal.TransactionInfoApiEntity;
-import com.xinbo.chainblock.modal.Do.terminal.TransactionRecordApiEntity;
-import com.xinbo.chainblock.modal.Do.terminal.TransactionTrxApiEntity;
+import com.xinbo.chainblock.entity.terminal.BaseEntity;
+import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Date;
 import java.util.TimeZone;
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
+@ActiveProfiles("dev")
 @SpringBootTest
 class ChainblockApplicationTests {
 
@@ -41,15 +52,16 @@ class ChainblockApplicationTests {
     @Test
     void getRecordTrc20() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-        long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
+        long minTimestamp = new Date().getTime() - (60 * 60 * 1000 * 24 * 30);
         //&min_timestamp=%s
         String url = String.format("%s/accounts/%s/transactions/trc20?only_confirmed=true&only_to=true&limit=200", API, account, minTimestamp);
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.getForObject(url, String.class);
 
-        TransactionRecordApiEntity entity = JSON.parseObject(res, new TypeReference<TransactionRecordApiEntity>() {});
-        if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData()) && entity.getData().size()>0) {
-            for (TransactionRecordApiEntity.Data d: entity.getData()) {
+        TransactionRecordApiEntity entity = JSON.parseObject(res, new TypeReference<TransactionRecordApiEntity>() {
+        });
+        if (!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData()) && entity.getData().size() > 0) {
+            for (TransactionRecordApiEntity.Data d : entity.getData()) {
                 System.out.println(d);
             }
         }
@@ -64,7 +76,8 @@ class ChainblockApplicationTests {
         String url = String.format("%s%s", T_API, "/trx/createAccount");
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, "", String.class);
-        BaseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<AccountApiEntity>>() {});
+        BaseEntity<AccountApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<AccountApiEntity>>() {
+        });
         System.out.println(entity);
     }
 
@@ -76,7 +89,8 @@ class ChainblockApplicationTests {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("fromAddress", fromAddress);
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {});
+        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {
+        });
         System.out.println(entity);
     }
 
@@ -91,7 +105,8 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {});
+        BaseEntity<String> entity = JSON.parseObject(res, new TypeReference<BaseEntity<String>>() {
+        });
         System.out.println(entity);
     }
 
@@ -107,7 +122,8 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {});
+        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {
+        });
         System.out.println(entity);
     }
 
@@ -124,7 +140,8 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {});
+        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {
+        });
         System.out.println(entity);
     }
 
@@ -137,8 +154,22 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionInfoApiEntity>>() {});
+        BaseEntity<TransactionInfoApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionInfoApiEntity>>() {
+        });
         System.out.println(entity);
+    }
+
+
+    @Test
+    void test() {
+        try {
+            File jsonFile = ResourceUtils.getFile("classpath:json/zh.json");
+            String json = FileUtils.readFileToString(jsonFile, "UTF-8");
+            JSONObject jsonArray = JSON.parseObject(json);
+            System.out.println(jsonArray);
+        } catch (Exception ex) {
+
+        }
     }
 
 }

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.xinbo.chainblock.consts.TrxApiConst;
-import com.xinbo.chainblock.modal.Do.terminal.*;
+import com.xinbo.chainblock.entity.terminal.*;
 import com.xinbo.chainblock.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

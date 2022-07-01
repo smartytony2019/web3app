@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.modal.Vo;
+package com.xinbo.chainblock.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

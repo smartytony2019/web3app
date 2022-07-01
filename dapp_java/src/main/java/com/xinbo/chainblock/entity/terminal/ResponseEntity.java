@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.modal.Do.terminal;
+package com.xinbo.chainblock.entity.terminal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseEntity<T> {
+public class ResponseEntity<T> {
 
     private Integer code;
 
