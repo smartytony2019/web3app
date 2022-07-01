@@ -1,8 +1,12 @@
 package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
 import com.xinbo.chainblock.mapper.LotteryBetMapper;
@@ -35,16 +39,22 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
     }
 
     @Override
-    public boolean insert(LotteryBetDto dto) {
-        LotteryBetEntity entity = MapperUtil.to(dto, LotteryBetEntity.class);
+    public boolean insert(LotteryBetEntity entity) {
         return lotteryBetMapper.insert(entity)> 0;
     }
 
     @Override
-    public List<LotteryBetDto> find(LotteryBetDto dto) {
-        LotteryBetEntity entity = MapperUtil.to(dto, LotteryBetEntity.class);
+    public List<LotteryBetDto> find(LotteryBetEntity entity) {
         List<LotteryBetEntity> betEntityList = lotteryBetMapper.selectList(this.createWrapper(entity));
         return MapperUtil.many(betEntityList, LotteryBetDto.class);
+    }
+
+    @Override
+    public BasePage findPage(LotteryBetEntity entity, long current, long size) {
+        Page<LotteryBetEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.asc("create_time"));
+        IPage<LotteryBetEntity> iPage = lotteryBetMapper.selectPage(page, this.createWrapper(entity));
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
     }
 
 
@@ -59,7 +69,7 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
-        if (!StringUtils.isEmpty(entity.getUid())) {
+        if (!StringUtils.isEmpty(entity.getUid()) && entity.getUid() > 0) {
             wrappers.eq(LotteryBetEntity::getUid, entity.getUid());
         }
         if (!StringUtils.isEmpty(entity.getNum())) {
@@ -68,7 +78,7 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
         if (!StringUtils.isEmpty(entity.getHashResult())) {
             wrappers.eq(LotteryBetEntity::getHashResult, entity.getHashResult());
         }
-        if (!StringUtils.isEmpty(entity.getGameId())) {
+        if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId()>0) {
             wrappers.eq(LotteryBetEntity::getGameId, entity.getGameId());
         }
         return wrappers;

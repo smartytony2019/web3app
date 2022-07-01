@@ -1,7 +1,6 @@
 package com.xinbo.chainblock.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xinbo.chainblock.annotation.RedisHandel;
 import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
