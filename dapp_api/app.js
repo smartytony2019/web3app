@@ -4,6 +4,8 @@ const koaBody = require('koa-body');
 
 const app = new Koa();
 
+process.env.TZ = 'Asia/Shanghai';
+
 // 引入 koa-body 中间件
 app.use(koaBody({
   multipart: true

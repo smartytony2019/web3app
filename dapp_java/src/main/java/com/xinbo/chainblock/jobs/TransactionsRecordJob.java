@@ -23,7 +23,7 @@ import java.util.List;
  * @date 6/25/22 2:59 下午
  * @desc file desc
  */
-//@Service
+//@Component
 public class TransactionsRecordJob {
 
     @Autowired

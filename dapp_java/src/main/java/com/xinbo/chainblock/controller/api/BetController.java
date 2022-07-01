@@ -100,8 +100,8 @@ public class BetController {
     @PostMapping("find")
     public R<Object> find(@RequestBody BetVo vo) {
         LotteryBetEntity entity = MapperUtil.to(vo, LotteryBetEntity.class);
-        List<LotteryBetDto> lotteryBetDtoList = lotteryBetService.find(entity);
-        return R.builder().code(StatusCode.SUCCESS).data(lotteryBetDtoList).build();
+        List<LotteryBetEntity> lotteryBetDtoList = lotteryBetService.find(entity);
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(lotteryBetDtoList, LotteryBetEntity.class)).build();
     }
 
 

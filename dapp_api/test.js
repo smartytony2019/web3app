@@ -1,5 +1,8 @@
 
 let dayjs = require('dayjs')
+
+process.env.TZ = 'Asia/Shanghai';
+console.log(dayjs().format('YYYY-MM-DD HH:mm:ss'))
 // let a = dayjs('2018-08-08 00:00:00');     // parse
 // console.log(a)
 
@@ -39,7 +42,7 @@ let fixed = 4;
 
 (async ()=>{
     let commonHelper = require("./utils/commonUtil")
-    let rr = await commonHelper.genExpect(gameId, end, fixed, minute)
-    console.log(JSON.stringify(rr))
+    // let rr = await commonHelper.genExpect(gameId, end, fixed, minute)
+    // console.log(JSON.stringify(rr))
 })()
 

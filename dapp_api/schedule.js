@@ -1,10 +1,13 @@
 let common = require("./utils/commonUtil")
 process.env.NODE_ENV = common.env();
-const schedule = require('node-schedule');
+process.env.TZ = 'Asia/Shanghai';
+
+let schedule = require('node-schedule');
 let dayjs = require('dayjs')
 let sqlite = require("./utils/sqlite3Util")
 let config = require("./config/config")
 let trxModel = require("./model/trxModel")
+
 
 
 class Result {
@@ -31,9 +34,9 @@ class Result {
   
   
       //Step 2: 查询是否已开奖
-      let date = dayjs().format("YYYY-MM-DD")+" 00:00:00";
-      let open_timestamp = await common.parseTimestamp(date);
-      query = `select count(*) as record from t_open_result where open_timestamp > ${open_timestamp} and game_id = ${this.game_id} and num = '${expect.num}' limit 1`;
+      let num = `${dayjs().format("YYYYMMDD")}${expect.num.padStart(4, '0')}`;
+      // let open_timestamp = await common.parseTimestamp(date);
+      query = `select count(*) as record from t_hash_result where game_id = ${this.game_id} and num = '${num}' limit 1`;
       let open_result = await sqlite.get(query);
       if(open_result != undefined && open_result.record > 0) {  //说明已开奖
         return;
@@ -59,9 +62,9 @@ class Result {
   
       //Step 4: 保存数据库
       let open_time = dayjs().format("YYYY-MM-DD HH:mm:ss");
-      open_timestamp = await common.parseTimestamp(open_time);
-      let values = `${this.game_id}, ${expect.num}, '${result.txid}', '', '${open_time}', ${open_timestamp}, '${network}'`;
-      query = `INSERT INTO t_open_result(game_id, num, block_hash, block_height, open_time, open_timestamp, network) VALUES(${values})`;
+      let open_timestamp = await common.parseTimestamp(open_time);
+      let values = `${this.game_id}, ${num}, '${result.txid}', '', '', '${open_time}', ${open_timestamp}, '${network}'`;
+      query = `INSERT INTO t_hash_result(game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network) VALUES(${values})`;
       await sqlite.run(query)
     }catch(error) {
       console.error(error);
@@ -79,7 +82,6 @@ class Result {
       console.log('************** 查询块高度 - starting...  '+dayjs().format("YYYY-MM-DD HH:mm:ss"));
       let query = `select * from t_hash_result where block_height = '' limit 1`;
       let result = await sqlite.get(query)
-      console.log(result);
       if(result == undefined || result.txID == '') {
         return;
       }

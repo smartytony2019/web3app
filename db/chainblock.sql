@@ -270,7 +270,7 @@ create table t_lottery_bet (
   play_code_name_code varchar(50) comment '玩法编码id',
   play_code_name_default varchar(50) comment '玩法编码id',
   hash_result varchar(50) comment '开奖结果',
-  num varchar(10) comment '期号',
+  num varchar(20) comment '期号',
   odds decimal(10,4) comment '赔率',
   money decimal(10,4) comment '投注金额',
   create_time timestamp null default null comment '创建时间',

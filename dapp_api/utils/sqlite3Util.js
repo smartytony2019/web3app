@@ -3,12 +3,12 @@ const db = new sqlite3.Database('./sqlite3/sqlite.db');
 
 module.exports = {
     async hasTable(query) {
-        return new Promise((resolve,reject) => {
-            db.get(query, [], (err, row) =>{
-                if(err) reject(err.message)
-                else resolve(row == undefined ? false:true);
-            })
-        });
+      return new Promise((resolve,reject) => {
+          db.get(query, [], (err, row) =>{
+              if(err) reject(err.message)
+              else resolve(row == undefined ? false:true);
+          })
+      });
     },
 
     async run(query) {

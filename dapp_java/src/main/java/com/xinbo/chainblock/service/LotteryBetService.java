@@ -17,8 +17,9 @@ public interface LotteryBetService {
 
     boolean insert(LotteryBetEntity entity);
 
-    List<LotteryBetDto> find(LotteryBetEntity entity);
+    List<LotteryBetEntity> find(LotteryBetEntity entity);
 
     BasePage findPage(LotteryBetEntity dto, long current, long size);
 
+    List<LotteryBetEntity> unsettle(String num, int size);
 }

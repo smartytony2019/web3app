@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * @desc file desc
  */
 @Slf4j
-//@Service
+//@Component
 public class HashResultJob {
 
     @Value("${trx.terminal-url}")

@@ -44,9 +44,8 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
     }
 
     @Override
-    public List<LotteryBetDto> find(LotteryBetEntity entity) {
-        List<LotteryBetEntity> betEntityList = lotteryBetMapper.selectList(this.createWrapper(entity));
-        return MapperUtil.many(betEntityList, LotteryBetDto.class);
+    public List<LotteryBetEntity> find(LotteryBetEntity entity) {
+        return lotteryBetMapper.selectList(this.createWrapper(entity));
     }
 
     @Override
@@ -55,6 +54,11 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
         page.addOrder(OrderItem.asc("create_time"));
         IPage<LotteryBetEntity> iPage = lotteryBetMapper.selectPage(page, this.createWrapper(entity));
         return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
+    }
+
+    @Override
+    public List<LotteryBetEntity> unsettle(String num, int size) {
+        return lotteryBetMapper.unsettle(num, size);
     }
 
 
