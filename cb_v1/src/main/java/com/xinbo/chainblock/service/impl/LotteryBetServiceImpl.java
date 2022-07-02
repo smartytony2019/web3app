@@ -61,6 +61,11 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
         return lotteryBetMapper.unsettle(num, size);
     }
 
+    @Override
+    public boolean settle(LotteryBetEntity entity) {
+        return lotteryBetMapper.settle(entity)>0;
+    }
+
 
     /**
      * 创建查询条件

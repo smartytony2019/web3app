@@ -130,6 +130,18 @@ public class LotteryBetEntity {
     private Float money;
 
     /**
+     * 赢利金额
+     */
+    @TableField("profit_money")
+    private Float profitMoney;
+
+    /**
+     * 派彩金额
+     */
+    @TableField("payout_money")
+    private Float payoutMoney;
+
+    /**
      * 创建时间
      */
     @TableField("create_time")

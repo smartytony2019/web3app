@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.LotteryBetMapper">
+
+
+
+    <!-- 更新赛事状态 -->
+<!--    <update id="updateMatchStatus" parameterType="com.xinbo.cloud.service.sport.match.result.entity.SportMatchResultEntity">-->
+<!--        update t_sport_match_result set status = #{entity.status} where sport_type = #{entity.sportType} and gid = #{entity.gid};-->
+<!--    </update>-->
+
+<!--    <insert id="settle" parameterType="java.util.List">-->
+<!--        insert into t_lotteryBet (hash_result,profit_money, payout_money,update_time) values -->
+<!--        <foreach collection="list" item="item" index="index" separator=",">-->
+<!--            (-->
+<!--             #{item.hashResult},#{profitMoney},#{item.payoutMoney},#{item.updateTime}-->
+<!--            )-->
+<!--        </foreach>-->
+<!--        on duplicate key update hash_result=VALUES(hash_result),profit_money=VALUES(profit_money),payout_money=VALUES(payout_money),update_time=VALUES(update_time)-->
+<!--    </insert>-->
+
+</mapper>

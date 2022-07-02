@@ -71,17 +71,17 @@ public class AlgorithmTest {
         //点数相同
         if(platformNum == playerNum) {
             if(platformNum>=1 && platformNum<=5) {
-                r.setStatus(AlgorithmCode.lost);
+                r.setStatus(AlgorithmCode.LOST);
             } else {
-                r.setStatus(AlgorithmCode.draw);
+                r.setStatus(AlgorithmCode.DRAW);
             }
         }
 
 
         if(platformNum > playerNum) {
-            r.setStatus(AlgorithmCode.lost);
+            r.setStatus(AlgorithmCode.LOST);
         } else {
-            r.setStatus(AlgorithmCode.win);
+            r.setStatus(AlgorithmCode.WIN);
             r.setNum(playerNum);
         }
 
@@ -100,7 +100,8 @@ public class AlgorithmTest {
                 .build();
 
         LotteryBetEntity lb = LotteryBetEntity.builder()
-                .playId(1)
+                .playId(7)
+                .playCodeNameDefault("牛3")
                 .build();
         algorithm.settle(hr, lb);
     }

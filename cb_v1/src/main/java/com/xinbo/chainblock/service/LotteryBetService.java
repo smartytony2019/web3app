@@ -22,4 +22,6 @@ public interface LotteryBetService {
     BasePage findPage(LotteryBetEntity dto, long current, long size);
 
     List<LotteryBetEntity> unsettle(String num, int size);
+
+    boolean settle(LotteryBetEntity entity);
 }

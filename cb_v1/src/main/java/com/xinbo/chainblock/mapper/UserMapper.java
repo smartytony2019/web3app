@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xinbo.chainblock.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 /**
@@ -18,4 +19,6 @@ public interface UserMapper extends BaseMapper<UserEntity> {
     int increment(@Param("entity") UserEntity entity);
 
 
+    @Select("select version from t_user where id = #{id}")
+    int findVersionById(@Param("id") int id);
 }
