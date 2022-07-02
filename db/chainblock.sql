@@ -1,11 +1,10 @@
 
 
-drop database if exists cb;
+drop database if exists cb_v1;
 
-create database cb;
+create database cb_v1;
 
-
-use cb;
+use cb_v1;
 
 create table t_user(
   id int primary key auto_increment,
@@ -78,7 +77,9 @@ create table t_hash_result (
   network varchar(10) comment '块高度',
   is_settle tinyint comment '状态(0:未结算,1:已结算)'
 ) comment '开奖结果';
-
+INSERT INTO cb.t_hash_result (id, game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (1, 5, '202207010275', '00b62b030c3acf59129247e4a5272be8bbf736723c05a9aed154c990c9513df3', '0000000001a6a300de858fa824019a3e1dbd779e074fc2cb314fc61aca7dfff6', '27697920', '2022-07-01 22:55:07', 1656687307000, 'nile', 0);
+INSERT INTO cb.t_hash_result (id, game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (2, 5, '202207010274', '78458f985d78e05a21ff4171e376bb3ba08154f4c6675ff0860f99c4ff8c98a3', '0000000001a6a29e0703e89c59bab0e5c36f5bab2c91fc9797da037d2cd9b9e8', '27697822', '2022-07-01 22:50:06', 1656687006000, 'nile', 0);
+INSERT INTO cb.t_hash_result (id, game_id, num, txID, block_hash, block_height, open_time, open_timestamp, network, is_settle) VALUES (3, 5, '202207010273', 'd9dc22d7f4a915a339bc49a6b3cfe5df8f3a394f6d79a64fe68cbf1d5553a589', '0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb', '27697765', '2022-07-01 22:47:16', 1656686836000, 'nile', 0);
 
 
 
@@ -252,6 +253,7 @@ insert into cb.t_lottery_play_code(`id`,`play_id`,`name_code`,`name_default`,`od
 
 
 
+
 drop table if exists t_lottery_bet;
 create table t_lottery_bet (
   id int primary key auto_increment,
@@ -278,6 +280,26 @@ create table t_lottery_bet (
   status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
   remark varchar(100) comment '备注'
 ) comment '彩票注单';
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (1, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010273', 1.0000, 10.0000, '2022-07-02 01:32:53', '2022-07-02 01:32:53', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (2, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010273', 1.0000, 10.0000, '2022-07-02 01:32:55', '2022-07-02 01:32:55', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (3, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010273', 1.0000, 10.0000, '2022-07-02 01:32:57', '2022-07-02 01:32:57', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (4, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010273', 1.0000, 10.0000, '2022-07-02 01:32:58', '2022-07-02 01:32:58', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (5, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010273', 1.0000, 10.0000, '2022-07-02 01:32:59', '2022-07-02 01:32:59', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (6, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010274', 1.0000, 10.0000, '2022-07-02 01:33:20', '2022-07-02 01:33:20', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (7, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010274', 1.0000, 10.0000, '2022-07-02 01:33:21', '2022-07-02 01:33:21', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (8, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010274', 1.0000, 10.0000, '2022-07-02 01:33:21', '2022-07-02 01:33:21', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (9, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010274', 1.0000, 10.0000, '2022-07-02 01:33:21', '2022-07-02 01:33:21', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (10, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010274', 1.0000, 10.0000, '2022-07-02 01:33:22', '2022-07-02 01:33:22', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (11, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:33:27', '2022-07-02 01:33:27', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (12, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:33:27', '2022-07-02 01:33:27', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (13, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:33:28', '2022-07-02 01:33:28', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (14, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:33:28', '2022-07-02 01:33:28', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (15, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:33:29', '2022-07-02 01:33:29', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (16, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:35:06', '2022-07-02 01:35:06', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (17, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:35:06', '2022-07-02 01:35:06', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (18, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:35:07', '2022-07-02 01:35:07', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (19, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:35:07', '2022-07-02 01:35:07', 0, null);
+INSERT INTO cb.t_lottery_bet (id, uid, username, cate_id, cate_name_code, cate_name_default, game_id, game_name_code, game_name_default, play_id, play_name_code, play_name_default, play_code_id, play_code_name_code, play_code_name_default, hash_result, num, odds, money, create_time, update_time, status, remark) VALUES (20, 1, 'jack', 1, '100020', '哈希彩票', 4, '200110', '哈希28', 1, '400010', '一球', 1000, '500010', '大', null, '202207010275', 1.0000, 10.0000, '2022-07-02 01:35:08', '2022-07-02 01:35:08', 0, null);
 
 
 drop table if exists t_draw_bet;
