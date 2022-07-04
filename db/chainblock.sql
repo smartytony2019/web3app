@@ -351,9 +351,25 @@ create table t_agent(
   level int comment '层级'
 ) comment '代理';
 insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (0,1,'jack',0);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,2,'jackB',1);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (2,3,'jackC',2);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,2,'jackB1',1);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,3,'jackB2',1);
 
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (2,4,'jackC1',2);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (2,5,'jackC2',2);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (3,6,'jackC3',2);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (3,7,'jackC4',2);
+
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (4,8,'jackD1',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (4,9,'jackD2',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (5,10,'jackD3',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (5,11,'jackD4',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (6,12,'jackD5',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (6,13,'jackD6',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (7,14,'jackD7',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (7,15,'jackD8',3);
+
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (9,16,'jackE1',4);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (9,17,'jackE2',4);
 
 
 

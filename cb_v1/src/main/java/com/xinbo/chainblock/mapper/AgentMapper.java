@@ -19,6 +19,6 @@ public interface AgentMapper extends BaseMapper<AgentEntity> {
     @Select("select * from t_agent where uid = #{code} limit 1")
     AgentEntity findByUid(@Param("code") int code);
 
-    @Select("select * from t_agent limit #{skip}, #{size} order by id asc")
+    @Select("select * from t_agent order by id asc limit #{skip}, #{size}")
     List<AgentEntity> findAll(@Param("skip") int skip, @Param("size") int size);
 }
