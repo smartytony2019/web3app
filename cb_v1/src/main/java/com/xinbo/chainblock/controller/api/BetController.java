@@ -43,8 +43,8 @@ public class BetController {
         try {
             //判断数据是否合法
             UserEntity userEntity = UserEntity.builder()
-                    .username("jack")
-                    .id(1)
+                    .username("jackC")
+                    .id(3)
                     .version(1)
                     .build();
 

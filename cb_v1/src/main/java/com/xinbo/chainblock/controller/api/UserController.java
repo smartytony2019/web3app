@@ -19,7 +19,7 @@ import java.util.Date;
 
 
 @RestController
-@RequestMapping("api/userFlow")
+@RequestMapping("api/user")
 public class UserController {
 
     @Autowired
