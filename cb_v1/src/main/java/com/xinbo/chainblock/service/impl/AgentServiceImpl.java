@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -28,6 +30,11 @@ public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> impl
     @Override
     public boolean insert(AgentEntity entity) {
         return agentMapper.insert(entity) > 0;
+    }
+
+    @Override
+    public List<AgentEntity> findAll(int skip, int size) {
+        return agentMapper.findAll(skip, size);
     }
 
 

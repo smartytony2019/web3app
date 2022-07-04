@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 6/24/22 4:24 下午
@@ -16,4 +18,7 @@ import org.apache.ibatis.annotations.Select;
 public interface AgentMapper extends BaseMapper<AgentEntity> {
     @Select("select * from t_agent where uid = #{code} limit 1")
     AgentEntity findByUid(@Param("code") int code);
+
+    @Select("select * from t_agent limit #{skip}, #{size} order by id asc")
+    List<AgentEntity> findAll(@Param("skip") int skip, @Param("size") int size);
 }
