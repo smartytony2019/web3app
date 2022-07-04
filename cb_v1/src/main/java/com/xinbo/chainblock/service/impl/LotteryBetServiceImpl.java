@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -10,9 +11,11 @@ import com.xinbo.chainblock.consts.ItemConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
+import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.UserEntity;
 import com.xinbo.chainblock.entity.UserFlowEntity;
 import com.xinbo.chainblock.mapper.LotteryBetMapper;
+import com.xinbo.chainblock.mapper.StatisticsMapper;
 import com.xinbo.chainblock.mapper.UserFlowMapper;
 import com.xinbo.chainblock.mapper.UserMapper;
 import com.xinbo.chainblock.service.LotteryBetService;
@@ -41,6 +44,8 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
     private UserMapper userMapper;
     @Autowired
     private UserFlowMapper userFlowMapper;
+    @Autowired
+    private StatisticsMapper statisticsMapper;
 
 
     @Override
@@ -96,20 +101,33 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
             }
 
             //添加帐变
-            UserFlowEntity userFlowEntity = UserFlowEntity.builder()
-                    .username(userEntity.getUsername())
-                    .beforeMoney(beforeMoney)
-                    .afterMoney(afterMoney)
-                    .flowMoney(flowMoney)
-                    .itemCode(ItemConst.LOTTERY_BET_SETTLE)
-                    .itemCodeDefault(String.valueOf(ItemConst.LOTTERY_BET_SETTLE))
-                    .createTime(new Date())
-                    .remark("")
+//            UserFlowEntity userFlowEntity = UserFlowEntity.builder()
+//                    .username(userEntity.getUsername())
+//                    .beforeMoney(beforeMoney)
+//                    .afterMoney(afterMoney)
+//                    .flowMoney(flowMoney)
+//                    .itemCode(ItemConst.LOTTERY_BET_SETTLE)
+//                    .itemCodeDefault(String.valueOf(ItemConst.LOTTERY_BET_SETTLE))
+//                    .createTime(new Date())
+//                    .remark("")
+//                    .build();
+//            rows = userFlowMapper.insert(userFlowEntity);
+//            if (rows <= 0) {
+//                throw new RuntimeException("settle: update user flow exception");
+//            }
+
+            //更新统计
+            StatisticsEntity statisticsEntity = StatisticsEntity.builder()
+                    .date(DateUtil.format(new Date(), "yyyyMMdd"))
+                    .uid(bet.getUid())
+                    .username(bet.getUsername())
+                    .betMoney(bet.getMoney())
+                    .betPayoutMoney(bet.getPayoutMoney())
+                    .betProfitMoney(bet.getProfitMoney())
+                    .updateTime(new Date())
                     .build();
-            rows = userFlowMapper.insert(userFlowEntity);
-            if (rows <= 0) {
-                throw new RuntimeException("settle: update user flow exception");
-            }
+
+            statisticsMapper.insertOrUpdate(statisticsEntity);
 
         }
 

@@ -15,7 +15,8 @@ create table t_user(
   salt varchar(100) comment '盐',
   version int comment '版本',
   create_time timestamp comment '创建时间',
-  update_time timestamp comment '创建时间'
+  update_time timestamp comment '创建时间',
+  UNIQUE KEY unique_username (username)
 );
 
 
@@ -270,7 +271,7 @@ create table t_lottery_bet (
   play_code_id int comment '玩法编码id',
   play_code_name_code varchar(50) comment '玩法编码id',
   play_code_name_default varchar(50) comment '玩法编码id',
-  hash_result varchar(50) comment '开奖结果',
+  hash_result varchar(80) comment '开奖结果',
   num varchar(20) comment '期号',
   odds decimal(10,4) comment '赔率',
   money decimal(10,4) comment '投注金额',
@@ -281,6 +282,8 @@ create table t_lottery_bet (
   status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
   remark varchar(100) comment '备注'
 ) comment '彩票注单';
+
+
 
 
 drop table if exists t_draw_bet;
@@ -298,4 +301,38 @@ create table t_draw_bet (
   status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
   remark varchar(100) comment '备注'
 ) comment '抽奖注单';
+
+
+
+
+
+
+drop table if exists t_agent;
+create table t_agent(
+  id int primary key auto_increment,
+  p_uid int comment '上级用户id',
+  uid int comment '用户id',
+  username varchar(100) comment '用户名',
+  level int comment '层级'
+) comment '代理';
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (0,1,'jack',0);
+
+
+
+
+drop table if exists t_statistics;
+create table t_statistics(
+  id int primary key auto_increment,
+  `date` varchar(10) comment '日期',
+  uid int comment '用户id',
+  username varchar(100) comment '用户名',
+  bet_money decimal(20,4) comment '投注金额',
+  bet_profit_money decimal(20,4) comment '投注赢利金额',
+  bet_payout_money decimal(20,4) comment '投注派彩金额',
+  recharge_money decimal(20,4) comment '充值金额',
+  withdraw_money decimal(20,4) comment '提现金额',
+  update_time timestamp null default null comment '更新时间',
+  UNIQUE KEY unique_date_id (`date`,uid) comment '联合索引(日期和用户id)'
+) comment '统计';
+
 

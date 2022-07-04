@@ -8,11 +8,12 @@ import com.xinbo.chainblock.entity.UserEntity;
  */
 public interface UserService {
 
-    boolean create();
+    boolean insert();
 
 
     UserEntity findById(int id);
 
     boolean increment(UserEntity entity);
 
+    boolean register(UserEntity entity, int code);
 }

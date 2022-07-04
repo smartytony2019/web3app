@@ -24,7 +24,7 @@ import java.util.List;
  * @desc 彩票结算任务
  */
 @Slf4j
-@Component
+//@Component
 public class LotterySettleJob {
 
     @Autowired

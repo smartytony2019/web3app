@@ -2,10 +2,7 @@ package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xinbo.chainblock.entity.UserEntity;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @author tony
@@ -21,4 +18,8 @@ public interface UserMapper extends BaseMapper<UserEntity> {
 
     @Select("select version from t_user where id = #{id}")
     int findVersionById(@Param("id") int id);
+
+//    @Insert("insert into t_user(`username`,`pwd`,`salt`,`create_time`) values ('#{entity.username}','#{entity.pwd}','#{entity.salt}','#{entity.createTime}')")
+//    @Options(useGeneratedKeys = true,keyProperty = "id", keyColumn = "id")
+//    int register(@Param("entity") UserEntity entity);
 }

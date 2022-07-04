@@ -15,4 +15,6 @@ public interface StatusCode {
 
     int UNAUTHORIZED=2000;
     int EXCEPTION=3000;
+
+    int REGISTER_ERROR = 5000;
 }
