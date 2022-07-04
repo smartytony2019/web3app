@@ -5,7 +5,6 @@ import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.LotteryAlgorithm;
 import com.xinbo.chainblock.entity.HashResultEntity;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
-import com.xinbo.chainblock.entity.UserEntity;
 import com.xinbo.chainblock.service.HashResultService;
 import com.xinbo.chainblock.service.LotteryBetService;
 import com.xinbo.chainblock.service.UserService;
@@ -13,11 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +62,7 @@ public class LotterySettleJob {
                 return;
             }
 
-            //Step 2.2: 计算输赢
+            //Step 2.2: 计算输赢&构建数据
             for (LotteryBetEntity betEntity : betEntityList) {
                 AlgorithmResult settle = lotteryAlgorithm.settle(resultEntity, betEntity);
                 float profileMoney = 0, payoutMoney = 0;
@@ -81,36 +78,15 @@ public class LotterySettleJob {
                 betEntity.setHashResult(resultEntity.getBlockHash());
             }
 
-            //Step 3: 构建数据 @todo
-            System.out.println(betEntityList);
-//            boolean isSuccess = lotteryBetService.settle(betEntityList);
+            //Step 3: 更新数据库 @todo
+            lotteryBetService.settle(betEntityList);
 
-
-            //Step 4: 更新数据库 @todo
 
             System.out.println("@Scheduled" + new Date());
-        } catch (Exception ex) {
-            System.out.println(ex);
+        } catch (RuntimeException ex) {
+            log.error("settle: ", ex);
         }
     }
 
-
-    @Transactional
-    public boolean settle(List<LotteryBetEntity> bets) {
-
-        for (LotteryBetEntity bet : bets) {
-            //更新注单表
-            boolean isSuccess = lotteryBetService.settle(bet);
-
-            //添加帐变
-
-            //更新会员金额
-            UserEntity userEntity = userService.findById(bet.getId());
-            userEntity.setMoney(bet.getPayoutMoney());
-            userService.increment(userEntity);
-        }
-
-        return false;
-    }
 
 }

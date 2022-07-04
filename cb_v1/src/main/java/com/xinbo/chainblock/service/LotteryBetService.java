@@ -23,5 +23,5 @@ public interface LotteryBetService {
 
     List<LotteryBetEntity> unsettle(String num, int size);
 
-    boolean settle(LotteryBetEntity entity);
+    boolean settle(List<LotteryBetEntity> list);
 }

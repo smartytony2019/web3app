@@ -6,17 +6,24 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.consts.ItemConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
+import com.xinbo.chainblock.entity.UserEntity;
+import com.xinbo.chainblock.entity.UserFlowEntity;
 import com.xinbo.chainblock.mapper.LotteryBetMapper;
+import com.xinbo.chainblock.mapper.UserFlowMapper;
+import com.xinbo.chainblock.mapper.UserMapper;
 import com.xinbo.chainblock.service.LotteryBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,6 +37,10 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
 
     @Autowired
     private LotteryBetMapper lotteryBetMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserFlowMapper userFlowMapper;
 
 
     @Override
@@ -40,7 +51,7 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
 
     @Override
     public boolean insert(LotteryBetEntity entity) {
-        return lotteryBetMapper.insert(entity)> 0;
+        return lotteryBetMapper.insert(entity) > 0;
     }
 
     @Override
@@ -61,16 +72,55 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
         return lotteryBetMapper.unsettle(num, size);
     }
 
+    @Transactional
     @Override
-    public boolean settle(LotteryBetEntity entity) {
-        return lotteryBetMapper.settle(entity)>0;
+    public boolean settle(List<LotteryBetEntity> list) {
+        for (LotteryBetEntity bet : list) {
+            //更新注单表
+            bet.setStatus(1);
+            int rows = lotteryBetMapper.settle(bet);
+            if (rows <= 0) {
+                throw new RuntimeException("settle: update lottery bet exception");
+            }
+
+            //更新会员金额
+            UserEntity userEntity = userMapper.selectById(bet.getUid());
+            float beforeMoney = userEntity.getMoney();
+            float afterMoney = userEntity.getMoney()+bet.getPayoutMoney();
+            float flowMoney = bet.getPayoutMoney();
+
+            userEntity.setMoney(bet.getPayoutMoney());
+            rows = userMapper.increment(userEntity);
+            if (rows <= 0) {
+                throw new RuntimeException("settle: update user exception");
+            }
+
+            //添加帐变
+            UserFlowEntity userFlowEntity = UserFlowEntity.builder()
+                    .username(userEntity.getUsername())
+                    .beforeMoney(beforeMoney)
+                    .afterMoney(afterMoney)
+                    .flowMoney(flowMoney)
+                    .itemCode(ItemConst.LOTTERY_BET_SETTLE)
+                    .itemCodeDefault(String.valueOf(ItemConst.LOTTERY_BET_SETTLE))
+                    .createTime(new Date())
+                    .remark("")
+                    .build();
+            rows = userFlowMapper.insert(userFlowEntity);
+            if (rows <= 0) {
+                throw new RuntimeException("settle: update user flow exception");
+            }
+
+        }
+
+        return true;
     }
 
 
     /**
      * 创建查询条件
      *
-     * @param entity  实体
+     * @param entity 实体
      * @return LambdaQueryWrapper
      */
     private LambdaQueryWrapper<LotteryBetEntity> createWrapper(LotteryBetEntity entity) {
@@ -87,7 +137,7 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
         if (!StringUtils.isEmpty(entity.getHashResult())) {
             wrappers.eq(LotteryBetEntity::getHashResult, entity.getHashResult());
         }
-        if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId()>0) {
+        if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId() > 0) {
             wrappers.eq(LotteryBetEntity::getGameId, entity.getGameId());
         }
         return wrappers;

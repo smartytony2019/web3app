@@ -26,15 +26,16 @@ public class LotteryBetEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-
     /**
      * 会员id
      */
     private Integer uid;
+
     /**
      * 会员名
      */
     private String username;
+
     /**
      * 彩种id
      */
