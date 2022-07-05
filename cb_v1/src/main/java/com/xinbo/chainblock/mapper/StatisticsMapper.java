@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author tony
@@ -15,4 +18,5 @@ public interface StatisticsMapper extends BaseMapper<StatisticsEntity> {
 
     int insertOrUpdate(@Param("entity") StatisticsEntity entity);
 
+    List<StatisticsEntity> findByUidStr(@Param("date") String date, @Param("childList") List<Integer> childList);
 }

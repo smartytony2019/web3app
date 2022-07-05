@@ -20,4 +20,14 @@
     </insert>
 
 
+    <select id="findByUidStr" resultType="com.xinbo.chainblock.entity.StatisticsEntity">
+        select * from t_statistics where `date` = #{date} and uid in (
+        <foreach collection="childList" item="item" separator="," index="">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+
+
 </mapper>

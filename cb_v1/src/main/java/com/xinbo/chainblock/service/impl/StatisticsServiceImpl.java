@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -26,6 +28,11 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
     @Autowired
     private StatisticsMapper statisticsMapper;
 
+
+    @Override
+    public List<StatisticsEntity> findByUidStr(String date, List<Integer> childList) {
+        return statisticsMapper.findByUidStr(date, childList);
+    }
 
     /**
      * 创建查询条件

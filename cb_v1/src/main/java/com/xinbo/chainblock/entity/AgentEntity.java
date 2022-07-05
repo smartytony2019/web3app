@@ -45,4 +45,9 @@ public class AgentEntity {
      */
     private Integer level;
 
+    /**
+     * 下级用户
+     */
+    private String child;
+
 }

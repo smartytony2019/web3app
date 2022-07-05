@@ -15,4 +15,8 @@ public interface AgentService {
     boolean insert(AgentEntity entity);
 
     List<AgentEntity> findAll(int skip, int size);
+
+    boolean setChild(int id, String childStr);
+
+    AgentEntity findByUid(int id);
 }

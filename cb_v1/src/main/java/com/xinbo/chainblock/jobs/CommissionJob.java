@@ -2,15 +2,14 @@ package com.xinbo.chainblock.jobs;
 
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.service.AgentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,7 +18,7 @@ import java.util.stream.Stream;
  * @date 7/4/22 6:39 下午
  * @desc 代理佣金任务
  */
-
+@Slf4j
 @Component
 public class CommissionJob {
 
@@ -70,9 +69,23 @@ public class CommissionJob {
             }
             for (AgentEntity entity : agentList) {
                 List<AgentEntity> loop = this.loop(list, entity.getUid());
-                System.out.println(entity);
-                System.out.println(loop);
-                System.out.println("----------------------------");
+
+                //大于1说明下面有用户
+                if(CollectionUtils.isEmpty(loop) || loop.size() <= 1) {
+                    continue;
+                }
+
+                //排除自己
+                List<Integer> collect = loop.stream().filter(f -> !f.getUid().equals(entity.getUid())).sorted(Comparator.comparing(AgentEntity::getUid)).map(AgentEntity::getUid).collect(Collectors.toList());
+
+
+                String collect1 = collect.stream().map(Objects::toString).collect(Collectors.joining(","));
+                boolean isSuccess = agentService.setChild(entity.getId(), collect1);
+                if(isSuccess) {
+                    log.info("update child success");
+                } else {
+                    log.error("update child fail");
+                }
             }
             i += 1;
         }

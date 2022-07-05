@@ -14,8 +14,8 @@ create table t_user(
   freeze_money decimal(10,4) comment '冻结金额',
   salt varchar(100) comment '盐',
   version int comment '版本',
-  create_time timestamp comment '创建时间',
-  update_time timestamp comment '创建时间',
+  create_time timestamp null default null comment '创建时间',
+  update_time timestamp null default null comment '创建时间',
   UNIQUE KEY unique_username (username)
 );
 
@@ -23,6 +23,25 @@ create table t_user(
 insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','123456',10000,'123456',1,'2022-06-25 12:00:00');
 insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB','123456',10000,'123456',1,'2022-06-25 12:00:00');
 insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC','123456',10000,'123456',1,'2022-06-25 12:00:00');
+
+
+
+create table t_user_flow(
+  id int primary key auto_increment,
+  username varchar(50) comment '用户名',
+  before_money decimal(10,4) comment '帐变前金额',
+  after_money decimal(10,4) comment '帐变后金额',
+  flow_money decimal(10,4) comment '流水金额',
+  item_code int comment '帐变编码',
+  item_code_default varchar(100) comment '帐变默认编码',
+  create_time timestamp null default null comment '创建时间',
+  remark varchar(100) comment '备注'
+) comment '会员流水表';
+
+
+create table t_operation_log(
+  id int primary key auto_increment
+) comment '会员流水表';
 
 
 
@@ -348,8 +367,11 @@ create table t_agent(
   p_uid int comment '上级用户id',
   uid int comment '用户id',
   username varchar(100) comment '用户名',
-  level int comment '层级'
+  level int comment '层级',
+  child text comment '代理下级'
 ) comment '代理';
+
+
 insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (0,1,'jack',0);
 insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,2,'jackB1',1);
 insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,3,'jackB2',1);

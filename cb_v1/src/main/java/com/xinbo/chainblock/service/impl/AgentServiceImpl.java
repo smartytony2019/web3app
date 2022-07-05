@@ -37,6 +37,16 @@ public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> impl
         return agentMapper.findAll(skip, size);
     }
 
+    @Override
+    public boolean setChild(int id, String childStr) {
+        return agentMapper.setChild(id, childStr) > 0;
+    }
+
+    @Override
+    public AgentEntity findByUid(int id) {
+        return agentMapper.findByUid(id);
+    }
+
 
     /**
      * 创建查询条件

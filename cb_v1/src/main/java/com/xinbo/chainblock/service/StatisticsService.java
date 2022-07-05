@@ -2,6 +2,10 @@ package com.xinbo.chainblock.service;
 
 
 import com.xinbo.chainblock.entity.AgentEntity;
+import com.xinbo.chainblock.entity.StatisticsEntity;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author tony
@@ -10,4 +14,5 @@ import com.xinbo.chainblock.entity.AgentEntity;
  */
 public interface StatisticsService {
 
+    List<StatisticsEntity> findByUidStr(String date, List<Integer> childList);
 }
