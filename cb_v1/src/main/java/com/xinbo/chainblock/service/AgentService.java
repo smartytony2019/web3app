@@ -19,4 +19,11 @@ public interface AgentService {
     boolean setChild(int id, String childStr);
 
     AgentEntity findByUid(int id);
+
+    /**
+     * 直属
+     * @param uid
+     * @return
+     */
+    List<AgentEntity> direct(int uid);
 }

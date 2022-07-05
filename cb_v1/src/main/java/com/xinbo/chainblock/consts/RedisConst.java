@@ -9,4 +9,6 @@ public interface RedisConst {
 
     String HASH_RESULT = "trx:hash:result:%s:%s";
 
+    String AGENT_FIXED = "agent:fixed";
+
 }

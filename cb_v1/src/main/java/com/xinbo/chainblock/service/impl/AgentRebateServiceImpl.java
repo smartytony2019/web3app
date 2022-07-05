@@ -3,12 +3,10 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.AgentEntity;
+import com.xinbo.chainblock.entity.AgentRebateEntity;
 import com.xinbo.chainblock.entity.ExpectEntity;
-import com.xinbo.chainblock.mapper.AgentMapper;
-import com.xinbo.chainblock.mapper.ExpectMapper;
-import com.xinbo.chainblock.service.AgentService;
-import com.xinbo.chainblock.service.ExpectService;
+import com.xinbo.chainblock.mapper.AgentRebateMapper;
+import com.xinbo.chainblock.service.AgentRebateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -16,42 +14,23 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
  * @desc file desc
  */
 @Service
-public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> implements AgentService {
+public class AgentRebateServiceImpl extends ServiceImpl<AgentRebateMapper, AgentRebateEntity> implements AgentRebateService {
 
     @Autowired
-    private AgentMapper agentMapper;
+    private AgentRebateMapper agentRebateMapper;
+
 
     @Override
-    public boolean insert(AgentEntity entity) {
-        return agentMapper.insert(entity) > 0;
+    public List<AgentRebateEntity> findAll() {
+        return agentRebateMapper.findAll();
     }
-
-    @Override
-    public List<AgentEntity> findAll(int skip, int size) {
-        return agentMapper.findAll(skip, size);
-    }
-
-    @Override
-    public boolean setChild(int id, String childStr) {
-        return agentMapper.setChild(id, childStr) > 0;
-    }
-
-    @Override
-    public AgentEntity findByUid(int id) {
-        return agentMapper.findByUid(id);
-    }
-
-    @Override
-    public List<AgentEntity> direct(int uid) {
-        return agentMapper.directly(uid);
-    }
-
 
     /**
      * 创建查询条件

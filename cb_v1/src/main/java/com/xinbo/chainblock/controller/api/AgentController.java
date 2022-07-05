@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.controller.api;
 
+import cn.hutool.core.date.DateUtil;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
@@ -9,14 +10,14 @@ import com.xinbo.chainblock.service.StatisticsService;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -60,6 +61,60 @@ public class AgentController {
 
 
         return null;
+    }
+
+
+
+
+    @Operation(summary = "myTeam", description = "我的团队")
+    @PostMapping("myTeam")
+    public R<Object> myTeam() {
+
+        Map<String, Object> map = new HashMap<>();
+
+        int uid = 2;
+
+        AgentEntity agentEntity = agentService.findByUid(uid);
+
+        //直属人数
+        List<AgentEntity> direct = agentService.direct(uid);
+        map.put("directNum", direct.size());
+
+        //团队人数
+        String child = agentEntity.getChild();
+        long teamNum = 0;
+        if(!StringUtils.isEmpty(child)) {
+            teamNum = Arrays.stream(child.split(",")).count();
+        }
+        map.put("teamNum", teamNum);
+
+
+        String date = DateUtil.format(new Date(), "yyyyMMdd");
+
+        //今日下属业绩
+        double subPerformance = 0;
+        if(!StringUtils.isEmpty(child)) {
+            String regex = ",";
+            List<Integer> childList = Arrays.stream(child.split(regex)).map(Integer::parseInt).collect(Collectors.toList());
+            List<StatisticsEntity> subList = statisticsService.findByUidStr(date, childList);
+            if(!CollectionUtils.isEmpty(subList) && subList.size()>0) {
+                subPerformance = subList.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
+            }
+        }
+        map.put("subPerformance", subPerformance);
+
+        //今日直属业绩
+        double dirPerformance = 0;
+        List<Integer> collect = direct.stream().map(AgentEntity::getUid).collect(Collectors.toList());
+        List<StatisticsEntity> directList = statisticsService.findByUidStr(date, collect);
+        if(!CollectionUtils.isEmpty(directList) && directList.size()>0) {
+            dirPerformance = directList.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
+        }
+        map.put("dirPerformance", dirPerformance);
+
+
+
+        return R.builder().code(StatusCode.SUCCESS).data(map).build();
     }
 
 

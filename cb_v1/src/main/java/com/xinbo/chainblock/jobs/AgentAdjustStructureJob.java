@@ -1,9 +1,11 @@
 package com.xinbo.chainblock.jobs;
 
+import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -16,22 +18,28 @@ import java.util.stream.Stream;
 /**
  * @author tony
  * @date 7/4/22 6:39 下午
- * @desc 代理佣金任务
+ * @desc 代理调整结构
  */
 @Slf4j
-@Component
-public class CommissionJob {
+//@Component
+public class AgentAdjustStructureJob {
 
 
     @Autowired
     private AgentService agentService;
 
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 结算佣金
      */
-    @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0/10 * * * * ?")
     public void settleCommission() {
+//        Object o = redisTemplate.opsForValue().get(RedisConst.AGENT_FIXED);
+//        if(ObjectUtils.isEmpty(o)) {
+//            return;
+//        }
 
         //Step 1: 获取代理层级表
         int page = 1;
@@ -90,6 +98,7 @@ public class CommissionJob {
             i += 1;
         }
 
+        redisTemplate.delete(RedisConst.AGENT_FIXED);
     }
 
 

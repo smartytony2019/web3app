@@ -70,6 +70,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .build();
         agentMapper.insert(agentEntity);
 
+
+
         return true;
     }
 
