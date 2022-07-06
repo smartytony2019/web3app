@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * @desc 计算代理佣金
  */
 @Slf4j
-@Component
+//@Component
 public class AgentCommissionJob {
 
     @Autowired

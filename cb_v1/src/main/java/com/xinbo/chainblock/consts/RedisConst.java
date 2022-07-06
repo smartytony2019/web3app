@@ -7,6 +7,9 @@ package com.xinbo.chainblock.consts;
  */
 public interface RedisConst {
 
+
+    String ADMIN_JWT_KEY = "cloud:jwt:admin:{0}"; //0:uid
+
     String HASH_RESULT = "trx:hash:result:%s:%s";
 
     String AGENT_FIXED = "agent:fixed";
