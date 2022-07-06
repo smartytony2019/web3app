@@ -30,4 +30,9 @@
 
 
 
+    <select id="findByUid" resultType="com.xinbo.chainblock.entity.StatisticsEntity">
+        select * from t_statistics where `date` = #{date} and uid = #{childUid}
+    </select>
+
+
 </mapper>

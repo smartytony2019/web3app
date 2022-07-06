@@ -21,8 +21,23 @@ create table t_user(
 
 
 insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','123456',10000,'123456',1,'2022-06-25 12:00:00');
 
 
 
@@ -372,26 +387,28 @@ create table t_agent(
 ) comment '代理';
 
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (0,1,'jack',0);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,2,'jackB1',1);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (1,3,'jackB2',1);
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (2,4,'jackC1',2);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (2,5,'jackC2',2);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (3,6,'jackC3',2);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (3,7,'jackC4',2);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (0,1,'jack',0,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,2,'jackB1',1,'4,5,8,9,10,11,16,17');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (1,3,'jackB2',1,'6,7,12,13,14,15,18');
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (4,8,'jackD1',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (4,9,'jackD2',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (5,10,'jackD3',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (5,11,'jackD4',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (6,12,'jackD5',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (6,13,'jackD6',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (7,14,'jackD7',3);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (7,15,'jackD8',3);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,4,'jackC1',2,'8,9,16,17');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (2,5,'jackC2',2,'10,11');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,6,'jackC3',2,'12,13,18');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (3,7,'jackC4',2,'14,15');
 
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (9,16,'jackE1',4);
-insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`) values (9,17,'jackE2',4);
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,8,'jackD1',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (4,9,'jackD2',3,'16,17');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,10,'jackD3',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (5,11,'jackD4',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,12,'jackD5',3,'18');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (6,13,'jackD6',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,14,'jackD7',3,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (7,15,'jackD8',3,'');
+
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,16,'jackE1',4,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (9,17,'jackE2',4,'');
+insert into cb_v1.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (12,18,'jackE3',4,'');
 
 
 
@@ -401,54 +418,101 @@ create table t_statistics(
   `date` varchar(10) comment '日期',
   uid int comment '用户id',
   username varchar(100) comment '用户名',
-  bet_money decimal(20,4) comment '投注金额',
-  bet_profit_money decimal(20,4) comment '投注赢利金额',
-  bet_payout_money decimal(20,4) comment '投注派彩金额',
-  recharge_money decimal(20,4) comment '充值金额',
-  withdraw_money decimal(20,4) comment '提现金额',
+  bet_money decimal(20,2) comment '投注金额',
+  bet_profit_money decimal(20,2) comment '投注赢利金额',
+  bet_payout_money decimal(20,2) comment '投注派彩金额',
+  recharge_money decimal(20,2) comment '充值金额',
+  withdraw_money decimal(20,2) comment '提现金额',
   update_time timestamp null default null comment '更新时间',
-  UNIQUE KEY unique_date_id (`date`,uid) comment '联合索引(日期和用户id)'
+  UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '统计';
 
 
 INSERT INTO cb_v1.t_statistics (`date`, `uid`, `username`, `bet_money`, `bet_profit_money`, `bet_payout_money`, `recharge_money`, `withdraw_money`, `update_time`) VALUES 
-('20220704',1,'jack',1400.0000,1344.0000,2744.0000,0,0,'2022-07-04 18:34:53'),
-('20220704',2,'jackB',600.0000,576.0000,1176.0000,0,0,'2022-07-04 18:37:43'),
-('20220704',3,'jackC',1000.0000,960.0000,1960.0000,0,0,'2022-07-04 18:37:43');
+('20220704',2,'jackB1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',3,'jackB2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',4,'jackC1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',5,'jackC2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',6,'jackC3',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',7,'jackC4',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',8,'jackD1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',9,'jackD2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',10,'jackD3',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',11,'jackD4',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',12,'jackD5',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',13,'jackD6',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',14,'jackD7',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',15,'jackD8',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',16,'jackE1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',17,'jackE2',100000.0000,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
+('20220704',18,'jackE3',100000.0000,100000.00,100000.00,0,0,'2022-07-04 18:37:43');
 
 
 
 
 
-create table t_agent_commission(
-  id int primary key auto_increment,
-  min int comment '最低业绩',
-  max int comment '最高业绩',
-  amount int comment '额度'
-) comment '代理佣金';
+drop table if exists t_agent_rebate;
+create table t_agent_rebate(
+                               id int primary key auto_increment,
+                               min int comment '最低业绩',
+                               max int comment '最高业绩',
+                               rebate int comment '额度'
+) comment '代理返佣比表';
 
-insert into cb_v1.t_agent_commission(`min`,`max`,`amount`) values 
+insert into cb_v1.t_agent_rebate(`min`,`max`,`rebate`) values
 (0,2000,50),
-(2000,5000,55),
-(5000,10000,60),
-(10000,20000,80),
-(20000,50000,90),
-(50000,100000,110),
-(100000,150000,130),
-(150000,200000,135),
-(200000,250000,140),
-(250000,300000,145),
-(300000,400000,150),
-(400000,500000,155),
-(500000,600000,160),
-(600000,800000,170),
-(800000,1000000,180),
-(1000000,1500000,190),
-(1500000,2000000,195),
-(2000000,2500000,200),
-(2500000,3000000,205),
-(3000000,3500000,210),
-(3500000,4000000,215),
-(4000000,5000000,220),
-(5000000,10000000,230);
+(2001,5000,55),
+(5001,10000,60),
+(10001,20000,80),
+(20001,50000,90),
+(50001,100000,110),
+(100001,150000,130),
+(150001,200000,135),
+(200001,250000,140),
+(250001,300000,145),
+(300001,400000,150),
+(400001,500000,155),
+(500001,600000,160),
+(600001,800000,170),
+(800001,1000000,180),
+(1000001,1500000,190),
+(1500001,2000000,195),
+(2000001,2500000,200),
+(2500001,3000000,205),
+(3000001,3500000,210),
+(3500001,4000000,215),
+(4000001,5000000,220),
+(5000001,10000000,230);
+
+
+
+
+
+drop table if exists t_agent_commission;
+create table t_agent_commission(
+    id int primary key auto_increment,
+    `date` varchar(10) comment '日期',
+    uid int comment '用户id',
+    username varchar(100) comment '用户名',
+    commission decimal(20,2) comment '佣金',
+    total_performance decimal(20,2) comment '总业绩',
+    self_performance decimal(20,2) comment '自营业绩',
+    direct_performance decimal(20,2) comment '直属业绩',
+    team_performance decimal(20,2) comment '团队业绩',
+    rebate int comment '返佣比',
+    create_time timestamp null default null comment '创建时间',
+    update_time timestamp null default null comment '创建时间',
+    UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
+)
+
+
+insert into cb_v1.t_agent_commission(`date`, uid, username, commission, total_performance,self_performance, direct_performance, team_performance, rebate, create_time, update_time)
+values
+('20220704', 2, 'jackC3', 1, 1, 1, 1, 1, 1, '2022-07-06 12:00:00', '2022-07-06 12:00:00'          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          )
+
+    date=20220704, uid=6, username=jackC3, commission=6400.0, totalPerformance=400000.0, directPerformance=100000.0, selfPerformance=100000.0, teamPerformance=300000.0, rebate=150
+
+
+
+
 

@@ -43,7 +43,7 @@ public class AgentAdjustStructureJob {
 
         //Step 1: 获取代理层级表
         int page = 1;
-        int size = 2;
+        int size = 50;
         List<AgentEntity> list = new ArrayList<>();
         while (true) {
             int skip = (page - 1) * size;
