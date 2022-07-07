@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.PermissionMapper">
+
+
+    <select id="findByIds" resultType="com.xinbo.chainblock.entity.admin.PermissionEntity">
+        select * from t_permission where id in
+        <foreach collection="list" item="item" open="(" close=")" separator="," index="">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <select id="findAll" resultType="com.xinbo.chainblock.entity.admin.PermissionEntity">
+        select * from t_permission
+    </select>
+
+
+
+</mapper>

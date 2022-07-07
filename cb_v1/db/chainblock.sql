@@ -320,7 +320,7 @@ create table t_lottery_bet (
   remark varchar(100) comment '备注'
 ) comment '彩票注单';
 
-INSERT INTO `t_lottery_bet` (`uid`, `username`, `cate_id`, `cate_name_code`, `cate_name_default`, `game_id`, `game_name_code`, `game_name_default`, `play_id`, `play_name_code`, `play_name_default`, `play_code_id`, `play_code_name_code`, `play_code_name_default`, `hash_result`, `num`, `odds`, `money`, `profit_money`, `payout_money`, `create_time`, `update_time`, `status`, `remark`) VALUES 
+INSERT INTO `t_lottery_bet` (`uid`, `username`, `cate_id`, `cate_name_code`, `cate_name_default`, `game_id`, `game_name_code`, `game_name_default`, `play_id`, `play_name_code`, `play_name_default`, `play_code_id`, `play_code_name_code`, `play_code_name_default`, `hash_result`, `num`, `odds`, `money`, `profit_money`, `payout_money`, `create_time`, `update_time`, `status`, `remark`) VALUES
 (1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:27','2022-07-04 18:34:27',1,NULL),
 (1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:30','2022-07-04 18:34:30',1,NULL),
 (1,'jack',1,'100020','哈希彩票',4,'200110','哈希28',1,'400010','一球',1,'500010','大','0000000001a6a26530f361b32e7d79f97e3894175a63a4e6835789eb9511fbdb','202207010273',1.9600,100.0000,96.0000,196.0000,'2022-07-04 18:34:30','2022-07-04 18:34:30',1,NULL),
@@ -428,7 +428,7 @@ create table t_statistics(
 ) comment '统计';
 
 
-INSERT INTO cb_v1.t_statistics (`date`, `uid`, `username`, `bet_money`, `bet_profit_money`, `bet_payout_money`, `recharge_money`, `withdraw_money`, `update_time`) VALUES 
+INSERT INTO cb_v1.t_statistics (`date`, `uid`, `username`, `bet_money`, `bet_profit_money`, `bet_payout_money`, `recharge_money`, `withdraw_money`, `update_time`) VALUES
 ('20220704',2,'jackB1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
 ('20220704',3,'jackB2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
 ('20220704',4,'jackC1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
@@ -504,6 +504,100 @@ create table t_agent_commission(
     update_time timestamp null default null comment '创建时间',
     UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '代理佣金表';
+
+
+
+
+
+
+
+
+
+drop table if exists t_user;
+CREATE TABLE t_user (
+    id int(20) primary key auto_increment,
+    username varchar(100) COMMENT '姓名',
+    pwd varchar(128) COMMENT '密码',
+    is_delete tinyint(1) default 0 COMMENT '是否删除 1：已删除；0：未删除',
+    unique key uniq_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台用户表';
+insert into cb_v1.t_user(username, pwd, is_delete) values ('admin', '123456', 0);
+insert into cb_v1.t_user(username, pwd, is_delete) values ('jack', '123456', 0);
+insert into cb_v1.t_user(username, pwd, is_delete) values ('tony', '123456', 0);
+
+
+drop table if exists t_user_role;
+CREATE TABLE t_user_role (
+    id int(20) primary key auto_increment,
+    user_id int COMMENT '用户ID',
+    role_id int COMMENT '角色ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户角色表';
+insert into cb_v1.t_user_role(user_id, role_id) values (1,1);
+insert into cb_v1.t_user_role(user_id, role_id) values (1,2);
+insert into cb_v1.t_user_role(user_id, role_id) values (2,2);
+insert into cb_v1.t_user_role(user_id, role_id) values (2,3);
+insert into cb_v1.t_user_role(user_id, role_id) values (3,1);
+insert into cb_v1.t_user_role(user_id, role_id) values (3,3);
+
+
+drop table if exists t_role;
+CREATE TABLE t_role (
+    id int primary key auto_increment,
+    code varchar(100) COMMENT '编码',
+    name varchar(100) COMMENT '名称',
+    is_delete tinyint(1)  DEFAULT 0 COMMENT '是否删除 1：已删除；0：未删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色表';
+insert into cb_v1.t_role(code, name, is_delete) values ('1000', '开发部', 0);
+insert into cb_v1.t_role(code, name, is_delete) values ('1001', '测试部', 0);
+insert into cb_v1.t_role(code, name, is_delete) values ('1003', '财务部', 0);
+
+
+
+
+drop table if exists t_role_permission;
+CREATE TABLE t_role_permission (
+    id int(20) primary key auto_increment,
+    role_id int(20) COMMENT '角色ID',
+    permission_id int(20) COMMENT '权限ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色菜单关系表';
+insert into cb_v1.t_role_permission(role_id, permission_id) values (1,2);
+insert into cb_v1.t_role_permission(role_id, permission_id) values (1,4);
+insert into cb_v1.t_role_permission(role_id, permission_id) values (1,5);
+insert into cb_v1.t_role_permission(role_id, permission_id) values (2,2);
+insert into cb_v1.t_role_permission(role_id, permission_id) values (2,4);
+insert into cb_v1.t_role_permission(role_id, permission_id) values (3,4);
+insert into cb_v1.t_role_permission(role_id, permission_id) values (3,5);
+
+
+
+drop table if exists t_permission;
+CREATE TABLE t_permission (
+    id int primary key auto_increment,
+    name varchar(100) COMMENT '名称',
+    name_code varchar(100) comment '权限编码',
+    code varchar(100) COMMENT '权限编码',
+    parent_id int COMMENT '父节点',
+    node_type tinyint(4) DEFAULT 1 COMMENT '节点类型，1文件夹，2页面，3按钮',
+    icon_url varchar(255) COMMENT '图标地址',
+    sort int(11) DEFAULT 1 COMMENT '排序号',
+    link_url varchar(500) COMMENT '页面对应的地址',
+    level int(11) DEFAULT 0 COMMENT '层次',
+    path text DEFAULT '' COMMENT '树id的路径 整个层次上的路径id，逗号分隔',
+    is_delete tinyint(1)  DEFAULT 0 COMMENT '是否删除 1：已删除；0：未删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表';
+
+insert into cb_v1.t_permission(name, name_code, code, parent_id, node_type, icon_url, sort, link_url, level, path, is_delete) values
+('会员管理','1000','1000',0, 1, '', 10, '/member/index', 1, '', 0),
+('会员中心','1000','1000',1, 2, '', 10, '/member/index', 2, '1', 0),
+('添加会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '1,2', 0),
+('删除会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '1,2', 0),
+('修改会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '1,2', 0),
+('查询会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '1,2', 0),
+('代理管理','1000','1000',0, 1, '', 10, '/member/index', 1, '', 0),
+('代理中心','1000','1000',3, 2, '', 10, '/member/index', 2, '', 0),
+('代理佣金','1000','1000',3, 2, '', 10, '/member/index', 2, '', 0);
+
+
 
 
 

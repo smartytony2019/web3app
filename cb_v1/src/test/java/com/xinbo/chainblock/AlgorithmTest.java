@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
  * @desc file desc
  */
 @RunWith(SpringRunner.class)
-@ActiveProfiles("dev")
+@ActiveProfiles("company")
 @SpringBootTest
 public class AlgorithmTest {
 
@@ -94,16 +95,8 @@ public class AlgorithmTest {
 
     @Test
     public void tes2() {
-        String tmp = "757f6cc9c06aaf1e50cc68773fcd4bd19afb92336247e28a1dc285a792751ef7";
-        HashResultEntity hr = HashResultEntity.builder()
-                .blockHash(tmp)
-                .build();
-
-        LotteryBetEntity lb = LotteryBetEntity.builder()
-                .playId(7)
-                .playCodeNameDefault("牛3")
-                .build();
-        algorithm.settle(hr, lb);
+        System.out.println("--------------");
+        System.out.println(new Date());
     }
 
 }
