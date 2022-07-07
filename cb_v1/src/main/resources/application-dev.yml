@@ -1,5 +1,5 @@
 server:
-  port: 10088
+  port: 10086
 
 
 
@@ -9,6 +9,12 @@ trx:
   token-info:
     symbol: 'YTN'
     name: 'xb_coin'
+
+interceptor:
+  exclude:
+    path: "/error/**,/v3/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/index/login"
+
+
 
 spring:
   datasource:

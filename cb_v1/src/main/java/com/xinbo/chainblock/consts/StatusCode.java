@@ -16,5 +16,9 @@ public interface StatusCode {
     int UNAUTHORIZED=2000;
     int EXCEPTION=3000;
 
+    int TOKEN_ERROR = 4001;   //token未找到
+
+    int NOT_PERMISSION = 4002;   //没有权限
+
     int REGISTER_ERROR = 5000;
 }

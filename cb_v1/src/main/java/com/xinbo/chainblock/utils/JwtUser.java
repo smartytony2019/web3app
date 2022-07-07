@@ -23,6 +23,8 @@ public class JwtUser implements Serializable {
 
     private String username;
 
+    private String roleType;
+
     private String salt;
 
     /**

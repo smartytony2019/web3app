@@ -31,4 +31,7 @@ public interface GlobalConst {
 
     String DEFAULT_LANGUAGE = "zh";
 
+    String ROLE_TYPE_USER = "user";
+    String ROLE_TYPE_ADMIN = "admin";
+
 }

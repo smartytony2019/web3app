@@ -1,5 +1,7 @@
 package com.xinbo.chainblock.controller.api;
 
+import com.xinbo.chainblock.annotation.RequiredPermission;
+import com.xinbo.chainblock.consts.PermissionConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.*;
@@ -25,6 +27,21 @@ public class UserFlowController {
         UserFlowEntity entity = MapperUtil.to(vo, UserFlowEntity.class);
         BasePage basePage = userFlowService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+    }
+
+    @Operation(summary = "test1", description = "测试")
+    @PostMapping("test1")
+    @RequiredPermission(PermissionConst.test1)
+    public R<Object> test1() {
+        return R.builder().code(StatusCode.SUCCESS).data("success").build();
+    }
+
+
+    @Operation(summary = "test2", description = "测试")
+    @PostMapping("test2")
+    @RequiredPermission(PermissionConst.test2)
+    public R<Object> test2() {
+        return R.builder().code(StatusCode.SUCCESS).data("success").build();
     }
 
 }
