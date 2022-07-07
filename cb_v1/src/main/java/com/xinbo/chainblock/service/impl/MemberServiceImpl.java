@@ -2,10 +2,10 @@ package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.AgentEntity;
-import com.xinbo.chainblock.entity.UserEntity;
+import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.mapper.AgentMapper;
-import com.xinbo.chainblock.mapper.UserMapper;
-import com.xinbo.chainblock.service.UserService;
+import com.xinbo.chainblock.mapper.MemberMapper;
+import com.xinbo.chainblock.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +19,11 @@ import java.util.Date;
  * @desc file desc
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements UserService {
+public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> implements MemberService {
 
 
     @Autowired
-    private UserMapper userMapper;
+    private MemberMapper memberMapper;
 
     @Autowired
     private AgentMapper agentMapper;
@@ -31,33 +31,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public boolean insert() {
-        UserEntity entity = UserEntity.builder()
+        MemberEntity entity = MemberEntity.builder()
                 .username("jack").createTime(new Date()).money(1000F).salt("123").version(1)
                 .build();
-        userMapper.insert(entity);
+        memberMapper.insert(entity);
         return true;
     }
 
     @Override
-    public UserEntity findById(int id) {
-        return userMapper.selectById(id);
+    public MemberEntity findById(int id) {
+        return memberMapper.selectById(id);
     }
 
     @Override
-    public boolean increment(UserEntity entity) {
-        int increment = userMapper.increment(entity);
+    public boolean increment(MemberEntity entity) {
+        int increment = memberMapper.increment(entity);
         return increment > 0;
     }
 
     @Transactional
     @Override
-    public boolean register(UserEntity entity, int code) {
+    public boolean register(MemberEntity entity, int code) {
         AgentEntity pAgentEntity = agentMapper.findByUid(code);
         if(ObjectUtils.isEmpty(pAgentEntity) || pAgentEntity.getId()<=0) {
             return false;
         }
 
-        boolean isSuccess = userMapper.insert(entity) > 0;
+        boolean isSuccess = memberMapper.insert(entity) > 0;
         if(!isSuccess) {
             return false;
         }

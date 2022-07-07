@@ -21,8 +21,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_user")
-public class UserEntity {
+@TableName("t_member")
+public class MemberEntity {
 
 
     @TableId(value = "id", type = IdType.AUTO)

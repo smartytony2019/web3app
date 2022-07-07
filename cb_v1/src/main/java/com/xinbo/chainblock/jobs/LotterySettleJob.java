@@ -7,11 +7,10 @@ import com.xinbo.chainblock.entity.HashResultEntity;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
 import com.xinbo.chainblock.service.HashResultService;
 import com.xinbo.chainblock.service.LotteryBetService;
-import com.xinbo.chainblock.service.UserService;
+import com.xinbo.chainblock.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -34,7 +33,7 @@ public class LotterySettleJob {
     private LotteryBetService lotteryBetService;
 
     @Autowired
-    private UserService userService;
+    private MemberService memberService;
 
     @Autowired
     private LotteryAlgorithm lotteryAlgorithm;

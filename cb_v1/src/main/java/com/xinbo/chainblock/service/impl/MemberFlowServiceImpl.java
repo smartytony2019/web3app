@@ -7,16 +7,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.dto.UserFlowDto;
-import com.xinbo.chainblock.entity.LotteryBetEntity;
-import com.xinbo.chainblock.entity.UserFlowEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.mapper.UserFlowMapper;
-import com.xinbo.chainblock.mapper.UserMapper;
-import com.xinbo.chainblock.mapper.WalletMapper;
-import com.xinbo.chainblock.service.UserFlowService;
-import com.xinbo.chainblock.service.WalletService;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.mapper.MemberFlowMapper;
+import com.xinbo.chainblock.service.MemberFlowService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,18 +23,18 @@ import org.springframework.util.StringUtils;
  * @desc file desc
  */
 @Service
-public class UserFlowServiceImpl extends ServiceImpl<UserFlowMapper, UserFlowEntity> implements UserFlowService {
+public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberFlowEntity> implements MemberFlowService {
 
     @Autowired
-    private UserFlowMapper userFlowMapper;
+    private MemberFlowMapper memberFlowMapper;
 
 
 
     @Override
-    public BasePage findPage(UserFlowEntity entity, long current, long size) {
-        Page<UserFlowEntity> page = new Page<>(current, size);
+    public BasePage findPage(MemberFlowEntity entity, long current, long size) {
+        Page<MemberFlowEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
-        IPage<UserFlowEntity> iPage = userFlowMapper.selectPage(page, this.createWrapper(entity));
+        IPage<MemberFlowEntity> iPage = memberFlowMapper.selectPage(page, this.createWrapper(entity));
         return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), UserFlowDto.class)).build();
     }
 
@@ -52,16 +46,16 @@ public class UserFlowServiceImpl extends ServiceImpl<UserFlowMapper, UserFlowEnt
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<UserFlowEntity> createWrapper(UserFlowEntity entity) {
-        LambdaQueryWrapper<UserFlowEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<MemberFlowEntity> createWrapper(MemberFlowEntity entity) {
+        LambdaQueryWrapper<MemberFlowEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getUsername())) {
-            wrappers.eq(UserFlowEntity::getUsername, entity.getUsername());
+            wrappers.eq(MemberFlowEntity::getUsername, entity.getUsername());
         }
         if (!StringUtils.isEmpty(entity.getItemCode())) {
-            wrappers.eq(UserFlowEntity::getItemCode, entity.getItemCode());
+            wrappers.eq(MemberFlowEntity::getItemCode, entity.getItemCode());
         }
         return wrappers;
     }

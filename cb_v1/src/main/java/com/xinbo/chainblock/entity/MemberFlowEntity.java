@@ -21,8 +21,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_user_flow")
-public class UserFlowEntity {
+@TableName("t_member_flow")
+public class MemberFlowEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

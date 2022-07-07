@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
-import com.xinbo.chainblock.entity.UserEntity;
+import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.StatisticsService;
 import com.xinbo.chainblock.utils.R;
@@ -35,7 +35,7 @@ public class AgentController {
     @PostMapping("getCommission")
     public R<Object> register() {
 
-        UserEntity entity = UserEntity.builder().id(2).build();
+        MemberEntity entity = MemberEntity.builder().id(2).build();
         AgentEntity agentEntity = agentService.findByUid(entity.getId());
         if (ObjectUtils.isEmpty(agentEntity) || agentEntity.getId() <= 0) {
             return R.builder().data(StatusCode.FAILURE).build();

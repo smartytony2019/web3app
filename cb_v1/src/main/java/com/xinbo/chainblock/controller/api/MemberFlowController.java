@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/userFlow")
-public class UserFlowController {
+@RequestMapping("api/memberFlow")
+public class MemberFlowController {
 
     @Autowired
-    private UserFlowService userFlowService;
+    private MemberFlowService memberFlowService;
 
     @Operation(summary = "findPage", description = "获取注单")
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody UserFlowVo vo, @PathVariable long current, @PathVariable long size) {
-        UserFlowEntity entity = MapperUtil.to(vo, UserFlowEntity.class);
-        BasePage basePage = userFlowService.findPage(entity, current, size);
+        MemberFlowEntity entity = MapperUtil.to(vo, MemberFlowEntity.class);
+        BasePage basePage = memberFlowService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
 

@@ -6,7 +6,7 @@ create database cb_v1;
 
 use cb_v1;
 
-create table t_user(
+create table t_member(
   id int primary key auto_increment,
   username varchar(50) comment '用户名',
   pwd varchar(100) comment '密码',
@@ -20,28 +20,28 @@ create table t_user(
 );
 
 
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','123456',10000,'123456',1,'2022-06-25 12:00:00');
-insert into cb_v1.t_user (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','123456',10000,'123456',1,'2022-06-25 12:00:00');
+insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','123456',10000,'123456',1,'2022-06-25 12:00:00');
 
 
 
-create table t_user_flow(
+create table t_member_flow(
   id int primary key auto_increment,
   username varchar(50) comment '用户名',
   before_money decimal(10,4) comment '帐变前金额',
@@ -503,14 +503,7 @@ create table t_agent_commission(
     create_time timestamp null default null comment '创建时间',
     update_time timestamp null default null comment '创建时间',
     UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
-)
-
-
-insert into cb_v1.t_agent_commission(`date`, uid, username, commission, total_performance,self_performance, direct_performance, team_performance, rebate, create_time, update_time)
-values
-('20220704', 2, 'jackC3', 1, 1, 1, 1, 1, 1, '2022-07-06 12:00:00', '2022-07-06 12:00:00'          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          ,              ?, ?, ?, ?, ?,             ?, ?, ?, ?, ?, ?          )
-
-    date=20220704, uid=6, username=jackC3, commission=6400.0, totalPerformance=400000.0, directPerformance=100000.0, selfPerformance=100000.0, teamPerformance=300000.0, rebate=150
+) comment '代理佣金表';
 
 
 

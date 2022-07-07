@@ -2,11 +2,11 @@ package com.xinbo.chainblock.jobs;
 
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.RechargeEntity;
-import com.xinbo.chainblock.entity.UserEntity;
+import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
 import com.xinbo.chainblock.service.RechargeService;
-import com.xinbo.chainblock.service.UserService;
+import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class TransactionsRecordJob {
     private WalletService walletService;
 
     @Autowired
-    private UserService userService;
+    private MemberService memberService;
 
 
     @Autowired
@@ -95,9 +95,9 @@ public class TransactionsRecordJob {
                 BigDecimal bigDecimal = new BigDecimal(data.getValue());
                 BigDecimal value = commonUtils.fromTrc20(bigDecimal);
 
-                UserEntity userEntity = userService.findById(walletEntity.getUid());
-                userEntity.setMoney(value.floatValue());
-                boolean isSuccess = userService.increment(userEntity);
+                MemberEntity memberEntity = memberService.findById(walletEntity.getUid());
+                memberEntity.setMoney(value.floatValue());
+                boolean isSuccess = memberService.increment(memberEntity);
                 if(!isSuccess) {
                     continue;
                 }

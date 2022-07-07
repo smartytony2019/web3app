@@ -7,17 +7,15 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.consts.ItemConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
-import com.xinbo.chainblock.entity.UserEntity;
-import com.xinbo.chainblock.entity.UserFlowEntity;
+import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.mapper.LotteryBetMapper;
 import com.xinbo.chainblock.mapper.StatisticsMapper;
-import com.xinbo.chainblock.mapper.UserFlowMapper;
-import com.xinbo.chainblock.mapper.UserMapper;
+import com.xinbo.chainblock.mapper.MemberFlowMapper;
+import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.service.LotteryBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +39,9 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
     @Autowired
     private LotteryBetMapper lotteryBetMapper;
     @Autowired
-    private UserMapper userMapper;
+    private MemberMapper memberMapper;
     @Autowired
-    private UserFlowMapper userFlowMapper;
+    private MemberFlowMapper memberFlowMapper;
     @Autowired
     private StatisticsMapper statisticsMapper;
 
@@ -89,13 +87,13 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
             }
 
             //更新会员金额
-            UserEntity userEntity = userMapper.selectById(bet.getUid());
-            float beforeMoney = userEntity.getMoney();
-            float afterMoney = userEntity.getMoney()+bet.getPayoutMoney();
+            MemberEntity memberEntity = memberMapper.selectById(bet.getUid());
+            float beforeMoney = memberEntity.getMoney();
+            float afterMoney = memberEntity.getMoney()+bet.getPayoutMoney();
             float flowMoney = bet.getPayoutMoney();
 
-            userEntity.setMoney(bet.getPayoutMoney());
-            rows = userMapper.increment(userEntity);
+            memberEntity.setMoney(bet.getPayoutMoney());
+            rows = memberMapper.increment(memberEntity);
             if (rows <= 0) {
                 throw new RuntimeException("settle: update user exception");
             }

@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinbo.chainblock.entity.UserEntity;
+import com.xinbo.chainblock.entity.MemberEntity;
 import org.apache.ibatis.annotations.*;
 
 /**
@@ -10,10 +10,10 @@ import org.apache.ibatis.annotations.*;
  * @desc file desc
  */
 @Mapper
-public interface UserMapper extends BaseMapper<UserEntity> {
+public interface MemberMapper extends BaseMapper<MemberEntity> {
 
     @Update("update t_user set money = money + #{entity.money}, version = version + 1 where id = #{entity.id} and version = #{entity.version}")
-    int increment(@Param("entity") UserEntity entity);
+    int increment(@Param("entity") MemberEntity entity);
 
 
     @Select("select version from t_user where id = #{id}")
