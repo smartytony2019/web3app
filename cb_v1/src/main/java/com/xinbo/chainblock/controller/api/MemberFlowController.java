@@ -1,7 +1,6 @@
 package com.xinbo.chainblock.controller.api;
 
 import com.xinbo.chainblock.annotation.RequiredPermission;
-import com.xinbo.chainblock.consts.PermissionConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.*;
