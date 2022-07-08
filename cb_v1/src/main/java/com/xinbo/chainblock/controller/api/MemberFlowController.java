@@ -5,6 +5,7 @@ import com.xinbo.chainblock.consts.PermissionConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.*;
+import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -31,7 +32,7 @@ public class MemberFlowController {
 
     @Operation(summary = "test1", description = "测试")
     @PostMapping("test1")
-    @RequiredPermission(PermissionConst.test1)
+    @RequiredPermission(PermissionCodeEnum.USER_ADD)
     public R<Object> test1() {
         return R.builder().code(StatusCode.SUCCESS).data("success").build();
     }
@@ -39,7 +40,7 @@ public class MemberFlowController {
 
     @Operation(summary = "test2", description = "测试")
     @PostMapping("test2")
-    @RequiredPermission(PermissionConst.test2)
+    @RequiredPermission(PermissionCodeEnum.USER_DEL)
     public R<Object> test2() {
         return R.builder().code(StatusCode.SUCCESS).data("success").build();
     }

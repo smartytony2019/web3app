@@ -14,5 +14,8 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<PermissionEntity> findPermission(int userId);
+    List<Integer> findPermission(int userId);
+
+    List<PermissionEntity> menu(int userId);
+
 }

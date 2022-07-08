@@ -11,7 +11,7 @@
 
 
     <select id="findByRoles" resultType="com.xinbo.chainblock.entity.admin.RolePermissionEntity">
-        select * from t_role_permission where role in
+        select * from t_role_permission where role_id in
         <foreach collection="list" item="item" open="(" close=")" separator="," index="">
             #{item}
         </foreach>

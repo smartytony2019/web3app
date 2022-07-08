@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -46,7 +47,7 @@ public class PermissionEntity {
      * 菜单编码
      */
     @TableField("code")
-    private String code;
+    private Integer code;
 
     /**
      * 父节点
@@ -96,5 +97,8 @@ public class PermissionEntity {
     @TableField("is_delete")
     private Integer isDelete;
 
+
+    @TableField(exist = false)
+    private List<PermissionEntity> child;
 
 }

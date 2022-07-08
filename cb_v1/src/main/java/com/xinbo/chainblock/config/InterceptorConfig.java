@@ -9,16 +9,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 
-//@Configuration
+@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
 
     @Value("${interceptor.exclude.path:}")
     private String[] excludePath;
 
+    @Bean
+    public SecurityInterceptor securityInterceptor() {
+        return new SecurityInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePath);
+        registry.addInterceptor(securityInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePath);
     }
 
     /**

@@ -22,10 +22,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,8 +46,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Autowired
     private PermissionMapper permissionMapper;
 
+
     @Override
-    public List<PermissionEntity> findPermission(int userId) {
+    public List<Integer> findPermission(int userId) {
+        //根据用户id拿到权限
+        List<PermissionEntity> permission = this.getPermission(userId);
+        return permission.stream().map(PermissionEntity::getCode).distinct().collect(Collectors.toList());
+    }
+
+    private List<PermissionEntity> getPermission(int userId) {
 
         //Step 1: 根据用户id获取到角色
         List<UserRoleEntity> roleEntityList = userRoleMapper.findByUserId(userId);
@@ -59,54 +63,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         List<Integer> roles = roleEntityList.stream().map(UserRoleEntity::getRoleId).collect(Collectors.toList());
         List<RolePermissionEntity> rolePermissionEntityList = rolePermissionMapper.findByRoles(roles);
 
-        List<Integer> permissions = rolePermissionEntityList.stream().map(RolePermissionEntity::getPermissionId).collect(Collectors.toList());
+        List<Integer> permissions = rolePermissionEntityList.stream().map(RolePermissionEntity::getPermissionId).distinct().collect(Collectors.toList());
 
         return permissionMapper.findByIds(permissions);
     }
 
 
+    @Override
     public List<PermissionEntity> menu(int userId) {
+        //根据用户id拿到权限
+        List<PermissionEntity> permission = this.getPermission(userId);
 
-        List<PermissionEntity> all = permissionMapper.findAll();
-        List<PermissionEntity> permission = this.findPermission(userId);
-
-
-        Set<Integer> set = new HashSet<>();
-        for(PermissionEntity entity : permission) {
+        //根据权限表path获取父级id
+        List<Integer> parentIdList = new ArrayList<>();
+        for (PermissionEntity entity : permission) {
             String[] split = StringUtils.split(entity.getPath(), ",");
-            if(ObjectUtils.isEmpty(split) || split.length <= 0) {
+            if (ObjectUtils.isEmpty(split) || split.length <= 0) {
                 continue;
             }
 
-            Set<Integer> collect = Stream.of(split).map(Integer::parseInt).collect(Collectors.toSet());
-            set.addAll(collect);
+            List<Integer> collect = Stream.of(split).map(Integer::parseInt).collect(Collectors.toList());
+            parentIdList.addAll(collect);
         }
+        List<Integer> ids = parentIdList.stream().distinct().collect(Collectors.toList());
 
-        List<PermissionEntity> list = new ArrayList<>();
-        for(Integer s : set) {
-            PermissionEntity entity = all.stream().filter(f -> f.getId().equals(s)).findFirst().orElse(null);
-            if(ObjectUtils.isEmpty(entity)) {
-                continue;
-            }
-            list.add(entity);
+        //根据id查询
+        List<PermissionEntity> entityList = permissionMapper.findByIds(ids);
+
+        //绑定层级
+        List<PermissionEntity> folders = entityList.stream().filter(f -> f.getParentId().equals(0)).collect(Collectors.toList());
+        for(PermissionEntity folder : folders) {
+            List<PermissionEntity> pages = entityList.stream().filter(f -> f.getParentId().equals(folder.getId())).collect(Collectors.toList());
+            folder.setChild(pages);
         }
-
-        List<PermissionEntity> collect = list.stream().filter(f -> f.getLevel() == 0).collect(Collectors.toList());
-        for(PermissionEntity c : collect) {
-            PermissionDto dto = MapperUtil.to(c, PermissionDto.class);
-        }
-
-        return null;
-    }
-
-
-    private PermissionDto handle(List<PermissionEntity> all, PermissionDto dto) {
-
-        List<PermissionEntity> list = all.stream().filter(f -> f.getParentId().equals(dto.getId())).collect(Collectors.toList());
-
-//        dto.setChild(list);
-
-        return dto;
+        return folders;
     }
 
 }

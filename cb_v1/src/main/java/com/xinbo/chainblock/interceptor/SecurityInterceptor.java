@@ -7,14 +7,16 @@ import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.service.AdminUserService;
+import com.xinbo.chainblock.service.UserService;
+import com.xinbo.chainblock.utils.JwtUser;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -24,25 +26,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    private AdminUserService adminUserService;
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (HttpMethod.OPTIONS.name().equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return true;
-        }
-
-        //判断是否有权限
-        if (!this.hasPermission(handler)) {
-            this.returnJson(response, R.builder().code(StatusCode.NOT_PERMISSION).msg("not permission").build());
-            return false;
         }
 
 
@@ -67,12 +62,25 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
 
         // 验证token是否有效--无效已做异常抛出，由全局异常处理后返回对应信息
-        JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
+        JwtUser jwtUser = JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
+
+
+        //判断是否有权限
+        if (!this.hasPermission(handler, jwtUser)) {
+            this.returnJson(response, R.builder().code(StatusCode.NOT_PERMISSION).msg("not permission").build());
+            return false;
+        }
 
         return true;
     }
 
-    private boolean hasPermission(Object handler) {
+    /**
+     * 获取
+     * @param handler
+     * @param jwtUser
+     * @return
+     */
+    private boolean hasPermission(Object handler, JwtUser jwtUser) {
         // 忽略带JwtIgnore注解的请求, 不做后续token认证校验
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -85,12 +93,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
                 requiredPermission = method.getDeclaringClass().getAnnotation(RequiredPermission.class);
             }
 
-            if (requiredPermission != null && StringUtils.isNotBlank(requiredPermission.value())) {
-                List<String> permission = adminUserService.findPermission();
+            if (requiredPermission != null && !ObjectUtils.isEmpty(requiredPermission.value())) {
+                List<Integer> permission = userService.findPermission(jwtUser.getUid());
                 if (CollectionUtils.isEmpty(permission)) {
                     return false;
                 }
-                return permission.contains(requiredPermission.value());
+                return permission.contains(requiredPermission.value().getCode());
             }
         }
 

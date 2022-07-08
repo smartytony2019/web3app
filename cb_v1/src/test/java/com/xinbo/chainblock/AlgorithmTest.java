@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  * @desc file desc
  */
 @RunWith(SpringRunner.class)
-@ActiveProfiles("company")
+@ActiveProfiles("dev")
 @SpringBootTest
 public class AlgorithmTest {
 

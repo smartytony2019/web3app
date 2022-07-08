@@ -1,6 +1,8 @@
 package com.xinbo.chainblock.annotation;
 
 
+import com.xinbo.chainblock.enums.PermissionCodeEnum;
+
 import java.lang.annotation.*;
 
 @Target({ElementType.TYPE,ElementType.METHOD})
@@ -8,5 +10,5 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 public @interface RequiredPermission {
-    String value();
+    PermissionCodeEnum value();
 }
