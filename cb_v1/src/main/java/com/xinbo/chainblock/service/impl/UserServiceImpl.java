@@ -1,10 +1,6 @@
 package com.xinbo.chainblock.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.dto.PermissionDto;
-import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
@@ -13,12 +9,9 @@ import com.xinbo.chainblock.mapper.PermissionMapper;
 import com.xinbo.chainblock.mapper.RolePermissionMapper;
 import com.xinbo.chainblock.mapper.UserMapper;
 import com.xinbo.chainblock.mapper.UserRoleMapper;
-import com.xinbo.chainblock.service.UserRoleService;
 import com.xinbo.chainblock.service.UserService;
-import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -97,6 +90,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             folder.setChild(pages);
         }
         return folders;
+    }
+
+    @Override
+    public UserEntity findById(int userId) {
+        return userMapper.selectById(userId);
     }
 
 }

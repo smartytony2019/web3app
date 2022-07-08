@@ -518,12 +518,13 @@ CREATE TABLE t_user (
     id int(20) primary key auto_increment,
     username varchar(100) COMMENT '姓名',
     pwd varchar(128) COMMENT '密码',
+    avatar varchar(100) COMMENT '头像',
     is_delete tinyint(1) default 0 COMMENT '是否删除 1：已删除；0：未删除',
     unique key uniq_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台用户表';
-insert into cb_v1.t_user(username, pwd, is_delete) values ('admin', '123456', 0);
-insert into cb_v1.t_user(username, pwd, is_delete) values ('jack', '123456', 0);
-insert into cb_v1.t_user(username, pwd, is_delete) values ('tony', '123456', 0);
+insert into cb_v1.t_user(username, pwd, avatar, is_delete) values ('admin', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
+insert into cb_v1.t_user(username, pwd, avatar, is_delete) values ('jack', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
+insert into cb_v1.t_user(username, pwd, avatar, is_delete) values ('tony', '123456', 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif', 0);
 
 
 drop table if exists t_user_role;

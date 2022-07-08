@@ -1,13 +1,19 @@
 package com.xinbo.chainblock.utils;
 
+import cn.hutool.json.JSONUtil;
+import cn.hutool.json.JSONObject;
 import com.google.common.collect.Maps;
 import com.xinbo.chainblock.consts.GlobalConst;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.xml.bind.DatatypeConverter;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -35,7 +41,6 @@ public class JwtUtil {
         Map<String,Object> claim =  Maps.newHashMap();
         claim.put("id", jwtUser.getUid());
         claim.put("username", jwtUser.getUsername());
-        claim.put("authority", jwtUser.getAuthority());
 
         // 生成 token
         String token = Jwts.builder()
@@ -69,11 +74,20 @@ public class JwtUtil {
         return JwtUser.builder()
                 .uid(id)
                 .username(username)
-                .authority(authority)
                 .build();
     }
 
 
+
+    /**
+     * 将 Claims 转为 JwtUser
+     * @return
+     */
+    public static JwtUser getJwtUser() {
+        String authHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader(GlobalConst.TOKEN_HEADER);
+        final String token = authHeader.substring(7);
+        return JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
+    }
 
 
 

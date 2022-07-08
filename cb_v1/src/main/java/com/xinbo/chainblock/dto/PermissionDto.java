@@ -1,15 +1,15 @@
 package com.xinbo.chainblock.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PermissionDto implements Serializable {
 
     private static final long serialVersionUID = -4559267810907997111L;

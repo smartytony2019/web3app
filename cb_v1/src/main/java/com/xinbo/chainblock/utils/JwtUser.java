@@ -27,8 +27,8 @@ public class JwtUser implements Serializable {
 
     private String salt;
 
-    /**
-     * 权限
-     */
-    private List<String> authority;
+    private String language;
+
+    private String device;
+
 }

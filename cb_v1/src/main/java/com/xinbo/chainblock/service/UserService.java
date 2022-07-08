@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.service;
 
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
+import com.xinbo.chainblock.entity.admin.UserEntity;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface UserService {
 
     List<PermissionEntity> menu(int userId);
 
+    UserEntity findById(int userId);
 }

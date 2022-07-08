@@ -7,6 +7,10 @@ package com.xinbo.chainblock.consts;
  */
 public interface GlobalConst {
 
+    /**
+     * JWT载体key
+     */
+    String JWT_PAYLOAD_KEY = "payload";
     String JWT_SECRET_KEY = "p2s5v8y/B?E(H+MbQeThVmYq3t6w9z$C&F)J@NcRfUjXnZr4u7x!A%D*G-KaPdS";
     String TOKEN_PREFIX = "Bearer ";
     String TOKEN_HEADER = "Authorization";

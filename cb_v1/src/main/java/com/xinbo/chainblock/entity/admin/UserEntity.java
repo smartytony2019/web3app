@@ -41,6 +41,12 @@ public class UserEntity {
      */
     private String pwd;
 
+
+    /**
+     * 头像
+     */
+    private String avatar;
+
     /**
      * 是否删除 1：已删除；0：未删除
      */
