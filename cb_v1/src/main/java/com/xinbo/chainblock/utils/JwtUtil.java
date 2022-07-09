@@ -1,7 +1,5 @@
 package com.xinbo.chainblock.utils;
 
-import cn.hutool.json.JSONUtil;
-import cn.hutool.json.JSONObject;
 import com.google.common.collect.Maps;
 import com.xinbo.chainblock.consts.GlobalConst;
 import io.jsonwebtoken.*;
@@ -12,12 +10,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.xml.bind.DatatypeConverter;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
- * @author 熊二
+ * @author tony
  * @date 2021/2/5 15:52
  * @desc file desc
  */
@@ -62,9 +58,6 @@ public class JwtUtil {
             return null;
         }
         Optional<Claims> optional = Optional.of(claims);
-        if (!optional.isPresent()) {
-            return null;
-        }
 
         HashMap<String, Object> map = (HashMap<String, Object>) optional.get().get(GlobalConst.TOKEN_USER_INFO_CLAIM);
 

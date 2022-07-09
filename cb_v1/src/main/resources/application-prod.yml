@@ -12,7 +12,7 @@ trx:
 
 interceptor:
   exclude:
-    path: "/error/**,/v3/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/index/login"
+    path: "/error/**,/v3/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/user/login"
 
 
 spring:

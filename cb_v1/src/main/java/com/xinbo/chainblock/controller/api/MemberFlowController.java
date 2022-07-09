@@ -8,7 +8,7 @@ import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
-import com.xinbo.chainblock.vo.UserFlowVo;
+import com.xinbo.chainblock.vo.MemberFlowVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class MemberFlowController {
 
     @Operation(summary = "findPage", description = "获取注单")
     @PostMapping("findPage/{current}/{size}")
-    public R<Object> findPage(@RequestBody UserFlowVo vo, @PathVariable long current, @PathVariable long size) {
+    public R<Object> findPage(@RequestBody MemberFlowVo vo, @PathVariable long current, @PathVariable long size) {
         MemberFlowEntity entity = MapperUtil.to(vo, MemberFlowEntity.class);
         BasePage basePage = memberFlowService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();

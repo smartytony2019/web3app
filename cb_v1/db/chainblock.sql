@@ -577,46 +577,66 @@ insert into cb_v1.t_role_permission(role_id, permission_id) values (1,19);
 drop table if exists t_permission;
 CREATE TABLE t_permission (
     id int primary key auto_increment,
+    path varchar(100) COMMENT '路径',
+    component varchar(100) COMMENT '页面',
+    redirect varchar(100) COMMENT '页面对应的地址',
     name varchar(100) COMMENT '名称',
-    name_code varchar(100) comment '权限编码',
-    code varchar(100) COMMENT '权限编码',
-    parent_id int COMMENT '父节点',
+    name_default varchar(100) COMMENT '名称',
+    title varchar(100) comment '标题',
+    icon varchar(255) COMMENT '图标',
+    code int COMMENT '权限编码',
     node_type tinyint(4) DEFAULT 1 COMMENT '节点类型，1文件夹，2页面，3按钮',
-    icon_url varchar(255) COMMENT '图标地址',
     sort int(11) DEFAULT 1 COMMENT '排序号',
-    link_url varchar(500) COMMENT '页面对应的地址',
     level int(11) DEFAULT 0 COMMENT '层次',
-    path varchar(100) DEFAULT '' COMMENT '树id的路径 整个层次上的路径id，逗号分隔',
+    parent_id int COMMENT '父节点',
+    parent_path varchar(100) COMMENT '树id的路径 整个层次上的路径id，逗号分隔',
     is_delete tinyint(1)  DEFAULT 0 COMMENT '是否删除 1：已删除；0：未删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表';
 
-insert into cb_v1.t_permission(name, name_code, code, parent_id, node_type, icon_url, sort, link_url, level, path, is_delete) values
-('会员管理','1000','1000',0, 1, '', 10, '/member/index', 1, '', 0),
-('会员中心','1000','1000',1, 2, '', 10, '/member/index', 2, '1', 0),
-('添加会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
-('删除会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
-('修改会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
-('查询会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
+insert into cb_v1.t_permission(path, component, redirect, name, name_default, title, icon, code, node_type, sort, level, parent_id, parent_path, is_delete) values
+('/dashboard','#','/dashboard/analysis', 'Dashboard', '会员管理', 'router.dashboard', 'ant-design:dashboard-filled', 10011, 1, 1, 1, 0, '', 0),
+('analysis','views/Dashboard/Analysis','', 'Analysis', '会员中心', 'router.analysis', '', 0, 2, 1, 1, 1, '1', 0),
+('','','', '', '添加会员', '', '', 10011, 3, 1, 1, 2, '2,1', 0),
+('','','', '', '删除会员', '', '', 10011, 3, 1, 1, 2, '2,1', 0),
+('','','', '', '修改会员', '', '', 10011, 3, 1, 1, 2, '2,1', 0),
+('','','', '', '查询会员', '', '', 10011, 3, 1, 1, 2, '2,1', 0),
 
-('会员流水','1000','1000',1, 2, '', 10, '/member/index', 2, '1', 0),
-('添加流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
-('删除流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
-('修改流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
-('查询流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
 
-('代理管理','1000','1000',0, 1, '', 10, '/member/index', 1, '', 0),
-('代理中心','1000','1000',12, 2, '', 10, '/member/index', 2, '', 0),
-('添加代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
-('删除代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
-('修改代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
-('查询代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
-
-('代理佣金','1000','1000',12, 2, '', 10, '/member/index', 2, '', 0),
-('添加佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0),
-('删除佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0),
-('修改佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0),
-('查询佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0)
+('workplace','views/Dashboard/Workplace','', 'Workplace', '会员流水', 'router.workplace', '', 0, 2, 1, 1, 1, '1', 0),
+('','','', '', '添加会员', '', '', 10011, 3, 1, 1, 7, '7,1', 0),
+('','','', '', '删除会员', '', '', 10011, 3, 1, 1, 7, '7,1', 0),
+('','','', '', '修改会员', '', '', 10011, 3, 1, 1, 7, '7,1', 0),
+('','','', '', '查询会员', '', '', 10011, 3, 1, 1, 7, '7,1', 0)
 ;
+
+#
+# insert into cb_v1.t_permission(name, name_code, code, parent_id, node_type, icon_url, sort, link_url, level, path, is_delete) values
+# ('会员管理','1000','1000',0, 1, '', 10, '/member/index', 1, '', 0),
+# ('会员中心','1000','1000',1, 2, '', 10, '/member/index', 2, '1', 0),
+# ('添加会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
+# ('删除会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
+# ('修改会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
+# ('查询会员','1000','1000',2, 3, '', 10, '/admin/user/findPage', 3, '2,1', 0),
+#
+# ('会员流水','1000','1000',1, 2, '', 10, '/member/index', 2, '1', 0),
+# ('添加流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
+# ('删除流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
+# ('修改流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
+# ('查询流水','1000','1000',7, 3, '', 10, '/admin/user/findPage', 3, '7,1', 0),
+#
+# ('代理管理','1000','1000',0, 1, '', 10, '/member/index', 1, '', 0),
+# ('代理中心','1000','1000',12, 2, '', 10, '/member/index', 2, '', 0),
+# ('添加代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
+# ('删除代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
+# ('修改代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
+# ('查询代理','1000','1000',13, 3, '', 10, '/admin/user/findPage', 3, '13,12', 0),
+#
+# ('代理佣金','1000','1000',12, 2, '', 10, '/member/index', 2, '', 0),
+# ('添加佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0),
+# ('删除佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0),
+# ('修改佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0),
+# ('查询佣金','1000','1000',18, 3, '', 10, '/admin/user/findPage', 3, '18,12', 0)
+# ;
 
 
 

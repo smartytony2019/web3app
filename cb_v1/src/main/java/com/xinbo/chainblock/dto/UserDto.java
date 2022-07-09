@@ -41,9 +41,4 @@ public class UserDto {
      * 头像
      */
     private String avatar;
-
-
-    private List<String> roles;
-
-    private List<String> permissions;
 }
