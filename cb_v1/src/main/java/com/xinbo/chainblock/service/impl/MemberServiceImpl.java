@@ -1,15 +1,26 @@
 package com.xinbo.chainblock.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.dto.MemberDto;
+import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.mapper.AgentMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.service.MemberService;
+import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -49,6 +60,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         return increment > 0;
     }
 
+    /**
+     * 注册
+     * @param entity
+     * @param code
+     * @return
+     */
     @Transactional
     @Override
     public boolean register(MemberEntity entity, int code) {
@@ -70,10 +87,35 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
                 .build();
         agentMapper.insert(agentEntity);
 
-
-
         return true;
     }
 
+    @Override
+    public BasePage findPage(MemberEntity entity, long current, long size) {
+        Page<MemberEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.asc("create_time"));
+        IPage<MemberEntity> iPage = memberMapper.selectPage(page, this.createWrapper(entity));
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberDto.class)).build();
+    }
 
+
+    /**
+     * 创建查询条件
+     *
+     * @param entity 实体
+     * @return LambdaQueryWrapper
+     */
+    private LambdaQueryWrapper<MemberEntity> createWrapper(MemberEntity entity) {
+        LambdaQueryWrapper<MemberEntity> wrappers = Wrappers.lambdaQuery();
+        if (ObjectUtils.isEmpty(entity)) {
+            return wrappers;
+        }
+        if (!StringUtils.isEmpty(entity.getId()) && entity.getId() > 0) {
+            wrappers.eq(MemberEntity::getId, entity.getId());
+        }
+        if (!StringUtils.isEmpty(entity.getUsername())) {
+            wrappers.eq(MemberEntity::getUsername, entity.getUsername());
+        }
+        return wrappers;
+    }
 }

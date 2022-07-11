@@ -1,5 +1,7 @@
 package com.xinbo.chainblock.service;
+import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.admin.UserEntity;
 
 /**
  * @author tony
@@ -16,4 +18,6 @@ public interface MemberService {
     boolean increment(MemberEntity entity);
 
     boolean register(MemberEntity entity, int code);
+
+    BasePage findPage(MemberEntity entity, long current, long size);
 }

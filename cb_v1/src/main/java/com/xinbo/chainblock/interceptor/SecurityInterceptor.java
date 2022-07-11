@@ -49,10 +49,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         // 获取请求头信息authorization信息
         final String authHeader = request.getHeader(GlobalConst.TOKEN_HEADER);
-        log.info("## authHeader= {}", authHeader);
-
         if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(GlobalConst.TOKEN_PREFIX)) {
-            log.info("### 用户未登录，请先登录 ###");
             this.returnJson(response, R.builder().code(StatusCode.TOKEN_ERROR).msg("token error").build());
             return false;
         }

@@ -2,15 +2,11 @@ package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.LotteryBetDto;
-import com.xinbo.chainblock.dto.MenuDto;
 import com.xinbo.chainblock.dto.UserDto;
-import com.xinbo.chainblock.entity.LotteryBetEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
@@ -103,19 +99,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return folders;
     }
 
-    private List<MenuDto> format(List<PermissionEntity> menus) {
-
-        List<MenuDto> result = new ArrayList<>();
-
-        for (PermissionEntity entity : menus) {
-            MenuDto build = MenuDto.builder()
-                    .path("")
-
-                    .build();
-        }
-
-        return result;
-    }
 
     @Override
     public UserEntity findById(int userId) {
