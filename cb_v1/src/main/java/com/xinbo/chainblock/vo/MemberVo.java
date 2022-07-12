@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author tony
  * @date 6/30/22 6:27 下午
@@ -14,14 +12,14 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberFlowVo {
+public class MemberVo {
+
+    private Integer id;
 
     private String username;
 
-    private int item;
+    private String pwd;
 
-    private Date start;
-
-    private Date end;
+    private String configPwd;
 
 }

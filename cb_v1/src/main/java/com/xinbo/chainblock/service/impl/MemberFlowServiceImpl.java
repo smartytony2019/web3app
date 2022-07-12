@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.UserFlowDto;
+import com.xinbo.chainblock.dto.MemberFlowDto;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.mapper.MemberFlowMapper;
 import com.xinbo.chainblock.service.MemberFlowService;
@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Date;
 
 /**
  * @author tony
@@ -35,9 +37,21 @@ public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberF
         Page<MemberFlowEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         IPage<MemberFlowEntity> iPage = memberFlowMapper.selectPage(page, this.createWrapper(entity));
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), UserFlowDto.class)).build();
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
     }
 
+    @Override
+    public BasePage findPage(MemberFlowEntity entity, long current, long size, Date start, Date end) {
+        Page<MemberFlowEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.asc("create_time"));
+
+        LambdaQueryWrapper<MemberFlowEntity> wrapper = this.createWrapper(entity);
+        if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
+            wrapper.ge(MemberFlowEntity::getCreateTime, start).le(MemberFlowEntity::getCreateTime, end);
+        }
+        IPage<MemberFlowEntity> iPage = memberFlowMapper.selectPage(page, wrapper);
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
+    }
 
 
     /**

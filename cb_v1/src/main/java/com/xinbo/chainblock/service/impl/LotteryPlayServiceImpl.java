@@ -32,7 +32,7 @@ public class LotteryPlayServiceImpl extends ServiceImpl<LotteryPlayMapper, Lotte
 
     @Override
     public List<LotteryPlayEntity> findAll() {
-        return lotteryPlayMapper.selectList(createWrapper(LotteryPlayEntity.builder().build()));
+        return lotteryPlayMapper.selectList(this.createWrapper(LotteryPlayEntity.builder().build()));
     }
 
 

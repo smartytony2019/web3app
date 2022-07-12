@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.consts.ItemConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.entity.LotteryBetEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.mapper.LotteryBetMapper;
@@ -71,6 +73,19 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
     }
 
     @Override
+    public BasePage findPage(LotteryBetEntity entity, long current, long size, Date start, Date end) {
+        Page<LotteryBetEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.asc("create_time"));
+        LambdaQueryWrapper<LotteryBetEntity> wrapper = this.createWrapper(entity);
+        if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
+            wrapper.ge(LotteryBetEntity::getCreateTime, start).le(LotteryBetEntity::getCreateTime, end);
+        }
+
+        IPage<LotteryBetEntity> iPage = lotteryBetMapper.selectPage(page, wrapper);
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
+    }
+
+    @Override
     public List<LotteryBetEntity> unsettle(String num, int size) {
         return lotteryBetMapper.unsettle(num, size);
     }
@@ -99,20 +114,20 @@ public class LotteryBetServiceImpl extends ServiceImpl<LotteryBetMapper, Lottery
             }
 
             //添加帐变
-//            UserFlowEntity userFlowEntity = UserFlowEntity.builder()
-//                    .username(userEntity.getUsername())
-//                    .beforeMoney(beforeMoney)
-//                    .afterMoney(afterMoney)
-//                    .flowMoney(flowMoney)
-//                    .itemCode(ItemConst.LOTTERY_BET_SETTLE)
-//                    .itemCodeDefault(String.valueOf(ItemConst.LOTTERY_BET_SETTLE))
-//                    .createTime(new Date())
-//                    .remark("")
-//                    .build();
-//            rows = userFlowMapper.insert(userFlowEntity);
-//            if (rows <= 0) {
-//                throw new RuntimeException("settle: update user flow exception");
-//            }
+            MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
+                    .username(memberEntity.getUsername())
+                    .beforeMoney(beforeMoney)
+                    .afterMoney(afterMoney)
+                    .flowMoney(flowMoney)
+                    .itemCode(ItemConst.LOTTERY_BET_SETTLE)
+                    .itemCodeDefault(String.valueOf(ItemConst.LOTTERY_BET_SETTLE))
+                    .createTime(new Date())
+                    .remark("")
+                    .build();
+            rows = memberFlowMapper.insert(userFlowEntity);
+            if (rows <= 0) {
+                throw new RuntimeException("settle: update user flow exception");
+            }
 
             //更新统计
             StatisticsEntity statisticsEntity = StatisticsEntity.builder()

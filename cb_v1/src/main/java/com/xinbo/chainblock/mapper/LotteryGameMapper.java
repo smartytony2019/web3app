@@ -3,6 +3,9 @@ package com.xinbo.chainblock.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xinbo.chainblock.entity.LotteryGameEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author tony
@@ -11,4 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface LotteryGameMapper extends BaseMapper<LotteryGameEntity> {
+
 }

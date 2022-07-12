@@ -6,6 +6,7 @@ create database cb_v1;
 
 use cb_v1;
 
+drop table if exists t_member;
 create table t_member(
   id int primary key auto_increment,
   username varchar(50) comment '用户名',
@@ -41,6 +42,7 @@ insert into cb_v1.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_ti
 
 
 
+drop table if exists t_member_flow;
 create table t_member_flow(
   id int primary key auto_increment,
   username varchar(50) comment '用户名',
@@ -53,6 +55,8 @@ create table t_member_flow(
   remark varchar(100) comment '备注'
 ) comment '会员流水表';
 
+insert into cb_v1.t_member_flow(username, before_money, after_money, flow_money, item_code, item_code_default, create_time, remark) values
+('jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
 
 create table t_operation_log(
   id int primary key auto_increment
@@ -61,6 +65,7 @@ create table t_operation_log(
 
 
 
+drop table if exists t_recharge;
 create table t_recharge (
     id int primary key auto_increment,
     transaction_id varchar(100) comment '转帐id',
@@ -78,6 +83,7 @@ create table t_recharge (
 
 
 
+drop table if exists t_wallet;
 create table t_wallet(
     id int primary key auto_increment,
     address varchar(100),

@@ -1,6 +1,9 @@
 package com.xinbo.chainblock.service;
 
+import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.LotteryCategoryEntity;
+
+import java.util.List;
 
 /**
  * @author tony
@@ -12,4 +15,6 @@ public interface LotteryCategoryService {
 
     LotteryCategoryEntity findById(int id);
 
+
+    List<LotteryCategoryEntity> findAll();
 }

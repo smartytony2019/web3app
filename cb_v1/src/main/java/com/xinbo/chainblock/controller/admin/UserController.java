@@ -44,9 +44,9 @@ public class UserController {
     }
 
 
-    @Operation(summary = "info", description = "会员信息")
-    @PostMapping("info")
-    public R<Object> info() {
+    @Operation(summary = "find", description = "会员信息")
+    @PostMapping("find")
+    public R<Object> find() {
         JwtUser jwtUser = JwtUtil.getJwtUser();
         UserEntity entity = userService.findById(jwtUser.getUid());
         UserDto dto = MapperUtil.to(entity, UserDto.class);

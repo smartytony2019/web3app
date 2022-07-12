@@ -91,11 +91,21 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     }
 
     @Override
-    public BasePage findPage(MemberEntity entity, long current, long size) {
+    public BasePage findPage(MemberEntity entity, long current, long size, Date start, Date end) {
         Page<MemberEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
-        IPage<MemberEntity> iPage = memberMapper.selectPage(page, this.createWrapper(entity));
+        LambdaQueryWrapper<MemberEntity> wrapper = this.createWrapper(entity);
+        if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
+            wrapper.ge(MemberEntity::getCreateTime, start).le(MemberEntity::getCreateTime, end);
+        }
+
+        IPage<MemberEntity> iPage = memberMapper.selectPage(page, wrapper);
         return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberDto.class)).build();
+    }
+
+    @Override
+    public boolean update(MemberEntity entity) {
+        return memberMapper.updateById(entity)>0;
     }
 
 

@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.LotteryGameEntity;
+import com.xinbo.chainblock.entity.LotteryPlayEntity;
 import com.xinbo.chainblock.mapper.LotteryGameMapper;
 import com.xinbo.chainblock.service.LotteryGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @author tony
@@ -27,6 +30,11 @@ public class LotteryGameServiceImpl extends ServiceImpl<LotteryGameMapper, Lotte
     @Override
     public LotteryGameEntity findById(int id) {
         return lotteryGameMapper.selectById(id);
+    }
+
+    @Override
+    public List<LotteryGameEntity> findAll() {
+        return lotteryGameMapper.selectList(this.createWrapper(LotteryGameEntity.builder().build()));
     }
 
 

@@ -3,6 +3,8 @@ import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 
+import java.util.Date;
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -19,5 +21,7 @@ public interface MemberService {
 
     boolean register(MemberEntity entity, int code);
 
-    BasePage findPage(MemberEntity entity, long current, long size);
+    BasePage findPage(MemberEntity entity, long current, long size, Date start, Date end);
+
+    boolean update(MemberEntity entity);
 }

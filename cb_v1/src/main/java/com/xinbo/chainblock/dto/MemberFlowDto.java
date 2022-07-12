@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +23,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserFlowDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class MemberFlowDto {
 
     private Integer id;
 
@@ -59,6 +62,7 @@ public class UserFlowDto {
     /**
      * 用户名
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**

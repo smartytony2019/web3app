@@ -130,6 +130,7 @@ public class LotteryBetEntity {
      */
     private Float money;
 
+
     /**
      * 赢利金额
      */
