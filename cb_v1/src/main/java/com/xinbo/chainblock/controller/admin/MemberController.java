@@ -5,9 +5,12 @@ import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.service.MemberFlowService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
+import com.xinbo.chainblock.vo.MemberFlowVo;
 import com.xinbo.chainblock.vo.MemberVo;
 import com.xinbo.chainblock.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +31,9 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private MemberFlowService memberFlowService;
 
     @JwtIgnore
     @Operation(summary = "findPage", description = "会员列表")
@@ -60,6 +66,14 @@ public class MemberController {
         return R.builder().code(isSuccess?StatusCode.SUCCESS:StatusCode.FAILURE).build();
     }
 
+    @JwtIgnore
+    @Operation(summary = "findFlowPage", description = "会员流水")
+    @PostMapping("findFlowPage/{current}/{size}")
+    public R<Object> findFlowPage(@RequestBody MemberFlowVo vo, @PathVariable long current, @PathVariable long size) {
+        MemberFlowEntity entity = MapperUtil.to(vo, MemberFlowEntity.class);
+        BasePage basePage = memberFlowService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
+        return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+    }
 
 
 }

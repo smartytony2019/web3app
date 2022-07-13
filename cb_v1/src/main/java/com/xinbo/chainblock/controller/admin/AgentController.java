@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
  * @date 7/11/22 7:24 下午
  * @desc file desc
  */
-@RestController("adminBetController")
-@RequestMapping("/admin/bet")
+@RestController("adminAgentController")
+@RequestMapping("/admin/agent")
 public class AgentController {
 
     @Autowired
