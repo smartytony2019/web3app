@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.AgentCommissionMapper">
+
+
+    <!-- 更新赛事状态 -->
+    <insert id="insertOrUpdate" parameterType="java.util.List">
+        insert into t_agent_commission(`date`, uid, username, commission, total_performance,
+                                       self_performance, direct_performance, team_performance, rebate, create_time, update_time)
+        values
+        <foreach collection="list" item="item" separator="," index="">
+            (#{item.date}, #{item.uid}, #{item.username}, #{item.commission}, #{item.totalPerformance},
+            #{item.selfPerformance}, #{item.directPerformance}, #{item.teamPerformance}, #{item.rebate}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+         ON DUPLICATE KEY
+        UPDATE
+        commission = VALUES (commission),
+        total_performance = VALUES (total_performance),
+        self_performance = VALUES (self_performance),
+        direct_performance = VALUES (direct_performance),
+        team_performance = VALUES (team_performance),
+        rebate = VALUES (rebate),
+        update_time = VALUES (update_time)
+    </insert>
+
+
+
+</mapper>

@@ -1,6 +1,44 @@
 {
-  "100020": "hash lottery",
-  "200110": "hash28",
-  "400010": "first ball",
-  "500010": "big"
+  "__comment1__": "-- 游戏 --",
+  "200010": "Lucky Hash",
+  "200110": "Hash PK10",
+  "200210": "Hash Bull",
+  "200310": "Hash two",
+  "200410": "Hash BJL",
+
+  "__comment2__": "-- 房间 --",
+  "300010": "Experience Room",
+  "300011": "Junior Room",
+  "300012": "Intermediate Room",
+  "300013": "Superior Room",
+
+  "__comment3__": "-- 赔率 --",
+  "400110": "0",
+  "400111": "1",
+  "400112": "2",
+  "400113": "3",
+  "400114": "4",
+  "400115": "5",
+  "400116": "6",
+  "400117": "7",
+  "400118": "8",
+  "400119": "9",
+  "400210": "Village(Equalize)",
+  "400211": "Village(Super Double)",
+  "400212": "Village(Double)",
+  "400213": "Draw",
+  "400214": "Idle(Equalize)",
+  "400215": "Idle(Super Double)",
+  "400216": "Idle(Double)",
+
+  "400310": "Big",
+  "400311": "Small",
+  "400312": "One",
+  "400313": "Pair",
+
+  "400410": "Village",
+  "400411": "Village(Pair)",
+  "400412": "Idle(Pair)",
+  "400413": "Idle",
+  "400414": "Draw"
 }

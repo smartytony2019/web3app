@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -42,7 +43,10 @@ public class CommonUtils {
             String path = String.format("classpath:json/%s.json", language);
             String str = ResourceUtil.readUtf8Str(path);
             JSONObject jsonObject = JSON.parseObject(str);
-            result = jsonObject.get(key).toString();
+            Object value = jsonObject.get(key);
+            if(!ObjectUtils.isEmpty(value)) {
+                result = jsonObject.get(key).toString();
+            }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

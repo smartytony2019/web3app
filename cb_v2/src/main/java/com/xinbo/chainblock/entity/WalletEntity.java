@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -24,23 +25,45 @@ public class WalletEntity {
     private Integer id;
 
     /**
-     * 地址
-     */
-    private String address;
-
-    /**
      * 用户id
      */
+    @TableField("uid")
     private Integer uid;
 
     /**
      * 位数
      */
+    @TableField("username")
     private String username;
 
     /**
      * 钱包类型 1: trx,2: eth
      */
+    @TableField("type")
     private Integer type;
+
+    /**
+     * 地址
+     */
+    @TableField("private_key")
+    private String privateKey;
+
+    /**
+     * 地址
+     */
+    @TableField("public_key")
+    private String publicKey;
+
+    /**
+     * 地址
+     */
+    @TableField("address_base58")
+    private String addressBase58;
+
+    /**
+     * 地址
+     */
+    @TableField("address_hex")
+    private String addressHex;
 
 }

@@ -26,6 +26,8 @@ public class BaseExceptionHandler {
         String msg;
         if(ex instanceof MethodArgumentNotValidException) {
             msg = ((MethodArgumentNotValidException)ex).getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        } else if(ex instanceof BusinessException) {
+            msg = ((BusinessException)ex).getMsg();
         } else if(ex instanceof BindException) {
             msg = ((BindException)ex).getBindingResult().getAllErrors().get(0).getDefaultMessage();
         } else if(ex instanceof ConstraintViolationException) {

@@ -105,5 +105,4 @@ public class HashResultJob {
             log.error("result", ex);
         }
     }
-
 }

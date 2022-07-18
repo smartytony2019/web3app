@@ -3,8 +3,6 @@ package com.xinbo.chainblock;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.LotteryAlgorithm;
-import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.LotteryBetEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -71,17 +70,17 @@ public class AlgorithmTest {
         //点数相同
         if(platformNum == playerNum) {
             if(platformNum>=1 && platformNum<=5) {
-                r.setStatus(AlgorithmCode.lost);
+                r.setStatus(AlgorithmCode.LOST);
             } else {
-                r.setStatus(AlgorithmCode.draw);
+                r.setStatus(AlgorithmCode.DRAW);
             }
         }
 
 
         if(platformNum > playerNum) {
-            r.setStatus(AlgorithmCode.lost);
+            r.setStatus(AlgorithmCode.LOST);
         } else {
-            r.setStatus(AlgorithmCode.win);
+            r.setStatus(AlgorithmCode.WIN);
             r.setNum(playerNum);
         }
 
@@ -94,15 +93,8 @@ public class AlgorithmTest {
 
     @Test
     public void tes2() {
-        String tmp = "757f6cc9c06aaf1e50cc68773fcd4bd19afb92336247e28a1dc285a792751ef7";
-        HashResultEntity hr = HashResultEntity.builder()
-                .blockHash(tmp)
-                .build();
-
-        LotteryBetEntity lb = LotteryBetEntity.builder()
-                .playId(1)
-                .build();
-        algorithm.settle(hr, lb);
+        System.out.println("--------------");
+        System.out.println(new Date());
     }
 
 }

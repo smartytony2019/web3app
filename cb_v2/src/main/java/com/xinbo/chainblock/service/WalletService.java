@@ -10,4 +10,5 @@ public interface WalletService {
 
     WalletEntity findByAddress(String address);
 
+    boolean insert(WalletEntity entity);
 }

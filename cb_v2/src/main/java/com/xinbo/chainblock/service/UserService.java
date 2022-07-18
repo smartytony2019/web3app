@@ -1,18 +1,26 @@
 package com.xinbo.chainblock.service;
-import com.xinbo.chainblock.entity.UserEntity;
+
+import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.entity.admin.PermissionEntity;
+import com.xinbo.chainblock.entity.admin.UserEntity;
+
+import java.util.List;
 
 /**
- * @author tony
- * @date 6/24/22 4:31 下午
- * @desc file desc
+ * <p>
+ * 用户表 服务类
+ * </p>
+ *
+ * @author pzblog
+ * @since 2020-06-28
  */
 public interface UserService {
 
-    boolean create();
+    List<Integer> findPermission(int userId);
 
+    List<PermissionEntity> menu(int userId);
 
-    UserEntity findById(int id);
+    UserEntity findById(int userId);
 
-    boolean increment(UserEntity entity);
-
+    BasePage findPage(UserEntity entity, long current, long size);
 }

@@ -18,7 +18,7 @@ public class AccountApiEntity {
 
 
     @Data
-    class Address {
+    public class Address {
         private String base58;
         private String hex;
     }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.RolePermissionMapper">
+
+
+    <!-- 更新赛事状态 -->
+<!--    <update id="updateMatchStatus" parameterType="com.xinbo.cloud.service.sport.match.result.entity.SportMatchResultEntity">-->
+<!--        update t_sport_match_result set status = #{entity.status} where sport_type = #{entity.sportType} and gid = #{entity.gid};-->
+<!--    </update>-->
+
+
+
+    <select id="findByRoles" resultType="com.xinbo.chainblock.entity.admin.RolePermissionEntity">
+        select * from t_role_permission where role_id in
+        <foreach collection="list" item="item" open="(" close=")" separator="," index="">
+            #{item}
+        </foreach>
+    </select>
+
+
+
+
+</mapper>

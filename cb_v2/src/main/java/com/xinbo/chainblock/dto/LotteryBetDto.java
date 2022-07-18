@@ -1,5 +1,7 @@
 package com.xinbo.chainblock.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
@@ -120,13 +122,25 @@ public class LotteryBetDto {
     private Float money;
 
     /**
+     * 赢利金额
+     */
+    private Float profitMoney;
+
+    /**
+     * 派彩金额
+     */
+    private Float payoutMoney;
+
+    /**
      * 创建时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**

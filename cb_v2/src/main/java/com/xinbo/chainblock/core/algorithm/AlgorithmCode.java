@@ -7,8 +7,21 @@ package com.xinbo.chainblock.core.algorithm;
  */
 public interface AlgorithmCode {
 
-    int lost = 0;
-    int win = 1;
-    int draw = 2;
+
+    /**
+     * 输
+     */
+    int LOST = 0;
+
+    /**
+     * 赢
+     */
+    int WIN = 1;
+
+    /**
+     * 平
+     */
+    int DRAW = 2;
+
 
 }

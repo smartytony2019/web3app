@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.StatisticsMapper">
+
+
+    <!-- 更新赛事状态 -->
+    <insert id="insertOrUpdate" parameterType="com.xinbo.chainblock.entity.StatisticsEntity">
+        insert into t_statistics(`date`, uid, username, bet_money, bet_profit_money, bet_payout_money, recharge_money,
+                                 withdraw_money, update_time)
+        values (#{entity.date}, #{entity.uid}, #{entity.username}, #{entity.betMoney}, #{entity.betProfitMoney},
+                #{entity.betPayoutMoney}, #{entity.rechargeMoney}, #{entity.withdrawMoney},
+                #{entity.updateTime}) ON DUPLICATE KEY
+        UPDATE
+            bet_money = bet_money + VALUES (bet_money),
+            bet_profit_money = bet_profit_money + VALUES (bet_profit_money),
+            bet_payout_money = bet_payout_money + VALUES (bet_payout_money),
+            recharge_money = recharge_money + VALUES (recharge_money),
+            withdraw_money = recharge_money + VALUES (withdraw_money),
+            update_time = VALUES (update_time)
+    </insert>
+
+
+    <select id="findByUidStr" resultType="com.xinbo.chainblock.entity.StatisticsEntity">
+        select * from t_statistics where `date` = #{date} and uid in (
+        <foreach collection="childList" item="item" separator="," index="">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+
+
+    <select id="findByUid" resultType="com.xinbo.chainblock.entity.StatisticsEntity">
+        select * from t_statistics where `date` = #{date} and uid = #{childUid}
+    </select>
+
+
+</mapper>

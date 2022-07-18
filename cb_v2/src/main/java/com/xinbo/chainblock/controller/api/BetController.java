@@ -2,7 +2,6 @@ package com.xinbo.chainblock.controller.api;
 
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.LotteryBetDto;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.CommonUtils;
@@ -16,24 +15,23 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/bet")
+@RequestMapping("/api/apibet")
 public class BetController {
 
     @Autowired
-    private LotteryGameService lotteryGameService;
+    private HashGameService hashGameService;
 
     @Autowired
-    private LotteryPlayService lotteryPlayService;
+    private HashRoomService hashRoomService;
 
     @Autowired
-    private LotteryPlayCodeService lotteryPlayCodeService;
+    private HashOddsService hashOddsService;
 
     @Autowired
-    private LotteryBetService lotteryBetService;
+    private HashBetService hashBetService;
 
     @Operation(summary = "submit")
     @PostMapping("submit")
@@ -42,51 +40,32 @@ public class BetController {
 
         try {
             //判断数据是否合法
-            UserEntity userEntity = UserEntity.builder()
-                    .username("jack")
-                    .id(1)
+            MemberEntity memberEntity = MemberEntity.builder()
+                    .username("jackC")
+                    .id(3)
                     .version(1)
                     .build();
 
 
-            LotteryGameEntity gameEntity = lotteryGameService.findById(vo.getGameId());
-            if(ObjectUtils.isEmpty(gameEntity) || gameEntity.getId()<=0) {
+            HashGameEntity hashGameEntity = hashGameService.findById(vo.getGameId());
+            if(ObjectUtils.isEmpty(hashGameEntity) || hashGameEntity.getId()<=0) {
                 throw new RuntimeException("lottery game not found");
             }
 
-            LotteryPlayEntity playEntity = lotteryPlayService.findById(vo.getPlayId());
+            HashRoomEntity playEntity = hashRoomService.findById(vo.getPlayId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play not found");
             }
 
-            LotteryPlayCodeEntity playCodeEntity = lotteryPlayCodeService.findById(vo.getPlayCodeId());
+            HashOddsEntity playHashOddsEntity = hashOddsService.findById(vo.getPlayCodeId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play code not found");
             }
 
-            LotteryBetEntity entity = LotteryBetEntity.builder()
-                    .uid(userEntity.getId())
-                    .username(userEntity.getUsername())
-                    .cateId(gameEntity.getCateId())
-                    .cateNameCode(gameEntity.getCateNameCode())
-                    .cateNameDefault(gameEntity.getCateNameDefault())
-                    .gameId(gameEntity.getId())
-                    .gameNameCode(gameEntity.getNameCode())
-                    .gameNameDefault(gameEntity.getNameDefault())
-                    .playId(playEntity.getId())
-                    .playNameCode(playEntity.getNameCode())
-                    .playNameDefault(playEntity.getNameDefault())
-                    .playCodeId(playCodeEntity.getId())
-                    .playCodeNameCode(playCodeEntity.getNameCode())
-                    .playCodeNameDefault(playCodeEntity.getNameDefault())
-                    .num(vo.getNum())
-                    .odds(playCodeEntity.getOdds())
-                    .money(vo.getMoney())
-                    .createTime(new Date())
-                    .updateTime(new Date())
+            HashBetEntity entity = HashBetEntity.builder()
                     .build();
 
-            boolean isSuccess = lotteryBetService.insert(entity);
+            boolean isSuccess = hashBetService.insert(entity);
             if(isSuccess) {
                 r.setCode(StatusCode.SUCCESS);
             }
@@ -100,17 +79,17 @@ public class BetController {
     @Operation(summary = "find", description = "获取注单")
     @PostMapping("find")
     public R<Object> find(@RequestBody BetVo vo) {
-        LotteryBetEntity entity = MapperUtil.to(vo, LotteryBetEntity.class);
-        List<LotteryBetEntity> lotteryBetDtoList = lotteryBetService.find(entity);
-        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(lotteryBetDtoList, LotteryBetEntity.class)).build();
+        HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
+        List<HashBetEntity> lotteryBetDtoList = hashBetService.find(entity);
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(lotteryBetDtoList, HashBetEntity.class)).build();
     }
 
 
     @Operation(summary = "findPage", description = "获取注单")
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
-        LotteryBetEntity entity = MapperUtil.to(vo, LotteryBetEntity.class);
-        BasePage basePage = lotteryBetService.findPage(entity, current, size);
+        HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
+        BasePage basePage = hashBetService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
 
