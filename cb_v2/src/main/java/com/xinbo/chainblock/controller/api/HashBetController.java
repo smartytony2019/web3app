@@ -3,6 +3,9 @@ package com.xinbo.chainblock.controller.api;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.*;
+import com.xinbo.chainblock.entity.hash.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
+import com.xinbo.chainblock.entity.hash.HashPlayEntity;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.CommonUtils;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -17,15 +20,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/apibet")
-public class BetController {
+@RestController("ApiHashBetController")
+@RequestMapping("/api/hashBet")
+public class HashBetController {
 
     @Autowired
     private HashGameService hashGameService;
 
     @Autowired
-    private HashRoomService hashRoomService;
+    private HashPlayService hashPlayService;
 
     @Autowired
     private HashOddsService hashOddsService;
@@ -47,12 +50,12 @@ public class BetController {
                     .build();
 
 
-            HashGameEntity hashGameEntity = hashGameService.findById(vo.getGameId());
-            if(ObjectUtils.isEmpty(hashGameEntity) || hashGameEntity.getId()<=0) {
+            GameEntity gameEntity = hashGameService.findById(vo.getGameId());
+            if(ObjectUtils.isEmpty(gameEntity) || gameEntity.getId()<=0) {
                 throw new RuntimeException("lottery game not found");
             }
 
-            HashRoomEntity playEntity = hashRoomService.findById(vo.getPlayId());
+            HashPlayEntity playEntity = hashPlayService.findById(vo.getPlayId());
             if(ObjectUtils.isEmpty(playEntity) || playEntity.getId()<=0) {
                 throw new RuntimeException("lottery play not found");
             }

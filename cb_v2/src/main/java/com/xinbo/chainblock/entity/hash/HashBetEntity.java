@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.entity.hash;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

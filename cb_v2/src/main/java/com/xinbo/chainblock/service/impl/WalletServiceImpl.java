@@ -34,6 +34,12 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> i
         return walletMapper.insert(entity) > 0;
     }
 
+    @Override
+    public WalletEntity findByUid(int uid) {
+        LambdaQueryWrapper<WalletEntity> wrapper = this.createWrapper(WalletEntity.builder().uid(uid).build());
+        return walletMapper.selectOne(wrapper);
+    }
+
 
     /**
      * 创建查询条件

@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LotteryBetDto {
+public class HashBetDto {
 
     private Integer id;
 

@@ -3,9 +3,9 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.HashRoomEntity;
-import com.xinbo.chainblock.mapper.HashRoomMapper;
-import com.xinbo.chainblock.service.HashRoomService;
+import com.xinbo.chainblock.entity.hash.HashPlayEntity;
+import com.xinbo.chainblock.mapper.HashPlayMapper;
+import com.xinbo.chainblock.service.HashPlayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -19,20 +19,20 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class HashRoomServiceImpl extends ServiceImpl<HashRoomMapper, HashRoomEntity> implements HashRoomService {
+public class HashPlayServiceImpl extends ServiceImpl<HashPlayMapper, HashPlayEntity> implements HashPlayService {
 
     @Autowired
-    private HashRoomMapper hashRoomMapper;
+    private HashPlayMapper hashPlayMapper;
 
 
     @Override
-    public HashRoomEntity findById(int id) {
-        return hashRoomMapper.selectById(id);
+    public HashPlayEntity findById(int id) {
+        return hashPlayMapper.selectById(id);
     }
 
     @Override
-    public List<HashRoomEntity> findAll() {
-        return hashRoomMapper.selectList(this.createWrapper(HashRoomEntity.builder().build()));
+    public List<HashPlayEntity> findAll() {
+        return hashPlayMapper.selectList(this.createWrapper(HashPlayEntity.builder().build()));
     }
 
 
@@ -42,13 +42,13 @@ public class HashRoomServiceImpl extends ServiceImpl<HashRoomMapper, HashRoomEnt
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<HashRoomEntity> createWrapper(HashRoomEntity entity) {
-        LambdaQueryWrapper<HashRoomEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<HashPlayEntity> createWrapper(HashPlayEntity entity) {
+        LambdaQueryWrapper<HashPlayEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getGameId())) {
-            wrappers.eq(HashRoomEntity::getGameId, entity.getGameId());
+            wrappers.eq(HashPlayEntity::getGameId, entity.getGameId());
         }
         return wrappers;
     }

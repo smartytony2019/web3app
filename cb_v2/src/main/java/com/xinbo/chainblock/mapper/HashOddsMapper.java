@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinbo.chainblock.entity.HashOddsEntity;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

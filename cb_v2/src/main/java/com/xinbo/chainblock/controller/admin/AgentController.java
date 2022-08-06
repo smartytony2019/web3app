@@ -3,7 +3,7 @@ package com.xinbo.chainblock.controller.admin;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.entity.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;

@@ -79,8 +79,8 @@ public class TransactionsRecordJob {
 
 
                 String key = String.format(transactionKey, data.getTransactionId());
-                Boolean isHandle = redisTemplate.hasKey(key);
-                if(isHandle) {
+                Boolean isHas = redisTemplate.hasKey(key);
+                if(!ObjectUtils.isEmpty(isHas) && isHas) {
                     continue;
                 }
 

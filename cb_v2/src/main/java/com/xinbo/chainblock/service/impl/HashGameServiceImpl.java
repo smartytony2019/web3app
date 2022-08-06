@@ -3,7 +3,7 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.HashGameEntity;
+import com.xinbo.chainblock.entity.GameEntity;
 import com.xinbo.chainblock.mapper.HashGameMapper;
 import com.xinbo.chainblock.service.HashGameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class HashGameServiceImpl extends ServiceImpl<HashGameMapper, HashGameEntity> implements HashGameService {
+public class HashGameServiceImpl extends ServiceImpl<HashGameMapper, GameEntity> implements HashGameService {
 
     @Autowired
     private HashGameMapper hashGameMapper;
@@ -26,13 +26,13 @@ public class HashGameServiceImpl extends ServiceImpl<HashGameMapper, HashGameEnt
 
 
     @Override
-    public HashGameEntity findById(int id) {
+    public GameEntity findById(int id) {
         return hashGameMapper.selectById(id);
     }
 
     @Override
-    public List<HashGameEntity> findAll() {
-        return hashGameMapper.selectList(this.createWrapper(HashGameEntity.builder().build()));
+    public List<GameEntity> findAll() {
+        return hashGameMapper.selectList(this.createWrapper(GameEntity.builder().build()));
     }
 
 
@@ -42,8 +42,8 @@ public class HashGameServiceImpl extends ServiceImpl<HashGameMapper, HashGameEnt
      * @param entity  实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<HashGameEntity> createWrapper(HashGameEntity entity) {
-        LambdaQueryWrapper<HashGameEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<GameEntity> createWrapper(GameEntity entity) {
+        LambdaQueryWrapper<GameEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }

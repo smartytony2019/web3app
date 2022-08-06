@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.core.algorithm;
 
-import com.xinbo.chainblock.entity.HashResultEntity;
-import com.xinbo.chainblock.entity.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashResultEntity;
+import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

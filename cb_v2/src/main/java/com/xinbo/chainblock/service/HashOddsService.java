@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.HashOddsEntity;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 
 import java.util.List;
 

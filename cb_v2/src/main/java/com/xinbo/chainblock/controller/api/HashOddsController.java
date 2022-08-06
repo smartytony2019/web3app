@@ -3,11 +3,8 @@ package com.xinbo.chainblock.controller.api;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.HashOddsDto;
-import com.xinbo.chainblock.dto.HashRoomDto;
-import com.xinbo.chainblock.entity.HashOddsEntity;
-import com.xinbo.chainblock.entity.HashRoomEntity;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 import com.xinbo.chainblock.service.HashOddsService;
-import com.xinbo.chainblock.service.HashRoomService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +18,7 @@ import java.util.List;
 
 @RestController("ApiOddsController")
 @RequestMapping("api/odds")
-public class OddsController {
+public class HashOddsController {
 
 
     @Autowired

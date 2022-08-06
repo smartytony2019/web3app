@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.HashGameEntity;
+import com.xinbo.chainblock.entity.GameEntity;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface HashGameService {
 
-    HashGameEntity findById(int id);
+    GameEntity findById(int id);
 
-    List<HashGameEntity> findAll();
+    List<GameEntity> findAll();
 }

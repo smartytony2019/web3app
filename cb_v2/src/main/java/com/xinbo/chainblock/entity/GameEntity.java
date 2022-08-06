@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_hash_game")
-public class HashGameEntity {
+@TableName("t_game")
+public class GameEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

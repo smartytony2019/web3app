@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.HashResultEntity;
+import com.xinbo.chainblock.entity.hash.HashResultEntity;
 
 /**
  * @author tony

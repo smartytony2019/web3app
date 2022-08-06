@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.consts.ItemConst;
 import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.LotteryBetDto;
-import com.xinbo.chainblock.entity.HashBetEntity;
+import com.xinbo.chainblock.dto.HashBetDto;
+import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
@@ -49,9 +49,9 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
 
 
     @Override
-    public LotteryBetDto findById(int id) {
+    public HashBetDto findById(int id) {
         HashBetEntity entity = hashBetMapper.selectById(id);
-        return MapperUtil.to(entity, LotteryBetDto.class);
+        return MapperUtil.to(entity, HashBetDto.class);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, this.createWrapper(entity));
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
 
         IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, wrapper);
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), LotteryBetDto.class)).build();
+        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
     }
 
     @Override

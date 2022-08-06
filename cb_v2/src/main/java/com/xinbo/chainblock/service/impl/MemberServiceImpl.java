@@ -19,6 +19,7 @@ import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.mapper.AgentMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.mapper.WalletMapper;
+import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -30,6 +31,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author tony
@@ -43,13 +46,13 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     private TrxApi trxApi;
 
     @Autowired
-    private WalletMapper walletMapper;
+    private WalletService walletService;
 
     @Autowired
     private MemberMapper memberMapper;
 
     @Autowired
-    private AgentMapper agentMapper;
+    private AgentService agentService;
 
 
     @Override
@@ -79,6 +82,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
 
     /**
      * 注册
+     *
      * @param entity
      * @param code
      * @return
@@ -86,13 +90,13 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Transactional
     @Override
     public boolean register(MemberEntity entity, int code) {
-        AgentEntity pAgentEntity = agentMapper.findByUid(code);
-        if(ObjectUtils.isEmpty(pAgentEntity) || pAgentEntity.getId()<=0) {
+        AgentEntity pAgentEntity = agentService.findByUid(code);
+        if (ObjectUtils.isEmpty(pAgentEntity) || pAgentEntity.getId() <= 0) {
             return false;
         }
 
         boolean isSuccess = memberMapper.insert(entity) > 0;
-        if(!isSuccess) {
+        if (!isSuccess) {
             return false;
         }
 
@@ -100,15 +104,14 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
                 .uid(entity.getId())
                 .username(entity.getUsername())
                 .pUid(pAgentEntity.getUid())
-                .level(pAgentEntity.getLevel()+1)
+                .level(pAgentEntity.getLevel() + 1)
                 .build();
-        agentMapper.insert(agentEntity);
-
+        agentService.insert(agentEntity);
 
 
         //Step 2: 请求终端
         AccountApiEntity account = trxApi.createAccount();
-        if(ObjectUtils.isEmpty(account)) {
+        if (ObjectUtils.isEmpty(account)) {
             return false;
         }
 
@@ -122,8 +125,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
                 .addressHex(account.getAddress().getHex())
                 .build();
 
-        isSuccess = walletMapper.insert(walletEntity)>0;
-        if(!isSuccess) {
+        isSuccess = walletService.insert(walletEntity);
+        if (!isSuccess) {
             return false;
         }
 
@@ -135,7 +138,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         Page<MemberEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         LambdaQueryWrapper<MemberEntity> wrapper = this.createWrapper(entity);
-        if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
+        if (!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
             wrapper.ge(MemberEntity::getCreateTime, start).le(MemberEntity::getCreateTime, end);
         }
 
@@ -145,7 +148,24 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
 
     @Override
     public boolean update(MemberEntity entity) {
-        return memberMapper.updateById(entity)>0;
+        return memberMapper.updateById(entity) > 0;
+    }
+
+    @Override
+    public String balanceUSDT(int uid) {
+        WalletEntity walletEntity = walletService.findByUid(uid);
+        return trxApi.getBalanceOfTrc20(walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
+    }
+
+    @Override
+    public Map<String, String> balance(int uid) {
+        WalletEntity walletEntity = walletService.findByUid(uid);
+        String trc20 = trxApi.getBalanceOfTrc20(walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
+        String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
+        Map<String, String> map = new HashMap<>();
+        map.put("usdt", trc20);
+        map.put("trx", trx);
+        return map;
     }
 
 

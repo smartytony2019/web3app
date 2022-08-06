@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 
-@RestController
+@RestController("ApiMemberController")
 @RequestMapping("api/member")
 public class MemberController {
 
@@ -64,7 +64,6 @@ public class MemberController {
     @PostMapping("login")
     public R<Object> login(@RequestBody MemberLoginVo vo) {
         try {
-
             String username = vo.getUsername();
             String pwd = vo.getPwd();
 
@@ -96,4 +95,22 @@ public class MemberController {
         return R.builder().code(StatusCode.FAILURE).build();
     }
 
+
+    @JwtIgnore
+    @Operation(summary = "balanceUSDT", description = "USDT余额")
+    @PostMapping("balanceUSDT")
+    public R<Object> balanceUSDT() {
+        JwtUser jwtUser = JwtUtil.getJwtUser();
+        String balance = memberService.balanceUSDT(jwtUser.getUid());
+        return R.builder().code(StatusCode.SUCCESS).data(balance).build();
+    }
+
+    @JwtIgnore
+    @Operation(summary = "balance", description = "TRX&USDT余额")
+    @PostMapping("balance")
+    public R<Object> balance() {
+        JwtUser jwtUser = JwtUtil.getJwtUser();
+        Map<String, String> map = memberService.balance(jwtUser.getUid());
+        return R.builder().code(StatusCode.SUCCESS).data(map).build();
+    }
 }

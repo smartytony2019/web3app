@@ -1,18 +1,18 @@
 {
-  "__comment1__": "-- 游戏 --",
+  "__comment1__": "-- 游戏(t_hash_game表) --",
   "200010": "Lucky Hash",
   "200110": "Hash PK10",
   "200210": "Hash Bull",
   "200310": "Hash two",
   "200410": "Hash BJL",
 
-  "__comment2__": "-- 房间 --",
+  "__comment2__": "-- 房间(t_hash_room表) --",
   "300010": "Experience Room",
   "300011": "Junior Room",
   "300012": "Intermediate Room",
   "300013": "Superior Room",
 
-  "__comment3__": "-- 赔率 --",
+  "__comment3__": "-- 赔率(t_hash_odds表) --",
   "400110": "0",
   "400111": "1",
   "400112": "2",

@@ -3,7 +3,7 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.entity.HashOddsEntity;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 import com.xinbo.chainblock.mapper.HashOddsMapper;
 import com.xinbo.chainblock.service.HashOddsService;
 import org.springframework.beans.factory.annotation.Autowired;

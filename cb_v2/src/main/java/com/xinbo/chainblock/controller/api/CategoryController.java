@@ -9,13 +9,16 @@ import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("ApiGameController")
-@RequestMapping("api/game")
-public class GameController {
+@RestController("ApiCategoryController")
+@RequestMapping("api/category")
+public class CategoryController {
 
 
     @Autowired

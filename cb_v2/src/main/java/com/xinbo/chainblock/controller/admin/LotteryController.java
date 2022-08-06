@@ -3,6 +3,7 @@ package com.xinbo.chainblock.controller.admin;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.*;
+import com.xinbo.chainblock.entity.hash.HashPlayEntity;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,7 @@ public class LotteryController {
     private HashGameService hashGameService;
 
     @Autowired
-    private HashRoomService hashRoomService;
+    private HashPlayService hashPlayService;
 
     @Autowired
     private HashOddsService hashOddsService;
@@ -36,7 +37,7 @@ public class LotteryController {
     @Operation(summary = "findGame", description = "游戏列表")
     @PostMapping("findGame")
     public R<Object> findGame() {
-        List<HashGameEntity> list = hashGameService.findAll();
+        List<GameEntity> list = hashGameService.findAll();
         return R.builder().code(StatusCode.SUCCESS).data(list).build();
     }
 
@@ -45,7 +46,7 @@ public class LotteryController {
     @Operation(summary = "findPlay", description = "游戏列表")
     @PostMapping("findPlay")
     public R<Object> findPlay() {
-        List<HashRoomEntity> list = hashRoomService.findAll();
+        List<HashPlayEntity> list = hashPlayService.findAll();
         return R.builder().code(StatusCode.SUCCESS).data(list).build();
     }
 
