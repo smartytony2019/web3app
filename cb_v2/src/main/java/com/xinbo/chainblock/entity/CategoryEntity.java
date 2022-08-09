@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author tony
  * @date 6/25/22 4:10 下午
- * @desc file desc
+ * @desc 游戏类目
  */
 @Data
 @NoArgsConstructor
@@ -37,7 +37,8 @@ public class CategoryEntity {
     private String nameZh;
 
     /**
-     * 是否开启
+     * 序号
      */
-    private Boolean enable;
+    @TableField("sort")
+    private Integer sort;
 }

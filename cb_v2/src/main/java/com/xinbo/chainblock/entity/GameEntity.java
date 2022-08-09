@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author tony
  * @date 6/25/22 4:10 下午
- * @desc file desc
+ * @desc 游戏
  */
 @Data
 @NoArgsConstructor
@@ -23,6 +23,24 @@ public class GameEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    /**
+     * 类目id编码
+     */
+    @TableField("cate_id")
+    private Integer cateId;
+
+    /**
+     * 类目名称编码
+     */
+    @TableField("cate_name")
+    private String cateName;
+
+    /**
+     * 类目中文名称
+     */
+    @TableField("cate_name_zh")
+    private String cateNameZh;
 
     /**
      * 游戏名称编码
@@ -39,5 +57,6 @@ public class GameEntity {
     /**
      * 是否开启
      */
+    @TableField("enable")
     private Boolean enable;
 }

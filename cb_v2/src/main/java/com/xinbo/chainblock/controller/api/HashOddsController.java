@@ -9,15 +9,12 @@ import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController("ApiOddsController")
-@RequestMapping("api/odds")
+@RequestMapping("api/hashOdds")
 public class HashOddsController {
 
 
@@ -28,7 +25,7 @@ public class HashOddsController {
 
     @JwtIgnore
     @Operation(summary = "find", description = "查找单个")
-    @PostMapping("find/{id}")
+    @GetMapping("find/{id}")
     public R<Object> find(@PathVariable int id) {
         HashOddsEntity entity = hashOddsService.findById(id);
         return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(entity, HashOddsDto.class)).build();
@@ -36,7 +33,7 @@ public class HashOddsController {
 
     @JwtIgnore
     @Operation(summary = "find", description = "查找")
-    @PostMapping("findByGameId/{gameId}")
+    @GetMapping("findByGameId/{gameId}")
     public R<Object> findByGameId(@PathVariable int gameId) {
         List<HashOddsEntity> list = hashOddsService.findByGameId(gameId);
         return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(list, HashOddsDto.class)).build();

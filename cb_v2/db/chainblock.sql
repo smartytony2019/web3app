@@ -34,11 +34,11 @@ create table t_game(
 ) comment '彩种游戏';
 
 insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`enable`,`pic`,`sort`) values
-('1', '100010', '哈希', '200010', '幸运哈希',1, 'http://xx/x.png', 1),
-('1', '100010', '哈希', '200110', '哈希PK拾',1, 'http://xx/x.png', 1),
-('1', '100010', '哈希', '200210', '哈希牛牛',1, 'http://xx/x.png', 1),
 ('1', '100010', '哈希', '200310', '哈希两面',1, 'http://xx/x.png', 1),
 ('1', '100010', '哈希', '200410', '哈希百家乐',1, 'http://xx/x.png', 1),
+('1', '100010', '哈希', '200110', '哈希PK拾',1, 'http://xx/x.png', 1),
+('1', '100010', '哈希', '200010', '幸运哈希',1, 'http://xx/x.png', 1),
+('1', '100010', '哈希', '200210', '哈希牛牛',1, 'http://xx/x.png', 1),
 ('2', '100110', '彩票', '200510', 'XB彩票',1, 'http://xx/x.png', 1),
 ('3', '100210', '体育', '200610', '皇冠体育',1, 'http://xx/x.png', 1);
 
@@ -47,8 +47,8 @@ insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`
 
 
 
-drop table if exists t_play;
-create table t_play(
+drop table if exists t_hash_play;
+create table t_hash_play(
    id int primary key auto_increment,
    cate_id varchar(50) comment '类目id',
    cate_name varchar(50) comment '类目名称编码',
@@ -65,7 +65,7 @@ create table t_play(
    address varchar(100) comment '投注地址'
 ) comment '房间';
 
-insert into cb_v2.t_play(`cate_id`,`cate_name`,`cate_name_zh`, `game_id`, `game_name`, `game_name_zh`, `name`, `name_zh`, `min`, `max`, `max_odds`,`type`,`address`) values
+insert into cb_v2.t_hash_play(`cate_id`,`cate_name`,`cate_name_zh`, `game_id`, `game_name`, `game_name_zh`, `name`, `name_zh`, `min`, `max`, `max_odds`,`type`,`address`) values
 ('1', '100010', '哈希', 1, '200010', '幸运哈希', '300010', '体验房', '0', '200', 1.98, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu'),
 ('1', '100010', '哈希', 1, '200010', '幸运哈希', '300011', '初级房', '0', '200', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu'),
 ('1', '100010', '哈希', 1, '200010', '幸运哈希', '300012', '中级房', '0', '200', 1.98, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu'),
@@ -95,8 +95,8 @@ insert into cb_v2.t_play(`cate_id`,`cate_name`,`cate_name_zh`, `game_id`, `game_
 
 
 
-drop table if exists t_odds;
-create table t_odds(
+drop table if exists t_hash_odds;
+create table t_hash_odds(
     id int primary key auto_increment,
     game_id int comment '游戏id',
     name varchar(50) comment '名称',
@@ -105,38 +105,41 @@ create table t_odds(
     code varchar(50) comment '编码'
 ) comment '彩种玩法';
 
-insert into cb_v2.t_odds(`game_id`, `name`,`name_zh`, `odds`, `code`) values
-(1, '400010','', '9.8', '1000'),
+insert into cb_v2.t_hash_odds(`game_id`, `name`,`name_zh`, `odds`, `code`) values
 
-(2, '400110','0', '9.8', '2000'),
-(2, '400111','1', '9.8', '2001'),
-(2, '400112','2', '9.8', '2002'),
-(2, '400113','3', '9.8', '2003'),
-(2, '400114','4', '9.8', '2004'),
-(2, '400115','5', '9.8', '2005'),
-(2, '400116','6', '9.8', '2006'),
-(2, '400117','7', '9.8', '2007'),
-(2, '400118','8', '9.8', '2008'),
-(2, '400119','9', '9.8', '2009'),
+(1, '400310','大', '1.95', '4000'),
+(1, '400311','小', '1.95', '4001'),
+(1, '400312','单', '1.95', '4002'),
+(1, '400313','双', '1.95', '4003'),
 
-(3, '400210','庄(平倍)', '0.95', '3000'),
-(3, '400211','庄(超级翻倍)', '0.95', '3001'),
-(3, '400212','庄(翻倍)', '0.95', '3002'),
-(3, '400213','和局', '9.5', '3003'),
-(3, '400214','闲(平倍)', '0.95', '3004'),
-(3, '400215','闲(超级翻倍)', '0.95', '3005'),
-(3, '400216','闲(翻倍)', '0.95', '3006'),
 
-(4, '400310','大', '1.95', '4000'),
-(4, '400311','小', '1.95', '4001'),
-(4, '400312','单', '1.95', '4002'),
-(4, '400313','双', '1.95', '4003'),
+(2, '400410','庄', '1.95', '5000'),
+(2, '400411','庄对', '11', '5001'),
+(2, '400412','闲对', '11', '5002'),
+(2, '400413','闲', '1.95', '5003'),
+(2, '400414','和', '8', '5004'),
 
-(5, '400410','庄', '1.95', '5000'),
-(5, '400411','庄对', '11', '5001'),
-(5, '400412','闲对', '11', '5002'),
-(5, '400413','闲', '1.95', '5003'),
-(5, '400414','和', '8', '5004')
+(3, '400110','0', '9.8', '2000'),
+(3, '400111','1', '9.8', '2001'),
+(3, '400112','2', '9.8', '2002'),
+(3, '400113','3', '9.8', '2003'),
+(3, '400114','4', '9.8', '2004'),
+(3, '400115','5', '9.8', '2005'),
+(3, '400116','6', '9.8', '2006'),
+(3, '400117','7', '9.8', '2007'),
+(3, '400118','8', '9.8', '2008'),
+(3, '400119','9', '9.8', '2009'),
+
+
+(4, '400010','', '9.8', '1000'),
+
+(5, '400210','庄(平倍)', '0.95', '3000'),
+(5, '400211','庄(超级翻倍)', '0.95', '3001'),
+(5, '400212','庄(翻倍)', '0.95', '3002'),
+(5, '400213','和局', '9.5', '3003'),
+(5, '400214','闲(平倍)', '0.95', '3004'),
+(5, '400215','闲(超级翻倍)', '0.95', '3005'),
+(5, '400216','闲(翻倍)', '0.95', '3006')
 ;
 
 
@@ -145,6 +148,37 @@ insert into cb_v2.t_odds(`game_id`, `name`,`name_zh`, `odds`, `code`) values
 
 drop table if exists t_hash_bet;
 create table t_hash_bet (
+    id int primary key auto_increment,
+    sn varchar(100) comment '编号',
+    uid int comment '会员id',
+    username varchar(50) comment '会员名',
+    cate_id int comment '类目id',
+    cate_name varchar(50) comment '类目编码',
+    cate_name_zh varchar(50) comment '类目名称(中文)',
+    game_id int comment '彩种id',
+    game_name varchar(50) comment '类目编码',
+    game_name_zh varchar(50) comment '彩种名称(中文)',
+    play_id int comment '玩法编号',
+    play_name varchar(50) comment '玩法编码',
+    play_name_zh varchar(50) comment '玩法名称(中文)',
+    hash_block_result varchar(80) comment '开奖结果',
+    content varchar(100) comment '投注内容',
+    content_zh varchar(100) comment '投注内容(中文)',
+    odds decimal(10,4) comment '赔率',
+    bet_amount int(5) comment '投注数量',
+    money decimal(10,4) comment '投注单价',
+    money_amount decimal(10,4) comment '投注金额',
+    profit_money decimal(10,4) comment '赢利金额',
+    payout_money decimal(10,4) comment '派彩金额',
+    create_time timestamp null default null comment '创建时间',
+    update_time timestamp null default null comment '更新时间',
+    status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
+    remark varchar(100) comment '备注'
+) comment '哈希注单';
+
+
+drop table if exists t_draw_bet;
+create table t_draw_bet (
     id int primary key auto_increment,
     uid int comment '会员id',
     username varchar(50) comment '会员名',
@@ -157,7 +191,8 @@ create table t_hash_bet (
     update_time timestamp null default null comment '更新时间',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
     remark varchar(100) comment '备注'
-) comment '哈希注单';
+) comment '抽奖注单(未登录注单)';
+
 
 
 drop table if exists t_lottery_bet;
@@ -234,18 +269,19 @@ insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_ti
 drop table if exists t_member_flow;
 create table t_member_flow(
   id int primary key auto_increment,
+  sn varchar(50) comment '订单号',
   username varchar(50) comment '用户名',
   before_money decimal(10,4) comment '帐变前金额',
   after_money decimal(10,4) comment '帐变后金额',
   flow_money decimal(10,4) comment '流水金额',
-  item_code int comment '帐变编码',
-  item_code_default varchar(100) comment '帐变默认编码',
+  item int comment '帐变编码',
+  item_zh varchar(100) comment '帐变默认编码',
   create_time timestamp null default null comment '创建时间',
   remark varchar(100) comment '备注'
 ) comment '会员流水表';
 
-insert into cb_v2.t_member_flow(username, before_money, after_money, flow_money, item_code, item_code_default, create_time, remark) values
-('jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
+# insert into cb_v2.t_member_flow(sn, username, before_money, after_money, flow_money, item, item_zh, create_time, remark) values
+# ('123456','jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
 
 create table t_operation_log(
   id int primary key auto_increment

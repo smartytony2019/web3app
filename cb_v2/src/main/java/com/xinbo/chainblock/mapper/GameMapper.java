@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @desc file desc
  */
 @Mapper
-public interface HashGameMapper extends BaseMapper<GameEntity> {
+public interface GameMapper extends BaseMapper<GameEntity> {
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("ApiHashPlayController")
-@RequestMapping("api/room")
+@RequestMapping("api/hashPlay")
 public class HashPlayController {
 
 
@@ -23,10 +23,18 @@ public class HashPlayController {
 
     @JwtIgnore
     @Operation(summary = "find", description = "查找单个")
-    @PostMapping("find/{id}")
+    @GetMapping("find/{id}")
     public R<Object> find(@PathVariable int id) {
         HashPlayEntity entity = hashPlayService.findById(id);
         return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(entity, HashPlayDto.class)).build();
+    }
+
+    @JwtIgnore
+    @Operation(summary = "findByGameId", description = "查找")
+    @GetMapping("findByGameId/{id}")
+    public R<Object> findByGameId(@PathVariable int id) {
+        List<HashPlayEntity> list = hashPlayService.findByGameId(id);
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(list, HashPlayDto.class)).build();
     }
 
 

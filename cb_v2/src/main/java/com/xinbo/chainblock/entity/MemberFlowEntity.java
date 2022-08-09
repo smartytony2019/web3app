@@ -27,9 +27,17 @@ public class MemberFlowEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+
+    /**
+     * 订单号
+     */
+    @TableField("sn")
+    private String sn;
+
     /**
      * 用户名
      */
+    @TableField("username")
     private String username;
 
     /**
@@ -53,14 +61,14 @@ public class MemberFlowEntity {
     /**
      * 帐变编码
      */
-    @TableField("item_code")
-    private Integer itemCode;
+    @TableField("item")
+    private Integer item;
 
     /**
-     * 帐变编码
+     * 帐变名称中文
      */
-    @TableField("item_code_default")
-    private String itemCodeDefault;
+    @TableField("item_zh")
+    private String itemZh;
 
     /**
      * 用户名

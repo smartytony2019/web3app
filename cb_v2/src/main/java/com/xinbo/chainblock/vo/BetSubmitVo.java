@@ -9,13 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BetSubmitVo {
 
-    private int gameId;
-
     private int playId;
 
-    private int playCodeId;
-
-    private String num;
+    private String codes;
 
     private float money;
 

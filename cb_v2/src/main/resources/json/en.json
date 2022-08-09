@@ -1,10 +1,17 @@
 {
-  "__comment1__": "-- 游戏(t_hash_game表) --",
+  "__comment0__": "-- 类目(t_category表) --",
+  "100010": "Hash",
+  "100110": "Lottery",
+  "100210": "Sport",
+
+  "__comment1__": "-- 游戏(t_game表) --",
   "200010": "Lucky Hash",
   "200110": "Hash PK10",
   "200210": "Hash Bull",
   "200310": "Hash two",
   "200410": "Hash BJL",
+  "200510": "XB Lottery",
+  "200610": "HG Sport",
 
   "__comment2__": "-- 房间(t_hash_room表) --",
   "300010": "Experience Room",

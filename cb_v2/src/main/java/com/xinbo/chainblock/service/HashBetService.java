@@ -2,6 +2,8 @@ package com.xinbo.chainblock.service;
 
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.HashBetDto;
+import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 
 import java.util.Date;
@@ -17,6 +19,8 @@ public interface HashBetService {
     HashBetDto findById(int id);
 
     boolean insert(HashBetEntity entity);
+
+    boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlowEntity);
 
     List<HashBetEntity> find(HashBetEntity entity);
 

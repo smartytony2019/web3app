@@ -68,8 +68,8 @@ public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberF
         if (!StringUtils.isEmpty(entity.getUsername())) {
             wrappers.eq(MemberFlowEntity::getUsername, entity.getUsername());
         }
-        if (!StringUtils.isEmpty(entity.getItemCode())) {
-            wrappers.eq(MemberFlowEntity::getItemCode, entity.getItemCode());
+        if (!StringUtils.isEmpty(entity.getItem())) {
+            wrappers.eq(MemberFlowEntity::getItem, entity.getItem());
         }
         return wrappers;
     }

@@ -1,8 +1,11 @@
 package com.xinbo.chainblock.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,19 +23,26 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HashBetDto {
 
     private Integer id;
 
+    /**
+     * 编号
+     */
+    private String sn;
 
     /**
      * 会员id
      */
     private Integer uid;
+
     /**
      * 会员名
      */
     private String username;
+
     /**
      * 彩种id
      */
@@ -41,14 +51,7 @@ public class HashBetDto {
     /**
      * 类目编码
      */
-    @Translate
-    private String cateNameCode;
-
-    /**
-     * 类目默认名称
-     */
-    @JsonIgnore
-    private String cateNameDefault;
+    private String cateName;
 
     /**
      * 彩种id
@@ -58,14 +61,8 @@ public class HashBetDto {
     /**
      * 彩种id
      */
-    @Translate
-    private String gameNameCode;
+    private String gameName;
 
-    /**
-     * 彩种id
-     */
-    @JsonIgnore
-    private String gameNameDefault;
 
     /**
      * 玩法id
@@ -75,41 +72,22 @@ public class HashBetDto {
     /**
      * 玩法编码
      */
-    @Translate
-    private String playNameCode;
-
-    /**
-     * 玩法编码
-     */
-    @JsonIgnore
-    private String playNameDefault;
-
-    /**
-     * 玩法编码id
-     */
-    private Integer playCodeId;
-
-    /**
-     * 玩法编码id
-     */
-    @Translate
-    private String playCodeNameCode;
-
-    /**
-     * 玩法编码id
-     */
-    @JsonIgnore
-    private String playCodeNameDefault;
+    private String playName;
 
     /**
      * 开奖结果
      */
-    private String hashResult;
+    private String hashBlockResult;
 
     /**
-     * 期号
+     * 投注内容
      */
-    private String num;
+    private String content;
+
+    /**
+     * 投注内容(中文)
+     */
+    private String contentZh;
 
     /**
      * 注单赔率
@@ -119,7 +97,19 @@ public class HashBetDto {
     /**
      * 注单金额
      */
+    private Integer betAmount;
+
+    /**
+     * 注单金额
+     */
     private Float money;
+
+
+    /**
+     * 投注金额
+     */
+    private Float moneyAmount;
+
 
     /**
      * 赢利金额
@@ -151,6 +141,6 @@ public class HashBetDto {
     /**
      * 备注
      */
-    @JsonIgnore
     private String remark;
+
 }

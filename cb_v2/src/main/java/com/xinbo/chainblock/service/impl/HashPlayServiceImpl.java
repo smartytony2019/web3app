@@ -31,6 +31,11 @@ public class HashPlayServiceImpl extends ServiceImpl<HashPlayMapper, HashPlayEnt
     }
 
     @Override
+    public List<HashPlayEntity> findByGameId(int gameId) {
+        return hashPlayMapper.selectList(this.createWrapper(HashPlayEntity.builder().gameId(gameId).build()));
+    }
+
+    @Override
     public List<HashPlayEntity> findAll() {
         return hashPlayMapper.selectList(this.createWrapper(HashPlayEntity.builder().build()));
     }

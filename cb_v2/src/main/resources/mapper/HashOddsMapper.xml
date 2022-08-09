@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.HashOddsMapper">
+
+    <select id="findByCode" resultType="com.xinbo.chainblock.entity.hash.HashOddsEntity" parameterType="java.util.List">
+        select * from t_hash_odds where code in (
+            <foreach collection="codes" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        )
+    </select>
+
+
+</mapper>

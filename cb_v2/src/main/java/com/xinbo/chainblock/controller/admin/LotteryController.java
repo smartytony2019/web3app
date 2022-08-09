@@ -22,7 +22,7 @@ import java.util.List;
 public class LotteryController {
 
     @Autowired
-    private HashGameService hashGameService;
+    private GameService gameService;
 
     @Autowired
     private HashPlayService hashPlayService;
@@ -37,7 +37,7 @@ public class LotteryController {
     @Operation(summary = "findGame", description = "游戏列表")
     @PostMapping("findGame")
     public R<Object> findGame() {
-        List<GameEntity> list = hashGameService.findAll();
+        List<GameEntity> list = gameService.findAll();
         return R.builder().code(StatusCode.SUCCESS).data(list).build();
     }
 

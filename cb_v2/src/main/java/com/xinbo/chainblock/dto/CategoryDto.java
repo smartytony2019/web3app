@@ -4,66 +4,39 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author tony
  * @date 6/25/22 4:10 下午
- * @desc file desc
+ * @desc 游戏类目
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserFlowDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CategoryDto {
 
     private Integer id;
 
     /**
-     * 用户名
-     */
-    private String username;
-
-    /**
-     * 帐变前金额
-     */
-    private Float beforeMoney;
-
-    /**
-     * 帐变后金额
-     */
-    private Float afterMoney;
-
-    /**
-     * 流水金额
-     */
-    private Float flowMoney;
-
-    /**
-     * 帐变编码
-     */
-    private Integer itemCode;
-
-    /**
-     * 帐变编码
+     * 游戏名称编码
      */
     @Translate
-    private String itemCodeDefault;
+    private String name;
 
     /**
-     * 用户名
+     * 序号
      */
-    private Date createTime;
+    private Integer sort;
 
-    /**
-     * 备注
-     */
-    private String remark;
-
+    private List<GameDto> list;
 }

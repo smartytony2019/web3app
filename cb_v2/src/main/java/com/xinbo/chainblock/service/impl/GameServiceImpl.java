@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.GameEntity;
-import com.xinbo.chainblock.mapper.HashGameMapper;
-import com.xinbo.chainblock.service.HashGameService;
+import com.xinbo.chainblock.mapper.GameMapper;
+import com.xinbo.chainblock.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -18,21 +18,21 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class HashGameServiceImpl extends ServiceImpl<HashGameMapper, GameEntity> implements HashGameService {
+public class GameServiceImpl extends ServiceImpl<GameMapper, GameEntity> implements GameService {
 
     @Autowired
-    private HashGameMapper hashGameMapper;
+    private GameMapper gameMapper;
 
 
 
     @Override
     public GameEntity findById(int id) {
-        return hashGameMapper.selectById(id);
+        return gameMapper.selectById(id);
     }
 
     @Override
     public List<GameEntity> findAll() {
-        return hashGameMapper.selectList(this.createWrapper(GameEntity.builder().build()));
+        return gameMapper.selectList(this.createWrapper(GameEntity.builder().build()));
     }
 
 

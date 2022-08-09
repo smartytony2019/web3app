@@ -9,7 +9,7 @@ import java.util.List;
  * @date 6/24/22 4:31 下午
  * @desc file desc
  */
-public interface HashGameService {
+public interface GameService {
 
     GameEntity findById(int id);
 

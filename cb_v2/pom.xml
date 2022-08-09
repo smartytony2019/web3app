@@ -27,28 +27,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-aop</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>logback-classic</artifactId>-->
-<!--                    <groupId>ch.qos.logback</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>spring-boot-starter-logging</artifactId>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>log4j-to-slf4j</artifactId>-->
-<!--                    <groupId>org.apache.logging.log4j</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -119,11 +97,6 @@
             <version>${guava.version}</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.github.dozermapper</groupId>-->
-<!--            <artifactId>dozer-core</artifactId>-->
-<!--            <version>${dozermapper.version}</version>-->
-<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/net.sf.dozer/dozer -->
         <dependency>
             <groupId>net.sf.dozer</groupId>
@@ -204,6 +177,13 @@
 <!--            <groupId>org.elasticsearch.client</groupId>-->
 <!--            <artifactId>elasticsearch-rest-high-level-client</artifactId>-->
 <!--            <version>${elasticsearch.version}</version>-->
+<!--        </dependency>-->
+
+
+        <!--     amqp    -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
 <!--        </dependency>-->
 
     </dependencies>

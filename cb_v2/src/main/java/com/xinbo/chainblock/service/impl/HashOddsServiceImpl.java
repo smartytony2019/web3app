@@ -37,6 +37,11 @@ public class HashOddsServiceImpl extends ServiceImpl<HashOddsMapper, HashOddsEnt
         return hashOddsMapper.selectList(this.createWrapper(entity));
     }
 
+    @Override
+    public List<HashOddsEntity> findByCode(List<String> codes) {
+        return hashOddsMapper.findByCode(codes);
+    }
+
 
     /**
      * 创建查询条件

@@ -1,6 +1,9 @@
 package com.xinbo.chainblock.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xinbo.chainblock.annotation.Translate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,9 +19,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HashPlayDto {
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    /**
+     * 类目id
+     */
+    private Integer cateId;
+
+    /**
+     * 类目名称编码
+     */
+    @Translate
+    private String cateName;
+
 
     /**
      * 游戏id
@@ -31,11 +48,13 @@ public class HashPlayDto {
     @Translate
     private String gameName;
 
+
     /**
      * 房间名称编码
      */
     @Translate
     private String name;
+
 
     /**
      * 最低金额
@@ -60,6 +79,5 @@ public class HashPlayDto {
     /**
      * 图片地址
      */
-    @TableField("pic")
-    private String pic;
+    private String address;
 }

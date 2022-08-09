@@ -16,4 +16,6 @@ public interface HashOddsService {
 
     List<HashOddsEntity> findByGameId(int id);
 
+    List<HashOddsEntity> findByCode(List<String> codes);
+
 }

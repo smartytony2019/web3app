@@ -13,6 +13,8 @@ public interface HashPlayService {
 
     HashPlayEntity findById(int id);
 
+    List<HashPlayEntity> findByGameId(int gameId);
+
     List<HashPlayEntity> findAll();
 
 }

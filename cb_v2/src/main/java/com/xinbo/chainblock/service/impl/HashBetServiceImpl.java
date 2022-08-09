@@ -7,13 +7,13 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.consts.ItemConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.enums.ItemEnum;
 import com.xinbo.chainblock.mapper.HashBetMapper;
 import com.xinbo.chainblock.mapper.StatisticsMapper;
 import com.xinbo.chainblock.mapper.MemberFlowMapper;
@@ -59,6 +59,35 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         return hashBetMapper.insert(entity) > 0;
     }
 
+    /**
+     * 投注入库
+     *
+     * @param bet
+     * @param member
+     * @param memberFlow
+     * @return
+     */
+    @Transactional
+    @Override
+    public boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlow) {
+        int rows = hashBetMapper.insert(bet);
+        if (rows <= 0) {
+            return false;
+        }
+
+        rows = memberMapper.increment(member);
+        if (rows <= 0) {
+            return false;
+        }
+
+        rows = memberFlowMapper.insert(memberFlow);
+        if (rows <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public List<HashBetEntity> find(HashBetEntity entity) {
         return hashBetMapper.selectList(this.createWrapper(entity));
@@ -77,7 +106,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         LambdaQueryWrapper<HashBetEntity> wrapper = this.createWrapper(entity);
-        if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
+        if (!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
             wrapper.ge(HashBetEntity::getCreateTime, start).le(HashBetEntity::getCreateTime, end);
         }
 
@@ -104,7 +133,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
             //更新会员金额
             MemberEntity memberEntity = memberMapper.selectById(bet.getUid());
             float beforeMoney = memberEntity.getMoney();
-            float afterMoney = memberEntity.getMoney()+bet.getPayoutMoney();
+            float afterMoney = memberEntity.getMoney() + bet.getPayoutMoney();
             float flowMoney = bet.getPayoutMoney();
 
             memberEntity.setMoney(bet.getPayoutMoney());
@@ -119,8 +148,8 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                     .beforeMoney(beforeMoney)
                     .afterMoney(afterMoney)
                     .flowMoney(flowMoney)
-                    .itemCode(ItemConst.LOTTERY_BET_SETTLE)
-                    .itemCodeDefault(String.valueOf(ItemConst.LOTTERY_BET_SETTLE))
+                    .item(ItemEnum.HASH_BET_SETTLE.getCode())
+                    .itemZh(ItemEnum.HASH_BET_SETTLE.getMsg())
                     .createTime(new Date())
                     .remark("")
                     .build();
@@ -162,11 +191,8 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         if (!StringUtils.isEmpty(entity.getUid()) && entity.getUid() > 0) {
             wrappers.eq(HashBetEntity::getUid, entity.getUid());
         }
-        if (!StringUtils.isEmpty(entity.getNum())) {
-            wrappers.eq(HashBetEntity::getNum, entity.getNum());
-        }
-        if (!StringUtils.isEmpty(entity.getHashResult())) {
-            wrappers.eq(HashBetEntity::getHashResult, entity.getHashResult());
+        if (!StringUtils.isEmpty(entity.getHashBlockResult())) {
+            wrappers.eq(HashBetEntity::getHashBlockResult, entity.getHashBlockResult());
         }
         if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId() > 0) {
             wrappers.eq(HashBetEntity::getGameId, entity.getGameId());

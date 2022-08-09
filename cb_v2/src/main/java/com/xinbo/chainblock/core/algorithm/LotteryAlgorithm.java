@@ -115,7 +115,7 @@ public class LotteryAlgorithm {
         String ball = stack.pop();
         List<String> result = this.ballResult(ball);
 
-        String playCodeNameDefault = lb.getPlayCodeNameDefault();
+        String playCodeNameDefault = lb.getContentZh();
         if (result.contains(playCodeNameDefault)) {
             ar.setStatus(AlgorithmCode.WIN);
         } else {
@@ -136,7 +136,7 @@ public class LotteryAlgorithm {
         String ball = stack.pop();
         List<String> result = this.ballResult(ball);
 
-        String playCodeNameDefault = lb.getPlayCodeNameDefault();
+        String playCodeNameDefault = lb.getContentZh();
         if (result.contains(playCodeNameDefault)) {
             ar.setStatus(AlgorithmCode.WIN);
         } else {
@@ -158,7 +158,7 @@ public class LotteryAlgorithm {
         String ball = stack.pop();
         List<String> result = this.ballResult(ball);
 
-        String playCodeNameDefault = lb.getPlayCodeNameDefault();
+        String playCodeNameDefault = lb.getContentZh();
         if (result.contains(playCodeNameDefault)) {
             ar.setStatus(AlgorithmCode.WIN);
         } else {
@@ -192,7 +192,7 @@ public class LotteryAlgorithm {
         result.add(sum % 2 == 0 ? SUM_EVEN : SUM_ODD);
         result.add(sum <= SUM_MIDDLE ? SUM_SMALL : SUM_BIG);
 
-        String playCodeNameDefault = lb.getPlayCodeNameDefault();
+        String playCodeNameDefault = lb.getContentZh();
         if (result.contains(playCodeNameDefault)) {
             ar.setStatus(AlgorithmCode.WIN);
         } else {
@@ -229,7 +229,7 @@ public class LotteryAlgorithm {
             result = TIGER;
         }
 
-        String playCodeNameDefault = lb.getPlayCodeNameDefault();
+        String playCodeNameDefault = lb.getContentZh();
         if (result.equals(playCodeNameDefault)) {
             ar.setStatus(AlgorithmCode.WIN);
         } else {
@@ -281,7 +281,7 @@ public class LotteryAlgorithm {
         }
 
 
-        String playCodeNameDefault = lb.getPlayCodeNameDefault();
+        String playCodeNameDefault = lb.getContentZh();
         if (result.equals(playCodeNameDefault)) {
             ar.setStatus(AlgorithmCode.WIN);
         } else {
@@ -312,7 +312,7 @@ public class LotteryAlgorithm {
         result.add(num % 2 == 0 ? NIU_EVEN : NIU_ODD);
         result.add(num >= 1 && num <= 5 ? NIU_SMALL : NIU_BIG);
 
-        String playCodeNameDefault = lb.getPlayCodeNameDefault();
+        String playCodeNameDefault = lb.getContentZh();
         if (result.contains(playCodeNameDefault)) {
             ar.setStatus(AlgorithmCode.WIN);
         } else {
