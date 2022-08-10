@@ -48,7 +48,7 @@ public class HashResultJob {
     public void result() {
         try {
             //Step 1: 获取开奖数据
-            String url = String.format("%s%s%s", terminalUrl, TrxApiConst.OPEN_RESULT, 5);
+            String url = String.format("%s%s%s", terminalUrl, TrxApiConst.RESULT_OPEN, 5);
             ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
             String body = forEntity.getBody();
             if (StringUtils.isEmpty(body)) {
@@ -65,7 +65,8 @@ public class HashResultJob {
             //Step 2: 过滤重复数据
             List<HashResultApiEntity> records = new ArrayList<>();
             for (HashResultApiEntity entity : listBaseEntity.getData()) {
-                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
+//                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
+                String key = "";
                 Boolean hasKey = redisTemplate.hasKey(key);
                 if (hasKey != null && hasKey) {
                     continue;
@@ -81,8 +82,6 @@ public class HashResultJob {
             //Step 3: 需要开奖数据
             for (HashResultApiEntity entity : records) {
                 HashResultEntity hashResultEntity = HashResultEntity.builder()
-                        .gameId(entity.getGameId())
-                        .num(entity.getNum())
                         .txID(entity.getTxID())
                         .blockHash(entity.getBlockHash())
                         .blockHeight(entity.getBlockHeight())
@@ -97,7 +96,7 @@ public class HashResultJob {
                     continue;
                 }
 
-                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
+                String key = "";
                 redisTemplate.opsForValue().set(key, "", 1L, TimeUnit.DAYS);
             }
         } catch (Exception ex) {

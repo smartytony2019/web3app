@@ -2,7 +2,7 @@ package com.xinbo.chainblock;
 
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
-import com.xinbo.chainblock.core.algorithm.LotteryAlgorithm;
+import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public class AlgorithmTest {
 
 
     @Autowired
-    private LotteryAlgorithm algorithm;
+    private HashAlgorithm algorithm;
 
     @Test
     public void tes2() {

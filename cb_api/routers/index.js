@@ -26,10 +26,12 @@ router.post('/trx/getTransactionInfo', trxController.getTransactionInfo);
 router.post('/trx/getBlockHash', trxController.getBlockHash);
 
 
-
+ 
 /*  ****** TRX API ****** */
 //- 获取开奖结果
-router.get('/result/:game_id', resultController.result);
+router.post('/result/find', resultController.find);
+//- 生成开奖结果
+router.post('/result/open', resultController.open);
 
 
 module.exports = router

@@ -172,8 +172,8 @@ public class HashBetEntity {
     private Integer status;
 
     /**
-     * 备注
+     * 算法
      */
-    @TableField("status")
-    private String remark;
+    @TableField("algorithm")
+    private String algorithm;
 }

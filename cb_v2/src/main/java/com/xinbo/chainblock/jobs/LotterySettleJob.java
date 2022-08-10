@@ -2,7 +2,7 @@ package com.xinbo.chainblock.jobs;
 
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
-import com.xinbo.chainblock.core.algorithm.LotteryAlgorithm;
+import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.service.HashResultService;
@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class LotterySettleJob {
     private MemberService memberService;
 
     @Autowired
-    private LotteryAlgorithm lotteryAlgorithm;
+    private HashAlgorithm hashAlgorithm;
 
     private static final int SIZE = 50;
 
@@ -50,7 +51,8 @@ public class LotterySettleJob {
             }
 
             //Step 2: 到彩票注单表里面拿到未结算的注单
-            List<HashBetEntity> hashBetEntityList = hashBetService.unsettle(resultEntity.getNum(), SIZE);
+//            List<HashBetEntity> hashBetEntityList = hashBetService.unsettle(resultEntity.getNum(), SIZE);
+            List<HashBetEntity> hashBetEntityList = new ArrayList<>();
 
             //Step 2.1: 如果全都已结算则更新开奖数据(t_hash_result.is_settle设置为1)
             if (CollectionUtils.isEmpty(hashBetEntityList) || hashBetEntityList.size() <= 0) {
@@ -63,7 +65,8 @@ public class LotterySettleJob {
 
             //Step 2.2: 计算输赢&构建数据
             for (HashBetEntity hashBetEntity : hashBetEntityList) {
-                AlgorithmResult settle = lotteryAlgorithm.settle(resultEntity, hashBetEntity);
+//                AlgorithmResult settle = hashAlgorithm.settle(resultEntity, hashBetEntity);
+                AlgorithmResult settle = null;
                 float profileMoney = 0, payoutMoney = 0;
                 if (settle.getStatus() == AlgorithmCode.WIN) {
                     profileMoney = hashBetEntity.getMoney() * hashBetEntity.getOdds() - hashBetEntity.getMoney();

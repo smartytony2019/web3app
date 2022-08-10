@@ -2,9 +2,12 @@ package com.xinbo.chainblock.controller.api;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
+import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashOddsEntity;
@@ -19,6 +22,8 @@ import com.xinbo.chainblock.vo.BetSubmitVo;
 import com.xinbo.chainblock.vo.BetVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -46,6 +51,12 @@ public class HashBetController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private TrxApi trxApi;
 
     @JwtIgnore
     @Operation(summary = "submit")
@@ -102,9 +113,10 @@ public class HashBetController {
             }
 
             //********************************************************************************
-            //Step 2: 构造数据
+            // Step 2: 构造数据
+            // Step 2.1: 注单表
             String sn = IdUtil.getSnowflake().nextIdStr();
-            HashBetEntity entity = HashBetEntity.builder()
+            HashBetEntity bet = HashBetEntity.builder()
                     .sn(sn)
                     .uid(memberEntity.getId())
                     .username(memberEntity.getUsername())
@@ -125,10 +137,11 @@ public class HashBetController {
                     .moneyAmount(moneyAmount)
                     .createTime(new Date())
                     .updateTime(new Date())
+                    .algorithm(playEntity.getAlgorithm())
                     .build();
-//            boolean isSuccess = hashBetService.insert(entity);
 
 
+            // Step 2.2: 会员表
             MemberEntity member = MemberEntity.builder()
                     .money(moneyAmount)
                     .id(memberEntity.getId())
@@ -136,6 +149,7 @@ public class HashBetController {
                     .build();
 
 
+            // Step 2.3: 会员流水表
             MemberFlowEntity memberFlow = MemberFlowEntity.builder()
                     .sn(sn)
                     .username(memberEntity.getUsername())
@@ -147,16 +161,21 @@ public class HashBetController {
                     .createTime(new Date())
                     .build();
 
-            boolean isSuccess = hashBetService.bet(entity, member, memberFlow);
-
-            if (isSuccess) {
-                r.setCode(StatusCode.SUCCESS);
-                r.setData(sn);
+            boolean isSuccess = trxApi.resultOpen(sn, 1);
+            if(!isSuccess) {
+                throw new BusinessException(1000, "终端生成开奖结果失败");
             }
+
+            isSuccess = hashBetService.bet(bet, member, memberFlow);
+            if (!isSuccess) {
+                throw new BusinessException(1000, "数据库操作失败");
+            }
+
+            return R.builder().code(StatusCode.SUCCESS).data(sn).build();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return R.builder().code(StatusCode.FAILURE).data(ex.getMessage()).build();
         }
-        return r;
     }
 
 

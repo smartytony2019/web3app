@@ -70,16 +70,19 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     @Transactional
     @Override
     public boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlow) {
+        // 插入注单
         int rows = hashBetMapper.insert(bet);
         if (rows <= 0) {
             return false;
         }
 
+        // 加减会员金额
         rows = memberMapper.increment(member);
         if (rows <= 0) {
             return false;
         }
 
+        // 添加会员流水
         rows = memberFlowMapper.insert(memberFlow);
         if (rows <= 0) {
             return false;
@@ -115,8 +118,8 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     }
 
     @Override
-    public List<HashBetEntity> unsettle(String num, int size) {
-        return hashBetMapper.unsettle(num, size);
+    public HashBetEntity unsettle() {
+        return hashBetMapper.unsettle();
     }
 
     @Transactional
@@ -175,6 +178,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
 
         return true;
     }
+
 
 
     /**

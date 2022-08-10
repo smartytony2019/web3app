@@ -28,7 +28,8 @@ public interface HashBetService {
 
     BasePage findPage(HashBetEntity entity, long current, long size, Date start, Date end);
 
-    List<HashBetEntity> unsettle(String num, int size);
+    HashBetEntity unsettle();
 
     boolean settle(List<HashBetEntity> list);
+
 }

@@ -2,9 +2,15 @@
 let sqlite = require("../utils/sqlite3Util")
 
 module.exports = {
-  async query(game_id) {
-    let query = `select * from t_hash_result where game_id = ${game_id} order by num desc limit 5`;
-    let result = await sqlite.all(query);
+  async find(sn) {
+    let query = `select * from t_hash_result where sn = '${sn}' limit 1`;
+    let result = await sqlite.get(query);
     return result;
-  }
+  },
+  async insert(params) {
+    let sql = `insert into t_hash_result(sn, merchant_id, block_height, txID) values ('${params.sn}', ${params.merchant_id}, '', '')`;
+    let result = await sqlite.run(sql);
+    return result;
+  },
 }
+ 

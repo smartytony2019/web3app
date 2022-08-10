@@ -138,9 +138,4 @@ public class HashBetDto {
      */
     private Integer status;
 
-    /**
-     * 备注
-     */
-    private String remark;
-
 }

@@ -29,6 +29,7 @@ public interface TrxApiConst {
     //获取交易记录
     String GET_TRANSACTIONS_RECORD = "%s/accounts/%s/transactions/trc20?only_confirmed=true&only_to=true&limit=200&min_timestamp=%s";
 
-    String OPEN_RESULT = "/result/";
+    String RESULT_OPEN = "/result/open";
 
+    String RESULT_FIND = "/result/find";
 }

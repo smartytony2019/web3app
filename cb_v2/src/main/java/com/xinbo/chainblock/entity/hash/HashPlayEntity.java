@@ -101,4 +101,10 @@ public class HashPlayEntity {
      */
     @TableField("address")
     private String address;
+
+    /**
+     * 算法
+     */
+    @TableField("algorithm")
+    private String algorithm;
 }
