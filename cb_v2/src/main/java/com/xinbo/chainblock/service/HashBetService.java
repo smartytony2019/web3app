@@ -5,6 +5,7 @@ import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashResultEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,7 @@ public interface HashBetService {
 
     boolean insert(HashBetEntity entity);
 
-    boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlowEntity);
+    boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlowEntity, HashResultEntity result);
 
     List<HashBetEntity> find(HashBetEntity entity);
 
@@ -30,6 +31,7 @@ public interface HashBetService {
 
     HashBetEntity unsettle();
 
-    boolean settle(List<HashBetEntity> list);
+    boolean settle(HashBetEntity bet, HashResultEntity result);
 
+    HashBetEntity findOrder(String sn);
 }

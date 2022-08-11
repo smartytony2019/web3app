@@ -60,6 +60,35 @@ module.exports = {
 
 
   /**
+   * 合约转帐
+   * @param {String} contractAddress 合约地址
+   * @param {String} amount 金额
+   * @param {String} toAddress 收款帐户
+   * @param {String} privateKey 私钥
+   * @returns Object
+   */
+   async transferTo(contractAddress, amount, toAddress, privateKey) {
+    let result = null;
+    try {
+
+      // 设置私钥
+      tronWeb.setPrivateKey(privateKey)
+
+      // 获取合约实例
+      let contract = await tronWeb.contract().at(contractAddress);
+
+      // 转帐交易
+      let hash = await contract.transferTo(toAddress, amount).send();
+
+      result = hash;
+    } catch (error) {
+      console.error("transferTo error", error);
+    }
+    return result;
+  },
+
+
+  /**
    * TRX转帐
    * @param {String} fromAddress 转款帐户
    * @param {String} amount 金额
@@ -171,6 +200,22 @@ module.exports = {
       result = await tronWeb.trx.getBlock(blockHeight);
     }catch(error) {
       console.error("getBlockHash error", error);
+    }
+    return result;
+  },
+
+  /**
+   * 获取事件信息
+   * @param {String} contractAddress 合约地址
+   * @param {String} eventName 事件名称
+   * @returns Array
+   */
+  async getEventResult(contractAddress, eventName) {
+    let result = null;
+    try {
+      result = await tronWeb.getEventResult(contractAddress, {eventName: eventName, size: 10})
+    }catch(error) {
+      console.error("getEventResult error", error);
     }
     return result;
   },

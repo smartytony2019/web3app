@@ -8,7 +8,7 @@ module.exports = {
     return result;
   },
   async insert(params) {
-    let sql = `insert into t_hash_result(sn, merchant_id, block_height, txID) values ('${params.sn}', ${params.merchant_id}, '', '')`;
+    let sql = `insert into t_hash_result(sn, to_address, block_height, txID) values ('${params.sn}', '${params.toAddress}', '', '')`;
     let result = await sqlite.run(sql);
     return result;
   },

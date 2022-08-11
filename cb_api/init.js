@@ -11,7 +11,7 @@
     let result = await sqlite.hasTable(query);
     if(result == false) {
         //query = 'CREATE TABLE t_hash_block(sn varchar(100), merchant_id int, num varchar(10), end_time varchar(20), end_timestamp int)';
-        query = 'CREATE TABLE t_hash_result(sn varchar(100), merchant_id int, txID varchar(70), block_hash varchar(70), block_height varchar(70), open_time timestamp, open_timestamp bigint, network varchar(20))';
+        query = 'CREATE TABLE t_hash_result(sn varchar(100), to_address varchar(100), txID varchar(70), block_hash varchar(70), block_height varchar(70), open_time timestamp, open_timestamp bigint, network varchar(20))';
         var r = await sqlite.run(query)
         if(r) console.log("t_hash_result table created")
     }

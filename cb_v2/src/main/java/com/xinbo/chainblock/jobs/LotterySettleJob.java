@@ -77,11 +77,11 @@ public class LotterySettleJob {
                 }
                 hashBetEntity.setProfitMoney(profileMoney);
                 hashBetEntity.setPayoutMoney(payoutMoney);
-                hashBetEntity.setHashBlockResult(resultEntity.getBlockHash());
+                hashBetEntity.setHashResult(resultEntity.getBlockHash());
             }
 
             //Step 3: 更新数据库 @todo
-            hashBetService.settle(hashBetEntityList);
+//            hashBetService.settle(hashBetEntityList);
 
 
             System.out.println("@Scheduled" + new Date());

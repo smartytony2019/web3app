@@ -4,6 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
+import com.xinbo.chainblock.consts.BetStatus;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
@@ -12,6 +13,7 @@ import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 import com.xinbo.chainblock.entity.hash.HashPlayEntity;
+import com.xinbo.chainblock.entity.hash.HashResultEntity;
 import com.xinbo.chainblock.enums.ItemEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.*;
@@ -31,14 +33,19 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController("ApiHashBetController")
 @RequestMapping("/api/hashBet")
 public class HashBetController {
 
     @Autowired
-    private GameService gameService;
+    private WalletService walletService;
+
+    @Autowired
+    private HashResultService hashResultService;
 
     @Autowired
     private HashPlayService hashPlayService;
@@ -61,10 +68,8 @@ public class HashBetController {
     @JwtIgnore
     @Operation(summary = "submit")
     @PostMapping("submit")
-    public R<Object> submit(@RequestBody @Valid BetSubmitVo vo) {
-        R<Object> r = R.builder().code(StatusCode.FAILURE).build();
-
-        try {
+    public R<Object> submit(@RequestBody @Valid BetSubmitVo vo) throws BusinessException {
+       try {
             //********************************************************************************
             //Step 1: 判断数据是否合法
             if (StringUtils.isEmpty(vo.getPlayId()) || vo.getPlayId() <= 0) {
@@ -80,7 +85,7 @@ public class HashBetController {
             }
 
             MemberEntity jwt = MemberEntity.builder()
-                    .username("jackC")
+                    .username("jackB2")
                     .id(3)
                     .version(1)
                     .build();
@@ -99,6 +104,11 @@ public class HashBetController {
             MemberEntity memberEntity = memberService.findById(jwt.getId());
             if (ObjectUtils.isEmpty(memberEntity) || memberEntity.getId() <= 0) {
                 throw new BusinessException(0, "会员不存在");
+            }
+
+            WalletEntity walletEntity = walletService.findByUid(memberEntity.getId());
+            if (ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
+                throw new BusinessException(0, "数字钱包不存在");
             }
 
             //投注数量
@@ -154,19 +164,28 @@ public class HashBetController {
                     .sn(sn)
                     .username(memberEntity.getUsername())
                     .beforeMoney(memberEntity.getMoney())
-                    .afterMoney(memberEntity.getMoney()+moneyAmount)
+                    .afterMoney(memberEntity.getMoney() + moneyAmount)
                     .flowMoney(moneyAmount)
                     .item(ItemEnum.HASH_BET.getCode())
                     .itemZh(ItemEnum.HASH_BET.getMsg())
                     .createTime(new Date())
                     .build();
 
-            boolean isSuccess = trxApi.resultOpen(sn, 1);
-            if(!isSuccess) {
+
+           HashResultEntity result = HashResultEntity.builder()
+                   .sn(bet.getSn())
+                   .toAddress(walletEntity.getAddressBase58())
+                   .gameId(playEntity.getGameId())
+                   .uid(memberEntity.getId())
+                   .username(memberEntity.getUsername())
+                   .build();
+
+            boolean isSuccess = trxApi.resultOpen(sn, walletEntity.getAddressBase58());
+            if (!isSuccess) {
                 throw new BusinessException(1000, "终端生成开奖结果失败");
             }
 
-            isSuccess = hashBetService.bet(bet, member, memberFlow);
+            isSuccess = hashBetService.bet(bet, member, memberFlow, result);
             if (!isSuccess) {
                 throw new BusinessException(1000, "数据库操作失败");
             }
@@ -179,6 +198,21 @@ public class HashBetController {
     }
 
 
+    @JwtIgnore
+    @Operation(summary = "findOrder", description = "查询订单")
+    @GetMapping("findOrder/{sn}")
+    public R<Object> findOrder(@PathVariable String sn) {
+        HashBetEntity order = hashBetService.findOrder(sn);
+        if(!ObjectUtils.isEmpty(order) && order.getStatus() == BetStatus.SETTLE) {
+            // 说明已开奖
+//            hashResultService.find
+
+        }
+        return R.builder().code(StatusCode.SUCCESS).data(order.getFlag()).build();
+    }
+
+
+    @JwtIgnore
     @Operation(summary = "find", description = "获取注单")
     @PostMapping("find")
     public R<Object> find(@RequestBody BetVo vo) {

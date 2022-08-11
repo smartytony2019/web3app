@@ -88,7 +88,6 @@ public class HashResultJob {
                         .openTime(entity.getOpenTime())
                         .openTimestamp(entity.getOpenTimestamp())
                         .network(entity.getNetwork())
-                        .isSettle(false)
                         .build();
 
                 boolean isSuccess = hashResultService.insert(hashResultEntity);

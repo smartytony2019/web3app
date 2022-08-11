@@ -77,7 +77,7 @@ public class HashBetDto {
     /**
      * 开奖结果
      */
-    private String hashBlockResult;
+    private String hashResult;
 
     /**
      * 投注内容
@@ -132,6 +132,11 @@ public class HashBetDto {
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+    /**
+     * 标记(1:赢, 2:输, 3: 和)
+     */
+    private Integer flag;
 
     /**
      * 状态(0:未结算,1:已结算,2:作废)

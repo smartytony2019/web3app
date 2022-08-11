@@ -11,17 +11,17 @@ public interface AlgorithmCode {
     /**
      * 输
      */
-    int LOST = 0;
+    int LOST = 1;
 
     /**
      * 赢
      */
-    int WIN = 1;
+    int WIN = 2;
 
     /**
      * 平
      */
-    int DRAW = 2;
+    int DRAW = 3;
 
 
 }

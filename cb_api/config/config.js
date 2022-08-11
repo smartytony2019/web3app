@@ -11,7 +11,7 @@ module.exports = {
       eventServer   : 'https://event.nileex.io/',
       fromAddress: 'TSpbRADBCTZCNNTwqzoHVQoRHyuRYiyu5y',
       toAddress  : 'TPYXWcPZ9DC9R4PvQniTPSjUegUyBD3kJJ',
-      contractAddress: 'TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR',
+      contractAddress: 'TQcF1rd1BiSFm7F5S6QsZNGZ2vp2rho846',
       privateKey : '0d35dba8af935d575924cd0d3afd2479248de12aa0f13f547e2e9debcdd025c5'
     }
   },

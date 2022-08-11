@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tony
@@ -219,16 +221,16 @@ public class TrxApi {
     /**
      * 开奖
      * @param sn
-     * @param merchantId
+     * @param toAddress
      * @return
      */
-    public boolean resultOpen(String sn, int merchantId) {
+    public boolean resultOpen(String sn, String toAddress) {
         boolean result = false;
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.RESULT_OPEN);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("sn", sn);
-            jsonObject.put("merchant_id", merchantId);
+            jsonObject.put("toAddress", toAddress);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
 
             BaseEntity<Boolean> entity = JSON.parseObject(res, new TypeReference<BaseEntity<Boolean>>() {});

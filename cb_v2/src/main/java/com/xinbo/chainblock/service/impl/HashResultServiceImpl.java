@@ -52,11 +52,8 @@ public class HashResultServiceImpl extends ServiceImpl<HashResultMapper, HashRes
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
-        if (!StringUtils.isEmpty(entity.getNum())) {
-            wrappers.eq(HashResultEntity::getNum, entity.getNum());
-        }
-        if (!StringUtils.isEmpty(entity.getIsSettle())) {
-            wrappers.eq(HashResultEntity::getIsSettle, entity.getIsSettle());
+        if (!StringUtils.isEmpty(entity.getSn())) {
+            wrappers.eq(HashResultEntity::getSn, entity.getSn());
         }
         return wrappers;
     }

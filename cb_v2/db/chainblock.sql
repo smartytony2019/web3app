@@ -72,25 +72,25 @@ insert into cb_v2.t_hash_play(`cate_id`,`cate_name`,`cate_name_zh`, `game_id`, `
 ('1', '100010', '哈希', 1, '200010', '哈希两面', '300012', '中级房', '100', '10000', 1.95, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000'),
 ('1', '100010', '哈希', 1, '200010', '哈希两面', '300013', '高级房', '1000', '20000', 1.95, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000'),
 
-('1', '100010', '哈希', 5, '200110', '哈希百家乐', '300010', '体验房', '0', '200', 1.95, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
-('1', '100010', '哈希', 5, '200110', '哈希百家乐', '300011', '初级房', '50', '5000', 1.95, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
-('1', '100010', '哈希', 5, '200110', '哈希百家乐', '300012', '中级房', '100', '10000', 1.95, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
-('1', '100010', '哈希', 5, '200110', '哈希百家乐', '300013', '高级房', '1000', '20000', 1.95, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
+('1', '100010', '哈希', 2, '200110', '哈希百家乐', '300010', '体验房', '0', '200', 1.95, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
+('1', '100010', '哈希', 2, '200110', '哈希百家乐', '300011', '初级房', '50', '5000', 1.95, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
+('1', '100010', '哈希', 2, '200110', '哈希百家乐', '300012', '中级房', '100', '10000', 1.95, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
+('1', '100010', '哈希', 2, '200110', '哈希百家乐', '300013', '高级房', '1000', '20000', 1.95, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '2000'),
 
-('1', '100010', '哈希', 2, '200210', '哈希PK拾', '300010', '体验房', '0', '200', 1.98, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
-('1', '100010', '哈希', 2, '200210', '哈希PK拾', '300011', '初级房', '50', '5000', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
-('1', '100010', '哈希', 2, '200210', '哈希PK拾', '300012', '中级房', '100', '10000', 1.98, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
-('1', '100010', '哈希', 2, '200210', '哈希PK拾', '300013', '高级房', '1000', '20000', 1.98, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
-                                                                                                                                                                                              ('1', '100010', '哈希', 1, '200010', '幸运哈希', '300010', '体验房', '0', '200', 1.98, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000'),
-('1', '100010', '哈希', 1, '200310', '幸运哈希', '300010', '体验房', '0', '200', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
-('1', '100010', '哈希', 1, '200310', '幸运哈希', '300011', '初级房', '0', '200', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
-('1', '100010', '哈希', 1, '200310', '幸运哈希', '300012', '中级房', '0', '200', 1.98, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
-('1', '100010', '哈希', 1, '200310', '幸运哈希', '300013', '高级房', '0', '200', 1.98, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
+('1', '100010', '哈希', 3, '200210', '哈希PK拾', '300010', '体验房', '0', '200', 1.98, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
+('1', '100010', '哈希', 3, '200210', '哈希PK拾', '300011', '初级房', '50', '5000', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
+('1', '100010', '哈希', 3, '200210', '哈希PK拾', '300012', '中级房', '100', '10000', 1.98, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
+('1', '100010', '哈希', 3, '200210', '哈希PK拾', '300013', '高级房', '1000', '20000', 1.98, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000'),
 
-('1', '100010', '哈希', 3, '200410', '哈希牛牛', '300010', '体验房', '0', '200', 1.98, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000'),
-('1', '100010', '哈希', 3, '200410', '哈希牛牛', '300011', '初级房', '50', '5000', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000'),
-('1', '100010', '哈希', 3, '200410', '哈希牛牛', '300012', '中级房', '100', '10000', 1.98, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000'),
-('1', '100010', '哈希', 3, '200410', '哈希牛牛', '300013', '高级房', '1000', '20000', 1.98, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000')
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300010', '体验房', '0', '200', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300011', '初级房', '0', '200', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300012', '中级房', '0', '200', 1.98, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
+('1', '100010', '哈希', 4, '200310', '幸运哈希', '300013', '高级房', '0', '200', 1.98, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000'),
+
+('1', '100010', '哈希', 5, '200410', '哈希牛牛', '300010', '体验房', '0', '200', 1.98, 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000'),
+('1', '100010', '哈希', 5, '200410', '哈希牛牛', '300011', '初级房', '50', '5000', 1.98, 2, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000'),
+('1', '100010', '哈希', 5, '200410', '哈希牛牛', '300012', '中级房', '100', '10000', 1.98, 3, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000'),
+('1', '100010', '哈希', 5, '200410', '哈希牛牛', '300013', '高级房', '1000', '20000', 1.98, 4, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000')
 ;
 
 
@@ -145,6 +145,24 @@ insert into cb_v2.t_hash_odds(`game_id`, `name`,`name_zh`, `odds`, `code`) value
 
 
 
+drop table if exists t_hash_result;
+CREATE TABLE t_hash_result(
+    id int primary key auto_increment,
+    uid int(20) comment '会员id',
+    username varchar(50) comment '会员名',
+    game_id int(5) comment '游戏id',
+    sn varchar(100) comment '编号',
+    to_address varchar(100) comment '会员数字钱包',
+    txID varchar(70) comment '交易id',
+    block_hash varchar(70) comment '块哈希',
+    block_height varchar(70) comment '块高',
+    open_time timestamp comment '开奖时间',
+    open_timestamp bigint comment '开奖时间戳',
+    network varchar(20) comment '网络',
+    UNIQUE KEY unique_sn (sn)
+) comment '哈希开奖表';
+
+
 
 
 drop table if exists t_hash_bet;
@@ -162,7 +180,7 @@ create table t_hash_bet (
     play_id int comment '玩法编号',
     play_name varchar(50) comment '玩法编码',
     play_name_zh varchar(50) comment '玩法名称(中文)',
-    hash_block_result varchar(80) comment '开奖结果',
+    hash_result varchar(80) comment '开奖结果',
     content varchar(100) comment '投注内容',
     content_zh varchar(100) comment '投注内容(中文)',
     odds decimal(10,4) comment '赔率',
@@ -173,6 +191,7 @@ create table t_hash_bet (
     payout_money decimal(10,4) comment '派彩金额',
     create_time timestamp null default null comment '创建时间',
     update_time timestamp null default null comment '更新时间',
+    flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
     algorithm varchar(10) comment '算法'
 ) comment '哈希注单';
@@ -322,11 +341,11 @@ create table t_wallet(
 ) comment '钱包';
 
 insert into cb_v2.t_wallet(uid, username, type, private_key, public_key, address_base58, address_hex) values
-(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
-(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
-(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
-(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
-(1, 'jack1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68')
+(1, 'jack', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(2, 'jackB1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(3, 'jackB2', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(4, 'jackC1', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68'),
+(5, 'jackC2', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68')
 ;
 
 

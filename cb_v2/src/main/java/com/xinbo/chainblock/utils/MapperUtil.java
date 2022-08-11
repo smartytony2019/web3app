@@ -7,6 +7,7 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
@@ -75,7 +76,7 @@ public class MapperUtil {
 
 
     private static <T> T translate(T t) {
-        String language = StringUtils.isEmpty(request.getHeader("language")) ? GlobalConst.DEFAULT_LANGUAGE : request.getHeader("language");
+        String language = ObjectUtils.isEmpty(request) || StringUtils.isEmpty(request.getHeader("language")) ? GlobalConst.DEFAULT_LANGUAGE : request.getHeader("language");
         Field[] fields = t.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) { // 遍历字段数组
             fields[i].setAccessible(true);  // 将当前字段设置为可访问，不然后面就会报错

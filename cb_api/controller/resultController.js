@@ -14,11 +14,11 @@ module.exports = {
     async open (ctx) {
       let data = ctx.request.body
       let sn = data.sn
-      let merchant_id = data.merchant_id
+      let toAddress = data.toAddress
 
       const params = {
         sn,
-        merchant_id
+        toAddress
       }
       let result = await resultModel.insert(params)
       ctx.body = R.success(result)

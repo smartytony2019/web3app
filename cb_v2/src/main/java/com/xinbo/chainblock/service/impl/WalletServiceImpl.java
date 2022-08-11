@@ -52,6 +52,9 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> i
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
+        if (!StringUtils.isEmpty(entity.getUid())) {
+            wrappers.eq(WalletEntity::getUid, entity.getUid());
+        }
         if (!StringUtils.isEmpty(entity.getUsername())) {
             wrappers.eq(WalletEntity::getUsername, entity.getUsername());
         }

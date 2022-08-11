@@ -331,7 +331,7 @@ public class HashAlgorithm {
      * @param bet
      * @return
      */
-    private AlgorithmResult hashComb(HashResultApiEntity hashResult, HashBetEntity bet) {
+    private AlgorithmResult hashComb(HashResultEntity hashResult, HashBetEntity bet) {
         AlgorithmResult ar = AlgorithmResult.builder().status(AlgorithmCode.LOST).build();
 
         String content = bet.getContentZh();
@@ -356,7 +356,7 @@ public class HashAlgorithm {
      * @param bet
      * @return
      */
-    private AlgorithmResult hashBjl(HashResultApiEntity hashResult, HashBetEntity bet) {
+    private AlgorithmResult hashBjl(HashResultEntity hashResult, HashBetEntity bet) {
         AlgorithmResult ar = AlgorithmResult.builder().status(AlgorithmCode.LOST).build();
 
         String content = bet.getContentZh();
@@ -400,7 +400,7 @@ public class HashAlgorithm {
      * @param bet
      * @return
      */
-    private AlgorithmResult hashPK10(HashResultApiEntity hashResult, HashBetEntity bet) {
+    private AlgorithmResult hashPK10(HashResultEntity hashResult, HashBetEntity bet) {
         AlgorithmResult ar = AlgorithmResult.builder().status(AlgorithmCode.LOST).build();
 
         String content = bet.getContentZh();
@@ -424,7 +424,7 @@ public class HashAlgorithm {
      * @param bet
      * @return
      */
-    private AlgorithmResult luckyHash(HashResultApiEntity hashResult, HashBetEntity bet) {
+    private AlgorithmResult luckyHash(HashResultEntity hashResult, HashBetEntity bet) {
         AlgorithmResult ar = AlgorithmResult.builder().status(AlgorithmCode.LOST).build();
 
         Stack<String> stack = this.split(hashResult.getBlockHash(), false, 2);
@@ -445,7 +445,7 @@ public class HashAlgorithm {
      * @param bet
      * @return
      */
-    private AlgorithmResult hashBull(HashResultApiEntity hashResult, HashBetEntity bet) {
+    private AlgorithmResult hashBull(HashResultEntity hashResult, HashBetEntity bet) {
         AlgorithmResult ar = AlgorithmResult.builder().status(AlgorithmCode.LOST).build();
 
         Stack<String> stack = this.split(hashResult.getBlockHash(), false, 5);
@@ -494,7 +494,7 @@ public class HashAlgorithm {
     }
 
 
-    public AlgorithmResult settle(HashResultApiEntity hashResult, HashBetEntity bet) {
+    public AlgorithmResult settle(HashResultEntity hashResult, HashBetEntity bet) {
         switch (bet.getAlgorithm()) {
             case "1000":    //哈希两面
                 return this.hashComb(hashResult, bet);

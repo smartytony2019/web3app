@@ -4,13 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.xinbo.chainblock.core.TrxApi;
+import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashResultEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
 import com.xinbo.chainblock.service.HashBetService;
+import com.xinbo.chainblock.utils.MapperUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Date;
 
 /**
  * @author tony
@@ -49,7 +54,6 @@ public class BetTest {
 
     @Test
     public void test01() {
-
         // Step 1: 未结算数据
         HashBetEntity bet = hashBetService.unsettle();
         if(ObjectUtils.isEmpty(bet) || bet.getId() <= 0) {
@@ -58,19 +62,33 @@ public class BetTest {
         }
 
         // Step 2: 生成开奖
-        HashResultApiEntity result = trxApi.resultFind(bet.getSn());
-        if(ObjectUtils.isEmpty(result) || StringUtils.isEmpty(result.getBlockHash())) {
+        HashResultApiEntity hashResult = trxApi.resultFind(bet.getSn());
+        if(ObjectUtils.isEmpty(hashResult) || StringUtils.isEmpty(hashResult.getBlockHash())) {
             return;
         }
+        HashResultEntity result = MapperUtil.to(hashResult, HashResultEntity.class);
 
         // Step 3: 结算
         AlgorithmResult algorithmResult = hashAlgorithm.settle(result, bet);
+        float profileMoney = 0, payoutMoney = 0;
+        if(algorithmResult.getStatus() == AlgorithmCode.WIN) {
+            profileMoney = bet.getMoney() * bet.getOdds() - bet.getMoney();
+            payoutMoney = bet.getMoney() + profileMoney;
+        } else if(algorithmResult.getStatus() == AlgorithmCode.LOST) {
+            profileMoney = bet.getMoney() * -1;
+            payoutMoney = 0;
+        } else {
+        }
+        bet.setFlag(algorithmResult.getStatus());
+        bet.setStatus(1);
+        bet.setProfitMoney(profileMoney);
+        bet.setPayoutMoney(payoutMoney);
+        bet.setHashResult(result.getBlockHash());
+        bet.setUpdateTime(new Date());
 
 
-
-        // Step 4: 派奖
-
-        // Step 5: 统计
+        // Step 4: 数据库操作
+        hashBetService.settle(bet, result);
     }
 
 }

@@ -239,14 +239,73 @@ const Web3 = require('web3');
     //let contractAddress = '412ecde7f620e4106c4904308ce4a12c7703d57307';
 
     // console.log(instance.address.toHex('TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR'))
-    let contractAddress = 'TZ4FhfFGWz2Bei7ixX4UT9dj91NqoHTWBR';
-    // let contractAddress = instance.address.toHex('TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR');
-    // console.log(contractAddress);
 
-    let trx = new Trx(instance,contractAddress);
 
-    let tmp = await instance.trx.getBlock(27464550);
-    console.log(tmp);
+    let tronWeb = instance;
+    let contractAddress = 'TQcF1rd1BiSFm7F5S6QsZNGZ2vp2rho846';
+
+    tronWeb.setPrivateKey('0d35dba8af935d575924cd0d3afd2479248de12aa0f13f547e2e9debcdd025c5')
+    let contract = await tronWeb.contract().at(contractAddress);
+
+    // 查询合约余额
+    // let t1 = await contract.getBalanceOfContract().call();
+    // console.log(t1.toNumber());
+
+    let callback = (info) => {
+      console.log('callback',info);
+    };
+    let to_address = 'TPYXWcPZ9DC9R4PvQniTPSjUegUyBD3kJJ';
+    // console.log('watching', to_address);
+    // contract.Transfer().watch((err, res) => {
+    //   console.log('res', res);
+    //   if(res && res.transaction && res.transaction === txID) {
+    //     callback(res);
+    //     return;
+    //   }
+    // })
+    let hash = await contract.transferTo(to_address, 1000).send();
+    console.log(hash);
+
+    let i = 0;
+    let checkConfirm = async()=>{
+      if(i>9){
+        clearInterval(timer)
+      }
+
+      let res = await tronWeb.getEventResult(contractAddress, {eventName:"Transfer",size:10})
+      let checkEvent = async () => {
+        return new Promise((resolve, reject) => {
+          for(let t = 0; t < res.length; t++ ){
+            if(hash === res[t].transaction){
+              clearInterval(timer)
+              resolve(res[t])
+            }
+          }
+          if(i === 10){
+            resolve(null)
+          }
+        });
+      }
+      let event = await checkEvent()
+      if(event !== null){
+        console.log('event',event)
+      } else{
+        console.log("出错啦！请刷新后重试！")
+      }
+
+      i += 1;
+    };
+    let timer = setInterval(checkConfirm, 2000)
+
+    
+
+    // let trx = new Trx(instance, contractAddress);
+
+
+
+
+    // let tmp = await instance.trx.getBlock(27464550);
+    // console.log(tmp);
 
     // trx.info();
 

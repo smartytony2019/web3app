@@ -26,6 +26,9 @@ public class HashResultApiEntity {
     @JSONField(name="merchant_id")
     private Integer merchantId;
 
+    @JSONField(name="to_address")
+    private String toAddress;
+
     @JSONField(name="txID")
     private String txID;
 

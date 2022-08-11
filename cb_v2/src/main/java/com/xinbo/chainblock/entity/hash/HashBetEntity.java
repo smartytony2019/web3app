@@ -101,8 +101,8 @@ public class HashBetEntity {
     /**
      * 开奖结果
      */
-    @TableField("hash_block_result")
-    private String hashBlockResult;
+    @TableField("hash_result")
+    private String hashResult;
 
     /**
      * 投注内容
@@ -164,6 +164,12 @@ public class HashBetEntity {
      */
     @TableField("update_time")
     private Date updateTime;
+
+    /**
+     * 标记(1:赢, 2:输, 3: 和)
+     */
+    @TableField("flag")
+    private Integer flag;
 
     /**
      * 状态(0:未结算,1:已结算,2:作废)
