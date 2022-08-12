@@ -40,7 +40,7 @@ public class HashBetSettleJob {
     private HashAlgorithm hashAlgorithm;
 
 
-    @Scheduled(cron = "0/3 * * * * ?")
+    @Scheduled(cron = "0/2 * * * * ?")
     public void settle() {
         try {
             System.out.println("@Scheduled start---> " + new Date());
@@ -66,6 +66,7 @@ public class HashBetSettleJob {
                     .network(hashResult.getNetwork())
                     .build();
 
+
             // Step 3: 结算
             AlgorithmResult algorithmResult = hashAlgorithm.settle(result, bet);
             float profileMoney = 0, payoutMoney = 0;
@@ -77,6 +78,8 @@ public class HashBetSettleJob {
                 payoutMoney = 0;
             } else {
             }
+            result.setFlag(algorithmResult.getStatus());
+
             bet.setFlag(algorithmResult.getStatus());
             bet.setStatus(1);
             bet.setProfitMoney(profileMoney);

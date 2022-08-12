@@ -176,6 +176,7 @@ public class HashBetController {
                    .sn(bet.getSn())
                    .toAddress(walletEntity.getAddressBase58())
                    .gameId(playEntity.getGameId())
+                   .playId(playEntity.getId())
                    .uid(memberEntity.getId())
                    .username(memberEntity.getUsername())
                    .build();
@@ -222,20 +223,13 @@ public class HashBetController {
     }
 
 
+    @JwtIgnore
     @Operation(summary = "findPage", description = "获取注单")
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
         BasePage basePage = hashBetService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
-    }
-
-
-    @Operation(summary = "test", description = "获取注单")
-    @GetMapping("test/{language}/{key}")
-    public R<Object> test(@PathVariable("language") String language, @PathVariable("key") String key) {
-        String values = CommonUtils.translate(language, key);
-        return R.builder().code(StatusCode.SUCCESS).data(values).build();
     }
 
 }

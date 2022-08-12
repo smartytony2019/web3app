@@ -120,14 +120,14 @@ class Result {
 
 
 //开奖
-schedule.scheduleJob('0/3 * * * * *', async function(){
+schedule.scheduleJob('0/2 * * * * *', async function(){
   let result = new Result();
   await result.open();
 });
 
 
 //***********************  查询块信息  ***********************
-schedule.scheduleJob('0/3 * * * * *', async function() {
+schedule.scheduleJob('0/2 * * * * *', async function() {
   let result = new Result();
   await result.queryBlockInfo();
 });

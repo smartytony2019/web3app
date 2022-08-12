@@ -51,6 +51,7 @@ public class HashBetDto {
     /**
      * 类目编码
      */
+    @Translate
     private String cateName;
 
     /**
@@ -61,6 +62,7 @@ public class HashBetDto {
     /**
      * 彩种id
      */
+    @Translate
     private String gameName;
 
 
@@ -72,6 +74,7 @@ public class HashBetDto {
     /**
      * 玩法编码
      */
+    @Translate
     private String playName;
 
     /**
@@ -82,12 +85,8 @@ public class HashBetDto {
     /**
      * 投注内容
      */
+    @Translate
     private String content;
-
-    /**
-     * 投注内容(中文)
-     */
-    private String contentZh;
 
     /**
      * 注单赔率

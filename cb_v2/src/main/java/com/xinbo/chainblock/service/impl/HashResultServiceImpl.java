@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -27,6 +29,11 @@ public class HashResultServiceImpl extends ServiceImpl<HashResultMapper, HashRes
     @Override
     public boolean insert(HashResultEntity entity) {
         return hashResultMapper.insert(entity) > 0;
+    }
+
+
+    public List<HashResultEntity> findRecord(HashResultEntity entity) {
+        return hashResultMapper.findRecord(entity);
     }
 
 

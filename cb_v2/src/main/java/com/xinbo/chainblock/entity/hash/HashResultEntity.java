@@ -45,6 +45,12 @@ public class HashResultEntity {
     private Integer gameId;
 
     /**
+     * 玩法id
+     */
+    @TableField("play_id")
+    private Integer playId;
+
+    /**
      * 彩种id
      */
     @TableField("sn")
@@ -91,5 +97,11 @@ public class HashResultEntity {
      */
     @TableField("network")
     private String network;
+
+    /**
+     * 标记(1:赢, 2:输, 3: 和)
+     */
+    @TableField("flag")
+    private Integer flag;
 
 }

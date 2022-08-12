@@ -151,6 +151,7 @@ CREATE TABLE t_hash_result(
     uid int(20) comment '会员id',
     username varchar(50) comment '会员名',
     game_id int(5) comment '游戏id',
+    play_id int(5) comment '玩法id',
     sn varchar(100) comment '编号',
     to_address varchar(100) comment '会员数字钱包',
     txID varchar(70) comment '交易id',
@@ -159,6 +160,7 @@ CREATE TABLE t_hash_result(
     open_time timestamp comment '开奖时间',
     open_timestamp bigint comment '开奖时间戳',
     network varchar(20) comment '网络',
+    flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     UNIQUE KEY unique_sn (sn)
 ) comment '哈希开奖表';
 
@@ -180,7 +182,9 @@ create table t_hash_bet (
     play_id int comment '玩法编号',
     play_name varchar(50) comment '玩法编码',
     play_name_zh varchar(50) comment '玩法名称(中文)',
-    hash_result varchar(80) comment '开奖结果',
+    block_height varchar(50) comment '块高',
+    block_hash varchar(80) comment '开奖结果',
+    network varchar(50) comment '网络',
     content varchar(100) comment '投注内容',
     content_zh varchar(100) comment '投注内容(中文)',
     odds decimal(10,4) comment '赔率',

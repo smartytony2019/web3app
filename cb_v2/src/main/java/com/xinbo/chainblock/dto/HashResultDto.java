@@ -40,6 +40,11 @@ public class HashResultDto {
     private Integer gameId;
 
     /**
+     * 玩法id
+     */
+    private Integer playId;
+
+    /**
      * 彩种id
      */
     private String sn;
@@ -78,5 +83,10 @@ public class HashResultDto {
      * 网络
      */
     private String network;
+
+    /**
+     * 标记(1:赢, 2:输, 3: 和)
+     */
+    private Integer flag;
 
 }
