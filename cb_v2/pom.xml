@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>com.xinbo</groupId>
-    <artifactId>cb_v1</artifactId>
+    <artifactId>cb_v2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cb_v1</name>
+    <name>cb_v2</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>

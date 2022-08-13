@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.FinanceMapper">
+
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into
+        t_finance
+        (uid, username, transaction_id, from_address,to_address,money,block_time,block_timestamp,symbol, `type`, is_account)
+        values
+        <foreach collection ="list" item="item" index="index" separator =",">
+            (
+            #{item.uid},
+            #{item.username},
+            #{item.transactionId},
+            #{item.fromAddress},
+            #{item.toAddress},
+            #{item.money},
+            #{item.blockTime},
+            #{item.blockTimestamp},
+            #{item.symbol},
+            #{item.type},
+            #{item.isAccount}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        is_account = VALUES (is_account)
+    </insert>
+
+
+
+</mapper>

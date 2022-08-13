@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.jobs;
 
+import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.RechargeEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
  * @desc file desc
  */
 //@Component
-public class TransactionsRecordJob {
+public class FinanceRecordJob {
 
     @Autowired
     private TrxApi trxApi;
@@ -44,7 +46,7 @@ public class TransactionsRecordJob {
 
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Value("${trx.token-info.symbol}")
     private String tokenSymbol;
@@ -58,6 +60,11 @@ public class TransactionsRecordJob {
     @Scheduled(cron = "0/5 * * * * ?")
     public void record() {
         try {
+            String json = redisTemplate.opsForSet().pop(RedisConst.MEMBER_FINANCE);
+            if(StringUtils.isEmpty(json)) {
+                return;
+            }
+
             String account = "TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu";
             List<TransactionRecordApiEntity.Data> transactionsRecord = trxApi.getTransactionsRecord(account);
             if(ObjectUtils.isEmpty(transactionsRecord)) {

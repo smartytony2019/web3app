@@ -35,7 +35,7 @@ public class HashResultJob {
     private String terminalUrl;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     private HashResultService hashResultService;

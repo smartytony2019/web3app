@@ -2,6 +2,7 @@ package com.xinbo.chainblock.controller.api;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
@@ -35,7 +36,7 @@ public class MemberController {
     private MemberService memberService;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @JwtIgnore
     @Operation(summary = "register", description = "注册")
@@ -52,7 +53,7 @@ public class MemberController {
 
         boolean isSuccess = memberService.register(entity, vo.getCode());
         if (isSuccess) {
-            redisTemplate.opsForValue().set(RedisConst.AGENT_FIXED, "1");
+            redisTemplate.opsForList().leftPush(RedisConst.MEMBER_REGISTER, JSONObject.toJSONString(entity));
             return R.builder().data(StatusCode.SUCCESS).build();
         } else {
             return R.builder().data(StatusCode.REGISTER_ERROR).build();
@@ -77,7 +78,6 @@ public class MemberController {
             if (!encodePwd.equals(entity.getPwd())) {
                 return R.builder().code(StatusCode.FAILURE).msg("wrong password").build();
             }
-
 
 
             //生成token
@@ -109,8 +109,11 @@ public class MemberController {
     @Operation(summary = "balance", description = "TRX&USDT余额")
     @PostMapping("balance")
     public R<Object> balance() {
-        JwtUser jwtUser = JwtUtil.getJwtUser();
-        Map<String, String> map = memberService.balance(jwtUser.getUid());
+        MemberEntity entity = MemberEntity.builder()
+                .id(19)
+                .username("demo5566")
+                .build();
+        Map<String, String> map = memberService.balance(entity.getId());
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
     }
 }

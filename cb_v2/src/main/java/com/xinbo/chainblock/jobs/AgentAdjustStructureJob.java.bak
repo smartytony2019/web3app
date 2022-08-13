@@ -29,14 +29,14 @@ public class AgentAdjustStructureJob {
     private AgentService agentService;
 
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
 
     /**
      * 结算佣金
      */
     @Scheduled(cron = "0/10 * * * * ?")
     public void settleCommission() {
-//        Object o = redisTemplate.opsForValue().get(RedisConst.AGENT_FIXED);
+//        Object o = redisTemplate.opsForValue().get(RedisConst.MEMBER_REGISTER);
 //        if(ObjectUtils.isEmpty(o)) {
 //            return;
 //        }
@@ -98,7 +98,7 @@ public class AgentAdjustStructureJob {
             i += 1;
         }
 
-        redisTemplate.delete(RedisConst.AGENT_FIXED);
+        redisTemplate.delete(RedisConst.MEMBER_REGISTER);
     }
 
 

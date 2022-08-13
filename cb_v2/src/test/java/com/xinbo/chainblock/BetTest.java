@@ -83,7 +83,7 @@ public class BetTest {
         bet.setStatus(1);
         bet.setProfitMoney(profileMoney);
         bet.setPayoutMoney(payoutMoney);
-        bet.setHashResult(result.getBlockHash());
+        bet.setBlockHash(result.getBlockHash());
         bet.setUpdateTime(new Date());
 
 

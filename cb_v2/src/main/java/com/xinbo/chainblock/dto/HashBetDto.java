@@ -78,9 +78,19 @@ public class HashBetDto {
     private String playName;
 
     /**
-     * 开奖结果
+     * 块哈希
      */
-    private String hashResult;
+    private String blockHash;
+
+    /**
+     * 块哈希
+     */
+    private String blockHeight;
+
+    /**
+     * 网络
+     */
+    private String network;
 
     /**
      * 投注内容

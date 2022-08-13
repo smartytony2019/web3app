@@ -216,8 +216,8 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         if (!StringUtils.isEmpty(entity.getSn())) {
             wrappers.eq(HashBetEntity::getSn, entity.getSn());
         }
-        if (!StringUtils.isEmpty(entity.getHashResult())) {
-            wrappers.eq(HashBetEntity::getHashResult, entity.getHashResult());
+        if (!StringUtils.isEmpty(entity.getBlockHash())) {
+            wrappers.eq(HashBetEntity::getBlockHash, entity.getBlockHash());
         }
         if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId() > 0) {
             wrappers.eq(HashBetEntity::getGameId, entity.getGameId());

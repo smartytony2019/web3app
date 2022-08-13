@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -12,14 +13,18 @@ import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.AgentEntity;
+import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
 import com.xinbo.chainblock.mapper.AgentMapper;
+import com.xinbo.chainblock.mapper.FinanceMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.AgentService;
+import com.xinbo.chainblock.service.FinanceService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -27,12 +32,14 @@ import com.xinbo.chainblock.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.*;
 
 /**
  * @author tony
@@ -53,6 +60,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private FinanceMapper financeMapper;
 
 
     @Override
@@ -106,9 +116,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
                 .pUid(pAgentEntity.getUid())
                 .level(pAgentEntity.getLevel() + 1)
                 .build();
-        agentService.insert(agentEntity);
+        isSuccess = agentService.insert(agentEntity);
+        if (!isSuccess) {
+            return false;
+        }
 
-
+/*
         //Step 2: 请求终端
         AccountApiEntity account = trxApi.createAccount();
         if (ObjectUtils.isEmpty(account)) {
@@ -128,7 +141,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         isSuccess = walletService.insert(walletEntity);
         if (!isSuccess) {
             return false;
-        }
+        }*/
 
         return true;
     }
@@ -160,6 +173,36 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Override
     public Map<String, String> balance(int uid) {
         WalletEntity walletEntity = walletService.findByUid(uid);
+        // Step 1: 获取资金帐号转帐记录
+        List<TransactionRecordApiEntity.Data> record = trxApi.getTransactionsRecord(walletEntity.getAddressBase58());
+        if (!CollectionUtils.isEmpty(record)) {
+            List<FinanceEntity> financeEntityList = new ArrayList<>();
+            for (TransactionRecordApiEntity.Data data : record) {
+                BigDecimal b1 = new BigDecimal(data.getValue());
+                BigDecimal b2 = new BigDecimal(String.format("%s", Math.pow(10, data.getTokenInfo().getDecimals())));
+                BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
+                FinanceEntity fe = FinanceEntity.builder()
+                        .uid(walletEntity.getUid())
+                        .username(walletEntity.getUsername())
+                        .transactionId(data.getTransactionId())
+                        .fromAddress(data.getFrom())
+                        .toAddress(data.getTo())
+                        .money(b3.floatValue())
+                        .blockTime(DateUtil.date(data.getBlockTimestamp()))
+                        .blockTimestamp(data.getBlockTimestamp())
+                        .symbol(data.getTokenInfo().getSymbol())
+                        .type(1)
+                        .isAccount(false)
+                        .build();
+                financeEntityList.add(fe);
+            }
+
+            if (financeEntityList.size() > 0) {
+                financeMapper.batchInsert(financeEntityList);
+            }
+        }
+
+
         String trc20 = trxApi.getBalanceOfTrc20(walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
         String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
         Map<String, String> map = new HashMap<>();

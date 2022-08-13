@@ -12,6 +12,8 @@ public interface RedisConst {
 
     String HASH_RESULT = "trx:hash:result:%s:%s";
 
-    String AGENT_FIXED = "agent:fixed";
+    String MEMBER_REGISTER = "cb:member:register";
+
+    String MEMBER_FINANCE = "cb:member:finance";
 
 }

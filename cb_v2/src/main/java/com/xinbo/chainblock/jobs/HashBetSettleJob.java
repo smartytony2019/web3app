@@ -27,7 +27,7 @@ import java.util.Date;
  * @desc 哈希注单结算任务
  */
 @Slf4j
-@Component
+//@Component
 public class HashBetSettleJob {
 
     @Autowired
@@ -84,7 +84,9 @@ public class HashBetSettleJob {
             bet.setStatus(1);
             bet.setProfitMoney(profileMoney);
             bet.setPayoutMoney(payoutMoney);
-            bet.setHashResult(result.getBlockHash());
+            bet.setBlockHash(result.getBlockHash());
+            bet.setBlockHeight(result.getBlockHeight());
+            bet.setNetwork(result.getNetwork());
             bet.setUpdateTime(new Date());
 
 

@@ -99,10 +99,22 @@ public class HashBetEntity {
     private String playNameZh;
 
     /**
-     * 开奖结果
+     * 块哈希
      */
-    @TableField("hash_result")
-    private String hashResult;
+    @TableField("block_hash")
+    private String blockHash;
+
+    /**
+     * 块哈希
+     */
+    @TableField("block_height")
+    private String blockHeight;
+
+    /**
+     * 网络
+     */
+    @TableField("network")
+    private String network;
 
     /**
      * 投注内容
