@@ -7,6 +7,7 @@ server:
 #  terminal-url: 'http://localhost:3333'
 #  api-url: 'https://nile.trongrid.io/v1'
 #  token-info:
+#    contract-address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t'
 #    symbol: 'USDT'
 #    name: 'Tether USD'
 
@@ -15,6 +16,7 @@ trx:
   api-url: 'https://nile.trongrid.io/v1'
   symbol: 'TRX'
   token-info:
+    contract-address: 'TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR'
     symbol: 'YTN'
     name: 'xb_coin'
 

@@ -15,12 +15,15 @@ import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
+import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
 import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +55,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+    @Value("${trx.token-info.contract-address}")
+    private String contractAddress;
 
     @Override
     public boolean insert() {
@@ -109,7 +114,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
             return false;
         }
 
-/*
+
         //Step 2: 请求终端
         AccountApiEntity account = trxApi.createAccount();
         if (ObjectUtils.isEmpty(account)) {
@@ -129,7 +134,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         isSuccess = walletService.insert(walletEntity);
         if (!isSuccess) {
             return false;
-        }*/
+        }
 
         return true;
     }
@@ -170,6 +175,53 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         map.put("usdt", trc20);
         map.put("trx", trx);
         return map;
+    }
+
+    /**
+     * 资金帐户 => 交易帐户
+     *
+     * @param uid
+     * @param money
+     * @return
+     */
+    @Override
+    public String fundingAccount2TradingAccount(int uid, float money) {
+        String result = "";
+        MemberEntity memberEntity = memberMapper.selectById(uid);
+        // 会员数字钱包
+        WalletEntity memberWallet = walletService.findByUid(uid);
+
+        // 主数字钱包
+        WalletEntity mainWallet = walletService.findMain();
+
+        String balanceOfTrc20 = trxApi.getBalanceOfTrc20(memberWallet.getAddressBase58(), memberWallet.getPrivateKey());
+        if (StringUtils.isEmpty(balanceOfTrc20)) {
+            return result;
+        }
+
+        float balance = Float.parseFloat(balanceOfTrc20);
+        if (balance < money) {
+            return result;
+        }
+
+        TransactionTrxApiEntity apiEntity = trxApi.transactionOfTrc20(contractAddress, memberWallet.getAddressBase58(), memberWallet.getPrivateKey(), String.valueOf(money), mainWallet.getAddressBase58());
+        if (apiEntity.isResult()) {
+            result = apiEntity.getTxid();
+        }
+
+        return result;
+    }
+
+    /**
+     * 交易帐户 => 资金帐户
+     *
+     * @param uid
+     * @param money
+     * @return
+     */
+    @Override
+    public String tradingAccount2FundingAccount(int uid, float money) {
+        return null;
     }
 
 

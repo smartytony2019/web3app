@@ -13,4 +13,6 @@ public interface WalletService {
     boolean insert(WalletEntity entity);
 
     WalletEntity findByUid(int uid);
+
+    WalletEntity findMain();
 }

@@ -31,4 +31,21 @@ public interface MemberService {
     String balanceUSDT(int uid);
 
     Map<String,String> balance(int uid);
+
+
+    /**
+     * 资金帐户 => 交易帐户
+     * @param uid
+     * @param money
+     * @return
+     */
+    String fundingAccount2TradingAccount(int uid, float money);
+
+    /**
+     * 交易帐户 => 资金帐户
+     * @param uid
+     * @param money
+     * @return
+     */
+    String tradingAccount2FundingAccount(int uid, float money);
 }

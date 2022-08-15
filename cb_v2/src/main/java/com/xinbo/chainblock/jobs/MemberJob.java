@@ -42,6 +42,9 @@ public class MemberJob {
     @Autowired
     private TrxApi trxApi;
 
+    /**
+     * 处理注册
+     */
     @Scheduled(cron = "0/3 * * * * ?")
     public void handleRegister() {
         try {

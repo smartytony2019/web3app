@@ -40,6 +40,11 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> i
         return walletMapper.selectOne(wrapper);
     }
 
+    @Override
+    public WalletEntity findMain() {
+        return walletMapper.findMain();
+    }
+
 
     /**
      * 创建查询条件
