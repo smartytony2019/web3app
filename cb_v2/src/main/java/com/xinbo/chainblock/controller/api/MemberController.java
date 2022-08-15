@@ -116,4 +116,8 @@ public class MemberController {
         Map<String, String> map = memberService.balance(entity.getId());
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
     }
+
+
+
+
 }

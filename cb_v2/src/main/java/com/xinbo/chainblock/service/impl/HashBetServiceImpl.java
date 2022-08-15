@@ -167,7 +167,6 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                 .item(ItemEnum.HASH_BET_SETTLE.getCode())
                 .itemZh(ItemEnum.HASH_BET_SETTLE.getMsg())
                 .createTime(new Date())
-                .remark("")
                 .build();
         rows = memberFlowMapper.insert(userFlowEntity);
         if (rows <= 0) {
@@ -179,9 +178,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                 .date(DateUtil.format(new Date(), "yyyyMMdd"))
                 .uid(bet.getUid())
                 .username(bet.getUsername())
-                .betMoney(bet.getMoney())
-                .betPayoutMoney(bet.getPayoutMoney())
-                .betProfitMoney(bet.getProfitMoney())
+                .betAmount(bet.getMoney())
                 .updateTime(new Date())
                 .build();
 

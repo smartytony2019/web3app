@@ -6,6 +6,7 @@ server:
 trx:
   terminal-url: 'http://localhost:3333'
   api-url: 'https://nile.trongrid.io/v1'
+  symbol: 'TRX'
   token-info:
     symbol: 'YTN'
     name: 'xb_coin'

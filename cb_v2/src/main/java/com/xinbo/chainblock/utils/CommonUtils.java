@@ -19,12 +19,18 @@ import java.math.RoundingMode;
 @Service
 public class CommonUtils {
 
-    public double toTrx(double value) {
-        return value * Math.pow(10, 6);
+    public double toTrx(float value) {
+        BigDecimal b1 = new BigDecimal(value);
+        BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 6)));
+        BigDecimal b3 = b1.multiply(b2);
+        return b3.floatValue();
     }
 
-    public double fromTrx(double value) {
-        return value / Math.pow(10, 6);
+    public float fromTrx(float value) {
+        BigDecimal b1 = new BigDecimal(value);
+        BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 6)));
+        BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
+        return b3.floatValue();
     }
 
 

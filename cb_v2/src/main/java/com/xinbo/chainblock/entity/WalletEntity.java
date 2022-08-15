@@ -66,4 +66,10 @@ public class WalletEntity {
     @TableField("address_hex")
     private String addressHex;
 
+    /**
+     * 主钱包
+     */
+    @TableField("is_main")
+    private Boolean isMain;
+
 }

@@ -84,7 +84,7 @@ public class AgentCommissionJob {
 //            childList.add(entity.getUid());
             List<StatisticsEntity> childStatistics = statisticsService.findByUidStr(date, childList);
 
-            double sum = childStatistics.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
+            double sum = childStatistics.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
             map.put(entity.getUid(),sum);
         }
 
@@ -147,14 +147,14 @@ public class AgentCommissionJob {
                 List<Integer> directList = betMoneyList.stream().map(AgentCommissionEntity::getUid).collect(Collectors.toList());
                 if(!CollectionUtils.isEmpty(directList)) {
                     List<StatisticsEntity> directStatistics = statisticsService.findByUidStr(date, directList);
-                    double sum = directStatistics.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
+                    double sum = directStatistics.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
                     entity.setDirectPerformance(sum);
                 }
 
 
                 //自营
                 StatisticsEntity parentStatistics = statisticsService.findByUid(date, parent.getUid());
-                Double totalPerformance = map.get(parent.getUid()) + parentStatistics.getBetMoney();
+                Double totalPerformance = map.get(parent.getUid()) + parentStatistics.getBetAmount();
                 AgentRebateEntity rebateEntity = this.getRebate(rebates, totalPerformance);
                 if(ObjectUtils.isEmpty(rebateEntity)) {
                     continue;
@@ -162,7 +162,7 @@ public class AgentCommissionJob {
                 Integer curRebate = rebateEntity.getRebate();
 
                 entity.setTotalPerformance(totalPerformance);
-                entity.setSelfPerformance((double) parentStatistics.getBetMoney());
+                entity.setSelfPerformance((double) parentStatistics.getBetAmount());
                 entity.setRebate(curRebate);
                 betMoneyList.add(entity);
 

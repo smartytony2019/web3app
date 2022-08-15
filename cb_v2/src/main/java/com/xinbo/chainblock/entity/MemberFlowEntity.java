@@ -37,6 +37,12 @@ public class MemberFlowEntity {
     /**
      * 用户名
      */
+    @TableField("uid")
+    private Integer uid;
+
+    /**
+     * 用户名
+     */
     @TableField("username")
     private String username;
 
@@ -77,8 +83,9 @@ public class MemberFlowEntity {
     private Date createTime;
 
     /**
-     * 备注
+     * 扩展字段
      */
-    private String remark;
+    @TableField("ext")
+    private String ext;
 
 }

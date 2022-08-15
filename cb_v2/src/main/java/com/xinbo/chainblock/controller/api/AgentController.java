@@ -98,7 +98,7 @@ public class AgentController {
             List<Integer> childList = Arrays.stream(child.split(regex)).map(Integer::parseInt).collect(Collectors.toList());
             List<StatisticsEntity> subList = statisticsService.findByUidStr(date, childList);
             if(!CollectionUtils.isEmpty(subList) && subList.size()>0) {
-                subPerformance = subList.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
+                subPerformance = subList.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
             }
         }
         map.put("subPerformance", subPerformance);
@@ -108,7 +108,7 @@ public class AgentController {
         List<Integer> collect = direct.stream().map(AgentEntity::getUid).collect(Collectors.toList());
         List<StatisticsEntity> directList = statisticsService.findByUidStr(date, collect);
         if(!CollectionUtils.isEmpty(directList) && directList.size()>0) {
-            dirPerformance = directList.stream().mapToDouble(StatisticsEntity::getBetMoney).sum();
+            dirPerformance = directList.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
         }
         map.put("dirPerformance", dirPerformance);
 

@@ -1,7 +1,6 @@
 package com.xinbo.chainblock.jobs;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.AgentEntity;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -29,7 +27,7 @@ import java.util.stream.Stream;
  * @desc file desc
  */
 @Slf4j
-@Component
+//@Component
 public class MemberJob {
 
     @Autowired
@@ -72,6 +70,7 @@ public class MemberJob {
                     .publicKey(account.getPublicKey())
                     .addressBase58(account.getAddress().getBase58())
                     .addressHex(account.getAddress().getHex())
+                    .isMain(false)
                     .build();
             boolean isSuccess = walletService.insert(walletEntity);
             if (!isSuccess) {
@@ -161,5 +160,6 @@ public class MemberJob {
         result.addAll(list.stream().filter(f -> f.getUid() == uid).collect(Collectors.toList()));
         return result;
     }
+
 
 }

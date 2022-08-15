@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.MemberFlowMapper">
+
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into
+        t_member_flow(sn, uid, username, before_money, after_money, flow_money, item, item_zh, create_time, ext) values
+        <foreach collection ="list" item="item" index="index" separator =",">
+            (
+            #{item.sn},
+            #{item.uid},
+            #{item.username},
+            #{item.beforeMoney},
+            #{item.afterMoney},
+            #{item.flowMoney},
+            #{item.item},
+            #{item.itemZh},
+            #{item.createTime},
+            #{item.ext}
+            )
+        </foreach>
+    </insert>
+
+
+
+</mapper>

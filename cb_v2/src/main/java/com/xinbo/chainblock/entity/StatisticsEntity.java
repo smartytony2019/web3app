@@ -42,34 +42,40 @@ public class StatisticsEntity {
     private String username;
 
     /**
-     * 投注金额
+     * 投注总额
      */
-    @TableField("bet_money")
-    private Float betMoney;
+    @TableField("bet_amount")
+    private Float betAmount;
 
     /**
-     * 投注赢利金额
+     * 当日盈利总额
      */
-    @TableField("bet_profit_money")
-    private Float betProfitMoney;
+    @TableField("profit_amount")
+    private Float profitAmount;
 
     /**
-     * 投注派彩金额
+     * 充值trc20总额
      */
-    @TableField("bet_payout_money")
-    private Float betPayoutMoney;
+    @TableField("recharge_trc20_amount")
+    private Float rechargeTrc20Amount;
 
     /**
-     * 充值金额
+     * 充值trx总额
      */
-    @TableField("recharge_money")
-    private Float rechargeMoney;
+    @TableField("recharge_trx_amount")
+    private Float rechargeTrxAmount;
 
     /**
-     * 提现金额
+     * 提现trc20总额
      */
-    @TableField("withdraw_money")
-    private Float withdrawMoney;
+    @TableField("withdraw_trc20_amount")
+    private Float withdrawTrc20Amount;
+
+    /**
+     * 提现trx总额
+     */
+    @TableField("withdraw_trx_amount")
+    private Float withdrawTrxAmount;
 
     /**
      * 更新时间

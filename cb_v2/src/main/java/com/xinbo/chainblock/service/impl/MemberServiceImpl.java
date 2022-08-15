@@ -1,44 +1,32 @@
 package com.xinbo.chainblock.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.consts.StatusCode;
+import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.dto.MemberDto;
-import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.AgentEntity;
-import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.entity.admin.UserEntity;
-import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionRecordApiEntity;
-import com.xinbo.chainblock.mapper.AgentMapper;
-import com.xinbo.chainblock.mapper.FinanceMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
-import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.AgentService;
-import com.xinbo.chainblock.service.FinanceService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.MapperUtil;
-import com.xinbo.chainblock.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.*;
 
 /**
@@ -62,7 +50,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     private AgentService agentService;
 
     @Autowired
-    private FinanceMapper financeMapper;
+    private RedisTemplate<String, String> redisTemplate;
 
 
     @Override
@@ -173,35 +161,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Override
     public Map<String, String> balance(int uid) {
         WalletEntity walletEntity = walletService.findByUid(uid);
-        // Step 1: 获取资金帐号转帐记录
-        List<TransactionRecordApiEntity.Data> record = trxApi.getTransactionsRecord(walletEntity.getAddressBase58());
-        if (!CollectionUtils.isEmpty(record)) {
-            List<FinanceEntity> financeEntityList = new ArrayList<>();
-            for (TransactionRecordApiEntity.Data data : record) {
-                BigDecimal b1 = new BigDecimal(data.getValue());
-                BigDecimal b2 = new BigDecimal(String.format("%s", Math.pow(10, data.getTokenInfo().getDecimals())));
-                BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
-                FinanceEntity fe = FinanceEntity.builder()
-                        .uid(walletEntity.getUid())
-                        .username(walletEntity.getUsername())
-                        .transactionId(data.getTransactionId())
-                        .fromAddress(data.getFrom())
-                        .toAddress(data.getTo())
-                        .money(b3.floatValue())
-                        .blockTime(DateUtil.date(data.getBlockTimestamp()))
-                        .blockTimestamp(data.getBlockTimestamp())
-                        .symbol(data.getTokenInfo().getSymbol())
-                        .type(1)
-                        .isAccount(false)
-                        .build();
-                financeEntityList.add(fe);
-            }
-
-            if (financeEntityList.size() > 0) {
-                financeMapper.batchInsert(financeEntityList);
-            }
-        }
-
+        // Step 1: 获取资金帐号转帐记录@todo
+        redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(walletEntity));
 
         String trc20 = trxApi.getBalanceOfTrc20(walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
         String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());

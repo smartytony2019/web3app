@@ -51,13 +51,13 @@ public class MemberFlowDto {
     /**
      * 帐变编码
      */
-    private Integer itemCode;
+    private Integer item;
 
     /**
      * 帐变编码
      */
     @Translate
-    private String itemCodeDefault;
+    private String itemZh;
 
     /**
      * 用户名
@@ -66,8 +66,8 @@ public class MemberFlowDto {
     private Date createTime;
 
     /**
-     * 备注
+     * 扩展字段
      */
-    private String remark;
+    private String ext;
 
 }

@@ -17,6 +17,15 @@ import java.util.List;
  */
 @Mapper
 public interface FinanceMapper extends BaseMapper<FinanceEntity> {
-    
+
     int batchInsert(@Param("list") List<FinanceEntity> list);
+
+    /**
+     * 获取未入帐
+     *
+     * @return
+     */
+    @Select("select * from t_finance where is_account = 0 order by block_timestamp asc limit 10")
+    List<FinanceEntity> findUnaccounted();
+
 }

@@ -16,7 +16,12 @@ import java.util.Map;
 @AllArgsConstructor
 public enum ItemEnum {
     HASH_BET(100010, "投注"),
-    HASH_BET_SETTLE(100110, "结算");
+    HASH_BET_SETTLE(100020, "结算"),
+
+
+    RECHARGE(100100, "充值"),
+    WITHDRAW(100110, "提现")
+    ;
 
     int code;
     String msg;

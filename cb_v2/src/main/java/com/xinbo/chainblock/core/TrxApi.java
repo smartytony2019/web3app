@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author tony
@@ -116,7 +114,7 @@ public class TrxApi {
      * @param toAddress   收款地址
      * @return Entity
      */
-    public TransactionTrxApiEntity transactionOfTrx(String fromAddress, String privateKey, double amount, String toAddress) {
+    public TransactionTrxApiEntity transactionOfTrx(String fromAddress, String privateKey, float amount, String toAddress) {
         TransactionTrxApiEntity result = null;
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.TRANSACTION_TRX);
@@ -194,25 +192,49 @@ public class TrxApi {
 
 
     /**
-     * 获取转帐记录
+     * 获取TRC20转帐记录
      * @param account
      * @return
      */
-    public List<TransactionRecordApiEntity.Data> getTransactionsRecord(String account) {
-        List<TransactionRecordApiEntity.Data> result = null;
+    public JSONObject getTrc20Record(String account) {
+        JSONObject result = null;
         try {
 //            long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
             long minTimestamp = 0;
-            String url = String.format(TrxApiConst.GET_TRANSACTIONS_RECORD, apiUrl, account, minTimestamp);
+            String url = String.format(TrxApiConst.GET_TRC20_RECORD, apiUrl, account, minTimestamp);
             RestTemplate restTemplate = new RestTemplate();
             String res = restTemplate.getForObject(url, String.class);
 
-            TransactionRecordApiEntity entity = JSON.parseObject(res, new TypeReference<TransactionRecordApiEntity>() {});
-            if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData())) {
-                result = entity.getData();
-            }
+            result = JSONObject.parseObject(res);
         }catch (Exception ex) {
-            log.error("TerminalApi getTransactionsRecord exception", ex);
+            log.error("TerminalApi getTrc20Record exception", ex);
+        }
+        return result;
+    }
+
+
+
+    /**
+     * 获取TRX转帐记录
+     * @param account
+     * @return
+     */
+    public JSONObject getTrxRecord(String account) {
+        JSONObject result = null;
+        try {
+//            long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
+            long minTimestamp = 0;
+            String url = String.format(TrxApiConst.GET_TRX_RECORD, apiUrl, account, minTimestamp);
+            RestTemplate restTemplate = new RestTemplate();
+            String res = restTemplate.getForObject(url, String.class);
+
+            result = JSON.parseObject(res);
+//            Trc20RecordApiEntity entity = JSON.parseObject(res, new TypeReference<Trc20RecordApiEntity>() {});
+//            if(!ObjectUtils.isEmpty(entity) && !ObjectUtils.isEmpty(entity.getData())) {
+//                result = entity.getData();
+//            }
+        }catch (Exception ex) {
+            log.error("TerminalApi getTrxRecord exception", ex);
         }
         return result;
     }

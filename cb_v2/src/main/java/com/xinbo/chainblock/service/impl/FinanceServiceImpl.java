@@ -4,15 +4,23 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.FinanceEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.mapper.FinanceMapper;
+import com.xinbo.chainblock.mapper.MemberFlowMapper;
+import com.xinbo.chainblock.mapper.StatisticsMapper;
 import com.xinbo.chainblock.mapper.WalletMapper;
 import com.xinbo.chainblock.service.FinanceService;
 import com.xinbo.chainblock.service.WalletService;
+import org.dozer.stats.StatisticsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @author tony
@@ -25,15 +33,45 @@ public class FinanceServiceImpl extends ServiceImpl<FinanceMapper, FinanceEntity
     @Autowired
     private FinanceMapper financeMapper;
 
+    /**
+     * 插入
+     * @param entity
+     * @return
+     */
     @Override
     public boolean insert(FinanceEntity entity) {
         return financeMapper.insert(entity) > 0;
     }
 
+    /**
+     * 根据uid查找
+     * @param uid
+     * @return
+     */
     @Override
     public FinanceEntity findByUid(int uid) {
         LambdaQueryWrapper<FinanceEntity> wrapper = this.createWrapper(FinanceEntity.builder().uid(uid).build());
         return financeMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 查找未入帐
+     * @return
+     */
+    @Override
+    public List<FinanceEntity> findUnaccounted() {
+        return financeMapper.findUnaccounted();
+    }
+
+
+    /**
+     * 批量插入
+     * @param list
+     * @return
+     */
+    @Override
+    public int batchInsert(List<FinanceEntity> list) {
+        return financeMapper.batchInsert(list);
     }
 
 

@@ -6,9 +6,10 @@
     <insert id="batchInsert" parameterType="java.util.List">
         insert into
         t_finance
-        (uid, username, transaction_id, from_address,to_address,money,block_time,block_timestamp,symbol, `type`, is_account)
+        (uid, username, transaction_id, from_address,to_address,money,block_time,block_timestamp,symbol, `type`,
+        is_account)
         values
-        <foreach collection ="list" item="item" index="index" separator =",">
+        <foreach collection="list" item="item" index="index" separator=",">
             (
             #{item.uid},
             #{item.username},
@@ -26,7 +27,6 @@
         ON DUPLICATE KEY UPDATE
         is_account = VALUES (is_account)
     </insert>
-
 
 
 </mapper>

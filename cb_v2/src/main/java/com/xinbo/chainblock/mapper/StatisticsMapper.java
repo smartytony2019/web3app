@@ -25,4 +25,6 @@ public interface StatisticsMapper extends BaseMapper<StatisticsEntity> {
 
     @Select("select * from t_statistics where date = #{date}")
     List<StatisticsEntity> findByDate(@Param("date") String date);
+
+    int batchInsert(@Param("list") List<StatisticsEntity> list);
 }

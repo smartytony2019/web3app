@@ -251,60 +251,14 @@ const Web3 = require('web3');
     // let t1 = await contract.getBalanceOfContract().call();
     // console.log(t1.toNumber());
 
-    let callback = (info) => {
-      console.log('callback',info);
-    };
-    let to_address = 'TPYXWcPZ9DC9R4PvQniTPSjUegUyBD3kJJ';
-    // console.log('watching', to_address);
-    // contract.Transfer().watch((err, res) => {
-    //   console.log('res', res);
-    //   if(res && res.transaction && res.transaction === txID) {
-    //     callback(res);
-    //     return;
-    //   }
-    // })
-    let hash = await contract.transferTo(to_address, 1000).send();
-    console.log(hash);
-
-    let i = 0;
-    let checkConfirm = async()=>{
-      if(i>9){
-        clearInterval(timer)
-      }
-
-      let res = await tronWeb.getEventResult(contractAddress, {eventName:"Transfer",size:10})
-      let checkEvent = async () => {
-        return new Promise((resolve, reject) => {
-          for(let t = 0; t < res.length; t++ ){
-            if(hash === res[t].transaction){
-              clearInterval(timer)
-              resolve(res[t])
-            }
-          }
-          if(i === 10){
-            resolve(null)
-          }
-        });
-      }
-      let event = await checkEvent()
-      if(event !== null){
-        console.log('event',event)
-      } else{
-        console.log("出错啦！请刷新后重试！")
-      }
-
-      i += 1;
-    };
-    let timer = setInterval(checkConfirm, 2000)
-
-    
+    console.log(tronWeb.address.fromHex('419abc42dc5374064b3896d3dd382ad2080b8ff84e'))
 
     // let trx = new Trx(instance, contractAddress);
 
 
-
-
-    // let tmp = await instance.trx.getBlock(27464550);
+    // let t = await instance.getEventByTransactionID('a917a8501e1847d9d726509d992e08c9a7df255220a2d79e4393edeca9149804')
+    // console.log(t);
+    // let tmp = await instance.trx.getBlock(28946780);
     // console.log(tmp);
 
     // trx.info();
