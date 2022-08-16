@@ -143,9 +143,13 @@ module.exports = {
       return;
     }
 
-
     let result = await trxModel.transactionOfTrc20(contractAddress, fromAddress, amount, toAddress, privateKey);
-    ctx.body = R.success(result)
+    console.log('result', result)
+    if(result && result.status) {
+      ctx.body = R.success(result.data)
+    } else {
+      ctx.body = R.fail(result.msg)
+    }
   },
 
   

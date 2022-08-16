@@ -18,9 +18,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 
-@RestController("ApiTransferController")
-@RequestMapping("api/transfer")
-public class TransferController {
+@RestController("ApiWalletController")
+@RequestMapping("api/wallet")
+public class WalletController {
 
     @Autowired
     private MemberService memberService;

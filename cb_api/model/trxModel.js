@@ -138,7 +138,7 @@ module.exports = {
    * @returns Object
    */
   async transactionOfTrc20(contractAddress, fromAddress, amount, toAddress, privateKey) {
-    let result = null;
+    let result = {status: false, msg:''};
     try {
       //Step 1: 调用智能合约
       const parameter = [
@@ -166,9 +166,10 @@ module.exports = {
         throw '交易广播上链失败';
       }
 
-      result = broastTx;
+      result = {status: true, data: broastTx};
     }catch(error) {
       console.error("transactionOfTrc20 error", error);
+      result = {status: false, msg: error};
     }
     return result;
   },
