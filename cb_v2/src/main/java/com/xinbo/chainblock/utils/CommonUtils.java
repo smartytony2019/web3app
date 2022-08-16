@@ -34,10 +34,10 @@ public class CommonUtils {
     }
 
 
-    public BigInteger toTrc20(String value) {
-        BigInteger b1 = new BigInteger(value);
-        BigInteger b2 = new BigInteger(String.valueOf(Math.pow(10, 18)));
-        return b1.divide(b2);
+    public BigDecimal toTrc20(String value) {
+        BigDecimal b1 = new BigDecimal(value);
+        BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 18)));
+        return b1.multiply(b2);
     }
 
     public BigDecimal fromTrc20(BigDecimal value) {

@@ -1,6 +1,8 @@
 package com.xinbo.chainblock.entity.terminal;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author tony
@@ -8,7 +10,9 @@ import lombok.Data;
  * @desc file desc
  */
 @Data
-public class TransactionTrxApiEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public class TransactionApiEntity {
 
     private boolean result;
     private String txid;

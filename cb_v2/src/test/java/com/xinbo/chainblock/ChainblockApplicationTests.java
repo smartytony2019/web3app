@@ -9,23 +9,20 @@ import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("prod")
@@ -143,7 +140,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {
+        BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
         });
         System.out.println(entity);
     }
@@ -161,7 +158,7 @@ class ChainblockApplicationTests {
 
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(url, jsonObject, String.class);
-        BaseEntity<TransactionTrxApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionTrxApiEntity>>() {
+        BaseEntity<TransactionApiEntity> entity = JSON.parseObject(res, new TypeReference<BaseEntity<TransactionApiEntity>>() {
         });
         System.out.println(entity);
     }

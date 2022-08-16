@@ -18,6 +18,8 @@ public enum ItemEnum {
     HASH_BET(100010, "投注"),
     HASH_BET_SETTLE(100020, "结算"),
 
+    TRANSFER_FUNDING2TRADING(100210, "转换(资金帐户=>交易帐号)"),
+    TRANSFER_TRADING2FUNDING(100220, "转换(交易帐号=>资金帐户)"),
 
     RECHARGE(100100, "充值"),
     WITHDRAW(100110, "提现")

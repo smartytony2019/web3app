@@ -1,13 +1,8 @@
 package com.xinbo.chainblock.service.impl;
 
-import com.xinbo.chainblock.entity.FinanceEntity;
-import com.xinbo.chainblock.entity.MemberFlowEntity;
-import com.xinbo.chainblock.entity.StatisticsEntity;
-import com.xinbo.chainblock.mapper.FinanceMapper;
-import com.xinbo.chainblock.mapper.MemberFlowMapper;
-import com.xinbo.chainblock.mapper.StatisticsMapper;
+import com.xinbo.chainblock.entity.*;
+import com.xinbo.chainblock.mapper.*;
 import com.xinbo.chainblock.service.AccountService;
-import com.xinbo.chainblock.service.FinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +25,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private MemberFlowMapper memberFlowMapper;
+
+    @Autowired
+    private MemberMapper memberMapper;
+
+    @Autowired
+    private TransferMapper transferMapper;
 
 
     /**
@@ -60,4 +61,28 @@ public class AccountServiceImpl implements AccountService {
 
         return true;
     }
+
+    @Transactional
+    @Override
+    public boolean transfer(TransferEntity transfer, MemberEntity member, MemberFlowEntity flow) {
+        int rows = memberMapper.increment(member);
+        if (rows < 0) {
+            return false;
+        }
+
+        rows = transferMapper.updateById(transfer);
+        if (rows < 0) {
+            return false;
+        }
+
+        rows = memberFlowMapper.insert(flow);
+        if (rows < 0) {
+            return false;
+        }
+
+
+        return true;
+    }
+
+
 }

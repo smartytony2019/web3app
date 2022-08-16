@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberTransferVo {
+public class TransferVo {
 
     private int direct;
 

@@ -1,8 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.FinanceEntity;
-import com.xinbo.chainblock.entity.MemberFlowEntity;
-import com.xinbo.chainblock.entity.StatisticsEntity;
+import com.xinbo.chainblock.entity.*;
 
 import java.util.List;
 
@@ -15,5 +13,7 @@ public interface AccountService {
 
 
     boolean financeAccount(List<FinanceEntity> financeList, List<MemberFlowEntity> flowList, List<StatisticsEntity> statisticsList);
+
+    boolean transfer(TransferEntity transfer, MemberEntity member, MemberFlowEntity flow);
 
 }

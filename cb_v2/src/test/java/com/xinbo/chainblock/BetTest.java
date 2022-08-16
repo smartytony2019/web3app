@@ -1,17 +1,12 @@
 package com.xinbo.chainblock;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionTrxApiEntity;
 import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.junit.Test;
@@ -22,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 

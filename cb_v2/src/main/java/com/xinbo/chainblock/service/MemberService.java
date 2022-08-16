@@ -2,6 +2,8 @@ package com.xinbo.chainblock.service;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
+import com.xinbo.chainblock.entity.terminal.BaseEntity;
+import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
 import com.xinbo.chainblock.utils.R;
 
 import java.util.Date;
@@ -39,7 +41,7 @@ public interface MemberService {
      * @param money
      * @return
      */
-    String fundingAccount2TradingAccount(int uid, float money);
+    BaseEntity<TransactionApiEntity> fundingAccount2TradingAccount(int uid, float money);
 
     /**
      * 交易帐户 => 资金帐户
@@ -47,5 +49,5 @@ public interface MemberService {
      * @param money
      * @return
      */
-    String tradingAccount2FundingAccount(int uid, float money);
+    BaseEntity<TransactionApiEntity> tradingAccount2FundingAccount(int uid, float money);
 }
