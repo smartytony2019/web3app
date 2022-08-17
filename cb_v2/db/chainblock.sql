@@ -297,9 +297,9 @@ create table t_member_flow(
   sn varchar(100) comment '订单号',
   uid int(20) comment '用户i',
   username varchar(50) comment '用户名',
-  before_money decimal(10,4) comment '帐变前金额',
-  after_money decimal(10,4) comment '帐变后金额',
-  flow_money decimal(10,4) comment '流水金额',
+  before_money decimal(10,2) comment '帐变前金额',
+  after_money decimal(10,2) comment '帐变后金额',
+  flow_money decimal(10,2) comment '流水金额',
   item int comment '帐变编码',
   item_zh varchar(100) comment '帐变默认编码',
   create_time timestamp null default null comment '创建时间',
@@ -356,20 +356,6 @@ insert into cb_v2.t_wallet(uid, username, type, private_key, public_key, address
 (3, 'jackB2', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21','TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68', 0),
 (19, 'demo5566',1,'F9E0FF36CD981085BA854FD062756E5D8CC6232752A4A6F3AB58BEEF33E0BFBC','04CA3097E79A93B179043D583D8FB5FFCFB711EF0B24D7EC14AD11097C5AFEA9A15D496173AE56F1AB02877BC868CF17AD79F8AC192D5F1341C07E9D75ACDD86D3','TQ5NbDWu1fQgzhq1LE4ej37RyLmDphAKm2','419ABC42DC5374064B3896D3DD382AD2080B8FF84E', 0)
 ;
-
-
-
-drop table if exists t_transfer;
-create table t_transfer(
-    id int primary key auto_increment,
-    uid int comment '会员id',
-    username varchar(50) comment '会员名',
-    transaction_id varchar(100),
-    money decimal comment '金额',
-    type int(10) comment '类型 1:资金帐户 => 交易帐户 2:交易帐户 => 资金帐户',
-    expired bigint comment '过期时间',
-    status int(5) default 0 comment '状态(0:未确认, 1:确认, 2:过期)'
-) comment '转换表';
 
 
 

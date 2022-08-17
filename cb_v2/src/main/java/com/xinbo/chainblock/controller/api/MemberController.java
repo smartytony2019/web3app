@@ -2,17 +2,24 @@ package com.xinbo.chainblock.controller.api;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
+import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.TransferEntity;
+import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
+import com.xinbo.chainblock.enums.ItemEnum;
+import com.xinbo.chainblock.enums.TransferEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.TransferService;
+import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.JwtUser;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.R;
@@ -21,8 +28,10 @@ import com.xinbo.chainblock.vo.TransferVo;
 import com.xinbo.chainblock.vo.RegisterVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -35,9 +44,6 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
-
-    @Autowired
-    private TransferService transferService;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -105,8 +111,8 @@ public class MemberController {
     @PostMapping("balanceUSDT")
     public R<Object> balanceUSDT() {
         JwtUser jwtUser = JwtUtil.getJwtUser();
-        String balance = memberService.balanceUSDT(jwtUser.getUid());
-        return R.builder().code(StatusCode.SUCCESS).data(balance).build();
+//        String balance = memberService.balanceUSDT(jwtUser.getUid());
+        return R.builder().code(StatusCode.SUCCESS).data(0).build();
     }
 
     @JwtIgnore
@@ -117,7 +123,8 @@ public class MemberController {
                 .id(19)
                 .username("demo5566")
                 .build();
-        Map<String, String> map = memberService.balance(entity.getId());
+
+        Map<String, Float> map = memberService.balance(entity.getId());
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
     }
 
@@ -127,47 +134,82 @@ public class MemberController {
     @PostMapping("transfer")
     public R<Object> transfer(@RequestBody TransferVo vo) {
         try {
+            /* ******************************  Step 1: 判断数据是否合法  **************************************** */
+            Map<Integer, String> map = TransferEnum.toMap();
+            String s = map.get(vo.getDirect());
+            if (StringUtils.isEmpty(s)) {
+                throw new BusinessException(1, "数据不合法!");
+            }
+
+            if (vo.getMoney() <= 0) {
+                throw new BusinessException(1, "数据不合法!!");
+            }
+
+            // @todo 模拟数据
             MemberEntity entity = MemberEntity.builder()
                     .id(19)
                     .username("demo5566")
                     .build();
 
+            /* ******************************  Step 2: 开始划转  **************************************** */
             BaseEntity<TransactionApiEntity> result = null;
-            // 资金帐户 => 交易帐户
+            // Step 2.1 资金帐户 => 交易帐户
             if (vo.getDirect() == 1) {
                 result = memberService.fundingAccount2TradingAccount(entity.getId(), vo.getMoney());
             }
 
-            // 交易帐户 => 资金帐户
+            // Step 2.2 交易帐户 => 资金帐户
             if (vo.getDirect() == 2) {
                 result = memberService.tradingAccount2FundingAccount(entity.getId(), vo.getMoney());
             }
 
-            if(ObjectUtils.isEmpty(result)) {
-                throw new BusinessException(1, "");
+            if (ObjectUtils.isEmpty(result)) {
+                throw new BusinessException(1, "划转失败");
             }
 
-            if(result.getCode() == 0) {
-                long expired = DateUtil.currentSeconds() + (30 * 60); //时间戳(秒级)
-                TransferEntity transferEntity = TransferEntity.builder()
-                        .uid(entity.getId())
-                        .username(entity.getUsername())
-                        .type(vo.getDirect())
-                        .transactionId(result.getData().getTxid())
-                        .money(vo.getMoney())
-                        .expired(expired)
-                        .status(0)
-                        .build();
-                transferService.insert(transferEntity);
-                return R.builder().code(StatusCode.SUCCESS).data(result.getData().getTxid()).build();
-            } else {
-                return R.builder().code(StatusCode.FAILURE).msg(result.getMsg()).build();
+            if (StringUtils.isEmpty(result.getCode()) || result.getCode() != StatusCode.SUCCESS) {
+                throw new RuntimeException(result.getMsg());
             }
+
+            /* ******************************  Step 3: 拼接数据  **************************************** */
+            // Step 3.1: 交易金额变更
+            MemberEntity memberEntity = memberService.findById(entity.getId());
+
+            // Step 3.2: 交易金额变更
+            MemberEntity member = MemberEntity.builder()
+                    .id(memberEntity.getId())
+                    .money(vo.getMoney())
+                    .version(memberEntity.getVersion())
+                    .build();
+
+
+            float money = vo.getDirect() == TransferEnum.FUNDING2TRADING.getCode() ? vo.getMoney() : vo.getMoney() * -1;
+            ItemEnum itemEnum = vo.getDirect() == 1 ? ItemEnum.TRANSFER_FUNDING2TRADING : ItemEnum.TRANSFER_TRADING2FUNDING;
+            // Step 3.3: 帐变
+            MemberFlowEntity flow = MemberFlowEntity.builder()
+                    .sn(result.getData().getTxid())
+                    .uid(memberEntity.getId())
+                    .username(memberEntity.getUsername())
+                    .beforeMoney(memberEntity.getMoney())
+                    .flowMoney(money)
+                    .afterMoney(memberEntity.getMoney() + money)
+                    .item(itemEnum.getCode())
+                    .itemZh(itemEnum.getMsg())
+                    .createTime(new Date())
+                    .build();
+
+            /* ******************************  Step 4: 入Redis队列  **************************************** */
+            JSONObject object = new JSONObject();
+            object.put("member", member);
+            object.put("flow", flow);
+            redisTemplate.opsForList().leftPush(RedisConst.MEMBER_TRANSFER, JSON.toJSONString(object));
+            return R.builder().code(StatusCode.SUCCESS).data(result.getData().getTxid()).build();
+        } catch (RuntimeException ex) {
+            return R.builder().code(StatusCode.FAILURE).msg(ex.getMessage()).build();
         } catch (Exception ex) {
             return R.builder().code(StatusCode.FAILURE).build();
         }
     }
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.service;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
@@ -30,10 +31,7 @@ public interface MemberService {
 
     boolean update(MemberEntity entity);
 
-    String balanceUSDT(int uid);
-
-    Map<String,String> balance(int uid);
-
+    Map<String, Float> balance(int uid);
 
     /**
      * 资金帐户 => 交易帐户
@@ -50,4 +48,5 @@ public interface MemberService {
      * @return
      */
     BaseEntity<TransactionApiEntity> tradingAccount2FundingAccount(int uid, float money);
+
 }

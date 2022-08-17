@@ -3,12 +3,9 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.mapper.*;
-import com.xinbo.chainblock.service.AccountService;
-import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

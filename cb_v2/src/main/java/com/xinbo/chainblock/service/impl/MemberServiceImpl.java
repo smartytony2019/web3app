@@ -13,10 +13,12 @@ import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
+import com.xinbo.chainblock.mapper.MemberFlowMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.MemberService;
@@ -52,11 +54,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Autowired
     private AgentService agentService;
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
     @Value("${trx.token-info.contract-address}")
     private String contractAddress;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public boolean insert() {
@@ -114,28 +116,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
             return false;
         }
 
-
-        //Step 2: 请求终端
-        AccountApiEntity account = trxApi.createAccount();
-        if (ObjectUtils.isEmpty(account)) {
-            return false;
-        }
-
-        WalletEntity walletEntity = WalletEntity.builder()
-                .uid(entity.getId())
-                .username(entity.getUsername())
-                .type(1)
-                .publicKey(account.getPublicKey())
-                .privateKey(account.getPrivateKey())
-                .addressBase58(account.getAddress().getBase58())
-                .addressHex(account.getAddress().getHex())
-                .build();
-
-        isSuccess = walletService.insert(walletEntity);
-        if (!isSuccess) {
-            return false;
-        }
-
         return true;
     }
 
@@ -157,25 +137,38 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         return memberMapper.updateById(entity) > 0;
     }
 
+//    @Override
+//    public String balanceTrc20(int uid) {
+//        WalletEntity walletEntity = walletService.findByUid(uid);
+//        return trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
+//    }
+//
     @Override
-    public String balanceUSDT(int uid) {
+    public Map<String, Float> balance(int uid) {
         WalletEntity walletEntity = walletService.findByUid(uid);
-        return trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
-    }
 
-    @Override
-    public Map<String, String> balance(int uid) {
-        WalletEntity walletEntity = walletService.findByUid(uid);
+        // 资金帐户余额
+        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
+        String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
+        Map<String, Float> map = new HashMap<>();
+        map.put("fundingAccount", Float.parseFloat(trc20));
+        map.put("trx", Float.parseFloat(trx));
+
+        // 交易帐户余额
+        MemberEntity memberEntity = memberMapper.selectById(uid);
+        map.put("tradingAccount", memberEntity.getMoney());
+
+        // 总资产
+        map.put("total", Float.parseFloat(trc20) + memberEntity.getMoney());
+
+
         // Step 1: 获取资金帐号转帐记录@todo
         redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(walletEntity));
 
-        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
-        String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
-        Map<String, String> map = new HashMap<>();
-        map.put("usdt", trc20);
-        map.put("trx", trx);
         return map;
     }
+
+
 
     /**
      * 资金帐户 => 交易帐户
@@ -204,6 +197,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
 
             float balance = Float.parseFloat(balanceOfTrc20);
             if (balance < money) {
+                result.setMsg("余额不足");
                 return result;
             }
 
@@ -245,6 +239,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         }
         return result;
     }
+
+
 
 
     /**

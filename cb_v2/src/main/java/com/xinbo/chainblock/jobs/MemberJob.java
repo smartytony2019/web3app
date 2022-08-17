@@ -1,18 +1,23 @@
 package com.xinbo.chainblock.jobs;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.service.AgentService;
+import com.xinbo.chainblock.service.CommonService;
 import com.xinbo.chainblock.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -27,7 +32,7 @@ import java.util.stream.Stream;
  * @desc file desc
  */
 @Slf4j
-//@Component
+@Component
 public class MemberJob {
 
     @Autowired
@@ -40,7 +45,17 @@ public class MemberJob {
     private AgentService agentService;
 
     @Autowired
+    private CommonService commonService;
+
+    @Autowired
     private TrxApi trxApi;
+
+    @Value("${scheduled.enable.register}")
+    private boolean isRegister;
+
+    @Value("${scheduled.enable.transfer}")
+    private boolean isTransfer;
+
 
     /**
      * 处理注册
@@ -48,6 +63,10 @@ public class MemberJob {
     @Scheduled(cron = "0/3 * * * * ?")
     public void handleRegister() {
         try {
+            if (!isRegister) {
+                return;
+            }
+
             String json = redisTemplate.opsForList().rightPop(RedisConst.MEMBER_REGISTER);
             if (StringUtils.isEmpty(json)) {
                 return;
@@ -79,7 +98,6 @@ public class MemberJob {
             if (!isSuccess) {
                 throw new RuntimeException("保存数字钱包失败");
             }
-
 
 
             // *********************************** - 更新代理层级 -  ****************************************************
@@ -119,7 +137,7 @@ public class MemberJob {
                     List<AgentEntity> loop = this.loop(list, e.getUid());
 
                     //大于1说明下面有用户
-                    if(CollectionUtils.isEmpty(loop) || loop.size() <= 1) {
+                    if (CollectionUtils.isEmpty(loop) || loop.size() <= 1) {
                         continue;
                     }
 
@@ -129,7 +147,7 @@ public class MemberJob {
 
                     String collect1 = collect.stream().map(Objects::toString).collect(Collectors.joining(","));
                     isSuccess = agentService.setChild(e.getId(), collect1);
-                    if(isSuccess) {
+                    if (isSuccess) {
                         log.info("update child success");
                     } else {
                         log.error("update child fail");
@@ -139,6 +157,32 @@ public class MemberJob {
             }
         } catch (Exception ex) {
             log.error("MemberJob", ex);
+        }
+    }
+
+
+    @Scheduled(cron = "0/3 * * * * ?")
+    public void handleTransfer() {
+        try {
+            if (!isTransfer) {
+                return;
+            }
+
+            String json  = redisTemplate.opsForList().rightPop(RedisConst.MEMBER_TRANSFER);
+            if(StringUtils.isEmpty(json)) {
+                return;
+            }
+
+            JSONObject object = JSON.parseObject(json);
+            MemberEntity member = object.getObject("member", MemberEntity.class);
+            MemberFlowEntity flow = object.getObject("flow", MemberFlowEntity.class);
+
+            boolean isSuccess = commonService.transfer(member, flow);
+            if(!isSuccess) {
+                redisTemplate.opsForList().leftPush(RedisConst.MEMBER_TRANSFER, json);
+            }
+        } catch (Exception ex) {
+            log.error("handleTransfer", ex);
         }
     }
 

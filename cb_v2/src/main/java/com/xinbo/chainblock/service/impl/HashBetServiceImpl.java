@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.consts.DirectionConst;
 import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
@@ -156,22 +158,26 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
             return false;
         }
 
-
-        //添加帐变
-        MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
-                .sn(bet.getSn())
-                .username(memberEntity.getUsername())
-                .beforeMoney(beforeMoney)
-                .afterMoney(afterMoney)
-                .flowMoney(flowMoney)
-                .item(ItemEnum.HASH_BET_SETTLE.getCode())
-                .itemZh(ItemEnum.HASH_BET_SETTLE.getMsg())
-                .createTime(new Date())
-                .build();
-        rows = memberFlowMapper.insert(userFlowEntity);
-        if (rows <= 0) {
-            return false;
+        // 订单为赢才添加帐变
+        if(bet.getFlag() == AlgorithmCode.WIN) {
+            //添加帐变
+            MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
+                    .sn(bet.getSn())
+                    .uid(memberEntity.getId())
+                    .username(memberEntity.getUsername())
+                    .beforeMoney(beforeMoney)
+                    .afterMoney(afterMoney)
+                    .flowMoney(flowMoney)
+                    .item(ItemEnum.HASH_BET_SETTLE.getCode())
+                    .itemZh(ItemEnum.HASH_BET_SETTLE.getMsg())
+                    .createTime(new Date())
+                    .build();
+            rows = memberFlowMapper.insert(userFlowEntity);
+            if (rows <= 0) {
+                return false;
+            }
         }
+
 
         //更新统计
         StatisticsEntity statisticsEntity = StatisticsEntity.builder()
@@ -179,6 +185,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                 .uid(bet.getUid())
                 .username(bet.getUsername())
                 .betAmount(bet.getMoney())
+                .profitAmount(bet.getProfitMoney())
                 .updateTime(new Date())
                 .build();
 

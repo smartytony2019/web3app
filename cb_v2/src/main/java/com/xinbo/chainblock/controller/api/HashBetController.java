@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.BetStatus;
+import com.xinbo.chainblock.consts.DirectionConst;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
@@ -69,7 +70,7 @@ public class HashBetController {
     @Operation(summary = "submit")
     @PostMapping("submit")
     public R<Object> submit(@RequestBody @Valid BetSubmitVo vo) throws BusinessException {
-       try {
+        try {
             //********************************************************************************
             //Step 1: 判断数据是否合法
             if (StringUtils.isEmpty(vo.getPlayId()) || vo.getPlayId() <= 0) {
@@ -162,24 +163,25 @@ public class HashBetController {
             // Step 2.3: 会员流水表
             MemberFlowEntity memberFlow = MemberFlowEntity.builder()
                     .sn(sn)
+                    .uid(memberEntity.getId())
                     .username(memberEntity.getUsername())
                     .beforeMoney(memberEntity.getMoney())
                     .afterMoney(memberEntity.getMoney() + moneyAmount)
-                    .flowMoney(moneyAmount)
+                    .flowMoney(moneyAmount * -1)
                     .item(ItemEnum.HASH_BET.getCode())
                     .itemZh(ItemEnum.HASH_BET.getMsg())
                     .createTime(new Date())
                     .build();
 
 
-           HashResultEntity result = HashResultEntity.builder()
-                   .sn(bet.getSn())
-                   .toAddress(walletEntity.getAddressBase58())
-                   .gameId(playEntity.getGameId())
-                   .playId(playEntity.getId())
-                   .uid(memberEntity.getId())
-                   .username(memberEntity.getUsername())
-                   .build();
+            HashResultEntity result = HashResultEntity.builder()
+                    .sn(bet.getSn())
+                    .toAddress(walletEntity.getAddressBase58())
+                    .gameId(playEntity.getGameId())
+                    .playId(playEntity.getId())
+                    .uid(memberEntity.getId())
+                    .username(memberEntity.getUsername())
+                    .build();
 
             boolean isSuccess = trxApi.resultOpen(sn, walletEntity.getAddressBase58());
             if (!isSuccess) {
@@ -204,7 +206,7 @@ public class HashBetController {
     @GetMapping("findOrder/{sn}")
     public R<Object> findOrder(@PathVariable String sn) {
         HashBetEntity order = hashBetService.findOrder(sn);
-        if(!ObjectUtils.isEmpty(order) && order.getStatus() == BetStatus.SETTLE) {
+        if (!ObjectUtils.isEmpty(order) && order.getStatus() == BetStatus.SETTLE) {
             // 说明已开奖
 //            hashResultService.find
 

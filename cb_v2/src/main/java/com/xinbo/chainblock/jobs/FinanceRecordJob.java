@@ -8,7 +8,7 @@ import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.enums.ItemEnum;
-import com.xinbo.chainblock.service.AccountService;
+import com.xinbo.chainblock.service.CommonService;
 import com.xinbo.chainblock.service.FinanceService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.utils.CommonUtils;
@@ -63,7 +63,7 @@ public class FinanceRecordJob {
     private MemberService memberService;
 
     @Autowired
-    private AccountService accountService;
+    private CommonService commonService;
 
     /**
      * 处理记录
@@ -259,6 +259,6 @@ public class FinanceRecordJob {
         }
 
         // 入帐
-        accountService.financeAccount(unaccounted, flowList, statisticsList);
+        commonService.financeAccount(unaccounted, flowList, statisticsList);
     }
 }

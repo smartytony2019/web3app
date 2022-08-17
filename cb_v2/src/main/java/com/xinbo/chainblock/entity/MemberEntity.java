@@ -53,6 +53,4 @@ public class MemberEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-
-
 }

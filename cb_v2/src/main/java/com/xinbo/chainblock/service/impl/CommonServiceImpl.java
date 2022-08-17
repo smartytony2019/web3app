@@ -2,7 +2,7 @@ package com.xinbo.chainblock.service.impl;
 
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.mapper.*;
-import com.xinbo.chainblock.service.AccountService;
+import com.xinbo.chainblock.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.List;
  * @desc 入帐业务处理
  */
 @Service
-public class AccountServiceImpl implements AccountService {
+public class CommonServiceImpl implements CommonService {
 
     @Autowired
     private FinanceMapper financeMapper;
@@ -64,13 +64,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public boolean transfer(TransferEntity transfer, MemberEntity member, MemberFlowEntity flow) {
+    public boolean transfer(MemberEntity member, MemberFlowEntity flow) {
         int rows = memberMapper.increment(member);
-        if (rows < 0) {
-            return false;
-        }
-
-        rows = transferMapper.updateById(transfer);
         if (rows < 0) {
             return false;
         }
@@ -79,7 +74,6 @@ public class AccountServiceImpl implements AccountService {
         if (rows < 0) {
             return false;
         }
-
 
         return true;
     }

@@ -13,6 +13,7 @@ import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ import java.util.Date;
  * @desc 哈希注单结算任务
  */
 @Slf4j
-//@Component
+@Component
 public class HashBetSettleJob {
 
     @Autowired
@@ -39,11 +40,16 @@ public class HashBetSettleJob {
     @Autowired
     private HashAlgorithm hashAlgorithm;
 
+    @Value("${scheduled.enable.settle}")
+    private boolean isSettle;
+
 
     @Scheduled(cron = "0/2 * * * * ?")
     public void settle() {
         try {
-            System.out.println("@Scheduled start---> " + new Date());
+            if (!isSettle) {
+                return;
+            }
 
             // Step 1: 未结算数据
             HashBetEntity bet = hashBetService.unsettle();
@@ -93,8 +99,6 @@ public class HashBetSettleJob {
             // Step 4: 数据库操作
             hashBetService.settle(bet, result);
 
-
-            System.out.println("@Scheduled end-----> " + new Date());
         } catch (RuntimeException ex) {
             log.error("settle: ", ex);
         }

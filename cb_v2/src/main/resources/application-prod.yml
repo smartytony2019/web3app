@@ -25,6 +25,12 @@ interceptor:
   exclude:
     path: "/error/**,/v3/**,/webjars/**,/swagger-resources/**,/swagger-ui/**,/admin/user/login"
 
+scheduled:
+  enable:
+    register: false
+    transfer: false
+    settle: true
+
 
 spring:
   datasource:

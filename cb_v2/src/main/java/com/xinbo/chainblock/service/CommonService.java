@@ -9,11 +9,11 @@ import java.util.List;
  * @date 8/15/22 4:06 下午
  * @desc file desc
  */
-public interface AccountService {
+public interface CommonService {
 
 
     boolean financeAccount(List<FinanceEntity> financeList, List<MemberFlowEntity> flowList, List<StatisticsEntity> statisticsList);
 
-    boolean transfer(TransferEntity transfer, MemberEntity member, MemberFlowEntity flow);
+    boolean transfer(MemberEntity member, MemberFlowEntity flow);
 
 }
