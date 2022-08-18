@@ -205,11 +205,11 @@ public class TrxApi {
      * @param account
      * @return
      */
-    public JSONObject getTrc20Record(String account) {
+    public JSONObject getTrc20Record(String account, long minTimestamp) {
         JSONObject result = null;
         try {
 //            long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
-            long minTimestamp = 0;
+//            long minTimestamp = 0;
             String url = String.format(TrxApiConst.GET_TRC20_RECORD, apiUrl, account, minTimestamp);
             RestTemplate restTemplate = new RestTemplate();
             String res = restTemplate.getForObject(url, String.class);
@@ -228,11 +228,11 @@ public class TrxApi {
      * @param account
      * @return
      */
-    public JSONObject getTrxRecord(String account) {
+    public JSONObject getTrxRecord(String account, long minTimestamp) {
         JSONObject result = null;
         try {
 //            long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
-            long minTimestamp = 0;
+//            long minTimestamp = 0;
             String url = String.format(TrxApiConst.GET_TRX_RECORD, apiUrl, account, minTimestamp);
             RestTemplate restTemplate = new RestTemplate();
             String res = restTemplate.getForObject(url, String.class);

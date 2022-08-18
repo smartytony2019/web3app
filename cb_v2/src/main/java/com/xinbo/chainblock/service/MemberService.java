@@ -31,22 +31,10 @@ public interface MemberService {
 
     boolean update(MemberEntity entity);
 
-    Map<String, Float> balance(int uid);
-
     /**
-     * 资金帐户 => 交易帐户
+     * 会员信息
      * @param uid
-     * @param money
      * @return
      */
-    BaseEntity<TransactionApiEntity> fundingAccount2TradingAccount(int uid, float money);
-
-    /**
-     * 交易帐户 => 资金帐户
-     * @param uid
-     * @param money
-     * @return
-     */
-    BaseEntity<TransactionApiEntity> tradingAccount2FundingAccount(int uid, float money);
-
+    MemberEntity info(int uid);
 }

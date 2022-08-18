@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TransferVo {
 
-    private int direct;
+    private int direction;
 
     private float money;
 

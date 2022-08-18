@@ -19,5 +19,15 @@ public interface FinanceService {
 
     List<FinanceEntity> findUnaccounted();
 
+
+    /**
+     * 入帐
+     * @param financeList
+     * @param flowList
+     * @param statisticsList
+     * @return
+     */
+    boolean account(List<FinanceEntity> financeList, List<MemberFlowEntity> flowList, List<StatisticsEntity> statisticsList);
+
     int batchInsert(List<FinanceEntity> list);
 }

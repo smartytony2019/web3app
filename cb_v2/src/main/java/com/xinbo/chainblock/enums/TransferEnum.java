@@ -16,8 +16,8 @@ import java.util.Map;
 public enum TransferEnum {
 
 
-    FUNDING2TRADING(1, "转换(资金帐户=>交易帐号)"),
-    TRADING2FUNDING(2, "转换(交易帐号=>资金帐户)");
+    FUNDING2TRADING(0, "转换(资金帐户=>交易帐号)"),
+    TRADING2FUNDING(1, "转换(交易帐号=>资金帐户)");
     int code;
     String msg;
 

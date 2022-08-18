@@ -19,8 +19,11 @@ interceptor:
 scheduled:
   enable:
     register: false
-    transfer: true
-    settle: true
+    transfer: false
+    settle: false
+    finance:
+      record: false
+      account: false
 
 
 

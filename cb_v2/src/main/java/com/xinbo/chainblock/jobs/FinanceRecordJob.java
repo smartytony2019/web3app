@@ -11,7 +11,9 @@ import com.xinbo.chainblock.enums.ItemEnum;
 import com.xinbo.chainblock.service.CommonService;
 import com.xinbo.chainblock.service.FinanceService;
 import com.xinbo.chainblock.service.MemberService;
+import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.CommonUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,6 +36,7 @@ import java.util.Locale;
  * @date 6/25/22 2:59 下午
  * @desc file desc
  */
+@Slf4j
 @Component
 public class FinanceRecordJob {
 
@@ -63,14 +66,27 @@ public class FinanceRecordJob {
     private MemberService memberService;
 
     @Autowired
-    private CommonService commonService;
+    private WalletService walletService;
+
+    @Value("${scheduled.enable.finance.record}")
+    private boolean isFinanceRecord;
+
+    @Value("${scheduled.enable.finance.account}")
+    private boolean isFinanceAccount;
+
 
     /**
      * 处理记录
      */
     @Scheduled(cron = "0/5 * * * * ?")
     public void handleRecord() {
+        long minTimestamp = new Date().getTime() - (24*60*60*1000);
+//        long minTimestamp = 0;
         try {
+            if (!isFinanceRecord) {
+                return;
+            }
+
             String json = redisTemplate.opsForSet().pop(RedisConst.MEMBER_FINANCE);
             if (StringUtils.isEmpty(json)) {
                 return;
@@ -84,11 +100,16 @@ public class FinanceRecordJob {
             List<FinanceEntity> financeEntityList = new ArrayList<>();
             String base58Address = walletEntity.getAddressBase58();
             String hexAddress = walletEntity.getAddressHex();
-            /***************************** 处理Trc20记录  **********************************/
-            JSONObject trc20Record = trxApi.getTrc20Record(base58Address);
+            /* **************************** 处理Trc20记录  ********************************* */
+            JSONObject trc20Record = trxApi.getTrc20Record(base58Address, minTimestamp);
             JSONArray trc20Data = trc20Record.getJSONArray("data");
 
             if (!ObjectUtils.isEmpty(trc20Data)) {
+                WalletEntity mainWallet = walletService.findMain();
+                if(ObjectUtils.isEmpty(mainWallet)) {
+                    return;
+                }
+
                 for (int i = 0; i < trc20Data.size(); i++) {
                     JSONObject jsonObject = trc20Data.getJSONObject(i);
                     if (ObjectUtils.isEmpty(jsonObject)) {
@@ -106,6 +127,9 @@ public class FinanceRecordJob {
                     int decimals = tokenInfo.getInteger("decimals");
                     String name = tokenInfo.getString("name");
 
+                    if(fromAddress.equals(mainWallet.getAddressBase58()) || toAddress.equals(mainWallet.getAddressBase58())) {
+                        continue;
+                    }
 
                     if (StringUtils.isEmpty(symbol) || !symbol.equals(tokenSymbol)) {
                         continue;
@@ -135,8 +159,8 @@ public class FinanceRecordJob {
                 }
             }
 
-            /***************************** 处理Trx记录  **********************************/
-            JSONObject trxRecord = trxApi.getTrxRecord(base58Address);
+            /* **************************** 处理Trx记录  ********************************* */
+            JSONObject trxRecord = trxApi.getTrxRecord(base58Address, minTimestamp);
             JSONArray trxData = trxRecord.getJSONArray("data");
             if (!ObjectUtils.isEmpty(trxData)) {
                 for (int i = 0; i < trxData.size(); i++) {
@@ -158,13 +182,17 @@ public class FinanceRecordJob {
                     long timestamp = rawData.getLong("timestamp");
                     JSONObject contract = rawData.getJSONArray("contract").getJSONObject(0);
                     JSONObject parameter = contract.getObject("parameter", JSONObject.class);
+                    String type = contract.getString("type");
+                    if (!type.equals("TransferContract")) {
+                        continue;
+                    }
                     JSONObject value = parameter.getObject("value", JSONObject.class);
                     BigDecimal amount = value.getBigDecimal("amount");
                     String ownerAddress = value.getString("owner_address");
                     String toAddress = value.getString("to_address");
 
 
-                    int type = toAddress.toUpperCase(Locale.ROOT).equals(hexAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
+                    int t = toAddress.toUpperCase(Locale.ROOT).equals(hexAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
                     FinanceEntity fe = FinanceEntity.builder()
                             .uid(walletEntity.getUid())
                             .username(walletEntity.getUsername())
@@ -175,7 +203,7 @@ public class FinanceRecordJob {
                             .blockTime(DateUtil.date(timestamp))
                             .blockTimestamp(timestamp)
                             .symbol(trxSymbol)
-                            .type(type)
+                            .type(t)
                             .isAccount(false)
                             .build();
                     financeEntityList.add(fe);
@@ -197,68 +225,79 @@ public class FinanceRecordJob {
      */
     @Scheduled(cron = "0/5 * * * * ?")
     public void handleAccount() {
-        List<FinanceEntity> unaccounted = financeService.findUnaccounted();
-        if(CollectionUtils.isEmpty(unaccounted)) {
-            return;
-        }
-
-        List<MemberFlowEntity> flowList = new ArrayList<>();
-        List<StatisticsEntity> statisticsList = new ArrayList<>();
-        for(FinanceEntity f : unaccounted) {
-            f.setIsAccount(true);
-            MemberEntity member = memberService.findById(f.getUid());
-
-            /* **************************** 帐变  ********************************* */
-            MemberFlowEntity entity = MemberFlowEntity.builder()
-                    .sn(f.getTransactionId())
-                    .item(ItemEnum.RECHARGE.getCode())
-                    .itemZh(ItemEnum.RECHARGE.getMsg())
-                    .flowMoney(f.getMoney())
-                    .beforeMoney(member.getMoney())
-                    .afterMoney(member.getMoney()+f.getMoney())
-                    .createTime(new Date())
-                    .uid(f.getUid())
-                    .username(f.getUsername())
-                    .ext(f.getSymbol())
-                    .build();
-            flowList.add(entity);
-
-
-            /* **************************** 统计  ********************************* */
-            StatisticsEntity statistics = StatisticsEntity.builder()
-                    .uid(f.getUid())
-                    .username(f.getUsername())
-                    .date(DateUtil.format(new Date(), "yyyyMMdd"))
-                    .betAmount(0F)
-                    .profitAmount(0F)
-                    .rechargeTrc20Amount(0F)
-                    .rechargeTrxAmount(0F)
-                    .withdrawTrc20Amount(0F)
-                    .withdrawTrxAmount(0F)
-                    .updateTime(new Date())
-                    .build();
-
-            if(f.getType() == 1) {
-                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(trxSymbol)) {
-                    statistics.setRechargeTrxAmount(f.getMoney());
-                }
-                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(tokenSymbol)) {
-                    statistics.setRechargeTrc20Amount(f.getMoney());
-                }
+        try {
+            if(!isFinanceAccount) {
+                return;
             }
 
-            if(f.getType() == 2) {
-                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(trxSymbol)) {
-                    statistics.setWithdrawTrxAmount(f.getMoney());
-                }
-                if(f.getSymbol().toUpperCase(Locale.ROOT).equals(tokenSymbol)) {
-                    statistics.setWithdrawTrc20Amount(f.getMoney());
-                }
+            List<FinanceEntity> unaccounted = financeService.findUnaccounted();
+            if (CollectionUtils.isEmpty(unaccounted)) {
+                return;
             }
-            statisticsList.add(statistics);
-        }
 
-        // 入帐
-        commonService.financeAccount(unaccounted, flowList, statisticsList);
+            List<MemberFlowEntity> flowList = new ArrayList<>();
+            List<StatisticsEntity> statisticsList = new ArrayList<>();
+            for (FinanceEntity f : unaccounted) {
+                f.setIsAccount(true);
+                MemberEntity member = memberService.findById(f.getUid());
+
+                /* **************************** 帐变  ********************************* */
+                MemberFlowEntity entity = MemberFlowEntity.builder()
+                        .sn(f.getTransactionId())
+                        .item(ItemEnum.RECHARGE.getCode())
+                        .itemZh(ItemEnum.RECHARGE.getMsg())
+                        .flowMoney(f.getMoney())
+                        .beforeMoney(member.getMoney())
+                        .afterMoney(member.getMoney() + f.getMoney())
+                        .createTime(new Date())
+                        .uid(f.getUid())
+                        .username(f.getUsername())
+                        .ext(f.getSymbol())
+                        .build();
+                flowList.add(entity);
+
+
+                /* **************************** 统计  ********************************* */
+                StatisticsEntity statistics = StatisticsEntity.builder()
+                        .uid(f.getUid())
+                        .username(f.getUsername())
+                        .date(DateUtil.format(new Date(), "yyyyMMdd"))
+                        .betAmount(0F)
+                        .profitAmount(0F)
+                        .rechargeTrc20Amount(0F)
+                        .rechargeTrxAmount(0F)
+                        .withdrawTrc20Amount(0F)
+                        .withdrawTrxAmount(0F)
+                        .updateTime(new Date())
+                        .build();
+
+                if (f.getType() == 1) {
+                    if (f.getSymbol().toUpperCase(Locale.ROOT).equals(trxSymbol)) {
+                        statistics.setRechargeTrxAmount(f.getMoney());
+                    }
+                    if (f.getSymbol().toUpperCase(Locale.ROOT).equals(tokenSymbol)) {
+                        statistics.setRechargeTrc20Amount(f.getMoney());
+                    }
+                }
+
+                if (f.getType() == 2) {
+                    if (f.getSymbol().toUpperCase(Locale.ROOT).equals(trxSymbol)) {
+                        statistics.setWithdrawTrxAmount(f.getMoney());
+                    }
+                    if (f.getSymbol().toUpperCase(Locale.ROOT).equals(tokenSymbol)) {
+                        statistics.setWithdrawTrc20Amount(f.getMoney());
+                    }
+                }
+                statisticsList.add(statistics);
+            }
+
+            // 入帐
+            boolean isSuccess = financeService.account(unaccounted, flowList, statisticsList);
+            if(!isSuccess) {
+                log.info("failure");
+            }
+        } catch (Exception ex) {
+            log.error("handleAccount", ex);
+        }
     }
 }

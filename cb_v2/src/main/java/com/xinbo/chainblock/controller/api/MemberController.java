@@ -43,10 +43,19 @@ public class MemberController {
 
 
     @Autowired
+    private TrxApi trxApi;
+
+    @Autowired
     private MemberService memberService;
 
     @Autowired
+    private WalletService walletService;
+
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Value("${trx.token-info.contract-address}")
+    private String contractAddress;
 
     @JwtIgnore
     @Operation(summary = "register", description = "注册")
@@ -124,8 +133,36 @@ public class MemberController {
                 .username("demo5566")
                 .build();
 
-        Map<String, Float> map = memberService.balance(entity.getId());
+        WalletEntity walletEntity = walletService.findByUid(entity.getId());
+
+        // 资金帐户余额
+        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
+        String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
+        Map<String, Float> map = new HashMap<>();
+        map.put("fundingAccount", Float.parseFloat(trc20));
+        map.put("trx", Float.parseFloat(trx));
+
+        // 交易帐户余额
+        MemberEntity memberEntity = memberService.findById(entity.getId());
+        map.put("tradingAccount", memberEntity.getMoney());
+
+        // 总资产
+        map.put("total", Float.parseFloat(trc20) + memberEntity.getMoney());
+
+        // Step 1: 获取资金帐号转帐记录@todo
+        redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(walletEntity));
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
+    }
+
+
+    @JwtIgnore
+    @Operation(summary = "wallet", description = "钱包地址")
+    @PostMapping("wallet")
+    public R<Object> wallet() {
+        int uid = 19;
+        WalletEntity entity = walletService.findByUid(uid);
+        String result = !ObjectUtils.isEmpty(entity) ? entity.getAddressBase58() : "";
+        return R.builder().code(StatusCode.SUCCESS).data(result).build();
     }
 
 
@@ -136,7 +173,7 @@ public class MemberController {
         try {
             /* ******************************  Step 1: 判断数据是否合法  **************************************** */
             Map<Integer, String> map = TransferEnum.toMap();
-            String s = map.get(vo.getDirect());
+            String s = map.get(vo.getDirection());
             if (StringUtils.isEmpty(s)) {
                 throw new BusinessException(1, "数据不合法!");
             }
@@ -154,13 +191,46 @@ public class MemberController {
             /* ******************************  Step 2: 开始划转  **************************************** */
             BaseEntity<TransactionApiEntity> result = null;
             // Step 2.1 资金帐户 => 交易帐户
-            if (vo.getDirect() == 1) {
-                result = memberService.fundingAccount2TradingAccount(entity.getId(), vo.getMoney());
+            if (vo.getDirection() == TransferEnum.FUNDING2TRADING.getCode()) {
+                // 会员数字钱包
+                WalletEntity memberWallet = walletService.findByUid(entity.getId());
+
+                // 主数字钱包
+                WalletEntity mainWallet = walletService.findMain();
+                if (ObjectUtils.isEmpty(mainWallet)) {
+                    throw new BusinessException(1, "主数字钱包不存在!!");
+                }
+
+                String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, memberWallet.getAddressBase58(), memberWallet.getPrivateKey());
+                if (StringUtils.isEmpty(balanceOfTrc20)) {
+                    throw new BusinessException(1, "Trx20余额未查找到");
+                }
+
+                float balance = Float.parseFloat(balanceOfTrc20);
+                if (balance < vo.getMoney()) {
+                    throw new BusinessException(1, "余额不足");
+                }
+
+                result = trxApi.transactionOfTrc20(contractAddress, memberWallet.getAddressBase58(), memberWallet.getPrivateKey(), String.valueOf(vo.getMoney()), mainWallet.getAddressBase58());
             }
 
             // Step 2.2 交易帐户 => 资金帐户
-            if (vo.getDirect() == 2) {
-                result = memberService.tradingAccount2FundingAccount(entity.getId(), vo.getMoney());
+            if (vo.getDirection() == TransferEnum.TRADING2FUNDING.getCode()) {
+                MemberEntity memberEntity = memberService.findById(entity.getId());
+
+                // 会员数字钱包
+                WalletEntity memberWallet = walletService.findByUid(entity.getId());
+
+                // 主数字钱包
+                WalletEntity mainWallet = walletService.findMain();
+
+
+                float balance = memberEntity.getMoney();
+                if (balance < vo.getMoney()) {
+                    throw new BusinessException(1, "余额不足!!");
+                }
+
+                result = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberWallet.getAddressBase58());
             }
 
             if (ObjectUtils.isEmpty(result)) {
@@ -175,16 +245,16 @@ public class MemberController {
             // Step 3.1: 交易金额变更
             MemberEntity memberEntity = memberService.findById(entity.getId());
 
+            float money = vo.getDirection() == TransferEnum.FUNDING2TRADING.getCode() ? vo.getMoney() : vo.getMoney() * -1;
             // Step 3.2: 交易金额变更
             MemberEntity member = MemberEntity.builder()
                     .id(memberEntity.getId())
-                    .money(vo.getMoney())
+                    .money(money)
                     .version(memberEntity.getVersion())
                     .build();
 
 
-            float money = vo.getDirect() == TransferEnum.FUNDING2TRADING.getCode() ? vo.getMoney() : vo.getMoney() * -1;
-            ItemEnum itemEnum = vo.getDirect() == 1 ? ItemEnum.TRANSFER_FUNDING2TRADING : ItemEnum.TRANSFER_TRADING2FUNDING;
+            ItemEnum itemEnum = vo.getDirection() == TransferEnum.FUNDING2TRADING.getCode() ? ItemEnum.TRANSFER_FUNDING2TRADING : ItemEnum.TRANSFER_TRADING2FUNDING;
             // Step 3.3: 帐变
             MemberFlowEntity flow = MemberFlowEntity.builder()
                     .sn(result.getData().getTxid())
@@ -209,6 +279,16 @@ public class MemberController {
         } catch (Exception ex) {
             return R.builder().code(StatusCode.FAILURE).build();
         }
+    }
+
+
+    @JwtIgnore
+    @Operation(summary = "info", description = "会员信息")
+    @GetMapping("info")
+    public R<Object> info() {
+        int uid = 19;
+        MemberEntity entity = memberService.info(uid);
+        return R.builder().code(StatusCode.SUCCESS).data(entity).build();
     }
 
 

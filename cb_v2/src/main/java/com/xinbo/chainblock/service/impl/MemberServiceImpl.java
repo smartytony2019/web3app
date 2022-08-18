@@ -1,31 +1,21 @@
 package com.xinbo.chainblock.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
-import com.xinbo.chainblock.entity.MemberFlowEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
-import com.xinbo.chainblock.mapper.MemberFlowMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.MemberService;
-import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,8 +35,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Autowired
     private TrxApi trxApi;
 
-    @Autowired
-    private WalletService walletService;
+//    @Autowired
+//    private WalletService walletService;
 
     @Autowired
     private MemberMapper memberMapper;
@@ -54,8 +44,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Autowired
     private AgentService agentService;
 
-    @Value("${trx.token-info.contract-address}")
-    private String contractAddress;
+//    @Value("${trx.token-info.contract-address}")
+//    private String contractAddress;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -137,108 +127,17 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         return memberMapper.updateById(entity) > 0;
     }
 
+    @Override
+    public MemberEntity info(int uid) {
+        return memberMapper.info(uid);
+    }
+
 //    @Override
 //    public String balanceTrc20(int uid) {
 //        WalletEntity walletEntity = walletService.findByUid(uid);
 //        return trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
 //    }
 //
-    @Override
-    public Map<String, Float> balance(int uid) {
-        WalletEntity walletEntity = walletService.findByUid(uid);
-
-        // 资金帐户余额
-        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
-        String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
-        Map<String, Float> map = new HashMap<>();
-        map.put("fundingAccount", Float.parseFloat(trc20));
-        map.put("trx", Float.parseFloat(trx));
-
-        // 交易帐户余额
-        MemberEntity memberEntity = memberMapper.selectById(uid);
-        map.put("tradingAccount", memberEntity.getMoney());
-
-        // 总资产
-        map.put("total", Float.parseFloat(trc20) + memberEntity.getMoney());
-
-
-        // Step 1: 获取资金帐号转帐记录@todo
-        redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(walletEntity));
-
-        return map;
-    }
-
-
-
-    /**
-     * 资金帐户 => 交易帐户
-     *
-     * @param uid
-     * @param money
-     * @return
-     */
-    @Override
-    public BaseEntity<TransactionApiEntity> fundingAccount2TradingAccount(int uid, float money) {
-        BaseEntity<TransactionApiEntity> result = new BaseEntity<>();
-        try {
-            // 会员数字钱包
-            WalletEntity memberWallet = walletService.findByUid(uid);
-
-            // 主数字钱包
-            WalletEntity mainWallet = walletService.findMain();
-            if(ObjectUtils.isEmpty(mainWallet)) {
-                return result;
-            }
-
-            String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, memberWallet.getAddressBase58(), memberWallet.getPrivateKey());
-            if (StringUtils.isEmpty(balanceOfTrc20)) {
-                return result;
-            }
-
-            float balance = Float.parseFloat(balanceOfTrc20);
-            if (balance < money) {
-                result.setMsg("余额不足");
-                return result;
-            }
-
-            result = trxApi.transactionOfTrc20(contractAddress, memberWallet.getAddressBase58(), memberWallet.getPrivateKey(), String.valueOf(money), mainWallet.getAddressBase58());
-        }catch (Exception ex) {
-            log.error("fundingAccount2TradingAccount", ex);
-        }
-        return result;
-    }
-
-    /**
-     * 交易帐户 => 资金帐户
-     *
-     * @param uid
-     * @param money
-     * @return
-     */
-    @Override
-    public BaseEntity<TransactionApiEntity> tradingAccount2FundingAccount(int uid, float money) {
-        BaseEntity<TransactionApiEntity> result = new BaseEntity<>();
-        try {
-            MemberEntity memberEntity = memberMapper.selectById(uid);
-
-            // 会员数字钱包
-            WalletEntity memberWallet = walletService.findByUid(uid);
-
-            // 主数字钱包
-            WalletEntity mainWallet = walletService.findMain();
-
-
-            float balance = memberEntity.getMoney();
-            if (balance < money) {
-                return result;
-            }
-
-            result = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(money), memberWallet.getAddressBase58());
-        }catch (Exception ex) {
-            log.error("tradingAccount2FundingAccount", ex);
-        }
-        return result;
-    }
 
 
 

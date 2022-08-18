@@ -262,32 +262,38 @@ create table t_member(
   money decimal(10,4) comment '金额',
   freeze_money decimal(10,4) comment '冻结金额',
   salt varchar(100) comment '盐',
+  withdraw_wallet varchar(100) comment '提现钱包地址',
+  withdraw_pwd varchar(100) comment '提现钱包密码',
   version int comment '版本',
-  create_time timestamp null default null comment '创建时间',
-  update_time timestamp null default null comment '创建时间',
+  reg_ip varchar(50) comment '注册ip',
+  reg_time timestamp null default null comment '注册时间',
+  last_login_ip varchar(50) comment '最后登录ip',
+  last_login_time timestamp null default null comment '最后登录时间',
   UNIQUE KEY unique_username (username)
 );
 
 
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jack','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackB2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC3','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackC4','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD3','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD4','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD5','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD6','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD7','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackD8','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE1','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE2','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('jackE3','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`version`,`create_time`) values ('demo5566','29226cace4e40c30d0ca154ca98e7b88',10000,'8cTRqhYO15chyJGkJGO05GnpBr2m9o6J',1,'2022-06-25 12:00:00');
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`, `withdraw_wallet`,`withdraw_pwd`,`version`,`reg_ip`,`reg_time`,`last_login_ip`,`last_login_time`) values
+('jack','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackB1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackB2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackC1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackC2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackC3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackC4','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD4','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD5','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD6','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD7','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackD8','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackE1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackE2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('jackE3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00'),
+('demo5566','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, '127.0.0.1', '2022-06-25 12:00:00', '127.0.0.1', '2022-06-25 12:00:00')
+;
 
 
 

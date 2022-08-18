@@ -27,9 +27,12 @@ interceptor:
 
 scheduled:
   enable:
-    register: false
-    transfer: false
+    register: true
+    transfer: true
     settle: true
+    finance:
+      record: true
+      account: true
 
 
 spring:
