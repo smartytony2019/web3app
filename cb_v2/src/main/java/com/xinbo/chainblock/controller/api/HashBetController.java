@@ -2,11 +2,8 @@ package com.xinbo.chainblock.controller.api;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.BetStatus;
-import com.xinbo.chainblock.consts.DirectionConst;
-import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.core.TrxApi;
@@ -18,14 +15,12 @@ import com.xinbo.chainblock.entity.hash.HashResultEntity;
 import com.xinbo.chainblock.enums.ItemEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.*;
-import com.xinbo.chainblock.utils.CommonUtils;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import com.xinbo.chainblock.vo.BetSubmitVo;
 import com.xinbo.chainblock.vo.BetVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -34,9 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController("ApiHashBetController")
 @RequestMapping("/api/hashBet")

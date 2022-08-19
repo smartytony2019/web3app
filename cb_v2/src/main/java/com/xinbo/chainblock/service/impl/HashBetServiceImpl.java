@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.consts.DirectionConst;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.dto.HashBetDto;
