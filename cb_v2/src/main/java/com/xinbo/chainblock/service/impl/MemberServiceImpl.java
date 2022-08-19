@@ -33,27 +33,16 @@ import java.util.*;
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> implements MemberService {
 
     @Autowired
-    private TrxApi trxApi;
-
-//    @Autowired
-//    private WalletService walletService;
-
-    @Autowired
     private MemberMapper memberMapper;
 
     @Autowired
     private AgentService agentService;
 
-//    @Value("${trx.token-info.contract-address}")
-//    private String contractAddress;
-
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public boolean insert() {
         MemberEntity entity = MemberEntity.builder()
-                .username("jack").createTime(new Date()).money(1000F).salt("123").version(1)
+                .username("jack").money(1000F).salt("123").version(1)
                 .build();
         memberMapper.insert(entity);
         return true;
@@ -112,11 +101,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     @Override
     public BasePage findPage(MemberEntity entity, long current, long size, Date start, Date end) {
         Page<MemberEntity> page = new Page<>(current, size);
-        page.addOrder(OrderItem.asc("create_time"));
         LambdaQueryWrapper<MemberEntity> wrapper = this.createWrapper(entity);
-        if (!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
-            wrapper.ge(MemberEntity::getCreateTime, start).le(MemberEntity::getCreateTime, end);
-        }
 
         IPage<MemberEntity> iPage = memberMapper.selectPage(page, wrapper);
         return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberDto.class)).build();

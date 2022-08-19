@@ -64,7 +64,6 @@ public class MemberController {
         MemberEntity entity = MemberEntity.builder()
                 .username(vo.getUsername())
                 .pwd(vo.getPwd())
-                .createTime(new Date())
                 .version(1)
                 .salt("1234")
                 .money(0F)

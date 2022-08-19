@@ -59,7 +59,6 @@ public class MemberController {
     @PostMapping("update")
     public R<Object> update(@RequestBody @Valid MemberVo vo) {
         MemberEntity entity = MapperUtil.to(vo, MemberEntity.class);
-        entity.setCreateTime(new Date());
         entity.setSalt("11111");
         entity.setVersion(1);
         boolean isSuccess = memberService.update(entity);

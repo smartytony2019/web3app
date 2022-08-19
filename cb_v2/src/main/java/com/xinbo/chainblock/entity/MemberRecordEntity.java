@@ -4,26 +4,22 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author tony
  * @date 6/24/22 4:21 下午
- * @desc file desc
+ * @desc 会员记录表
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_member")
-public class MemberEntity {
-
+@TableName("t_member_record")
+public class MemberRecordEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -35,41 +31,41 @@ public class MemberEntity {
     private String username;
 
     /**
-     * 密码
+     * 域名
      */
-    @TableField("pwd")
-    private String pwd;
+    @TableField("domain")
+    private String domain;
 
     /**
-     * 金额
+     * 设备
      */
-    @TableField("money")
-    private Float money;
-
-
-    /**
-     * 盐
-     */
-    @TableField("salt")
-    private String salt;
-
-    /**
-     * 提现钱包地址
-     */
-    @TableField("withdraw_wallet")
-    private Float withdraw_wallet;
-
-    /**
-     * 提现钱包密码
-     */
-    @TableField("withdraw_pwd")
-    private Float withdraw_pwd;
+    @TableField("device")
+    private Float device;
 
 
     /**
-     * 版本
+     * 注册ip
      */
-    @TableField("version")
-    private Integer version;
+    @TableField("reg_ip")
+    private String regIp;
+
+    /**
+     * 注册时间
+     */
+    @TableField("reg_time")
+    private Float regTime;
+
+    /**
+     * 登录ip
+     */
+    @TableField("login_ip")
+    private Float loginIp;
+
+
+    /**
+     * 登录时间
+     */
+    @TableField("login_time")
+    private Integer loginTime;
 
 }
