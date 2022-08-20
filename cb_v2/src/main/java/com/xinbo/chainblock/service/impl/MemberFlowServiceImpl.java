@@ -31,7 +31,6 @@ public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberF
     private MemberFlowMapper memberFlowMapper;
 
 
-
     @Override
     public BasePage findPage(MemberFlowEntity entity, long current, long size) {
         Page<MemberFlowEntity> page = new Page<>(current, size);
@@ -46,7 +45,7 @@ public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberF
         page.addOrder(OrderItem.asc("create_time"));
 
         LambdaQueryWrapper<MemberFlowEntity> wrapper = this.createWrapper(entity);
-        if(!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
+        if (!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
             wrapper.ge(MemberFlowEntity::getCreateTime, start).le(MemberFlowEntity::getCreateTime, end);
         }
         IPage<MemberFlowEntity> iPage = memberFlowMapper.selectPage(page, wrapper);
@@ -57,7 +56,7 @@ public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberF
     /**
      * 创建查询条件
      *
-     * @param entity  实体
+     * @param entity 实体
      * @return LambdaQueryWrapper
      */
     private LambdaQueryWrapper<MemberFlowEntity> createWrapper(MemberFlowEntity entity) {
@@ -68,8 +67,8 @@ public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberF
         if (!StringUtils.isEmpty(entity.getUsername())) {
             wrappers.eq(MemberFlowEntity::getUsername, entity.getUsername());
         }
-        if (!StringUtils.isEmpty(entity.getItem())) {
-            wrappers.eq(MemberFlowEntity::getItem, entity.getItem());
+        if (!StringUtils.isEmpty(entity.getItemCode()) && entity.getItemCode() > 0) {
+            wrappers.eq(MemberFlowEntity::getItemCode, entity.getItemCode());
         }
         return wrappers;
     }

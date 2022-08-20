@@ -27,7 +27,7 @@ public interface MemberService {
 
     boolean register(MemberEntity entity, int code);
 
-    BasePage findPage(MemberEntity entity, long current, long size, Date start, Date end);
+    BasePage findPage(MemberEntity entity, long current, long size);
 
     boolean update(MemberEntity entity);
 

@@ -1,6 +1,5 @@
 package com.xinbo.chainblock.controller.api;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -8,24 +7,27 @@ import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.TrxApi;
+import com.xinbo.chainblock.dto.EnumItem;
+import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
-import com.xinbo.chainblock.entity.TransferEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.entity.terminal.BaseEntity;
 import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
-import com.xinbo.chainblock.enums.ItemEnum;
+import com.xinbo.chainblock.enums.MemberFlowItemEnum;
+import com.xinbo.chainblock.enums.MemberTypeEnum;
 import com.xinbo.chainblock.enums.TransferEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.MemberService;
-import com.xinbo.chainblock.service.TransferService;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.JwtUser;
 import com.xinbo.chainblock.utils.JwtUtil;
+import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import com.xinbo.chainblock.vo.MemberLoginVo;
 import com.xinbo.chainblock.vo.TransferVo;
 import com.xinbo.chainblock.vo.RegisterVo;
+import com.xinbo.chainblock.vo.WithdrawVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +37,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController("ApiMemberController")
@@ -125,32 +128,45 @@ public class MemberController {
 
     @JwtIgnore
     @Operation(summary = "balance", description = "TRX&USDT余额")
-    @PostMapping("balance")
-    public R<Object> balance() {
-        MemberEntity entity = MemberEntity.builder()
-                .id(19)
-                .username("demo5566")
-                .build();
+    @PostMapping("balance/{deep}")
+    public R<Object> balance(@PathVariable int deep) {
 
-        WalletEntity walletEntity = walletService.findByUid(entity.getId());
+        int uid = 19;
+        String key = String.format(RedisConst.MEMBER_BALANCE, uid);
+
+        // deep为1则拿缓存数据
+        if(deep == 0) {
+            String json = redisTemplate.opsForValue().get(key);
+            if(!StringUtils.isEmpty(json)) {
+                JSONObject object = JSONObject.parseObject(json);
+                return R.builder().code(StatusCode.SUCCESS).data(object).build();
+            }
+        }
+
+
+        JSONObject object = new JSONObject();
+        WalletEntity walletEntity = walletService.findByUid(uid);
 
         // 资金帐户余额
         String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
         String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
-        Map<String, Float> map = new HashMap<>();
-        map.put("fundingAccount", Float.parseFloat(trc20));
-        map.put("trx", Float.parseFloat(trx));
+        object.put("fundingAccount", Float.parseFloat(trc20));
+        object.put("trx", Float.parseFloat(trx));
+
 
         // 交易帐户余额
-        MemberEntity memberEntity = memberService.findById(entity.getId());
-        map.put("tradingAccount", memberEntity.getMoney());
+        MemberEntity memberEntity = memberService.findById(uid);
+        object.put("tradingAccount", memberEntity.getMoney());
 
         // 总资产
-        map.put("total", Float.parseFloat(trc20) + memberEntity.getMoney());
+        object.put("total", Float.parseFloat(trc20) + memberEntity.getMoney());
+
+        //缓存1分钟
+        redisTemplate.opsForValue().set(key, JSON.toJSONString(object), 5, TimeUnit.MINUTES);
 
         // Step 1: 获取资金帐号转帐记录@todo
         redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(walletEntity));
-        return R.builder().code(StatusCode.SUCCESS).data(map).build();
+        return R.builder().code(StatusCode.SUCCESS).data(object).build();
     }
 
 
@@ -171,9 +187,9 @@ public class MemberController {
     public R<Object> transfer(@RequestBody TransferVo vo) {
         try {
             /* ******************************  Step 1: 判断数据是否合法  **************************************** */
-            Map<Integer, String> map = TransferEnum.toMap();
-            String s = map.get(vo.getDirection());
-            if (StringUtils.isEmpty(s)) {
+            Map<Integer, EnumItem> map = TransferEnum.toMap();
+            EnumItem enumItem = map.get(vo.getDirection());
+            if (StringUtils.isEmpty(enumItem.getCode())) {
                 throw new BusinessException(1, "数据不合法!");
             }
 
@@ -253,7 +269,7 @@ public class MemberController {
                     .build();
 
 
-            ItemEnum itemEnum = vo.getDirection() == TransferEnum.FUNDING2TRADING.getCode() ? ItemEnum.TRANSFER_FUNDING2TRADING : ItemEnum.TRANSFER_TRADING2FUNDING;
+            MemberFlowItemEnum memberFlowItemEnum = vo.getDirection() == TransferEnum.FUNDING2TRADING.getCode() ? MemberFlowItemEnum.TRANSFER_FUNDING2TRADING : MemberFlowItemEnum.TRANSFER_TRADING2FUNDING;
             // Step 3.3: 帐变
             MemberFlowEntity flow = MemberFlowEntity.builder()
                     .sn(result.getData().getTxid())
@@ -262,8 +278,9 @@ public class MemberController {
                     .beforeMoney(memberEntity.getMoney())
                     .flowMoney(money)
                     .afterMoney(memberEntity.getMoney() + money)
-                    .item(itemEnum.getCode())
-                    .itemZh(itemEnum.getMsg())
+                    .item(memberFlowItemEnum.getName())
+                    .itemCode(memberFlowItemEnum.getCode())
+                    .itemZh(memberFlowItemEnum.getNameZh())
                     .createTime(new Date())
                     .build();
 
@@ -287,8 +304,52 @@ public class MemberController {
     public R<Object> info() {
         int uid = 19;
         MemberEntity entity = memberService.info(uid);
-        return R.builder().code(StatusCode.SUCCESS).data(entity).build();
+
+        Map<Integer, EnumItem> map = MemberFlowItemEnum.toMap();
+
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(entity, MemberDto.class)).build();
     }
 
+
+    @JwtIgnore
+    @Operation(summary = "withdraw", description = "会员提现")
+    @PostMapping("withdraw")
+    public R<Object> withdraw(@RequestBody WithdrawVo vo) {
+        try {
+
+            int uid = 19;
+            MemberEntity memberEntity = memberService.info(uid);
+            if(vo.getMoney()>memberEntity.getMoney()) {
+                throw new BusinessException(1, "金额不足");
+            }
+
+            if(!memberEntity.getIsEnable()) {
+                throw new BusinessException(1, "帐户已冻结");
+            }
+
+            if(memberEntity.getType() != MemberTypeEnum.NORMAL.getCode()) {
+                throw new BusinessException(1, "此帐户禁提现");
+            }
+
+            WalletEntity mainWallet = walletService.findMain();
+            BaseEntity<TransactionApiEntity> transaction = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberEntity.getWithdrawWallet());
+            if(ObjectUtils.isEmpty(transaction) || transaction.getCode() != StatusCode.SUCCESS) {
+                throw new BusinessException(1, "提现失败，请重新提交!");
+            }
+
+            // tron调用失败
+            if(!transaction.getData().isResult()) {
+                throw new BusinessException(1, "提现失败，请重新提交!!");
+            }
+
+            return R.builder().code(StatusCode.SUCCESS).build();
+        }catch (BusinessException ex) {
+            return R.builder().code(StatusCode.FAILURE).msg(ex.getMsg()).build();
+        }catch (Exception ex) {
+            return R.builder().code(StatusCode.FAILURE).msg("执行异常").build();
+        }
+
+
+    }
 
 }

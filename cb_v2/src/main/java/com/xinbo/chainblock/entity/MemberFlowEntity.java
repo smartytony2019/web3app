@@ -65,13 +65,19 @@ public class MemberFlowEntity {
     private Float flowMoney;
 
     /**
-     * 帐变编码
+     * 帐变项
      */
     @TableField("item")
-    private Integer item;
+    private String item;
 
     /**
-     * 帐变名称中文
+     * 帐变编码
+     */
+    @TableField("item_code")
+    private Integer itemCode;
+
+    /**
+     * 帐变中文
      */
     @TableField("item_zh")
     private String itemZh;

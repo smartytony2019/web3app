@@ -5,30 +5,20 @@ import com.xinbo.chainblock.dto.EnumItem;
 import com.xinbo.chainblock.utils.TranslateUtil;
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author tony
- * @date 7/8/22 2:16 下午
+ * @date 8/9/22 10:21 下午
  * @desc file desc
  */
 @AllArgsConstructor
-public enum PermissionCodeEnum {
-
-    USER_ADD(500310,"500310", "会员添加"),
-    USER_DEL(500311, "500311", "会员删除"),
-    USER_EDIT(500312,"500312",  "会员修改"),
-    USER_FIND(500313,"500313",  "会员查找"),
-
-    USER_FLOW_ADD(500320,"500320",  "会员流水添加"),
-    USER_FLOW_DEL(500321,"500321", "会员流水删除"),
-    USER_FLOW_EDIT(500322, "500322","会员流水修改"),
-    USER_FLOW_FIND(500323, "500323","会员流水查找"),
-
-    Merchant(500330, "500330","商户管理员");
+public enum MemberTypeEnum {
+    NORMAL(1, "1", "正常会员"),
+    TEST_ACCOUNT(2, "2", "测试帐号")
+    ;
 
     int code;
     String name;
@@ -45,7 +35,7 @@ public enum PermissionCodeEnum {
     }
 
     public static EnumItem valueOf(int code) {
-        for (PermissionCodeEnum  e: values()) {
+        for (MemberTypeEnum  e: values()) {
             if(e.getCode() == code){
                 return  EnumItem.builder().code(code).name(String.valueOf(code)).nameZh(TranslateUtil.translate(e.getName())).build();
             }
@@ -55,9 +45,9 @@ public enum PermissionCodeEnum {
 
     public static Map<Integer, EnumItem> toMap() {
         Map<Integer, EnumItem> map = new HashMap<>();
-        List<Object> codes = EnumUtil.getFieldValues(PermissionCodeEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(MemberTypeEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), PermissionCodeEnum.valueOf((int) code));
+            map.put(Integer.parseInt(code.toString()), MemberTypeEnum.valueOf((int) code));
         }
         return map;
     }

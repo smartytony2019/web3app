@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.controller.api;
 
+import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
@@ -21,6 +22,7 @@ public class MemberFlowController {
     @Autowired
     private MemberFlowService memberFlowService;
 
+    @JwtIgnore
     @Operation(summary = "findPage", description = "获取注单")
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody MemberFlowVo vo, @PathVariable long current, @PathVariable long size) {

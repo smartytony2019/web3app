@@ -99,7 +99,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     }
 
     @Override
-    public BasePage findPage(MemberEntity entity, long current, long size, Date start, Date end) {
+    public BasePage findPage(MemberEntity entity, long current, long size) {
         Page<MemberEntity> page = new Page<>(current, size);
         LambdaQueryWrapper<MemberEntity> wrapper = this.createWrapper(entity);
 

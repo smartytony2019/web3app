@@ -47,5 +47,13 @@
   "400411": "Village(Pair)",
   "400412": "Idle(Pair)",
   "400413": "Idle",
-  "400414": "Draw"
+  "400414": "Draw",
+
+  "__comment5__": "-- 枚举(Enum) --",
+  "500010": "Bet",
+  "500020": "Settle",
+  "500100": "Recharge",
+  "500110": "Withdraw",
+  "500210": "Transfer(Funding=>Trading)",
+  "500220": "Transfer(Trading=>Funding)"
 }

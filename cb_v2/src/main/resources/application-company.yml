@@ -21,7 +21,7 @@ scheduled:
   enable:
     register: false
     transfer: true
-    settle: false
+    settle: true
     finance:
       record: true
       account: true

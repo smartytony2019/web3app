@@ -3,6 +3,7 @@ package com.xinbo.chainblock.exception;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author tony
@@ -11,6 +12,7 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class BusinessException extends Exception {
 

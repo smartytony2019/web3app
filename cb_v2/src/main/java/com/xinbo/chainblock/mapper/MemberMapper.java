@@ -15,7 +15,7 @@ public interface MemberMapper extends BaseMapper<MemberEntity> {
     @Update("update t_member set money = money + #{entity.money}, version = version + 1 where id = #{entity.id} and version = #{entity.version}")
     int increment(@Param("entity") MemberEntity entity);
 
-    @Select("select `username`,`money`,`withdraw_wallet`,`reg_ip`,`reg_time`,`last_login_ip`,`last_login_time` from t_member where uid = #{uid} limit 1")
+    @Select("select `id`, `username`,`money`,`withdraw_wallet`, `version`, `type`, `is_enable` from t_member where id = #{uid} limit 1")
     MemberEntity info(@Param("uid") int uid);
 
 

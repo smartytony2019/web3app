@@ -6,9 +6,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
+import com.xinbo.chainblock.dto.EnumItem;
 import com.xinbo.chainblock.entity.*;
-import com.xinbo.chainblock.enums.ItemEnum;
-import com.xinbo.chainblock.service.CommonService;
+import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.service.FinanceService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
@@ -26,10 +26,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author tony
@@ -80,12 +77,11 @@ public class FinanceRecordJob {
      */
     @Scheduled(cron = "0/5 * * * * ?")
     public void handleRecord() {
-        long minTimestamp = new Date().getTime() - (24*60*60*1000);
-//        long minTimestamp = 0;
         try {
             if (!isFinanceRecord) {
                 return;
             }
+
 
             String json = redisTemplate.opsForSet().pop(RedisConst.MEMBER_FINANCE);
             if (StringUtils.isEmpty(json)) {
@@ -101,12 +97,14 @@ public class FinanceRecordJob {
             String base58Address = walletEntity.getAddressBase58();
             String hexAddress = walletEntity.getAddressHex();
             /* **************************** 处理Trc20记录  ********************************* */
+//            long minTimestamp = 0;
+            long minTimestamp = new Date().getTime() - (3 * 60 * 60 * 1000);
             JSONObject trc20Record = trxApi.getTrc20Record(base58Address, minTimestamp);
             JSONArray trc20Data = trc20Record.getJSONArray("data");
 
             if (!ObjectUtils.isEmpty(trc20Data)) {
                 WalletEntity mainWallet = walletService.findMain();
-                if(ObjectUtils.isEmpty(mainWallet)) {
+                if (ObjectUtils.isEmpty(mainWallet)) {
                     return;
                 }
 
@@ -127,7 +125,7 @@ public class FinanceRecordJob {
                     int decimals = tokenInfo.getInteger("decimals");
                     String name = tokenInfo.getString("name");
 
-                    if(fromAddress.equals(mainWallet.getAddressBase58()) || toAddress.equals(mainWallet.getAddressBase58())) {
+                    if (fromAddress.equals(mainWallet.getAddressBase58()) || toAddress.equals(mainWallet.getAddressBase58())) {
                         continue;
                     }
 
@@ -226,7 +224,7 @@ public class FinanceRecordJob {
     @Scheduled(cron = "0/5 * * * * ?")
     public void handleAccount() {
         try {
-            if(!isFinanceAccount) {
+            if (!isFinanceAccount) {
                 return;
             }
 
@@ -244,8 +242,9 @@ public class FinanceRecordJob {
                 /* **************************** 帐变  ********************************* */
                 MemberFlowEntity entity = MemberFlowEntity.builder()
                         .sn(f.getTransactionId())
-                        .item(ItemEnum.RECHARGE.getCode())
-                        .itemZh(ItemEnum.RECHARGE.getMsg())
+                        .item(MemberFlowItemEnum.RECHARGE.getName())
+                        .itemCode(MemberFlowItemEnum.RECHARGE.getCode())
+                        .itemZh(MemberFlowItemEnum.RECHARGE.getNameZh())
                         .flowMoney(f.getMoney())
                         .beforeMoney(member.getMoney())
                         .afterMoney(member.getMoney() + f.getMoney())
@@ -293,7 +292,7 @@ public class FinanceRecordJob {
 
             // 入帐
             boolean isSuccess = financeService.account(unaccounted, flowList, statisticsList);
-            if(!isSuccess) {
+            if (!isSuccess) {
                 log.info("failure");
             }
         } catch (Exception ex) {

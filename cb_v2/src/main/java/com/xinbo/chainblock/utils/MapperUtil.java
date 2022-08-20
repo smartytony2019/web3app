@@ -26,19 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class MapperUtil {
 
-
-    @Autowired
-    private HttpServletRequest httpServletRequest;
-
-    private static HttpServletRequest request;
-
     private static Mapper mapper = new DozerBeanMapper();
-
-
-    @PostConstruct
-    public void init() {
-        request = httpServletRequest;
-    }
 
     /**
      * domain转换dto
@@ -76,7 +64,6 @@ public class MapperUtil {
 
 
     private static <T> T translate(T t) {
-        String language = ObjectUtils.isEmpty(request) || StringUtils.isEmpty(request.getHeader("language")) ? GlobalConst.DEFAULT_LANGUAGE : request.getHeader("language");
         Field[] fields = t.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) { // 遍历字段数组
             fields[i].setAccessible(true);  // 将当前字段设置为可访问，不然后面就会报错
@@ -85,7 +72,7 @@ public class MapperUtil {
             if (annotationOptional.isPresent()) {    // 判断注解是否存在
                 try {
                     Object o = fields[i].get(t);
-                    String value = CommonUtils.translate(language, o.toString());
+                    String value = TranslateUtil.translate(o.toString());
                     fields[i].set(t, value);     // 给字段赋值
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

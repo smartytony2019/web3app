@@ -1,6 +1,7 @@
 package com.xinbo.chainblock;
 
 import com.alibaba.fastjson.JSON;
+import com.xinbo.chainblock.dto.EnumItem;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.enums.PermissionCodeEnum;
@@ -52,7 +53,7 @@ public class PermissionTest {
 //        List<PermissionDto> many = MapperUtil.many(menu, PermissionDto.class);
 //        System.out.println(JSON.toJSONString(many));
 
-        Map<Integer, String> integerStringMap = PermissionCodeEnum.toMap();
+        Map<Integer, EnumItem> integerStringMap = PermissionCodeEnum.toMap();
         System.out.println(integerStringMap);
 
 

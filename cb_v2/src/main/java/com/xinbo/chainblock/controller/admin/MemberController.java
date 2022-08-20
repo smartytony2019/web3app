@@ -40,7 +40,7 @@ public class MemberController {
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody MemberDto vo, @PathVariable long current, @PathVariable long size) {
         MemberEntity entity = MapperUtil.to(vo, MemberEntity.class);
-        BasePage basePage = memberService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
+        BasePage basePage = memberService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
 

@@ -1,5 +1,8 @@
 package com.xinbo.chainblock.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,25 +27,24 @@ public class MemberDto {
 
     private Integer id;
 
+    /**
+     * 帐号
+     */
     private String username;
 
-    @JsonIgnore
-    private String pwd;
-
+    /**
+     * 金额
+     */
     private Float money;
 
-    private String salt;
-
-    private Integer version;
+    /**
+     * 提现钱包地址
+     */
+    private String withdrawWallet;
 
     /**
-     * 创建时间
+     * 类型(1:正常会员, 2:测试会员)
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
-    private Date start;
-
-    private Date end;
+    private Integer type;
 
 }

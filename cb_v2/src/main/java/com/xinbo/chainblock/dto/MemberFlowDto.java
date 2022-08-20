@@ -49,15 +49,15 @@ public class MemberFlowDto {
     private Float flowMoney;
 
     /**
-     * 帐变编码
+     * 帐变项
      */
-    private Integer item;
+    @Translate
+    private String item;
 
     /**
      * 帐变编码
      */
-    @Translate
-    private String itemZh;
+    private Integer itemCode;
 
     /**
      * 用户名

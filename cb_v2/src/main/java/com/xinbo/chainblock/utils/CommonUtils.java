@@ -45,20 +45,4 @@ public class CommonUtils {
         return value.divide(bigInteger,6, RoundingMode.CEILING);
     }
 
-    public static String translate(String language, String key) {
-        String result = "";
-        try {
-            String path = String.format("classpath:json/%s.json", language);
-            String str = ResourceUtil.readUtf8Str(path);
-            JSONObject jsonObject = JSON.parseObject(str);
-            Object value = jsonObject.get(key);
-            if(!ObjectUtils.isEmpty(value)) {
-                result = jsonObject.get(key).toString();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-        return result;
-    }
-
 }

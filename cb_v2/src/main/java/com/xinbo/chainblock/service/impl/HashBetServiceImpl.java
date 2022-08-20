@@ -15,7 +15,7 @@ import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-import com.xinbo.chainblock.enums.ItemEnum;
+import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.mapper.*;
 import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -167,8 +167,9 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                     .beforeMoney(beforeMoney)
                     .afterMoney(afterMoney)
                     .flowMoney(flowMoney)
-                    .item(ItemEnum.HASH_BET_SETTLE.getCode())
-                    .itemZh(ItemEnum.HASH_BET_SETTLE.getMsg())
+                    .item(MemberFlowItemEnum.HASH_BET_SETTLE.getName())
+                    .itemCode(MemberFlowItemEnum.HASH_BET_SETTLE.getCode())
+                    .itemZh(MemberFlowItemEnum.HASH_BET_SETTLE.getNameZh())
                     .createTime(new Date())
                     .build();
             rows = memberFlowMapper.insert(userFlowEntity);

@@ -12,7 +12,7 @@ import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 import com.xinbo.chainblock.entity.hash.HashPlayEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-import com.xinbo.chainblock.enums.ItemEnum;
+import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -161,8 +161,9 @@ public class HashBetController {
                     .beforeMoney(memberEntity.getMoney())
                     .afterMoney(memberEntity.getMoney() + moneyAmount)
                     .flowMoney(moneyAmount * -1)
-                    .item(ItemEnum.HASH_BET.getCode())
-                    .itemZh(ItemEnum.HASH_BET.getMsg())
+                    .item(MemberFlowItemEnum.HASH_BET.getName())
+                    .itemCode(MemberFlowItemEnum.HASH_BET.getCode())
+                    .itemZh(MemberFlowItemEnum.HASH_BET.getNameZh())
                     .createTime(new Date())
                     .build();
 

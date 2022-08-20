@@ -5,7 +5,7 @@
 
     <insert id="batchInsert" parameterType="java.util.List">
         insert into
-        t_member_flow(sn, uid, username, before_money, after_money, flow_money, item, item_zh, create_time, ext) values
+        t_member_flow(sn, uid, username, before_money, after_money, flow_money, item, item_code, item_zh, create_time, ext) values
         <foreach collection ="list" item="item" index="index" separator =",">
             (
             #{item.sn},
@@ -15,6 +15,7 @@
             #{item.afterMoney},
             #{item.flowMoney},
             #{item.item},
+            #{item.itemCode},
             #{item.itemZh},
             #{item.createTime},
             #{item.ext}

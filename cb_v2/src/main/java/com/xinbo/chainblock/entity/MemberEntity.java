@@ -57,19 +57,30 @@ public class MemberEntity {
      * 提现钱包地址
      */
     @TableField("withdraw_wallet")
-    private Float withdraw_wallet;
+    private String withdrawWallet;
 
     /**
      * 提现钱包密码
      */
     @TableField("withdraw_pwd")
-    private Float withdraw_pwd;
-
+    private String withdrawPwd;
 
     /**
      * 版本
      */
     @TableField("version")
     private Integer version;
+
+    /**
+     * 类型(1:正常会员, 2:测试会员)
+     */
+    @TableField("type")
+    private Integer type;
+
+    /**
+     * 是否冻结(1:正常, 0:冻结)
+     */
+    @TableField("is_enable")
+    private Boolean isEnable;
 
 }

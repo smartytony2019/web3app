@@ -251,7 +251,7 @@ create table t_sport_bet (
    remark varchar(100) comment '备注'
 ) comment '体育注单';
 
-
+SELECT  id,sn,uid,username,cate_id,cate_name,cate_name_zh,game_id,game_name,game_name_zh,play_id,play_name,play_name_zh,block_hash,block_height,network,content,content_zh,odds,bet_amount,money,money_amount,profit_money,payout_money,create_time,update_time,flag,status,algorithm  FROM t_hash_bet
 
 
 drop table if exists t_member;
@@ -264,30 +264,32 @@ create table t_member(
   withdraw_wallet varchar(100) comment '提现钱包地址',
   withdraw_pwd varchar(100) comment '提现钱包密码',
   version int comment '版本',
+  type int default 1 comment '类型(1:正常会员, 2:测试会员)',
+  is_enable tinyint(1) default 1 comment '是否冻结(1:正常, 0:冻结)',
   UNIQUE KEY unique_username (username)
 ) comment '会员表';
 
 
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`, `withdraw_wallet`,`withdraw_pwd`,`version`) values
-('jack','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackB1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackB2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackC1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackC2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackC3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackC4','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD4','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD5','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD6','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD7','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackD8','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackE1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackE2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('jackE3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1),
-('demo5566','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1)
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`, `withdraw_wallet`,`withdraw_pwd`,`version`,`type`,`is_enable`) values
+('jack','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackB1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackB2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC4','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD4','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD5','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD6','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD7','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD8','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE1','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE2','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE3','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo5566','29226cace4e40c30d0ca154ca98e7b88',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
 ;
 
 
@@ -316,8 +318,9 @@ create table t_member_flow(
   before_money decimal(10,2) comment '帐变前金额',
   after_money decimal(10,2) comment '帐变后金额',
   flow_money decimal(10,2) comment '流水金额',
-  item int comment '帐变编码',
-  item_zh varchar(100) comment '帐变默认编码',
+  item varchar(100) comment '帐变项',
+  item_code int comment '帐变编码',
+  item_zh varchar(100) comment '帐变中文',
   create_time timestamp null default null comment '创建时间',
   ext varchar(200) comment '扩展字段'
 ) comment '会员流水表';
