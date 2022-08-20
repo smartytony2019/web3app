@@ -322,7 +322,8 @@ create table t_member_flow(
   item_code int comment '帐变编码',
   item_zh varchar(100) comment '帐变中文',
   create_time timestamp null default null comment '创建时间',
-  ext varchar(200) comment '扩展字段'
+  ext varchar(200) comment '扩展字段',
+  UNIQUE KEY unique_sn (sn)
 ) comment '会员流水表';
 
 # insert into cb_v2.t_member_flow(sn, username, before_money, after_money, flow_money, item, item_zh, create_time, ext) values
