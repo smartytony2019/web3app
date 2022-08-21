@@ -1,12 +1,8 @@
 package com.xinbo.chainblock;
 
-import com.alibaba.fastjson.JSON;
-import com.xinbo.chainblock.dto.EnumItem;
-import com.xinbo.chainblock.dto.PermissionDto;
-import com.xinbo.chainblock.entity.admin.PermissionEntity;
+import com.xinbo.chainblock.bo.EnumItem;
 import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.*;
-import com.xinbo.chainblock.utils.MapperUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.Map;
 
 /**

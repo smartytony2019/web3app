@@ -30,7 +30,7 @@ public class AgentController {
     @PostMapping("findLotteryPage/{current}/{size}")
     public R<Object> findLotteryPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
-        BasePage basePage = hashBetService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
+        BasePage basePage = hashBetService.findPage(entity, current, size, null, null);
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
 

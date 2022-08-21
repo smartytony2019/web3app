@@ -1,5 +1,6 @@
 package com.xinbo.chainblock;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -22,10 +23,11 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles("prod")
+@ActiveProfiles("company")
 @SpringBootTest
 class ChainblockApplicationTests {
 
@@ -43,6 +45,24 @@ class ChainblockApplicationTests {
     private String fromAddress = "TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu";
     private String toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe";
     private String privateKey = "f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703";
+
+
+    @Test
+    void huTools() {
+        Date today = DateUtil.parse(DateUtil.today());
+        System.out.println(DateUtil.beginOfDay(today));
+        System.out.println(DateUtil.endOfDay(today));
+
+
+        Date yesterday = DateUtil.parse(DateUtil.yesterday().toDateStr());
+        System.out.println(DateUtil.beginOfDay(yesterday));
+        System.out.println(DateUtil.endOfDay(yesterday));
+
+        Date lastMonth = DateUtil.parse(DateUtil.lastMonth().toDateStr());
+        System.out.println(DateUtil.beginOfDay(lastMonth));
+        System.out.println(DateUtil.endOfDay(lastMonth));
+
+    }
 
 
     @Test

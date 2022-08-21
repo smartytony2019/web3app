@@ -50,9 +50,9 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
 
 
     @Override
-    public HashBetDto findById(int id) {
+    public HashBetEntity findById(int id) {
         HashBetEntity entity = hashBetMapper.selectById(id);
-        return MapperUtil.to(entity, HashBetDto.class);
+        return entity;
     }
 
     @Override
@@ -99,7 +99,12 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     }
 
     @Override
-    public List<HashBetEntity> find(HashBetEntity entity) {
+    public HashBetEntity find(HashBetEntity entity) {
+        return hashBetMapper.selectOne(this.createWrapper(entity));
+    }
+
+    @Override
+    public List<HashBetEntity> findList(HashBetEntity entity) {
         return hashBetMapper.selectList(this.createWrapper(entity));
     }
 
@@ -225,6 +230,15 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
         if (!StringUtils.isEmpty(entity.getGameId()) && entity.getGameId() > 0) {
             wrappers.eq(HashBetEntity::getGameId, entity.getGameId());
+        }
+        if (!StringUtils.isEmpty(entity.getPlayId()) && entity.getPlayId() > 0) {
+            wrappers.eq(HashBetEntity::getPlayId, entity.getPlayId());
+        }
+        if (!StringUtils.isEmpty(entity.getFlag()) && entity.getFlag() > 0) {
+            wrappers.eq(HashBetEntity::getFlag, entity.getFlag());
+        }
+        if (!StringUtils.isEmpty(entity.getStatus()) && entity.getStatus() > 0) {
+            wrappers.eq(HashBetEntity::getStatus, entity.getStatus());
         }
         return wrappers;
     }

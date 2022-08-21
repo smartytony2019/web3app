@@ -25,7 +25,7 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE
-        is_account = VALUES (is_account)
+        is_account = VALUES(is_account)
     </insert>
 
 

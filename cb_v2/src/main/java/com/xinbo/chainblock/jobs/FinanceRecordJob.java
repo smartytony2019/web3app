@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
-import com.xinbo.chainblock.dto.EnumItem;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.service.FinanceService;
@@ -39,9 +38,6 @@ public class FinanceRecordJob {
 
     @Autowired
     private TrxApi trxApi;
-
-    @Autowired
-    private CommonUtils commonUtils;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -197,7 +193,7 @@ public class FinanceRecordJob {
                             .transactionId(txID)
                             .fromAddress(ownerAddress)
                             .toAddress(toAddress)
-                            .money(commonUtils.fromTrx(amount.floatValue()))
+                            .money(CommonUtils.fromTrx(amount.floatValue()))
                             .blockTime(DateUtil.date(timestamp))
                             .blockTimestamp(timestamp)
                             .symbol(trxSymbol)

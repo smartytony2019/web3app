@@ -3,10 +3,12 @@ package com.xinbo.chainblock.controller.api;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xinbo.chainblock.annotation.JwtIgnore;
+import com.xinbo.chainblock.bo.DateRange;
 import com.xinbo.chainblock.consts.BetStatus;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
 import com.xinbo.chainblock.core.TrxApi;
+import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashOddsEntity;
@@ -15,6 +17,7 @@ import com.xinbo.chainblock.entity.hash.HashResultEntity;
 import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.*;
+import com.xinbo.chainblock.utils.CommonUtils;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import com.xinbo.chainblock.vo.BetSubmitVo;
@@ -29,7 +32,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController("ApiHashBetController")
 @RequestMapping("/api/hashBet")
@@ -211,11 +216,20 @@ public class HashBetController {
 
     @JwtIgnore
     @Operation(summary = "find", description = "获取注单")
-    @PostMapping("find")
-    public R<Object> find(@RequestBody BetVo vo) {
+    @PostMapping("find/{id}")
+    public R<Object> find(@PathVariable Integer id) {
+        HashBetEntity hashBetEntity = hashBetService.findById(id);
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(hashBetEntity, HashBetDto.class)).build();
+    }
+
+
+    @JwtIgnore
+    @Operation(summary = "findList", description = "获取注单列表")
+    @PostMapping("findList")
+    public R<Object> findList(@RequestBody BetVo vo) {
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
-        List<HashBetEntity> lotteryBetDtoList = hashBetService.find(entity);
-        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(lotteryBetDtoList, HashBetEntity.class)).build();
+        List<HashBetEntity> lotteryBetDtoList = hashBetService.findList(entity);
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(lotteryBetDtoList, HashBetDto.class)).build();
     }
 
 
@@ -224,7 +238,8 @@ public class HashBetController {
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
-        BasePage basePage = hashBetService.findPage(entity, current, size);
+        DateRange dateRange = CommonUtils.toConvertDate(vo.getType());
+        BasePage basePage = hashBetService.findPage(entity, current, size, dateRange.getStartTime(), dateRange.getEndTime());
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
 

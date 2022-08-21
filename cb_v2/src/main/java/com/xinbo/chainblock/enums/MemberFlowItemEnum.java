@@ -1,12 +1,11 @@
 package com.xinbo.chainblock.enums;
 
 import cn.hutool.core.util.EnumUtil;
-import com.xinbo.chainblock.dto.EnumItem;
+import com.xinbo.chainblock.bo.EnumItem;
 import com.xinbo.chainblock.utils.TranslateUtil;
 import lombok.AllArgsConstructor;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

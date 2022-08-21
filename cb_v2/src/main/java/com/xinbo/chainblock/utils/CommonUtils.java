@@ -1,32 +1,25 @@
 package com.xinbo.chainblock.utils;
 
-import cn.hutool.core.io.resource.ResourceUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import cn.hutool.core.date.DateUtil;
+import com.xinbo.chainblock.bo.DateRange;
+
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-@Service
 public class CommonUtils {
 
-    public double toTrx(float value) {
+    public static double toTrx(float value) {
         BigDecimal b1 = new BigDecimal(value);
         BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 6)));
         BigDecimal b3 = b1.multiply(b2);
         return b3.floatValue();
     }
 
-    public float fromTrx(float value) {
+    public static float fromTrx(float value) {
         BigDecimal b1 = new BigDecimal(value);
         BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 6)));
         BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
@@ -34,15 +27,41 @@ public class CommonUtils {
     }
 
 
-    public BigDecimal toTrc20(String value) {
+    public static BigDecimal toTrc20(String value) {
         BigDecimal b1 = new BigDecimal(value);
         BigDecimal b2 = new BigDecimal(String.valueOf(Math.pow(10, 18)));
         return b1.multiply(b2);
     }
 
-    public BigDecimal fromTrc20(BigDecimal value) {
+    public static BigDecimal fromTrc20(BigDecimal value) {
         BigDecimal bigInteger = new BigDecimal(String.valueOf(Math.pow(10, 18)));
-        return value.divide(bigInteger,6, RoundingMode.CEILING);
+        return value.divide(bigInteger, 6, RoundingMode.CEILING);
+    }
+
+    public static DateRange toConvertDate(int type) {
+        if (type == 0) {
+            return DateRange.builder().build();
+        }
+
+        Date startTime = DateUtil.parse(DateUtil.today());
+        Date endTime = DateUtil.parse(DateUtil.today());
+        if (type == 1) {
+            startTime = DateUtil.parse(DateUtil.today());
+            endTime = DateUtil.parse(DateUtil.today());
+        }
+        if (type == 2) {
+            startTime = DateUtil.parse(DateUtil.yesterday().toDateStr());
+            endTime = DateUtil.parse(DateUtil.yesterday().toDateStr());
+        }
+        if (type == 3) {
+            startTime = DateUtil.parse(DateUtil.lastMonth().toDateStr());
+            endTime = DateUtil.parse(DateUtil.today());
+        }
+
+        return DateRange.builder()
+                .startTime(DateUtil.beginOfDay(startTime))
+                .endTime(DateUtil.endOfDay(endTime))
+                .build();
     }
 
 }

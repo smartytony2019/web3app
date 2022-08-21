@@ -26,9 +26,6 @@ public class TrxApi {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private CommonUtils commonUtils;
-
     @Value("${trx.terminal-url}")
     private String terminalUrl;
 
@@ -126,7 +123,7 @@ public class TrxApi {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.TRANSACTION_TRX);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("fromAddress", fromAddress);
-            jsonObject.put("amount", commonUtils.toTrx(amount));
+            jsonObject.put("amount", CommonUtils.toTrx(amount));
             jsonObject.put("toAddress", toAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
@@ -159,7 +156,7 @@ public class TrxApi {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("contractAddress", contractAddress);
             jsonObject.put("fromAddress", fromAddress);
-            jsonObject.put("amount", commonUtils.toTrc20(amount));
+            jsonObject.put("amount", CommonUtils.toTrc20(amount));
             jsonObject.put("toAddress", toAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);

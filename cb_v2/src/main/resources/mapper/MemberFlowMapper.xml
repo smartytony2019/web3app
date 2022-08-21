@@ -21,6 +21,8 @@
             #{item.ext}
             )
         </foreach>
+        ON DUPLICATE KEY UPDATE
+        create_time = VALUES(create_time)
     </insert>
 
 

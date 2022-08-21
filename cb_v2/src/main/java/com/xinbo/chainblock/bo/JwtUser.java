@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.utils;
+package com.xinbo.chainblock.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

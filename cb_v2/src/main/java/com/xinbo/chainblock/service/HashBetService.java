@@ -17,13 +17,15 @@ import java.util.List;
  */
 public interface HashBetService {
 
-    HashBetDto findById(int id);
+    HashBetEntity findById(int id);
 
     boolean insert(HashBetEntity entity);
 
     boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlowEntity, HashResultEntity result);
 
-    List<HashBetEntity> find(HashBetEntity entity);
+    HashBetEntity find(HashBetEntity entity);
+
+    List<HashBetEntity> findList(HashBetEntity entity);
 
     BasePage findPage(HashBetEntity entity, long current, long size);
 

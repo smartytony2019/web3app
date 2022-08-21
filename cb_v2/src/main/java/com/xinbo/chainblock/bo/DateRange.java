@@ -1,6 +1,7 @@
-package com.xinbo.chainblock.vo;
+package com.xinbo.chainblock.bo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,20 +9,17 @@ import java.util.Date;
 
 /**
  * @author tony
- * @date 6/30/22 6:27 下午
+ * @date 8/21/22 6:18 下午
  * @desc file desc
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BetVo {
+@Builder
+public class DateRange {
 
-    private int id;
+    private Date startTime;
 
-    private int playId;
-
-    private int gameId;
-
-    private int type;
+    private Date endTime;
 
 }

@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.utils;
 
 import com.google.common.collect.Maps;
+import com.xinbo.chainblock.bo.JwtUser;
 import com.xinbo.chainblock.consts.GlobalConst;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
