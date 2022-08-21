@@ -254,6 +254,10 @@ create table t_sport_bet (
 SELECT  id,sn,uid,username,cate_id,cate_name,cate_name_zh,game_id,game_name,game_name_zh,play_id,play_name,play_name_zh,block_hash,block_height,network,content,content_zh,odds,bet_amount,money,money_amount,profit_money,payout_money,create_time,update_time,flag,status,algorithm  FROM t_hash_bet
 
 
+# *************************************************************
+# 会员相关表
+# *************************************************************
+
 drop table if exists t_member;
 create table t_member(
   id int primary key auto_increment,
@@ -328,6 +332,69 @@ create table t_member_flow(
 
 # insert into cb_v2.t_member_flow(sn, username, before_money, after_money, flow_money, item, item_zh, create_time, ext) values
 # ('123456','jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
+
+# *************************************************************
+# 活动相关表
+# *************************************************************
+
+drop table if exists t_activity;
+create table t_activity
+(
+    id int primary key auto_increment,
+    cate_id int comment '类目id',
+    cate_name int comment '类目编码',
+    cate_name_zh int comment '类目中文',
+    rule_id int comment '活动规则id',
+    begin_time timestamp null default null comment '开始时间',
+    finish_time timestamp null default null comment '结束时间',
+    create_time timestamp null default null comment '创建时间'
+) comment '活动表';
+
+drop table if exists t_activity_type;
+create table t_activity_cate
+(
+    id int primary key auto_increment,
+    name varchar(50) comment '名称编码',
+    nameZh varchar(50) comment '名称中文'
+) comment '活动类目表';
+
+
+drop table if exists t_activity_rule;
+create table t_activity_rule
+(
+    id int primary key auto_increment,
+    cate_id int comment '类目id',
+    cate_name int comment '类目编码',
+    cate_name_zh int comment '类目中文',
+    type int comment '类型(1:注册送, 2:首充, 3.打码量)',
+    begin_time timestamp null default null comment '开始时间',
+    finish_time timestamp null default null comment '结束时间',
+    create_time timestamp null default null comment '创建时间'
+) comment '活动规则表';
+
+
+drop table if exists t_activity_rule_item;
+create table t_activity_rule_item
+(
+    id int primary key auto_increment,
+    min int comment '类目id',
+    max int comment '类目编码',
+    money int comment '类目中文',
+    rule_id int comment ''
+) comment '活动规则项表';
+
+
+drop table if exists t_activity_record;
+create table t_activity_record
+(
+    id int primary key auto_increment,
+    uid int comment '会员id',
+    username varchar(50) comment '会员名',
+    activity_id int comment '活动id',
+    activity_name varchar(50) comment '活动名',
+    money decimal(10, 2) comment '活动金额',
+    create_time timestamp null default  null comment '创建时间'
+) comment '活动记录表';
 
 
 
