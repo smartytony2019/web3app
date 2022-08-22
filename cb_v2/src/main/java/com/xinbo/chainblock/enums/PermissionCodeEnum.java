@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.enums;
 
 import cn.hutool.core.util.EnumUtil;
-import com.xinbo.chainblock.bo.EnumItem;
+import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.utils.TranslateUtil;
 import lombok.AllArgsConstructor;
 
@@ -43,17 +43,17 @@ public enum PermissionCodeEnum {
         return nameZh;
     }
 
-    public static EnumItem valueOf(int code) {
+    public static EnumItemBo valueOf(int code) {
         for (PermissionCodeEnum  e: values()) {
             if(e.getCode() == code){
-                return  EnumItem.builder().code(code).name(String.valueOf(code)).nameZh(TranslateUtil.translate(e.getName())).build();
+                return  EnumItemBo.builder().code(code).name(String.valueOf(code)).nameZh(TranslateUtil.translate(e.getName())).build();
             }
         }
-        return EnumItem.builder().build();
+        return EnumItemBo.builder().build();
     }
 
-    public static Map<Integer, EnumItem> toMap() {
-        Map<Integer, EnumItem> map = new HashMap<>();
+    public static Map<Integer, EnumItemBo> toMap() {
+        Map<Integer, EnumItemBo> map = new HashMap<>();
         List<Object> codes = EnumUtil.getFieldValues(PermissionCodeEnum.class, "code");
         for (Object code : codes) {
             map.put(Integer.parseInt(code.toString()), PermissionCodeEnum.valueOf((int) code));

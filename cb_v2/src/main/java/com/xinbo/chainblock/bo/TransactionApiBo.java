@@ -1,25 +1,19 @@
 package com.xinbo.chainblock.bo;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author tony
- * @date 8/21/22 6:18 下午
+ * @date 6/23/22 3:45 下午
  * @desc file desc
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class DateRange {
+public class TransactionApiBo {
 
-    private Date startTime;
-
-    private Date endTime;
-
+    private boolean result;
+    private String txid;
 }

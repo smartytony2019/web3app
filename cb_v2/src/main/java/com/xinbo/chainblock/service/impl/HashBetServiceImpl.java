@@ -145,7 +145,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
 
         //添加开奖结果
-        rows = hashResultMapper.update(result);
+        rows = hashResultMapper.updateBySn(result);
         if(rows <=0) {
             return false;
         }

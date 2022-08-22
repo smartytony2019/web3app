@@ -1,6 +1,9 @@
-package com.xinbo.chainblock.entity.terminal;
+package com.xinbo.chainblock.bo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author tony
@@ -8,7 +11,7 @@ import lombok.Data;
  * @desc file desc
  */
 @Data
-public class AccountApiEntity {
+public class AccountApiBo {
 
     private String privateKey;
 
@@ -22,5 +25,4 @@ public class AccountApiEntity {
         private String base58;
         private String hex;
     }
-
 }

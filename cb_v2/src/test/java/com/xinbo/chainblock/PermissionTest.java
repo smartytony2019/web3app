@@ -1,6 +1,6 @@
 package com.xinbo.chainblock;
 
-import com.xinbo.chainblock.bo.EnumItem;
+import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.*;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class PermissionTest {
 //        List<PermissionDto> many = MapperUtil.many(menu, PermissionDto.class);
 //        System.out.println(JSON.toJSONString(many));
 
-        Map<Integer, EnumItem> integerStringMap = PermissionCodeEnum.toMap();
+        Map<Integer, EnumItemBo> integerStringMap = PermissionCodeEnum.toMap();
         System.out.println(integerStringMap);
 
 

@@ -1,13 +1,13 @@
 package com.xinbo.chainblock.controller.api;
 
 import com.xinbo.chainblock.annotation.JwtIgnore;
+import com.xinbo.chainblock.bo.AccountApiBo;
+import com.xinbo.chainblock.bo.BaseApiBo;
+import com.xinbo.chainblock.bo.TransactionApiBo;
+import com.xinbo.chainblock.bo.TransactionInfoApiBo;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionInfoApiEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
 import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +34,7 @@ public class ApiController {
     @Operation(summary = "genMainAccount", description = "生成主帐号")
     @GetMapping("genMainAccount")
     public R<Object> genMainAccount() {
-        AccountApiEntity account = trxApi.createAccount();
+        AccountApiBo account = trxApi.createAccount();
         WalletEntity entity = WalletEntity.builder()
                 .addressHex(account.getAddress().getHex())
                 .addressBase58(account.getAddress().getBase58())
@@ -51,7 +51,7 @@ public class ApiController {
     @Operation(summary = "createAccount")
     @GetMapping("createAccount")
     public R<Object> createAccount() {
-        AccountApiEntity account = trxApi.createAccount();
+        AccountApiBo account = trxApi.createAccount();
         return R.builder().code(StatusCode.SUCCESS).data(account).build();
     }
 
@@ -72,7 +72,7 @@ public class ApiController {
     @Operation(summary = "transactionOfTrx")
     @GetMapping("transactionOfTrx/{fromAddress}/{privateKey}/{amount}/{toAddress}")
     public R<Object> transactionOfTrx(@PathVariable String fromAddress, @PathVariable String privateKey, @PathVariable float amount, @PathVariable String toAddress) {
-        TransactionApiEntity entity = trxApi.transactionOfTrx(fromAddress, privateKey, amount, toAddress);
+        TransactionApiBo entity = trxApi.transactionOfTrx(fromAddress, privateKey, amount, toAddress);
         return R.builder().code(StatusCode.SUCCESS).data(entity).build();
     }
 
@@ -85,7 +85,7 @@ public class ApiController {
         String toAddress = "TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe";
         String privateKey = "f58c1b3a3db8c4024d34427543dfcd6482b0bc7a0619a7d344b216a3be4f7703";
         double amount = 1.985;
-        BaseEntity<TransactionApiEntity> entity = trxApi.transactionOfTrc20(contractAddress,fromAddress, privateKey, String.valueOf(amount), toAddress);
+        BaseApiBo<TransactionApiBo> entity = trxApi.transactionOfTrc20(contractAddress,fromAddress, privateKey, String.valueOf(amount), toAddress);
         return R.builder().code(StatusCode.SUCCESS).data(entity).build();
     }
 
@@ -95,7 +95,7 @@ public class ApiController {
     @Operation(summary = "getTransactionInfo")
     @GetMapping("getTransactionInfo/{txID}")
     public R<Object> getTransactionInfo(@PathVariable String txID) {
-        TransactionInfoApiEntity entity = trxApi.getTransactionInfo(txID);
+        TransactionInfoApiBo entity = trxApi.getTransactionInfo(txID);
         return R.builder().code(StatusCode.SUCCESS).data(entity).build();
     }
 

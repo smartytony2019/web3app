@@ -1,12 +1,13 @@
 package com.xinbo.chainblock;
 
+import com.xinbo.chainblock.bo.AccountApiBo;
+import com.xinbo.chainblock.bo.AlgorithmResult;
+import com.xinbo.chainblock.bo.HashResultApiBo;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
-import com.xinbo.chainblock.core.algorithm.AlgorithmResult;
 import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
 import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.junit.Test;
@@ -56,7 +57,7 @@ public class BetTest {
         }
 
         // Step 2: 生成开奖
-        HashResultApiEntity hashResult = trxApi.resultFind(bet.getSn());
+        HashResultApiBo hashResult = trxApi.resultFind(bet.getSn());
         if(ObjectUtils.isEmpty(hashResult) || StringUtils.isEmpty(hashResult.getBlockHash())) {
             return;
         }

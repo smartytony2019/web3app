@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity.terminal;
+package com.xinbo.chainblock.bo;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
  * @desc file desc
  */
 @Data
-public class TransactionInfoApiEntity {
+public class TransactionInfoApiBo {
 
     private String id;
     private int blockNumber;

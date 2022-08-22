@@ -4,23 +4,23 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
+import com.xinbo.chainblock.bo.BaseApiBo;
+import com.xinbo.chainblock.bo.TransactionApiBo;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.TrxApi;
-import com.xinbo.chainblock.bo.EnumItem;
+import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
-import com.xinbo.chainblock.entity.terminal.TransactionApiEntity;
 import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.enums.MemberTypeEnum;
 import com.xinbo.chainblock.enums.TransferEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.service.WalletService;
-import com.xinbo.chainblock.bo.JwtUser;
+import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -102,11 +102,11 @@ public class MemberController {
 
 
             //生成token
-            JwtUser jwtUser = JwtUser.builder()
+            JwtUserBo jwtUserBo = JwtUserBo.builder()
                     .uid(entity.getId())
                     .username(entity.getUsername())
                     .build();
-            String token = JwtUtil.generateToken(jwtUser);
+            String token = JwtUtil.generateToken(jwtUserBo);
             Map<String, String> map = new HashMap<>();
             map.put("token", String.format("Bearer %s", token));
             return R.builder().code(StatusCode.SUCCESS).data(map).build();
@@ -121,7 +121,7 @@ public class MemberController {
     @Operation(summary = "balanceUSDT", description = "USDT余额")
     @PostMapping("balanceUSDT")
     public R<Object> balanceUSDT() {
-        JwtUser jwtUser = JwtUtil.getJwtUser();
+        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
 //        String balance = memberService.balanceUSDT(jwtUser.getUid());
         return R.builder().code(StatusCode.SUCCESS).data(0).build();
     }
@@ -187,9 +187,9 @@ public class MemberController {
     public R<Object> transfer(@RequestBody TransferVo vo) {
         try {
             /* ******************************  Step 1: 判断数据是否合法  **************************************** */
-            Map<Integer, EnumItem> map = TransferEnum.toMap();
-            EnumItem enumItem = map.get(vo.getDirection());
-            if (StringUtils.isEmpty(enumItem.getCode())) {
+            Map<Integer, EnumItemBo> map = TransferEnum.toMap();
+            EnumItemBo enumItemBo = map.get(vo.getDirection());
+            if (StringUtils.isEmpty(enumItemBo.getCode())) {
                 throw new BusinessException(1, "数据不合法!");
             }
 
@@ -204,7 +204,7 @@ public class MemberController {
                     .build();
 
             /* ******************************  Step 2: 开始划转  **************************************** */
-            BaseEntity<TransactionApiEntity> result = null;
+            BaseApiBo<TransactionApiBo> result = null;
             // Step 2.1 资金帐户 => 交易帐户
             if (vo.getDirection() == TransferEnum.FUNDING2TRADING.getCode()) {
                 // 会员数字钱包
@@ -305,7 +305,7 @@ public class MemberController {
         int uid = 19;
         MemberEntity entity = memberService.info(uid);
 
-        Map<Integer, EnumItem> map = MemberFlowItemEnum.toMap();
+        Map<Integer, EnumItemBo> map = MemberFlowItemEnum.toMap();
 
         return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(entity, MemberDto.class)).build();
     }
@@ -332,7 +332,7 @@ public class MemberController {
             }
 
             WalletEntity mainWallet = walletService.findMain();
-            BaseEntity<TransactionApiEntity> transaction = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberEntity.getWithdrawWallet());
+            BaseApiBo<TransactionApiBo> transaction = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberEntity.getWithdrawWallet());
             if(ObjectUtils.isEmpty(transaction) || transaction.getCode() != StatusCode.SUCCESS) {
                 throw new BusinessException(1, "提现失败，请重新提交!");
             }

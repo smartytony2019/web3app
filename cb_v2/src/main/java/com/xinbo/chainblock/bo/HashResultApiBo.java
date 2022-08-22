@@ -1,15 +1,8 @@
-package com.xinbo.chainblock.entity.terminal;
+package com.xinbo.chainblock.bo;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,7 +11,7 @@ import java.util.Date;
  * @desc file desc
  */
 @Data
-public class HashResultApiEntity {
+public class HashResultApiBo {
 
     @JSONField(name="sn")
     private String sn;

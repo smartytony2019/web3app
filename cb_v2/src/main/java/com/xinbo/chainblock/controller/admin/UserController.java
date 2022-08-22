@@ -8,7 +8,7 @@ import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.service.UserService;
-import com.xinbo.chainblock.bo.JwtUser;
+import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -31,11 +31,11 @@ public class UserController {
     public R<Object> login() {
         List<String> authority = Arrays.asList("index:test");
         //Step4: 生成token
-        JwtUser jwtUser = JwtUser.builder()
+        JwtUserBo jwtUserBo = JwtUserBo.builder()
                 .uid(1)
                 .username("admin")
                 .build();
-        String token = JwtUtil.generateToken(jwtUser);
+        String token = JwtUtil.generateToken(jwtUserBo);
         Map<String, String> map = new HashMap<>();
         map.put("token", String.format("Bearer %s", token));
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
@@ -45,8 +45,8 @@ public class UserController {
     @Operation(summary = "find", description = "会员信息")
     @PostMapping("find")
     public R<Object> find() {
-        JwtUser jwtUser = JwtUtil.getJwtUser();
-        UserEntity entity = userService.findById(jwtUser.getUid());
+        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
+        UserEntity entity = userService.findById(jwtUserBo.getUid());
         UserDto dto = MapperUtil.to(entity, UserDto.class);
         return R.builder().code(StatusCode.SUCCESS).data(dto).build();
     }
@@ -54,8 +54,8 @@ public class UserController {
     @Operation(summary = "menu", description = "菜单")
     @GetMapping("menu")
     public R<Object> menu() {
-        JwtUser jwtUser = JwtUtil.getJwtUser();
-        List<PermissionEntity> list = userService.menu(jwtUser.getUid());
+        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
+        List<PermissionEntity> list = userService.menu(jwtUserBo.getUid());
 
         List<PermissionDto> result = new ArrayList<>();
         for(PermissionEntity entity : list) {

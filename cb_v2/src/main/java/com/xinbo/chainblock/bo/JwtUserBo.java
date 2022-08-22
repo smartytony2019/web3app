@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JwtUser implements Serializable {
+public class JwtUserBo implements Serializable {
 
     private Integer uid;
 

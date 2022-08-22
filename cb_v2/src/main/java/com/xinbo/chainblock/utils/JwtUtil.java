@@ -1,7 +1,7 @@
 package com.xinbo.chainblock.utils;
 
 import com.google.common.collect.Maps;
-import com.xinbo.chainblock.bo.JwtUser;
+import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.consts.GlobalConst;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -29,15 +29,15 @@ public class JwtUtil {
 
     /**
      * 生成token
-     * @param jwtUser
+     * @param jwtUserBo
      * @return
      */
-    public static String generateToken(JwtUser jwtUser) {
+    public static String generateToken(JwtUserBo jwtUserBo) {
         byte[] jwtSecretKey = DatatypeConverter.parseBase64Binary(GlobalConst.JWT_SECRET_KEY);
 
         Map<String,Object> claim =  Maps.newHashMap();
-        claim.put("id", jwtUser.getUid());
-        claim.put("username", jwtUser.getUsername());
+        claim.put("id", jwtUserBo.getUid());
+        claim.put("username", jwtUserBo.getUsername());
 
         // 生成 token
         String token = Jwts.builder()
@@ -53,7 +53,7 @@ public class JwtUtil {
                 .compact();
         return token;
     }
-    public static JwtUser parseToken(String token) {
+    public static JwtUserBo parseToken(String token) {
         Claims claims = getTokenBody(token);
         if (claims == null) {
             return null;
@@ -65,7 +65,7 @@ public class JwtUtil {
         int id = StringUtils.isEmpty(map.get("id")) ? 0 : Integer.parseInt(map.get("id").toString());
         String username = StringUtils.isEmpty(map.get("username")) ? "" : map.get("username").toString();
         List<String> authority = StringUtils.isEmpty(map.get("authority")) ? new ArrayList<>() : (List<String>) map.get("authority");
-        return JwtUser.builder()
+        return JwtUserBo.builder()
                 .uid(id)
                 .username(username)
                 .build();
@@ -77,7 +77,7 @@ public class JwtUtil {
      * 将 Claims 转为 JwtUser
      * @return
      */
-    public static JwtUser getJwtUser() {
+    public static JwtUserBo getJwtUser() {
         String authHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader(GlobalConst.TOKEN_HEADER);
         final String token = authHeader.substring(7);
         return JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));

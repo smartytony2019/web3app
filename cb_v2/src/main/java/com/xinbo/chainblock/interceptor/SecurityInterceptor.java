@@ -8,7 +8,7 @@ import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.service.UserService;
-import com.xinbo.chainblock.bo.JwtUser;
+import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -58,11 +58,11 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
 
         // 验证token是否有效--无效已做异常抛出，由全局异常处理后返回对应信息
-        JwtUser jwtUser = JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
+        JwtUserBo jwtUserBo = JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
 
 
         //判断是否有权限
-        if (!this.hasPermission(handler, jwtUser)) {
+        if (!this.hasPermission(handler, jwtUserBo)) {
             this.returnJson(response, R.builder().code(StatusCode.NOT_PERMISSION).msg("not permission").build());
             return false;
         }
@@ -73,10 +73,10 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     /**
      * 获取
      * @param handler
-     * @param jwtUser
+     * @param jwtUserBo
      * @return
      */
-    private boolean hasPermission(Object handler, JwtUser jwtUser) {
+    private boolean hasPermission(Object handler, JwtUserBo jwtUserBo) {
         // 忽略带JwtIgnore注解的请求, 不做后续token认证校验
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -90,7 +90,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             }
 
             if (requiredPermission != null && !ObjectUtils.isEmpty(requiredPermission.value())) {
-                List<Integer> permission = userService.findPermission(jwtUser.getUid());
+                List<Integer> permission = userService.findPermission(jwtUserBo.getUid());
                 if (CollectionUtils.isEmpty(permission)) {
                     return false;
                 }

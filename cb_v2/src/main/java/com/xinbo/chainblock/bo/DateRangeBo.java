@@ -1,23 +1,25 @@
-package com.xinbo.chainblock.core.algorithm;
+package com.xinbo.chainblock.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author tony
- * @date 6/23/22 6:41 下午
+ * @date 8/21/22 6:18 下午
  * @desc file desc
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlgorithmResult {
+public class DateRangeBo {
 
-    private int status;
+    private Date startTime;
 
-    private int num;
+    private Date endTime;
 
 }

@@ -1,23 +1,24 @@
-package com.xinbo.chainblock.entity.terminal;
+package com.xinbo.chainblock.bo;
+
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * @author tony
- * @date 6/23/22 2:53 下午
+ * @date 6/23/22 6:41 下午
  * @desc file desc
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseEntity<T> {
+@Builder
+public class AlgorithmResult {
 
-    private Integer code;
+    private int status;
 
-    private T data;
-
-    private String msg;
+    private int num;
 
 }

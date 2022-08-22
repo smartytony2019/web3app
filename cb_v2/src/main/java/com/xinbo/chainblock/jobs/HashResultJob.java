@@ -2,11 +2,10 @@ package com.xinbo.chainblock.jobs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.xinbo.chainblock.consts.RedisConst;
+import com.xinbo.chainblock.bo.BaseApiBo;
+import com.xinbo.chainblock.bo.HashResultApiBo;
 import com.xinbo.chainblock.consts.TrxApiConst;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
-import com.xinbo.chainblock.entity.terminal.BaseEntity;
-import com.xinbo.chainblock.entity.terminal.HashResultApiEntity;
 import com.xinbo.chainblock.service.HashResultService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ public class HashResultJob {
                 throw new RuntimeException("body is empty");
             }
 
-            BaseEntity<List<HashResultApiEntity>> listBaseEntity = JSON.parseObject(body, new TypeReference<BaseEntity<List<HashResultApiEntity>>>() {
+            BaseApiBo<List<HashResultApiBo>> listBaseEntity = JSON.parseObject(body, new TypeReference<BaseApiBo<List<HashResultApiBo>>>() {
             });
             if (ObjectUtils.isEmpty(listBaseEntity) || listBaseEntity.getCode() != 0) {
                 throw new RuntimeException("fetch open data error");
@@ -63,8 +62,8 @@ public class HashResultJob {
 
 
             //Step 2: 过滤重复数据
-            List<HashResultApiEntity> records = new ArrayList<>();
-            for (HashResultApiEntity entity : listBaseEntity.getData()) {
+            List<HashResultApiBo> records = new ArrayList<>();
+            for (HashResultApiBo entity : listBaseEntity.getData()) {
 //                String key = String.format(RedisConst.HASH_RESULT, entity.getGameId(), entity.getNum());
                 String key = "";
                 Boolean hasKey = redisTemplate.hasKey(key);
@@ -80,7 +79,7 @@ public class HashResultJob {
             }
 
             //Step 3: 需要开奖数据
-            for (HashResultApiEntity entity : records) {
+            for (HashResultApiBo entity : records) {
                 HashResultEntity hashResultEntity = HashResultEntity.builder()
                         .txID(entity.getTxID())
                         .blockHash(entity.getBlockHash())

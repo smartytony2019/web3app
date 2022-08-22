@@ -2,13 +2,11 @@ package com.xinbo.chainblock.utils;
 
 
 import cn.hutool.core.date.DateUtil;
-import com.xinbo.chainblock.bo.DateRange;
+import com.xinbo.chainblock.bo.DateRangeBo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CommonUtils {
 
@@ -38,9 +36,9 @@ public class CommonUtils {
         return value.divide(bigInteger, 6, RoundingMode.CEILING);
     }
 
-    public static DateRange toConvertDate(int type) {
+    public static DateRangeBo toConvertDate(int type) {
         if (type == 0) {
-            return DateRange.builder().build();
+            return DateRangeBo.builder().build();
         }
 
         Date startTime = DateUtil.parse(DateUtil.today());
@@ -58,7 +56,7 @@ public class CommonUtils {
             endTime = DateUtil.parse(DateUtil.today());
         }
 
-        return DateRange.builder()
+        return DateRangeBo.builder()
                 .startTime(DateUtil.beginOfDay(startTime))
                 .endTime(DateUtil.endOfDay(endTime))
                 .build();

@@ -2,13 +2,13 @@ package com.xinbo.chainblock.jobs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.xinbo.chainblock.bo.AccountApiBo;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.entity.terminal.AccountApiEntity;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.CommonService;
 import com.xinbo.chainblock.service.WalletService;
@@ -78,7 +78,7 @@ public class MemberJob {
 
             // *********************************** - 创建数字钱包 -  ****************************************************
             // Step 1: 创建数字钱包
-            AccountApiEntity account = trxApi.createAccount();
+            AccountApiBo account = trxApi.createAccount();
             if (ObjectUtils.isEmpty(account) || StringUtils.isEmpty(account.getPrivateKey())) {
                 // @todo
                 throw new RuntimeException("生成数字钱包失败");

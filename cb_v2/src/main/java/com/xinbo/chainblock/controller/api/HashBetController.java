@@ -3,7 +3,7 @@ package com.xinbo.chainblock.controller.api;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xinbo.chainblock.annotation.JwtIgnore;
-import com.xinbo.chainblock.bo.DateRange;
+import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.consts.BetStatus;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.BasePage;
@@ -32,9 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController("ApiHashBetController")
 @RequestMapping("/api/hashBet")
@@ -238,8 +236,8 @@ public class HashBetController {
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
-        DateRange dateRange = CommonUtils.toConvertDate(vo.getType());
-        BasePage basePage = hashBetService.findPage(entity, current, size, dateRange.getStartTime(), dateRange.getEndTime());
+        DateRangeBo dateRangeBo = CommonUtils.toConvertDate(vo.getType());
+        BasePage basePage = hashBetService.findPage(entity, current, size, dateRangeBo.getStartTime(), dateRangeBo.getEndTime());
         return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
     }
 
