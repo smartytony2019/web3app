@@ -1,6 +1,5 @@
 package com.xinbo.chainblock.service;
-import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.MemberRecordEntity;
 
 import java.util.Date;
@@ -11,6 +10,6 @@ import java.util.Date;
  * @desc file desc
  */
 public interface MemberRecordService {
-    BasePage findPage(MemberRecordEntity entity, long current, long size);
-    BasePage findPage(MemberRecordEntity entity, long current, long size, Date start, Date end);
+    BasePageBo findPage(MemberRecordEntity entity, long current, long size);
+    BasePageBo findPage(MemberRecordEntity entity, long current, long size, Date start, Date end);
 }

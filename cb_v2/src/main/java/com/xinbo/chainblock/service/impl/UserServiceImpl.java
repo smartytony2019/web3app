@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
@@ -107,11 +107,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
 
     @Override
-    public BasePage findPage(UserEntity entity, long current, long size) {
+    public BasePageBo findPage(UserEntity entity, long current, long size) {
         Page<UserEntity> page = new Page<>(current, size);
 //        page.addOrder(OrderItem.asc("create_time"));
         IPage<UserEntity> iPage = userMapper.selectPage(page, this.createWrapper(entity));
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), UserDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), UserDto.class)).build();
     }
 
 

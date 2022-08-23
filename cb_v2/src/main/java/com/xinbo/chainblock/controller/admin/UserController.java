@@ -2,7 +2,7 @@ package com.xinbo.chainblock.controller.admin;
 
 
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
@@ -100,8 +100,8 @@ public class UserController {
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody UserVo vo, @PathVariable long current, @PathVariable long size) {
         UserEntity entity = MapperUtil.to(vo, UserEntity.class);
-        BasePage basePage = userService.findPage(entity, current, size);
-        return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+        BasePageBo basePageBo = userService.findPage(entity, current, size);
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
 

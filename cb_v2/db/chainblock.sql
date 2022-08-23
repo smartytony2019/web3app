@@ -330,71 +330,121 @@ create table t_member_flow(
   UNIQUE KEY unique_sn (sn)
 ) comment '会员流水表';
 
-# insert into cb_v2.t_member_flow(sn, username, before_money, after_money, flow_money, item, item_zh, create_time, ext) values
-# ('123456','jack', 10000, 10020, 20, 100010, 100010, '2022-06-25 12:00:00', '');
 
-# *************************************************************
+
+
+
+# ****************************************************************************************************************
 # 活动相关表
-# *************************************************************
+# ****************************************************************************************************************
+
+
+drop table if exists t_activity_cate;
+create table t_activity_cate
+(
+    id int primary key auto_increment,
+    name varchar(50) comment '名称编码',
+    name_zh varchar(50) comment '名称中文'
+) comment '活动类目表';
+insert into cb_v2.t_activity_cate(name, name_zh) VALUES
+('600010', '限时活动'),
+('600011', '新手活动'),
+('600012', '日常活动');
+
 
 drop table if exists t_activity;
 create table t_activity
 (
     id int primary key auto_increment,
     cate_id int comment '类目id',
-    cate_name int comment '类目编码',
-    cate_name_zh int comment '类目中文',
-    rule_id int comment '活动规则id',
+    cate_name varchar(50) comment '类目编码',
+    cate_name_zh varchar(50) comment '类目中文',
+    title varchar(100) comment '标题',
+    content text comment '内容',
+    sorted int comment '序号',
+    type int comment '限制项(1:首充, 2:注册送, 10:其它)',
+    language varchar(20) comment '语言',
     begin_time timestamp null default null comment '开始时间',
     finish_time timestamp null default null comment '结束时间',
-    create_time timestamp null default null comment '创建时间'
+    create_time timestamp null default null comment '创建时间',
+    is_enable tinyint comment '是否启用',
+    is_del tinyint comment '是否删除'
 ) comment '活动表';
+insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, title, content, sorted, type, language, begin_time, finish_time, create_time, is_enable, is_del) values
+(1, '600010', '限时活动', '充值赠送', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
+(1, '600011', '新手活动', '首充赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
+(1, '600011', '新手活动', '新注册赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
+(1, '600012', '限时活动', '打码返水', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0);
 
-drop table if exists t_activity_type;
-create table t_activity_cate
-(
-    id int primary key auto_increment,
-    name varchar(50) comment '名称编码',
-    nameZh varchar(50) comment '名称中文'
-) comment '活动类目表';
 
 
 drop table if exists t_activity_rule;
 create table t_activity_rule
 (
     id int primary key auto_increment,
-    cate_id int comment '类目id',
-    cate_name int comment '类目编码',
-    cate_name_zh int comment '类目中文',
-    type int comment '类型(1:注册送, 2:首充, 3.打码量)',
-    begin_time timestamp null default null comment '开始时间',
-    finish_time timestamp null default null comment '结束时间',
-    create_time timestamp null default null comment '创建时间'
+    activity_id int comment '活动id',
+    cycle int comment '周期(1:一次 2:不限次数 3:一天一次 4:一周一次 5:一月一次 6:自定义天数)',
+    days int comment '天数',
+    withdraw_bet_mul int comment '提现打码倍数',
+    calc_mode int comment '计算方式(1:固定金额 2:百分比)',
+    receive_mode int comment '领取方式(1:后端审核, 2:自动发放)'
 ) comment '活动规则表';
+insert into cb_v2.t_activity_rule(activity_id,cycle,days, withdraw_bet_mul,calc_mode,receive_mode) values
+(1, 2, 0, 1, 1, 1),
+(2, 1, 0, 1, 2, 1),
+(3, 1, 0, 1, 1, 1),
+(4, 2, 0, 1, 1, 1);
+
 
 
 drop table if exists t_activity_rule_item;
-create table t_activity_rule_item
-(
+create table t_activity_rule_item (
     id int primary key auto_increment,
-    min int comment '类目id',
-    max int comment '类目编码',
-    money int comment '类目中文',
-    rule_id int comment ''
+    rule_id int comment '规则id',
+    limit_item int comment '限制项(1:钱包, 2:充值, 3:首充, 4:打码, 4:注册, 5:注册送)',
+    limit_lev int default 1 comment '限制等级(1: 包含项, 2: 必须项)',
+    type int comment '类型(1:等于 2:大于 3:大于等于 4:小于 5:小于等于 6:范围)',
+    min int default 0 comment '最小值',
+    max int default 0 comment '最大值',
+    ratio decimal(10, 2) comment '赠送比例',
+    symbol varchar(50) comment '赠送币种'
 ) comment '活动规则项表';
+insert into t_activity_rule_item (rule_id, limit_item, limit_lev, type, min, max, ratio, symbol) VALUES
+(1, 2, 1, 6, 0, 1000, 10, 'USDT'),
+(1, 2, 1, 6, 1001, 5000, 20, 'USDT'),
+(1, 2, 1, 6, 5001, 10000, 50, 'USDT'),
+(1, 2, 1, 6, 10001, 20000, 100, 'USDT'),
+(1, 2, 1, 6, 20001, 50000, 200, 'USDT'),
+
+(2, 2, 2, 3, 100, 0, 100, 'TRX'),
+
+(3, 5, 1, 1, 0, 0, 10, 'TRX'),
+
+(4, 4, 1, 6, 0, 1000, 10, 'USDT'),
+(4, 4, 1, 6, 1001, 5000, 20, 'USDT'),
+(4, 4, 1, 6, 5001, 10000, 50, 'USDT'),
+(4, 4, 1, 6, 10001, 20000, 100, 'USDT'),
+(4, 2, 1, 6, 20001, 50000, 200, 'USDT')
+;
 
 
-drop table if exists t_activity_record;
-create table t_activity_record
-(
+drop table if exists t_activity_order;
+create table t_activity_order (
     id int primary key auto_increment,
-    uid int comment '会员id',
-    username varchar(50) comment '会员名',
     activity_id int comment '活动id',
     activity_name varchar(50) comment '活动名',
-    money decimal(10, 2) comment '活动金额',
-    create_time timestamp null default  null comment '创建时间'
-) comment '活动记录表';
+    activity_name_zh varchar(50) comment '活动名',
+    uid int default 0 comment 'uid',
+    username varchar(50) comment '用户名',
+    money decimal(10, 2) comment '赠送金额',
+    symbol varchar(50) comment '赠送币种',
+    cycle int comment '周期(1:仅此一次 2:一天一次 3:一周一次 4:一月一次 5:自定义天数)',
+    days int comment '天数',
+    create_time timestamp null default null comment '创建时间'
+) comment '活动订单表';
+
+
+
 
 
 

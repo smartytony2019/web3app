@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
@@ -109,15 +109,15 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     }
 
     @Override
-    public BasePage findPage(HashBetEntity entity, long current, long size) {
+    public BasePageBo findPage(HashBetEntity entity, long current, long size) {
         Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, this.createWrapper(entity));
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
     }
 
     @Override
-    public BasePage findPage(HashBetEntity entity, long current, long size, Date start, Date end) {
+    public BasePageBo findPage(HashBetEntity entity, long current, long size, Date start, Date end) {
         Page<HashBetEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("create_time"));
         LambdaQueryWrapper<HashBetEntity> wrapper = this.createWrapper(entity);
@@ -126,7 +126,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
 
         IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, wrapper);
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
     }
 
     @Override

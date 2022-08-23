@@ -1,6 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 
@@ -22,5 +22,5 @@ public interface UserService {
 
     UserEntity findById(int userId);
 
-    BasePage findPage(UserEntity entity, long current, long size);
+    BasePageBo findPage(UserEntity entity, long current, long size);
 }

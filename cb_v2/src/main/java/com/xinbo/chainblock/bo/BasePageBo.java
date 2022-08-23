@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.core;
+package com.xinbo.chainblock.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BasePage implements Serializable {
+public class BasePageBo implements Serializable {
 
 
     /**

@@ -1,7 +1,6 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.dto.HashBetDto;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
@@ -27,9 +26,9 @@ public interface HashBetService {
 
     List<HashBetEntity> findList(HashBetEntity entity);
 
-    BasePage findPage(HashBetEntity entity, long current, long size);
+    BasePageBo findPage(HashBetEntity entity, long current, long size);
 
-    BasePage findPage(HashBetEntity entity, long current, long size, Date start, Date end);
+    BasePageBo findPage(HashBetEntity entity, long current, long size, Date start, Date end);
 
     HashBetEntity unsettle();
 

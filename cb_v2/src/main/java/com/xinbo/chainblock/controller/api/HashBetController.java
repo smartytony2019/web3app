@@ -6,7 +6,7 @@ import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.consts.BetStatus;
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.*;
@@ -237,8 +237,8 @@ public class HashBetController {
     public R<Object> findPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
         DateRangeBo dateRangeBo = CommonUtils.toConvertDate(vo.getType());
-        BasePage basePage = hashBetService.findPage(entity, current, size, dateRangeBo.getStartTime(), dateRangeBo.getEndTime());
-        return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+        BasePageBo basePageBo = hashBetService.findPage(entity, current, size, dateRangeBo.getStartTime(), dateRangeBo.getEndTime());
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
 }

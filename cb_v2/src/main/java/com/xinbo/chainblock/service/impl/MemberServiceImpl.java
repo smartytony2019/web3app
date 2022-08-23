@@ -2,12 +2,10 @@ package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.core.BasePage;
-import com.xinbo.chainblock.core.TrxApi;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
@@ -16,13 +14,10 @@ import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-
-import java.util.*;
 
 /**
  * @author tony
@@ -99,12 +94,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     }
 
     @Override
-    public BasePage findPage(MemberEntity entity, long current, long size) {
+    public BasePageBo findPage(MemberEntity entity, long current, long size) {
         Page<MemberEntity> page = new Page<>(current, size);
         LambdaQueryWrapper<MemberEntity> wrapper = this.createWrapper(entity);
 
         IPage<MemberEntity> iPage = memberMapper.selectPage(page, wrapper);
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberDto.class)).build();
     }
 
     @Override

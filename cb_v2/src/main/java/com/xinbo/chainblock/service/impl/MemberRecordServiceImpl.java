@@ -6,13 +6,10 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.MemberFlowDto;
-import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.MemberRecordEntity;
-import com.xinbo.chainblock.mapper.MemberFlowMapper;
 import com.xinbo.chainblock.mapper.MemberRecordMapper;
-import com.xinbo.chainblock.service.MemberFlowService;
 import com.xinbo.chainblock.service.MemberRecordService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +33,15 @@ public class MemberRecordServiceImpl extends ServiceImpl<MemberRecordMapper, Mem
 
 
     @Override
-    public BasePage findPage(MemberRecordEntity entity, long current, long size) {
+    public BasePageBo findPage(MemberRecordEntity entity, long current, long size) {
         Page<MemberRecordEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("login_time"));
         IPage<MemberRecordEntity> iPage = memberRecordMapper.selectPage(page, this.createWrapper(entity));
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
     }
 
     @Override
-    public BasePage findPage(MemberRecordEntity entity, long current, long size, Date start, Date end) {
+    public BasePageBo findPage(MemberRecordEntity entity, long current, long size, Date start, Date end) {
         Page<MemberRecordEntity> page = new Page<>(current, size);
         page.addOrder(OrderItem.asc("login_time"));
 
@@ -53,7 +50,7 @@ public class MemberRecordServiceImpl extends ServiceImpl<MemberRecordMapper, Mem
             wrapper.ge(MemberRecordEntity::getLoginTime, start).le(MemberRecordEntity::getLoginTime, end);
         }
         IPage<MemberRecordEntity> iPage = memberRecordMapper.selectPage(page, wrapper);
-        return BasePage.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
     }
 
 

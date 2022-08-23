@@ -2,7 +2,7 @@ package com.xinbo.chainblock.controller.admin;
 
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
-import com.xinbo.chainblock.core.BasePage;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.service.HashBetService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -30,8 +30,8 @@ public class AgentController {
     @PostMapping("findLotteryPage/{current}/{size}")
     public R<Object> findLotteryPage(@RequestBody BetVo vo, @PathVariable long current, @PathVariable long size) {
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
-        BasePage basePage = hashBetService.findPage(entity, current, size, null, null);
-        return R.builder().code(StatusCode.SUCCESS).data(basePage).build();
+        BasePageBo basePageBo = hashBetService.findPage(entity, current, size, null, null);
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
 
