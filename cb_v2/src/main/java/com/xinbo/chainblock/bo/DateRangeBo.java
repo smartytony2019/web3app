@@ -22,4 +22,8 @@ public class DateRangeBo {
 
     private Date endTime;
 
+    private Long startTimestamp;
+
+    private Long endTimestamp;
+
 }

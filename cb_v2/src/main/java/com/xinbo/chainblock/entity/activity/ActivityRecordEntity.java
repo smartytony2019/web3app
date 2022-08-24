@@ -21,8 +21,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_activity_order")
-public class ActivityOrderEntity {
+@TableName("t_activity_record")
+public class ActivityRecordEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -31,21 +31,21 @@ public class ActivityOrderEntity {
      * 类目id
      */
     @TableField("activity_id")
-    private Integer activity_id;
+    private Integer activityId;
 
 
     /**
      * 类目编码
      */
     @TableField("activity_name")
-    private String activity_name;
+    private String activityName;
 
 
     /**
      * 类目中文
      */
     @TableField("activity_name_zh")
-    private String activity_name_zh;
+    private String activityNameZh;
 
 
     /**
@@ -77,17 +77,17 @@ public class ActivityOrderEntity {
 
 
     /**
-     * 开始时间
-     */
-    @TableField("cycle")
-    private Integer cycle;
-
-
-    /**
      * 天数
      */
     @TableField("days")
     private Integer days;
+
+
+    /**
+     * 状态(0:未处理 1:成功 2:驳回)
+     */
+    @TableField("status")
+    private Integer status;
 
 
     /**

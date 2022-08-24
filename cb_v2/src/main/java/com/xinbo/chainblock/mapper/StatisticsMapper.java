@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author tony
  * @date 6/24/22 4:24 下午
- * @desc file desc
+ * @desc 统计
  */
 @Mapper
 public interface StatisticsMapper extends BaseMapper<StatisticsEntity> {

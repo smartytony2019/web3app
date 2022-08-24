@@ -5,16 +5,21 @@
 
     <!-- 插入或更新 -->
     <insert id="insertOrUpdate" parameterType="com.xinbo.chainblock.entity.StatisticsEntity">
-        insert into t_statistics(`date`, uid, username, bet_amount, profit_amount, recharge_trc20_amount, recharge_trx_amount,
-                                 withdraw_trc20_amount, withdraw_trx_amount, update_time)
-        values (#{entity.date}, #{entity.uid}, #{entity.username}, #{entity.betAmount}, #{entity.profitAmount}, #{entity.rechargeTrc20Amount}, #{entity.rechargeTrxAmount},
-                #{entity.withdrawTrc20Amount}, #{entity.withdrawTrxAmount}, #{entity.updateTime}) ON DUPLICATE KEY
+        insert into t_statistics(`date`, uid, username, bet_count, bet_amount,
+                                 profit_amount, recharge_trc20_count, recharge_trc20_amount, withdraw_trc20_amount, recharge_trx_count,
+                                 recharge_trx_amount, withdraw_trx_amount, update_time)
+        values (#{entity.date}, #{entity.uid}, #{entity.username}, #{entity.betCount}, #{entity.betAmount},
+                #{entity.profitAmount}, #{entity.rechargeTrc20Count}, #{entity.rechargeTrc20Amount}, #{entity.withdrawTrc20Amount}, #{entity.rechargeTrxCount},
+                #{entity.rechargeTrxAmount}, #{entity.withdrawTrxAmount}, #{entity.updateTime}) ON DUPLICATE KEY
         UPDATE
+            bet_count = bet_count + VALUES (bet_count),
             bet_amount = bet_amount + VALUES (bet_amount),
             profit_amount = profit_amount + VALUES (profit_amount),
+            recharge_trc20_count = recharge_trc20_count + VALUES (recharge_trc20_count),
             recharge_trc20_amount = recharge_trc20_amount + VALUES (recharge_trc20_amount),
-            recharge_trx_amount = recharge_trx_amount + VALUES (recharge_trx_amount),
             withdraw_trc20_amount = withdraw_trc20_amount + VALUES (withdraw_trc20_amount),
+            recharge_trx_count = recharge_trx_count + VALUES (recharge_trx_count),
+            recharge_trx_amount = recharge_trx_amount + VALUES (recharge_trx_amount),
             withdraw_trx_amount = withdraw_trx_amount + VALUES (withdraw_trx_amount),
             update_time = VALUES (update_time)
     </insert>
@@ -22,21 +27,23 @@
 
     <!-- 插入或更新 -->
     <insert id="batchInsert" parameterType="java.util.List">
-        insert into t_statistics(
-        `date`, uid, username, bet_amount, profit_amount,
-        recharge_trc20_amount, recharge_trx_amount, withdraw_trc20_amount, withdraw_trx_amount, update_time
-        ) values
+        insert into t_statistics(`date`, uid, username, bet_count, bet_amount,
+        profit_amount, recharge_trc20_count, recharge_trc20_amount, withdraw_trc20_amount, recharge_trx_count,
+        recharge_trx_amount, withdraw_trx_amount, update_time) values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.date}, #{item.uid}, #{item.username}, #{item.betAmount}, #{item.profitAmount},
-            #{item.rechargeTrc20Amount}, #{item.rechargeTrxAmount},
-            #{item.withdrawTrc20Amount},#{item.withdrawTrxAmount}, #{item.updateTime})
+            (#{entity.date}, #{entity.uid}, #{entity.username}, #{entity.betCount}, #{entity.betAmount},
+            #{entity.profitAmount}, #{entity.rechargeTrc20Count}, #{entity.rechargeTrc20Amount}, #{entity.withdrawTrc20Amount}, #{entity.rechargeTrxCount},
+            #{entity.rechargeTrxAmount}, #{entity.withdrawTrxAmount}, #{entity.updateTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
+        bet_count = bet_count + VALUES (bet_count),
         bet_amount = bet_amount + VALUES (bet_amount),
         profit_amount = profit_amount + VALUES (profit_amount),
+        recharge_trc20_count = recharge_trc20_count + VALUES (recharge_trc20_count),
         recharge_trc20_amount = recharge_trc20_amount + VALUES (recharge_trc20_amount),
-        recharge_trx_amount = recharge_trx_amount + VALUES (recharge_trx_amount),
         withdraw_trc20_amount = withdraw_trc20_amount + VALUES (withdraw_trc20_amount),
+        recharge_trx_count = recharge_trx_count + VALUES (recharge_trx_count),
+        recharge_trx_amount = recharge_trx_amount + VALUES (recharge_trx_amount),
         withdraw_trx_amount = withdraw_trx_amount + VALUES (withdraw_trx_amount),
         update_time = VALUES (update_time)
     </insert>

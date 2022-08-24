@@ -46,6 +46,19 @@ public class ActivityRuleEntity {
     @TableField("days")
     private String days;
 
+    /**
+     * 限制项(1:钱包, 2:充值, 3:首充, 4:打码, 4:注册, 5:注册送)
+     */
+    @TableField("limit_item")
+    private Integer limitItem;
+
+
+    /**
+     * 限制等级(1: 包含项, 2: 必须项)
+     */
+    @TableField("limit_lev")
+    private Integer limitLev;
+
 
     /**
      * 提现打码倍数
@@ -58,14 +71,14 @@ public class ActivityRuleEntity {
      * 计算方式(1:固定金额 2:百分比)
      */
     @TableField("calc_mode")
-    private String calcMode;
+    private Integer calcMode;
 
 
     /**
      * 领取方式(1:后端审核, 2:自动发放)
      */
     @TableField("receive_method")
-    private String receiveMode;
+    private Integer receiveMode;
 
 
 

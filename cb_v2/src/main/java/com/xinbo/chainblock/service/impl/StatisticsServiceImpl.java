@@ -3,6 +3,7 @@ package com.xinbo.chainblock.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.mapper.StatisticsMapper;
 import com.xinbo.chainblock.service.StatisticsService;
@@ -33,6 +34,11 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
     @Override
     public StatisticsEntity findByUid(String date, int childUid) {
         return statisticsMapper.findByUid(date, childUid);
+    }
+
+    @Override
+    public List<StatisticsEntity> findList(DateRangeBo dateRangeBo, int childUid) {
+        return null;
     }
 
     @Override

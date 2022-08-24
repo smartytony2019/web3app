@@ -251,8 +251,6 @@ create table t_sport_bet (
    remark varchar(100) comment '备注'
 ) comment '体育注单';
 
-SELECT  id,sn,uid,username,cate_id,cate_name,cate_name_zh,game_id,game_name,game_name_zh,play_id,play_name,play_name_zh,block_hash,block_height,network,content,content_zh,odds,bet_amount,money,money_amount,profit_money,payout_money,create_time,update_time,flag,status,algorithm  FROM t_hash_bet
-
 
 # *************************************************************
 # 会员相关表
@@ -362,7 +360,7 @@ create table t_activity
     title varchar(100) comment '标题',
     content text comment '内容',
     sorted int comment '序号',
-    type int comment '限制项(1:首充, 2:注册送, 10:其它)',
+    type int comment '限制项(1:首充, 2:注册送, 3:签到, 10:其它)',
     language varchar(20) comment '语言',
     begin_time timestamp null default null comment '开始时间',
     finish_time timestamp null default null comment '结束时间',
@@ -379,21 +377,24 @@ insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, title, content, s
 
 
 drop table if exists t_activity_rule;
-create table t_activity_rule
-(
+create table t_activity_rule(
     id int primary key auto_increment,
     activity_id int comment '活动id',
     cycle int comment '周期(1:一次 2:不限次数 3:一天一次 4:一周一次 5:一月一次 6:自定义天数)',
     days int comment '天数',
+    limit_item int comment '限制项(1:充值, 2:首充, 3:打码, 4:打码次数, 5:注册)',
+    limit_lev int default 1 comment '限制等级(1: 包含项, 2: 必须项)',
     withdraw_bet_mul int comment '提现打码倍数',
     calc_mode int comment '计算方式(1:固定金额 2:百分比)',
-    receive_mode int comment '领取方式(1:后端审核, 2:自动发放)'
+    receive_mode int comment '领取方式(1:后端审核, 2:自动发放)',
+    money decimal(10,2) comment '金额',
+    symbol varchar(50) comment '赠送币种'
 ) comment '活动规则表';
-insert into cb_v2.t_activity_rule(activity_id,cycle,days, withdraw_bet_mul,calc_mode,receive_mode) values
-(1, 2, 0, 1, 1, 1),
-(2, 1, 0, 1, 2, 1),
-(3, 1, 0, 1, 1, 1),
-(4, 2, 0, 1, 1, 1);
+insert into cb_v2.t_activity_rule(activity_id,cycle,days,limit_item,limit_lev,withdraw_bet_mul,calc_mode,receive_mode,money, symbol) values
+(1, 2, 0, 1, 1, 1, 1, 1, 0,'USDT'),
+(2, 1, 0, 2, 1, 1, 2, 1, 0,'TRX'),
+(3, 1, 0, 5, 1, 1, 1, 1, 0,'TRX'),
+(4, 2, 0, 3, 1, 1, 2, 1, 0,'USDT');
 
 
 
@@ -401,35 +402,32 @@ drop table if exists t_activity_rule_item;
 create table t_activity_rule_item (
     id int primary key auto_increment,
     rule_id int comment '规则id',
-    limit_item int comment '限制项(1:钱包, 2:充值, 3:首充, 4:打码, 4:注册, 5:注册送)',
-    limit_lev int default 1 comment '限制等级(1: 包含项, 2: 必须项)',
     type int comment '类型(1:等于 2:大于 3:大于等于 4:小于 5:小于等于 6:范围)',
     min int default 0 comment '最小值',
     max int default 0 comment '最大值',
-    ratio decimal(10, 2) comment '赠送比例',
-    symbol varchar(50) comment '赠送币种'
+    ratio decimal(10, 2) comment '赠送比例'
 ) comment '活动规则项表';
-insert into t_activity_rule_item (rule_id, limit_item, limit_lev, type, min, max, ratio, symbol) VALUES
-(1, 2, 1, 6, 0, 1000, 10, 'USDT'),
-(1, 2, 1, 6, 1001, 5000, 20, 'USDT'),
-(1, 2, 1, 6, 5001, 10000, 50, 'USDT'),
-(1, 2, 1, 6, 10001, 20000, 100, 'USDT'),
-(1, 2, 1, 6, 20001, 50000, 200, 'USDT'),
+insert into t_activity_rule_item (rule_id, type, min, max, ratio) VALUES
+(1, 6, 0, 1000, 10),
+(1, 6, 1001, 5000, 20),
+(1, 6, 5001, 10000, 50),
+(1, 6, 10001, 20000, 100),
+(1, 6, 20001, 50000, 200),
 
-(2, 2, 2, 3, 100, 0, 100, 'TRX'),
+(2, 3, 100, 0, 100),
 
-(3, 5, 1, 1, 0, 0, 10, 'TRX'),
+(3, 1, 0, 0, 10),
 
-(4, 4, 1, 6, 0, 1000, 10, 'USDT'),
-(4, 4, 1, 6, 1001, 5000, 20, 'USDT'),
-(4, 4, 1, 6, 5001, 10000, 50, 'USDT'),
-(4, 4, 1, 6, 10001, 20000, 100, 'USDT'),
-(4, 2, 1, 6, 20001, 50000, 200, 'USDT')
+(4, 6, 0, 1000, 0.01),
+(4, 6, 1001, 5000, 0.02),
+(4, 6, 5001, 10000, 0.03),
+(4, 6, 10001, 20000, 0.04),
+(4, 6, 20001, 50000, 0.05)
 ;
 
 
-drop table if exists t_activity_order;
-create table t_activity_order (
+drop table if exists t_activity_record;
+create table t_activity_record (
     id int primary key auto_increment,
     activity_id int comment '活动id',
     activity_name varchar(50) comment '活动名',
@@ -438,10 +436,10 @@ create table t_activity_order (
     username varchar(50) comment '用户名',
     money decimal(10, 2) comment '赠送金额',
     symbol varchar(50) comment '赠送币种',
-    cycle int comment '周期(1:仅此一次 2:一天一次 3:一周一次 4:一月一次 5:自定义天数)',
     days int comment '天数',
+    status int default 0 comment '状态(0:未处理 1:成功 2:驳回)',
     create_time timestamp null default null comment '创建时间'
-) comment '活动订单表';
+) comment '活动记录表';
 
 
 
@@ -540,35 +538,32 @@ create table t_statistics(
   `date` varchar(10) comment '日期',
   uid int comment '用户id',
   username varchar(100) comment '用户名',
+  bet_count decimal(20,2) default 0 comment '当日投注次数',
   bet_amount decimal(20,2) default 0 comment '当日投注总额',
   profit_amount decimal(20,2) default 0 comment '当日盈利总额',
+  recharge_trc20_count decimal(20,2) default 0 comment '充值trc20次数',
   recharge_trc20_amount decimal(20,2) default 0 comment '充值trc20总额',
-  recharge_trx_amount decimal(20,2) default 0 comment '充值trx总额',
   withdraw_trc20_amount decimal(20,2) default 0 comment '提现trc20总额',
+  recharge_trx_count decimal(20,2) default 0 comment '充值trx次数',
+  recharge_trx_amount decimal(20,2) default 0 comment '充值trx总额',
   withdraw_trx_amount decimal(20,2) default 0 comment '提现trx总额',
   update_time timestamp null default null comment '更新时间',
   UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '统计';
 
 
-# INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_money`, `bet_profit_money`, `bet_payout_money`, `recharge_money`, `withdraw_money`, `update_time`) VALUES
-# ('20220704',2,'jackB1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',3,'jackB2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',4,'jackC1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',5,'jackC2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',6,'jackC3',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',7,'jackC4',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',8,'jackD1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',9,'jackD2',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',10,'jackD3',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',11,'jackD4',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',12,'jackD5',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',13,'jackD6',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',14,'jackD7',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',15,'jackD8',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',16,'jackE1',100000.00,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',17,'jackE2',100000.0000,100000.00,100000.00,0,0,'2022-07-04 18:37:43'),
-# ('20220704',18,'jackE3',100000.0000,100000.00,100000.00,0,0,'2022-07-04 18:37:43');
+INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amount`,
+                                `profit_amount`, `recharge_trc20_count`, `recharge_trc20_amount`, `withdraw_trc20_amount`, `recharge_trx_count`,
+                                `recharge_trx_amount`, `withdraw_trx_amount`, `update_time`
+                                ) VALUES
+('20220820',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220821',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220822',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220823',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220824',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220825',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220826',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220827',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43');
 
 
 

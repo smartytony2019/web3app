@@ -48,10 +48,22 @@ public class StatisticsEntity {
     private Float betAmount;
 
     /**
+     * 当日投注次数
+     */
+    @TableField("bet_count")
+    private Float betCount;
+
+    /**
      * 当日盈利总额
      */
     @TableField("profit_amount")
     private Float profitAmount;
+
+    /**
+     * 充值trc20次数
+     */
+    @TableField("recharge_trc20_count")
+    private Float rechargeTrc20Count;
 
     /**
      * 充值trc20总额
@@ -60,16 +72,22 @@ public class StatisticsEntity {
     private Float rechargeTrc20Amount;
 
     /**
-     * 充值trx总额
-     */
-    @TableField("recharge_trx_amount")
-    private Float rechargeTrxAmount;
-
-    /**
      * 提现trc20总额
      */
     @TableField("withdraw_trc20_amount")
     private Float withdrawTrc20Amount;
+
+    /**
+     * 充值trx次数
+     */
+    @TableField("recharge_trx_count")
+    private Float rechargeTrxCount;
+
+    /**
+     * 充值trx总额
+     */
+    @TableField("recharge_trx_amount")
+    private Float rechargeTrxAmount;
 
     /**
      * 提现trx总额
