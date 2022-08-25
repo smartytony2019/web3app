@@ -44,7 +44,7 @@ public class ActivityRuleEntity {
      * 天数
      */
     @TableField("days")
-    private String days;
+    private Integer days;
 
     /**
      * 限制项(1:钱包, 2:充值, 3:首充, 4:打码, 4:注册, 5:注册送)
@@ -81,5 +81,17 @@ public class ActivityRuleEntity {
     private Integer receiveMode;
 
 
+    /**
+     * 金额
+     */
+    @TableField("money")
+    private Float money;
+
+
+    /**
+     * 赠送币种
+     */
+    @TableField("symbol")
+    private String symbol;
 
 }

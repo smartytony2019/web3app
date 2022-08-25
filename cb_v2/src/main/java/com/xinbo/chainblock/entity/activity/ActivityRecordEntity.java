@@ -41,18 +41,12 @@ public class ActivityRecordEntity {
     private String activityName;
 
 
-    /**
-     * 类目中文
-     */
-    @TableField("activity_name_zh")
-    private String activityNameZh;
-
 
     /**
      * 标题
      */
     @TableField("uid")
-    private String uid;
+    private Integer uid;
 
 
     /**
@@ -63,10 +57,10 @@ public class ActivityRecordEntity {
 
 
     /**
-     * 序号
+     * 金额
      */
     @TableField("money")
-    private Integer money;
+    private Float money;
 
 
     /**
@@ -74,13 +68,6 @@ public class ActivityRecordEntity {
      */
     @TableField("symbol")
     private String symbol;
-
-
-    /**
-     * 天数
-     */
-    @TableField("days")
-    private Integer days;
 
 
     /**
@@ -98,4 +85,9 @@ public class ActivityRecordEntity {
     private Date createTime;
 
 
+    /**
+     * 备注
+     */
+    @TableField("remark")
+    private String remark;
 }

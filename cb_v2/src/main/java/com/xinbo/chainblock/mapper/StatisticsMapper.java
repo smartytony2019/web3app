@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +28,8 @@ public interface StatisticsMapper extends BaseMapper<StatisticsEntity> {
     List<StatisticsEntity> findByDate(@Param("date") String date);
 
     int batchInsert(@Param("list") List<StatisticsEntity> list);
+
+
+    @Select("select * from t_statistics where date between #{bo.startTimeStr} and #{bo.endTimeStr} and uid = #{uid}")
+    List<StatisticsEntity> findList(@Param("bo") DateRangeBo dateRangeBo, @Param("uid") int uid);
 }

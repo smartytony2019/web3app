@@ -18,11 +18,16 @@ import java.util.Date;
 @Builder
 public class DateRangeBo {
 
+    private String startTimeStr;
+
     private Date startTime;
 
-    private Date endTime;
-
     private Long startTimestamp;
+
+
+    private String endTimeStr;
+
+    private Date endTime;
 
     private Long endTimestamp;
 

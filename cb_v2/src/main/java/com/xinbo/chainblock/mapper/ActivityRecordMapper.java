@@ -19,4 +19,6 @@ public interface ActivityRecordMapper extends BaseMapper<ActivityRecordEntity> {
 
     @Select("select * from t_activity_record where activity_id = #{activityId} and uid = #{uid} order by create_time desc limit 1")
     ActivityRecordEntity find(@Param("activityId") int activityId, @Param("uid") int uid);
+
+    int batchInsert(@Param("list") List<ActivityRecordEntity> list);
 }

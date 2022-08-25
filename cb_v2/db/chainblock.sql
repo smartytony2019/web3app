@@ -357,7 +357,7 @@ create table t_activity
     cate_id int comment '类目id',
     cate_name varchar(50) comment '类目编码',
     cate_name_zh varchar(50) comment '类目中文',
-    title varchar(100) comment '标题',
+    name varchar(100) comment '活动名称',
     content text comment '内容',
     sorted int comment '序号',
     type int comment '限制项(1:首充, 2:注册送, 3:签到, 10:其它)',
@@ -365,14 +365,14 @@ create table t_activity
     begin_time timestamp null default null comment '开始时间',
     finish_time timestamp null default null comment '结束时间',
     create_time timestamp null default null comment '创建时间',
-    is_enable tinyint comment '是否启用',
-    is_del tinyint comment '是否删除'
+    is_enable tinyint comment '是否启用'
 ) comment '活动表';
-insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, title, content, sorted, type, language, begin_time, finish_time, create_time, is_enable, is_del) values
+insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, name, content, sorted, type, language, begin_time, finish_time, create_time, is_enable, is_del) values
 (1, '600010', '限时活动', '充值赠送', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
 (1, '600011', '新手活动', '首充赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
 (1, '600011', '新手活动', '新注册赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
-(1, '600012', '限时活动', '打码返水', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0);
+(1, '600012', '限时活动', '打码返水', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0),
+(1, '600012', '限时活动', '打码次数', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 0);
 
 
 
@@ -386,7 +386,7 @@ create table t_activity_rule(
     limit_lev int default 1 comment '限制等级(1: 包含项, 2: 必须项)',
     withdraw_bet_mul int comment '提现打码倍数',
     calc_mode int comment '计算方式(1:固定金额 2:百分比)',
-    receive_mode int comment '领取方式(1:后端审核, 2:自动发放)',
+    receive_mode int comment '领取方式(1:直接发放, 2:后端审核, 3:自动发放)',
     money decimal(10,2) comment '金额',
     symbol varchar(50) comment '赠送币种'
 ) comment '活动规则表';
@@ -394,7 +394,8 @@ insert into cb_v2.t_activity_rule(activity_id,cycle,days,limit_item,limit_lev,wi
 (1, 2, 0, 1, 1, 1, 1, 1, 0,'USDT'),
 (2, 1, 0, 2, 1, 1, 2, 1, 0,'TRX'),
 (3, 1, 0, 5, 1, 1, 1, 1, 0,'TRX'),
-(4, 2, 0, 3, 1, 1, 2, 1, 0,'USDT');
+(4, 2, 0, 3, 1, 1, 2, 1, 0,'USDT'),
+(5, 6, 3, 4, 1, 1, 1, 1, 0,'TRX');
 
 
 
@@ -422,7 +423,13 @@ insert into t_activity_rule_item (rule_id, type, min, max, ratio) VALUES
 (4, 6, 1001, 5000, 0.02),
 (4, 6, 5001, 10000, 0.03),
 (4, 6, 10001, 20000, 0.04),
-(4, 6, 20001, 50000, 0.05)
+(4, 6, 20001, 50000, 0.05),
+
+(5, 6, 1, 100, 10),
+(5, 6, 101, 500, 20),
+(5, 6, 501, 1000, 50),
+(5, 6, 1001, 2000, 100),
+(5, 6, 2001, 5000, 200)
 ;
 
 
@@ -431,16 +438,14 @@ create table t_activity_record (
     id int primary key auto_increment,
     activity_id int comment '活动id',
     activity_name varchar(50) comment '活动名',
-    activity_name_zh varchar(50) comment '活动名',
     uid int default 0 comment 'uid',
     username varchar(50) comment '用户名',
     money decimal(10, 2) comment '赠送金额',
     symbol varchar(50) comment '赠送币种',
-    days int comment '天数',
     status int default 0 comment '状态(0:未处理 1:成功 2:驳回)',
-    create_time timestamp null default null comment '创建时间'
+    create_time timestamp null default null comment '创建时间',
+    remark varchar(100) comment '备注'
 ) comment '活动记录表';
-
 
 
 
@@ -556,15 +561,14 @@ INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amo
                                 `profit_amount`, `recharge_trc20_count`, `recharge_trc20_amount`, `withdraw_trc20_amount`, `recharge_trx_count`,
                                 `recharge_trx_amount`, `withdraw_trx_amount`, `update_time`
                                 ) VALUES
-('20220820',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
-('20220821',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
-('20220822',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
-('20220823',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
-('20220824',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
-('20220825',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
-('20220826',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
-('20220827',19,'demo5566',100000.00,100000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43');
-
+('20220820',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220821',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220822',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220823',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220824',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220825',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220826',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43'),
+('20220827',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, '2022-07-04 18:37:43');
 
 
 

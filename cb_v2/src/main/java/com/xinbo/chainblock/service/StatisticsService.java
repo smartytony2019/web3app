@@ -19,7 +19,7 @@ public interface StatisticsService {
 
     StatisticsEntity findByUid(String date, int childUid);
 
-    List<StatisticsEntity> findList(DateRangeBo dateRangeBo, int childUid);
+    List<StatisticsEntity> findList(DateRangeBo dateRangeBo, int uid);
 
     List<StatisticsEntity> findByDate(String date);
 }

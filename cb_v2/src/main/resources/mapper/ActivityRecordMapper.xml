@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.ActivityRecordMapper">
+
+
+    <!-- 插入 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into t_activity_record(activity_id, activity_name, uid, username, money, symbol, status, create_time, remark) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.activityId}, #{item.activityName}, #{item.uid}, #{item.username}, #{item.money},
+            #{item.symbol}, #{item.status}, #{item.createTime}, #{item.remark})
+        </foreach>
+    </insert>
+
+</mapper>

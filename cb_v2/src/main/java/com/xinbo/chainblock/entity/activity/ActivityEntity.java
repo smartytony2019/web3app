@@ -49,10 +49,10 @@ public class ActivityEntity {
 
 
     /**
-     * 标题
+     * 活动名称
      */
-    @TableField("title")
-    private String title;
+    @TableField("name")
+    private String name;
 
 
     /**
@@ -112,12 +112,5 @@ public class ActivityEntity {
      */
     @TableField("is_enable")
     private Boolean isEnable;
-
-
-    /**
-     * 限制项(1:首充, 2:注册送, 10:其它)
-     */
-    @TableField("is_del")
-    private Boolean isDel;
 
 }

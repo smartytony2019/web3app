@@ -26,8 +26,15 @@ scheduled:
       record: true
       account: true
 
+upload:
+  path: '/Users/zhangjie/jack/web3app/web3app_2019/cb_v2/upload/images'
+
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/cb_v2?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&tinyInt1isBit=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
     username: root

@@ -37,8 +37,8 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
     }
 
     @Override
-    public List<StatisticsEntity> findList(DateRangeBo dateRangeBo, int childUid) {
-        return null;
+    public List<StatisticsEntity> findList(DateRangeBo dateRangeBo, int uid) {
+        return statisticsMapper.findList(dateRangeBo, uid);
     }
 
     @Override

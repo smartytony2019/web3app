@@ -56,14 +56,7 @@ public class ActivityRuleItemEntity {
      * 赠送比例
      */
     @TableField("ratio")
-    private Integer ratio;
-
-
-    /**
-     * 赠送币种
-     */
-    @TableField("symbol")
-    private String symbol;
+    private Float ratio;
 
 
 

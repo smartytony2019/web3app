@@ -17,7 +17,7 @@ public interface ActivityService {
 
     List<ActivityEntity> findAll(int skip, int size);
 
-    ActivityEntity findByUid(int uid);
+    ActivityEntity findById(int id);
 
     ActivityEntity find(ActivityEntity entity);
 

@@ -45,6 +45,11 @@ public class ActivityRecordServiceImpl extends ServiceImpl<ActivityRecordMapper,
         return activityRecordMapper.find(activityId, uid);
     }
 
+    @Override
+    public boolean batchInsert(List<ActivityRecordEntity> list) {
+        return activityRecordMapper.batchInsert(list) > 0;
+    }
+
     /**
      * 创建查询条件
      *

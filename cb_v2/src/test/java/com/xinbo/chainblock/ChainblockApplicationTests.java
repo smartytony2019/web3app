@@ -84,11 +84,11 @@ class ChainblockApplicationTests {
                 .setIssuedAt(DateUtil.date())
                 .setNotBefore(DateUtil.date())
                 .setExpiresAt(DateUtil.nextWeek())
-                .setPayload("body", JSON.toJSONString(bo))
+                .setPayload("payload", JSON.toJSONString(bo))
                 .sign();
         final JWT jwt2 = JWTUtil.parseToken(sign);
         Object header2 = jwt2.getHeader(JWTHeader.TYPE);
-        Object sub2 = jwt2.getPayload("body");
+        Object sub2 = jwt2.getPayload("payload");
         System.out.println(header2);
 
         JwtUserBo tmp = JSON.parseObject(String.valueOf(sub2), JwtUserBo.class);

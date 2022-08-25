@@ -43,8 +43,8 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
     }
 
     @Override
-    public ActivityEntity findByUid(int uid) {
-        return activityMapper.findByUid(uid);
+    public ActivityEntity findById(int id) {
+        return activityMapper.selectById(id);
     }
 
     @Override
