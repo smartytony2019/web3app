@@ -36,7 +36,7 @@ public class IndexController {
                 .uid(1)
                 .username("admin")
                 .build();
-        String token = JwtUtil.generateToken(jwtUserBo);
+        String token = JwtUtil.createToken(jwtUserBo);
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
