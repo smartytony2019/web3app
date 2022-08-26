@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface ActivityRuleItemService {
 
-    List<ActivityRuleItemEntity> findByRuleId(int ruleId);
+    List<ActivityRuleItemEntity> findBySn(String ruleSn);
 }

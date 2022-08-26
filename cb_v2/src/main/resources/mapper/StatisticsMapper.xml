@@ -7,10 +7,10 @@
     <insert id="insertOrUpdate" parameterType="com.xinbo.chainblock.entity.StatisticsEntity">
         insert into t_statistics(`date`, uid, username, bet_count, bet_amount,
                                  profit_amount, recharge_trc20_count, recharge_trc20_amount, withdraw_trc20_amount, recharge_trx_count,
-                                 recharge_trx_amount, withdraw_trx_amount, update_time)
+                                 recharge_trx_amount, withdraw_trx_amount, activity_amount, update_time)
         values (#{entity.date}, #{entity.uid}, #{entity.username}, #{entity.betCount}, #{entity.betAmount},
                 #{entity.profitAmount}, #{entity.rechargeTrc20Count}, #{entity.rechargeTrc20Amount}, #{entity.withdrawTrc20Amount}, #{entity.rechargeTrxCount},
-                #{entity.rechargeTrxAmount}, #{entity.withdrawTrxAmount}, #{entity.updateTime}) ON DUPLICATE KEY
+                #{entity.rechargeTrxAmount}, #{entity.withdrawTrxAmount}, #{entity.activityAmount}, #{entity.updateTime}) ON DUPLICATE KEY
         UPDATE
             bet_count = bet_count + VALUES (bet_count),
             bet_amount = bet_amount + VALUES (bet_amount),
@@ -21,6 +21,7 @@
             recharge_trx_count = recharge_trx_count + VALUES (recharge_trx_count),
             recharge_trx_amount = recharge_trx_amount + VALUES (recharge_trx_amount),
             withdraw_trx_amount = withdraw_trx_amount + VALUES (withdraw_trx_amount),
+            activity_amount = activity_amount + VALUES (activity_amount),
             update_time = VALUES (update_time)
     </insert>
 
@@ -29,11 +30,11 @@
     <insert id="batchInsert" parameterType="java.util.List">
         insert into t_statistics(`date`, uid, username, bet_count, bet_amount,
         profit_amount, recharge_trc20_count, recharge_trc20_amount, withdraw_trc20_amount, recharge_trx_count,
-        recharge_trx_amount, withdraw_trx_amount, update_time) values
+        recharge_trx_amount, withdraw_trx_amount, activity_amount, update_time) values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{entity.date}, #{entity.uid}, #{entity.username}, #{entity.betCount}, #{entity.betAmount},
             #{entity.profitAmount}, #{entity.rechargeTrc20Count}, #{entity.rechargeTrc20Amount}, #{entity.withdrawTrc20Amount}, #{entity.rechargeTrxCount},
-            #{entity.rechargeTrxAmount}, #{entity.withdrawTrxAmount}, #{entity.updateTime})
+            #{entity.rechargeTrxAmount}, #{entity.withdrawTrxAmount}, #{entity.activityAmount}, #{entity.updateTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
         bet_count = bet_count + VALUES (bet_count),
@@ -45,6 +46,7 @@
         recharge_trx_count = recharge_trx_count + VALUES (recharge_trx_count),
         recharge_trx_amount = recharge_trx_amount + VALUES (recharge_trx_amount),
         withdraw_trx_amount = withdraw_trx_amount + VALUES (withdraw_trx_amount),
+        activity_amount = activity_amount + VALUES (activity_amount),
         update_time = VALUES (update_time)
     </insert>
 

@@ -49,6 +49,13 @@ public class ActivityEntity {
 
 
     /**
+     * 编号
+     */
+    @TableField("sn")
+    private String sn;
+
+
+    /**
      * 活动名称
      */
     @TableField("name")

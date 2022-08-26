@@ -7,10 +7,18 @@ package com.xinbo.chainblock.consts;
  */
 public interface ActivityConst {
 
-    int UNHANDLED_RECORD = 0;       //未处理
+    int ACTIVITY_TYPE_FIRST_RECHARGE = 1;
+    int ACTIVITY_TYPE_REGISTER = 2;
+    int ACTIVITY_TYPE_SIGN = 3;
+    int ACTIVITY_FIRST_OTHER = 10;
 
-    int COMPLETE_RECORD = 1;        //完成
 
-    int REJECT_RECORD = 2;          //拒绝
+    int RECORD_UNHANDLED = 0;       //未处理
+    int RECORD_COMPLETE = 1;        //完成
+    int RECORD_REJECT = 2;          //拒绝
 
+
+    int RULE_JUST_SEND = 1;         // 直接发放
+    int RULE_ADMIN_CHECK = 2;       // 后端审核
+    int RULE_AUTO_SEND = 3;              // 自动发放
 }

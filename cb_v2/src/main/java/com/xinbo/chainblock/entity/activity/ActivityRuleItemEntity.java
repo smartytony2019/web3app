@@ -25,10 +25,10 @@ public class ActivityRuleItemEntity {
     private Integer id;
 
     /**
-     * 规则id
+     * 编号
      */
-    @TableField("rule_id")
-    private Integer rule_id;
+    @TableField("sn")
+    private String sn;
 
 
     /**

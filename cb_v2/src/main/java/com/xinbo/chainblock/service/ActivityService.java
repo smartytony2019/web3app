@@ -23,4 +23,5 @@ public interface ActivityService {
 
     BasePageBo findPage(ActivityEntity entity, long current, long size);
 
+    ActivityEntity findByType(int type);
 }

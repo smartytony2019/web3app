@@ -1,17 +1,19 @@
 package com.xinbo.chainblock.jobs;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.bo.AccountApiBo;
+import com.xinbo.chainblock.consts.ActivityConst;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
-import com.xinbo.chainblock.entity.AgentEntity;
-import com.xinbo.chainblock.entity.MemberEntity;
-import com.xinbo.chainblock.entity.MemberFlowEntity;
-import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.service.AgentService;
-import com.xinbo.chainblock.service.CommonService;
-import com.xinbo.chainblock.service.WalletService;
+import com.xinbo.chainblock.entity.*;
+import com.xinbo.chainblock.entity.activity.ActivityEntity;
+import com.xinbo.chainblock.entity.activity.ActivityRecordEntity;
+import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
+import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
+import com.xinbo.chainblock.enums.MemberFlowItemEnum;
+import com.xinbo.chainblock.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +47,14 @@ public class MemberJob {
     private AgentService agentService;
 
     @Autowired
+    private ActivityService activityService;
+    @Autowired
+    private ActivityRuleService activityRuleService;
+    @Autowired
+    private ActivityRecordService activityRecordService;
+
+
+    @Autowired
     private CommonService commonService;
 
     @Autowired
@@ -75,6 +85,67 @@ public class MemberJob {
             if (ObjectUtils.isEmpty(entity) || entity.getId() <= 0) {
                 return;
             }
+
+            // ******************************* - 查看是否有注册赠送彩金 -  ************************************************
+            ActivityEntity activityEntity = activityService.findByType(ActivityConst.ACTIVITY_TYPE_REGISTER);
+            if(!ObjectUtils.isEmpty(activityEntity)) {
+                ActivityRuleEntity ruleEntity = activityRuleService.findBySn(activityEntity.getSn());
+                if(!ObjectUtils.isEmpty(ruleEntity)) {
+                    Float money = ruleEntity.getMoney();
+
+                    ActivityRecordEntity re = ActivityRecordEntity.builder()
+                            .activityId(activityEntity.getId())
+                            .activityName(activityEntity.getName())
+                            .uid(entity.getId())
+                            .username(entity.getUsername())
+                            .money(money)
+                            .symbol(ruleEntity.getSymbol())
+                            .status(ActivityConst.ACTIVITY_TYPE_REGISTER)
+                            .createTime(new Date())
+                            .remark("member register")
+                            .build();
+
+                    // 会员表
+                    MemberEntity member = MemberEntity.builder()
+                            .id(entity.getId())
+                            .money(money)
+                            .version(entity.getVersion())
+                            .build();
+
+                    // 会员注水表
+                    float beforeMoney = entity.getMoney();
+                    float afterMoney = entity.getMoney() + money;
+                    float flowMoney = money;
+                    MemberFlowEntity memberFlow = MemberFlowEntity.builder()
+                            .sn(activityEntity.getSn())
+                            .uid(entity.getId())
+                            .username(entity.getUsername())
+                            .beforeMoney(beforeMoney)
+                            .afterMoney(afterMoney)
+                            .flowMoney(flowMoney)
+                            .item(MemberFlowItemEnum.ACTIVITY_RECEIVE.getName())
+                            .itemCode(MemberFlowItemEnum.ACTIVITY_RECEIVE.getCode())
+                            .itemZh(MemberFlowItemEnum.ACTIVITY_RECEIVE.getNameZh())
+                            .createTime(new Date())
+                            .build();
+
+                    // 统计表
+                    StatisticsEntity statistics = StatisticsEntity.builder()
+                            .date(DateUtil.format(new Date(), "yyyyMMdd"))
+                            .uid(entity.getId())
+                            .username(entity.getUsername())
+                            .activityAmount(money)
+                            .updateTime(new Date())
+                            .build();
+                    boolean isSuccess = activityRecordService.submit(Collections.singletonList(re), member, memberFlow, statistics);
+                    if (!isSuccess) {
+                        throw new RuntimeException("注册赠送彩金失败");
+                    }
+                }
+            }
+
+
+
 
             // *********************************** - 创建数字钱包 -  ****************************************************
             // Step 1: 创建数字钱包

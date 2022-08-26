@@ -23,4 +23,6 @@ public interface ActivityMapper extends BaseMapper<ActivityEntity> {
     @Select("select * from t_activity order by id asc limit #{skip}, #{size}")
     List<ActivityEntity> findAll(@Param("skip") int skip, @Param("size") int size);
 
+    @Select("select * from t_activity where type = #{type} and is_enable = 1 limit 1 ")
+    ActivityEntity findByType(@Param("type") int type);
 }

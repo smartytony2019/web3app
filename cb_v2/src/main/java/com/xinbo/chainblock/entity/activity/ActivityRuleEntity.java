@@ -27,6 +27,13 @@ public class ActivityRuleEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+
+    /**
+     * 编号
+     */
+    @TableField("sn")
+    private String sn;
+
     /**
      * 活动id
      */

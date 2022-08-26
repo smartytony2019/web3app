@@ -61,6 +61,11 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
         return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), ActivityDto.class)).build();
     }
 
+    @Override
+    public ActivityEntity findByType(int type) {
+        return activityMapper.findByType(type);
+    }
+
 
     /**
      * 创建查询条件

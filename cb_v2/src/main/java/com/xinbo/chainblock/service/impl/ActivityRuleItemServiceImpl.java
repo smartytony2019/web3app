@@ -29,8 +29,8 @@ public class ActivityRuleItemServiceImpl extends ServiceImpl<ActivityRuleItemMap
 
 
     @Override
-    public List<ActivityRuleItemEntity> findByRuleId(int ruleId) {
-        return activityRuleItemMapper.findByRuleId(ruleId);
+    public List<ActivityRuleItemEntity> findBySn(String sn) {
+        return activityRuleItemMapper.findBySn(sn);
     }
 
     /**

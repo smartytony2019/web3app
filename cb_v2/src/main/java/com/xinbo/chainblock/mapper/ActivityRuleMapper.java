@@ -17,6 +17,6 @@ import java.util.List;
 @Mapper
 public interface ActivityRuleMapper extends BaseMapper<ActivityRuleEntity> {
 
-    @Select("select * from t_activity_rule where activity_id = #{activityId}")
-    ActivityRuleEntity findByActivityId(@Param("activityId") int activityId);
+    @Select("select * from t_activity_rule where sn = #{sn}")
+    ActivityRuleEntity findBySn(@Param("sn") String sn);
 }

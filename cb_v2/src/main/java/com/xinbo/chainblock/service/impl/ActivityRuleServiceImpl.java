@@ -35,8 +35,8 @@ public class ActivityRuleServiceImpl extends ServiceImpl<ActivityRuleMapper, Act
 
 
     @Override
-    public ActivityRuleEntity findByActivityId(int activityId) {
-        return activityRuleMapper.findByActivityId(activityId);
+    public ActivityRuleEntity findBySn(String sn) {
+        return activityRuleMapper.findBySn(sn);
     }
 
     /**

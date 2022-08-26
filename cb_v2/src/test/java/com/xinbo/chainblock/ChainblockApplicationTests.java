@@ -52,24 +52,24 @@ class ChainblockApplicationTests {
     @Test
     void jwt() {
         JWTSigner jwtSigner = JWTSignerUtil.hs256("abc".getBytes(StandardCharsets.UTF_8));
-        Map<String, Object> map = new HashMap<String, Object>() {
-            private static final long serialVersionUID = 1L;
-            {
-                put("uid", Integer.parseInt("123"));
-                put("expire_time", System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15);
-            }
-        };
-        String token = JWTUtil.createToken(map, jwtSigner);
-
-
-        final JWT jwt = JWTUtil.parseToken(token);
-        Object header = jwt.getHeader(JWTHeader.TYPE);
-        Object sub = jwt.getPayload("uid");
-        Object expire_time = jwt.getPayload("expire_time");
-
-        System.out.println(header);
-        System.out.println(sub);
-        System.out.println(expire_time);
+//        Map<String, Object> map = new HashMap<String, Object>() {
+//            private static final long serialVersionUID = 1L;
+//            {
+//                put("uid", Integer.parseInt("123"));
+//                put("expire_time", System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15);
+//            }
+//        };
+//        String token = JWTUtil.createToken(map, jwtSigner);
+//
+//
+//        final JWT jwt = JWTUtil.parseToken(token);
+//        Object header = jwt.getHeader(JWTHeader.TYPE);
+//        Object sub = jwt.getPayload("uid");
+//        Object expire_time = jwt.getPayload("expire_time");
+//
+//        System.out.println(header);
+//        System.out.println(sub);
+//        System.out.println(expire_time);
 
 
         JwtUserBo bo = JwtUserBo.builder()

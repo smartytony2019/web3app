@@ -96,6 +96,12 @@ public class StatisticsEntity {
     private Float withdrawTrxAmount;
 
     /**
+     * 活动总额
+     */
+    @TableField("activity_amount")
+    private Float activityAmount;
+
+    /**
      * 更新时间
      */
     @TableField("update_time")

@@ -18,6 +18,7 @@ import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
 import com.xinbo.chainblock.enums.ActivityRuleCycleEnum;
 import com.xinbo.chainblock.enums.ActivityRuleLimitItemEnum;
+import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -57,6 +58,7 @@ public class ActivityController {
     @Autowired
     private StatisticsService statisticsService;
 
+    private static final String FORMAT = "yyyyMMdd";
 
     @JwtIgnore
     @Operation(summary = "insert", description = "插入")
@@ -97,26 +99,33 @@ public class ActivityController {
             ActivityEntity activityEntity = activityService.findById(vo.getId());
 
             // 规则
-            ActivityRuleEntity ruleEntity = activityRuleService.findByActivityId(activityEntity.getId());
+            ActivityRuleEntity ruleEntity = activityRuleService.findBySn(activityEntity.getSn());
 
             // 规则项
-            List<ActivityRuleItemEntity> ruleItemEntityList = activityRuleItemService.findByRuleId(ruleEntity.getId());
+            List<ActivityRuleItemEntity> ruleItemEntityList = activityRuleItemService.findBySn(activityEntity.getSn());
 
             // 会员
             MemberEntity memberEntity = memberService.findById(uid);
 
             //*************************************** 活动条件 ******************************************
+            // 计算方式(1:固定金额 2:百分比)
             int calcMode = ruleEntity.getCalcMode();
+
+            // 领取方式(1:直接发放, 2:后端审核, 3:自动发放)
+            int receiveMode = ruleEntity.getReceiveMode();
+
+            // 周期(1:一次 2:不限次数 3:一天一次 4:一周一次 5:一月一次 6:自定义天数)
             int cycle = ruleEntity.getCycle();
+
             DateRangeBo dateRangeBo = DateRangeBo.builder().build();
             ActivityRecordEntity recordEntity = activityRecordService.find(vo.getId(), uid);
 
 
             dateRangeBo.setStartTimeStr("20220101");
-            dateRangeBo.setEndTimeStr(DateUtil.yesterday().toString("yyyyMMdd"));
+            dateRangeBo.setEndTimeStr(DateUtil.yesterday().toString(FORMAT));
             if (!ObjectUtils.isEmpty(recordEntity) && recordEntity.getId() > 0) {
                 // 判断今天是否领取一个
-                String startTimeStr = DateUtil.date(recordEntity.getCreateTime()).toString("yyyyMMdd");
+                String startTimeStr = DateUtil.date(recordEntity.getCreateTime()).toString(FORMAT);
 //                String todayStr = DateUtil.date(new Date()).toString("yyyyMMdd");
 //                if (startTimeStr.equals(todayStr)) {
 //                    throw new BusinessException(1, "已领取过");
@@ -140,8 +149,8 @@ public class ActivityController {
             // 一天一次
             if (cycle == ActivityRuleCycleEnum.ONE_TIME_DAY.getCode()) {
                 if (!ObjectUtils.isEmpty(recordEntity) && recordEntity.getId() > 0) {
-                    String s1 = DateUtil.date(recordEntity.getCreateTime()).toString("yyyyMMdd");
-                    String s2 = DateUtil.yesterday().toString("yyyyMMdd");
+                    String s1 = DateUtil.date(recordEntity.getCreateTime()).toString(FORMAT);
+                    String s2 = DateUtil.yesterday().toString(FORMAT);
                     if (s1.equals(s2)) {
                         throw new BusinessException(1, "已领取过");
                     }
@@ -178,6 +187,9 @@ public class ActivityController {
             }
 
 
+
+            //*************************************** 数据匹配 ******************************************
+            float moneyAmount = 0F;
             List<ActivityRecordEntity> recordEntityList = new ArrayList<>();
             // 充值
             if (ruleEntity.getLimitItem() == ActivityRuleLimitItemEnum.RECHARGE.getCode()) {
@@ -188,6 +200,7 @@ public class ActivityController {
                     for (ActivityRuleItemEntity itemEntity : ruleItemEntityList) {
                         if (se.getRechargeTrc20Amount() > itemEntity.getMin() && se.getRechargeTrc20Amount() <= itemEntity.getMax()) {
                             ratio = itemEntity.getRatio();
+                            break;
                         }
                     }
 
@@ -208,6 +221,9 @@ public class ActivityController {
                         throw new BusinessException(1, "提交失败");
                     }
 
+                    moneyAmount += money;
+
+                    int status = receiveMode == ActivityConst.RULE_ADMIN_CHECK ? ActivityConst.RECORD_UNHANDLED : ActivityConst.RECORD_COMPLETE;
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
                             .activityName(activityEntity.getName())
@@ -215,7 +231,7 @@ public class ActivityController {
                             .username(memberEntity.getUsername())
                             .money(money)
                             .symbol(ruleEntity.getSymbol())
-                            .status(ActivityConst.UNHANDLED_RECORD)
+                            .status(status)
                             .createTime(new Date())
                             .remark(se.getDate())
                             .build();
@@ -256,6 +272,8 @@ public class ActivityController {
                         throw new BusinessException(1, "提交失败");
                     }
 
+                    moneyAmount += money;
+
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
                             .activityName(activityEntity.getName())
@@ -263,7 +281,7 @@ public class ActivityController {
                             .username(memberEntity.getUsername())
                             .money(money)
                             .symbol(ruleEntity.getSymbol())
-                            .status(ActivityConst.UNHANDLED_RECORD)
+                            .status(ActivityConst.RECORD_UNHANDLED)
                             .createTime(new Date())
                             .remark(se.getDate())
                             .build();
@@ -293,6 +311,8 @@ public class ActivityController {
                         throw new BusinessException(1, "提交失败");
                     }
 
+                    moneyAmount += money;
+
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
                             .activityName(activityEntity.getName())
@@ -300,7 +320,7 @@ public class ActivityController {
                             .username(memberEntity.getUsername())
                             .money(money)
                             .symbol(ruleEntity.getSymbol())
-                            .status(ActivityConst.UNHANDLED_RECORD)
+                            .status(ActivityConst.RECORD_UNHANDLED)
                             .createTime(new Date())
                             .remark(se.getDate())
                             .build();
@@ -316,7 +336,47 @@ public class ActivityController {
                 throw new BusinessException(1, "不符合");
             }
 
-            boolean isSuccess = activityRecordService.batchInsert(recordEntityList);
+            MemberEntity member = null;
+            MemberFlowEntity memberFlow = null;
+            StatisticsEntity statistics = null;
+            // 如果为立即发放
+            if(receiveMode == ActivityConst.RULE_JUST_SEND) {
+
+                // 会员表
+                member = MemberEntity.builder()
+                        .id(memberEntity.getId())
+                        .money(moneyAmount)
+                        .version(memberEntity.getVersion())
+                        .build();
+
+                // 会员注水表
+                float beforeMoney = memberEntity.getMoney();
+                float afterMoney = memberEntity.getMoney() + moneyAmount;
+                float flowMoney = moneyAmount;
+                memberFlow = MemberFlowEntity.builder()
+                        .sn(activityEntity.getSn())
+                        .uid(memberEntity.getId())
+                        .username(memberEntity.getUsername())
+                        .beforeMoney(beforeMoney)
+                        .afterMoney(afterMoney)
+                        .flowMoney(flowMoney)
+                        .item(MemberFlowItemEnum.ACTIVITY_RECEIVE.getName())
+                        .itemCode(MemberFlowItemEnum.ACTIVITY_RECEIVE.getCode())
+                        .itemZh(MemberFlowItemEnum.ACTIVITY_RECEIVE.getNameZh())
+                        .createTime(new Date())
+                        .build();
+
+                // 统计表
+                statistics = StatisticsEntity.builder()
+                        .date(DateUtil.format(new Date(), FORMAT))
+                        .uid(memberEntity.getId())
+                        .username(memberEntity.getUsername())
+                        .activityAmount(moneyAmount)
+                        .updateTime(new Date())
+                        .build();
+            }
+
+            boolean isSuccess = activityRecordService.submit(recordEntityList, member, memberFlow, statistics);
             System.out.println(isSuccess);
         } catch (BusinessException ex) {
             System.out.println(ex.getMsg());
@@ -326,6 +386,4 @@ public class ActivityController {
 
         return R.builder().data(StatusCode.SUCCESS).build();
     }
-
-
 }

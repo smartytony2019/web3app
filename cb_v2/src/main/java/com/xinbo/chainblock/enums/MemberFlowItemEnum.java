@@ -23,8 +23,10 @@ public enum MemberFlowItemEnum {
     WITHDRAW(500110,"500110", "提现"),
 
     TRANSFER_FUNDING2TRADING(500210,"500210", "转换(资金帐户=>交易帐号)"),
-    TRANSFER_TRADING2FUNDING(500220,"500220", "转换(交易帐号=>资金帐户)")
+    TRANSFER_TRADING2FUNDING(500220,"500220", "转换(交易帐号=>资金帐户)"),
 
+
+    ACTIVITY_RECEIVE(500300,"500300", "活动领取")
     ;
 
     int code;
