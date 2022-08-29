@@ -47,4 +47,19 @@ public class GameDto {
      * 是否开启
      */
     private Boolean enable;
+
+    /**
+     * 地址
+     */
+    private String address;
+
+    /**
+     * 算法
+     */
+    private String algorithm;
+
+    /**
+     * 赔率
+     */
+    private Float odds;
 }

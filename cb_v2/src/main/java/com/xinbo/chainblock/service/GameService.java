@@ -14,4 +14,6 @@ public interface GameService {
     GameEntity findById(int id);
 
     List<GameEntity> findAll();
+
+    List<GameEntity> findOffline();
 }

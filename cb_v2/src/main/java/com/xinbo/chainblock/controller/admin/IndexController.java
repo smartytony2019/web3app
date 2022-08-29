@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.controller.admin;
 
 
+import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
@@ -27,16 +28,19 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
+    @JwtIgnore
     @Operation(summary = "login", description = "后端登录")
     @PostMapping("login")
     public R<Object> login() {
-        List<String> authority = Arrays.asList("index:test");
         //Step4: 生成token
         JwtUserBo jwtUserBo = JwtUserBo.builder()
                 .uid(1)
                 .username("admin")
                 .build();
-        String token = JwtUtil.createToken(jwtUserBo);
+        String token = JwtUtil.generateToken(jwtUserBo);
+
+        JwtUserBo jwtUserBo1 = JwtUtil.parseToken(token);
+
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         return R.builder().code(StatusCode.SUCCESS).data(map).build();

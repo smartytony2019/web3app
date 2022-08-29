@@ -59,4 +59,22 @@ public class GameEntity {
      */
     @TableField("enable")
     private Boolean enable;
+
+    /**
+     * 地址
+     */
+    @TableField("address")
+    private String address;
+
+    /**
+     * 算法
+     */
+    @TableField("algorithm")
+    private String algorithm;
+
+    /**
+     * 赔率
+     */
+    @TableField("odds")
+    private Float odds;
 }

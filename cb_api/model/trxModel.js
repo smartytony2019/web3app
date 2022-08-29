@@ -222,6 +222,22 @@ module.exports = {
   },
 
   /**
+   * 获取事件信息根据交易ID
+   * @param {String} contractAddress 合约地址
+   * @param {String} eventName 事件名称
+   * @returns Array
+   */
+  async getEventByTransactionID(txID) {
+    let result = null;
+    try {
+      result = await tronWeb.getEventByTransactionID(txID)
+    }catch(error) {
+      console.error("getEventByTransactionID error", error);
+    }
+    return result;
+  },
+
+  /**
    * 检查地址是否合法
    * @param {String} address 地址
    * @returns Boolean
@@ -262,7 +278,5 @@ module.exports = {
 
     return privateKey;
   }
-
-
 
 };

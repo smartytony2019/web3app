@@ -42,7 +42,7 @@ public class HashBetController {
     private WalletService walletService;
 
     @Autowired
-    private HashResultService hashResultService;
+    private GameService gameService;
 
     @Autowired
     private HashPlayService hashPlayService;
@@ -91,6 +91,12 @@ public class HashBetController {
             if (ObjectUtils.isEmpty(playEntity) || playEntity.getId() <= 0) {
                 throw new BusinessException(0, "玩法错误");
             }
+
+            GameEntity gameEntity = gameService.findById(playEntity.getGameId());
+            if (ObjectUtils.isEmpty(gameEntity) || gameEntity.getId() <= 0) {
+                throw new BusinessException(0, "游戏错误");
+            }
+
 
             List<String> codes = StrUtil.split(vo.getCodes(), ",");
             List<HashOddsEntity> odds = hashOddsService.findByCode(codes);
@@ -144,7 +150,7 @@ public class HashBetController {
                     .moneyAmount(moneyAmount)
                     .createTime(new Date())
                     .updateTime(new Date())
-                    .algorithm(playEntity.getAlgorithm())
+                    .algorithm(gameEntity.getAlgorithm())
                     .build();
 
 

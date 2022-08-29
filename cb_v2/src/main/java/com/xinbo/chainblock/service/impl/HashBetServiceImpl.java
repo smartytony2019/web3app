@@ -60,6 +60,11 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         return hashBetMapper.insert(entity) > 0;
     }
 
+    @Override
+    public boolean batchInsert(List<HashBetEntity> list) {
+        return hashBetMapper.batchInsert(list) > 0;
+    }
+
     /**
      * 投注入库
      *

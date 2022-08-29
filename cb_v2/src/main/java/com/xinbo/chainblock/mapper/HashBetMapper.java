@@ -22,4 +22,6 @@ public interface HashBetMapper extends BaseMapper<HashBetEntity> {
 
     @Update("update t_hash_bet set block_hash=#{entity.blockHash},block_height=#{entity.blockHeight},network=#{entity.network},profit_money=#{entity.profitMoney},payout_money=#{entity.payoutMoney},update_time=#{entity.updateTime},flag=#{entity.flag},status=#{entity.status} where id = #{entity.id}")
     int settle(@Param("entity") HashBetEntity entity);
+
+    int batchInsert(@Param("list") List<HashBetEntity> list);
 }

@@ -35,6 +35,11 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, GameEntity> impleme
         return gameMapper.selectList(this.createWrapper(GameEntity.builder().build()));
     }
 
+    @Override
+    public List<GameEntity> findOffline() {
+        return gameMapper.findOffline();
+    }
+
 
     /**
      * 创建查询条件

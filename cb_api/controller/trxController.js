@@ -164,8 +164,9 @@ module.exports = {
     ctx.body = R.success(result)
   },
 
+
   /**
-   * 获取块哈希
+   * 获取块哈希根据哈希高度
    * @param {Object} ctx 
    */
   async getBlockHash(ctx) {

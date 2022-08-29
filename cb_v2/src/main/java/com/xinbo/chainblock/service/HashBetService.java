@@ -20,6 +20,8 @@ public interface HashBetService {
 
     boolean insert(HashBetEntity entity);
 
+    boolean batchInsert(List<HashBetEntity> list);
+
     boolean bet(HashBetEntity bet, MemberEntity member, MemberFlowEntity memberFlowEntity, HashResultEntity result);
 
     HashBetEntity find(HashBetEntity entity);

@@ -95,16 +95,4 @@ public class HashPlayEntity {
      */
     @TableField("type")
     private Integer type;
-
-    /**
-     * 图片地址
-     */
-    @TableField("address")
-    private String address;
-
-    /**
-     * 算法
-     */
-    @TableField("algorithm")
-    private String algorithm;
 }

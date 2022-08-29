@@ -106,7 +106,7 @@ public class MemberController {
                     .uid(entity.getId())
                     .username(entity.getUsername())
                     .build();
-            String token = JwtUtil.createToken(jwtUserBo);
+            String token = JwtUtil.generateToken(jwtUserBo);
             Map<String, String> map = new HashMap<>();
             map.put("token", String.format("Bearer %s", token));
             return R.builder().code(StatusCode.SUCCESS).data(map).build();

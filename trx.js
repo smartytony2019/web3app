@@ -218,6 +218,26 @@ class Trx {
       console.log(info);
     }
 
+    async transferTo(contractAddress, amount, toAddress, privateKey) {
+      let result = null;
+      try {
+  
+        // 设置私钥
+        this.tronWeb.setPrivateKey(privateKey)
+  
+        // 获取合约实例
+        let contract = await this.tronWeb.contract().at(contractAddress);
+  
+        // 转帐交易
+        let hash = await contract.transferTo(toAddress, amount).send();
+  
+        result = hash;
+      } catch (error) {
+        console.error("transferTo error", error);
+      }
+      return result;
+    }
+
 
 }
 
@@ -240,7 +260,6 @@ const Web3 = require('web3');
 
     // console.log(instance.address.toHex('TZ5YTid3VphzLpgwSks24KFuyL7wgxuEBR'))
 
-
     let tronWeb = instance;
     let contractAddress = 'TQcF1rd1BiSFm7F5S6QsZNGZ2vp2rho846';
 
@@ -251,13 +270,18 @@ const Web3 = require('web3');
     // let t1 = await contract.getBalanceOfContract().call();
     // console.log(t1.toNumber());
 
-    console.log(tronWeb.address.fromHex('419abc42dc5374064b3896d3dd382ad2080b8ff84e'))
+    // console.log(tronWeb.address.fromHex('419abc42dc5374064b3896d3dd382ad2080b8ff84e'))
 
-    // let trx = new Trx(instance, contractAddress);
+    let trx = new Trx(instance, contractAddress);
 
+    // let h = await trx.transferTo(contractAddress, parseInt(10000), to, privateKey);
+    // console.log('h', h)
 
-    // let t = await instance.getEventByTransactionID('a917a8501e1847d9d726509d992e08c9a7df255220a2d79e4393edeca9149804')
-    // console.log(t);
+    let r = await tronWeb.getEventResult(contractAddress, {eventName: 'Transfer', size: 2})
+    console.log(r)
+
+    let t = await tronWeb.getEventByTransactionID('273e5251515532ed5865971c0eec8b661c7dd9b6614b0d372688a108f99bfa21')
+    console.log('t',t);
     // let tmp = await instance.trx.getBlock(28946780);
     // console.log(tmp);
 
@@ -270,7 +294,8 @@ const Web3 = require('web3');
     // console.log(a)
 
     // trx.transfer();
-    // trx.sendTrx(to,1000000, from, privateKey, "helloworld")
+    // let tt = trx.sendTrx(to,1000000, from, privateKey, "helloworld")
+    // console.log(tt);
 
 
     // trx.getBalanceOfContract(from);

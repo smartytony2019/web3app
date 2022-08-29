@@ -4,6 +4,7 @@ server:
 
 
 trx:
+  network: 'nile'
   terminal-url: 'http://localhost:3333'
   api-url: 'https://nile.trongrid.io/v1'
   symbol: 'TRX'
@@ -19,13 +20,15 @@ interceptor:
 
 scheduled:
   enable:
-    register: true
+    register: false
     transfer: false
     settle: false
     finance:
       record: false
       account: false
-
+    offline:
+      record: true
+      account: true
 upload:
   path: '/Users/zhangjie/jack/web3app/web3app_2019/cb_v2/upload/images'
 

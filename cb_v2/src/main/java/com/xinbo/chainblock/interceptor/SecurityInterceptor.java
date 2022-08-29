@@ -58,6 +58,13 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
 
         // 验证token是否有效--无效已做异常抛出，由全局异常处理后返回对应信息
+        boolean verify = JwtUtil.validateToken(token);
+        if(!verify) {
+            this.returnJson(response, R.builder().code(StatusCode.TOKEN_ERROR).msg("token verify error").build());
+            return false;
+        }
+
+
         JwtUserBo jwtUserBo = JwtUtil.parseToken(token.replace(GlobalConst.TOKEN_PREFIX, ""));
 
 

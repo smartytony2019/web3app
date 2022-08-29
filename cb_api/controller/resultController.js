@@ -22,7 +22,15 @@ module.exports = {
       }
       let result = await resultModel.insert(params)
       ctx.body = R.success(result)
+    },
+
+    async findByTxID(ctx) {
+      let data = ctx.request.body
+      let txID = data.txID
+      let result = await resultModel.findByTxID(txID)
+      ctx.body = R.success(result)
     }
+
 }
 
 

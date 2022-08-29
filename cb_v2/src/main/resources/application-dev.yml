@@ -4,6 +4,7 @@ server:
 
 
 trx:
+  network: 'nile'
   terminal-url: 'http://localhost:3333'
   api-url: 'https://nile.trongrid.io/v1'
   symbol: 'TRX'

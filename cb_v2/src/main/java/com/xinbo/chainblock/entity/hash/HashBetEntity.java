@@ -99,6 +99,12 @@ public class HashBetEntity {
     private String playNameZh;
 
     /**
+     * 交易id
+     */
+    @TableField("transaction_id")
+    private String transactionId;
+
+    /**
      * 块哈希
      */
     @TableField("block_hash")
@@ -188,6 +194,12 @@ public class HashBetEntity {
      */
     @TableField("status")
     private Integer status;
+
+    /**
+     * 是否离线注单(0:否, 1:是)
+     */
+    @TableField("is_offline")
+    private Boolean isOffline;
 
     /**
      * 算法
