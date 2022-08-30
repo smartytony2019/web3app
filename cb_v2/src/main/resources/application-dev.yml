@@ -25,6 +25,11 @@ scheduled:
     finance:
       record: false
       account: false
+    offline:
+      bet: false
+      settle: false
+    system:
+      flow: false
 
 
 

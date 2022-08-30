@@ -21,6 +21,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author tony
@@ -30,8 +31,14 @@ import java.util.Date;
 @Service
 public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, SystemConfigEntity> implements SystemConfigService {
 
+    @Autowired
     private SystemConfigMapper systemConfigMapper;
 
+
+    @Override
+    public List<SystemConfigEntity> findAll() {
+        return systemConfigMapper.findAll();
+    }
 
     /**
      * 创建查询条件

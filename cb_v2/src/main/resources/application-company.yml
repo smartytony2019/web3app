@@ -27,10 +27,11 @@ scheduled:
       record: false
       account: false
     offline:
-      bet: true
-      settle: true
+      bet: false
+      settle: false
     system:
-      flow: true
+      flow: false
+
 upload:
   path: '/Users/zhangjie/jack/web3app/web3app_2019/cb_v2/upload/images'
 
