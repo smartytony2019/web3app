@@ -21,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @TableName("t_hash_bet")
-public class HashBetEntity {
+public class HashOfflineBetEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -31,18 +31,6 @@ public class HashBetEntity {
      */
     @TableField("sn")
     private String sn;
-
-    /**
-     * 会员id
-     */
-    @TableField("uid")
-    private Integer uid;
-
-    /**
-     * 会员名
-     */
-    @TableField("username")
-    private String username;
 
     /**
      * 彩种id
@@ -81,24 +69,6 @@ public class HashBetEntity {
     private String gameNameZh;
 
     /**
-     * 玩法id
-     */
-    @TableField("play_id")
-    private Integer playId;
-
-    /**
-     * 玩法编码
-     */
-    @TableField("play_name")
-    private String playName;
-
-    /**
-     * 玩法编码
-     */
-    @TableField("play_name_zh")
-    private String playNameZh;
-
-    /**
      * 交易id
      */
     @TableField("transaction_id")
@@ -123,18 +93,6 @@ public class HashBetEntity {
     private String network;
 
     /**
-     * 投注内容
-     */
-    @TableField("content")
-    private String content;
-
-    /**
-     * 投注内容(中文)
-     */
-    @TableField("content_zh")
-    private String contentZh;
-
-    /**
      * 注单赔率
      */
     @TableField("odds")
@@ -143,20 +101,8 @@ public class HashBetEntity {
     /**
      * 注单金额
      */
-    @TableField("bet_amount")
-    private Integer betAmount;
-
-    /**
-     * 注单金额
-     */
     @TableField("money")
     private Float money;
-
-    /**
-     * 投注金额
-     */
-    @TableField("money_amount")
-    private Float moneyAmount;
 
 
     /**

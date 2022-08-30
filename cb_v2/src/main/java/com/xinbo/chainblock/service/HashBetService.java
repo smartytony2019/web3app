@@ -3,6 +3,7 @@ package com.xinbo.chainblock.service;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.entity.SystemFlowEntity;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
 
@@ -37,4 +38,5 @@ public interface HashBetService {
     boolean settle(HashBetEntity bet, HashResultEntity result);
 
     HashBetEntity findOrder(String sn);
+
 }

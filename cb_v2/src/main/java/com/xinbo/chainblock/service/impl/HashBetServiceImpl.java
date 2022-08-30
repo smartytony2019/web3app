@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.dto.HashBetDto;
+import com.xinbo.chainblock.entity.SystemFlowEntity;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
@@ -45,6 +46,8 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     private MemberMapper memberMapper;
     @Autowired
     private MemberFlowMapper memberFlowMapper;
+    @Autowired
+    private SystemFlowMapper systemFlowMapper;
     @Autowired
     private StatisticsMapper statisticsMapper;
 
@@ -151,7 +154,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
 
         //添加开奖结果
         rows = hashResultMapper.updateBySn(result);
-        if(rows <=0) {
+        if (rows <= 0) {
             return false;
         }
 
@@ -168,7 +171,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
 
         // 订单为赢才添加帐变
-        if(bet.getFlag() == AlgorithmCode.WIN) {
+        if (bet.getFlag() == AlgorithmCode.WIN) {
             //添加帐变
             MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
                     .sn(bet.getSn())
@@ -211,6 +214,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     public HashBetEntity findOrder(String sn) {
         return hashBetMapper.selectOne(this.createWrapper(HashBetEntity.builder().sn(sn).build()));
     }
+
 
 
     /**

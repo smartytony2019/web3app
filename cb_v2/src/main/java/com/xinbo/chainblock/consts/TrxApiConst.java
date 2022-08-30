@@ -25,6 +25,9 @@ public interface TrxApiConst {
     //获取交易信息
     String GET_TRANSACTION_INFO = "/trx/getTransactionInfo";
 
+    //获取交易信息
+    String GET_BLOCK_HASH_BY_TRANSACTION_ID = "/trx/getBlockHashByTransactionId";
+
 
     //获取trc20交易记录
     String GET_TRC20_RECORD = "%s/accounts/%s/transactions/trc20?only_confirmed=true&limit=50&min_timestamp=%s";

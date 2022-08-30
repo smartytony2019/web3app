@@ -20,4 +20,7 @@ public interface RedisConst {
 
     String MEMBER_FINANCE = "cb:member:finance";
 
+
+    String SYSTEM_FLOW = "cb:system:flow";
+    String SYSTEM_CONFIG = "cb:system:config";
 }

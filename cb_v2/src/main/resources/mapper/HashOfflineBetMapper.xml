@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinbo.chainblock.mapper.HashOfflineBetMapper">
+
+
+    <!-- 插入或更新 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into t_hash_offline_bet(`sn`, cate_id, cate_name, cate_name_zh, game_id,
+        game_name, game_name_zh, transaction_id, network, odds,
+        money, create_time, create_timestamp, algorithm) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sn}, #{item.cateId}, #{item.cateName}, #{item.cateNameZh}, #{item.gameId},
+            #{item.gameName}, #{item.gameNameZh}, #{item.transactionId}, #{item.network}, #{item.odds},
+            #{item.money}, #{item.createTime}, #{item.createTimestamp}, #{item.algorithm})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        algorithm = VALUES(algorithm)
+    </insert>
+
+</mapper>

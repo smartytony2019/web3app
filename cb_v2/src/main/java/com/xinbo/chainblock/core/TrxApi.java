@@ -83,8 +83,8 @@ public class TrxApi {
      * 获取Trc20余额(USDT)
      *
      * @param contractAddress 合约地址
-     * @param fromAddress 查询地址
-     * @param privateKey  私钥
+     * @param fromAddress     查询地址
+     * @param privateKey      私钥
      * @return String
      */
     public String getBalanceOfTrc20(String contractAddress, String fromAddress, String privateKey) {
@@ -160,10 +160,11 @@ public class TrxApi {
             jsonObject.put("toAddress", toAddress);
             jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
-            if(StringUtils.isEmpty(res)) {
+            if (StringUtils.isEmpty(res)) {
                 return result;
             }
-            result = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {});
+            result = JSON.parseObject(res, new TypeReference<BaseApiBo<TransactionApiBo>>() {
+            });
         } catch (Exception ex) {
             log.error("TerminalApi transactionOfTrc20 exception", ex);
         }
@@ -197,6 +198,42 @@ public class TrxApi {
 
 
     /**
+     * 获取交易信息
+     *
+     * @param txID 转帐id
+     * @return entity
+     */
+    public HashResultApiBo getBlockHashByTransactionId(String txID) {
+        HashResultApiBo result = null;
+        try {
+            String url = String.format("%s%s", terminalUrl, TrxApiConst.GET_BLOCK_HASH_BY_TRANSACTION_ID);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("txID", txID);
+            String res = restTemplate.postForObject(url, jsonObject, String.class);
+
+
+            BaseApiBo<JSONObject> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<JSONObject>>() {
+            });
+            if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0) {
+                JSONObject object = entity.getData();
+                String blockID = object.getString("blockID");
+                JSONObject blockHeader = object.getObject("block_header", JSONObject.class);
+                JSONObject rawData = blockHeader.getObject("raw_data", JSONObject.class);
+                String number = rawData.getString("number");
+
+                result = HashResultApiBo.builder()
+                        .blockHash(blockID)
+                        .blockHeight(number)
+                        .build();
+            }
+        } catch (Exception ex) {
+            log.error("TerminalApi getBlockHashByTransactionId exception", ex);
+        }
+        return result;
+    }
+
+
+    /**
      * 获取TRC20转帐记录
      *
      * @param account
@@ -205,8 +242,6 @@ public class TrxApi {
     public JSONObject getTrc20Record(String account, long minTimestamp) {
         JSONObject result = null;
         try {
-//            long minTimestamp = new Date().getTime() - (60*60*1000*24*30);
-//            long minTimestamp = 0;
             String url = String.format(TrxApiConst.GET_TRC20_RECORD, apiUrl, account, minTimestamp);
             RestTemplate restTemplate = new RestTemplate();
             String res = restTemplate.getForObject(url, String.class);
@@ -214,6 +249,7 @@ public class TrxApi {
             result = JSONObject.parseObject(res);
         } catch (Exception ex) {
             log.error("TerminalApi getTrc20Record exception", ex);
+            log.info("account: {}", account);
         }
         return result;
     }

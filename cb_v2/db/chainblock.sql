@@ -39,9 +39,9 @@ create table t_game(
 insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`enable`,`pic`,`sort`,`address`, `algorithm`, `odds`) values
 ('1', '100010', '哈希', '200010', '哈希两面',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000', 1.95),
 ('1', '100010', '哈希', '200110', '哈希百家乐',1, 'http://xx/x.png', 1, '', '2000', 0),
-('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '3000', 1.98),
-('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '4000', 1.97),
-('1', '100010', '哈希', '200410', '哈希牛牛',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '5000', 0),
+('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuA', '3000', 1.98),
+('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuB', '4000', 1.97),
+('1', '100010', '哈希', '200410', '哈希牛牛',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuC', '5000', 0),
 ('2', '100110', '彩票', '200510', 'XB彩票',1, 'http://xx/x.png', 1, '', '', 0),
 ('3', '100210', '体育', '200610', '皇冠体育',1, 'http://xx/x.png', 1, '', '', 0);
 
@@ -199,9 +199,39 @@ create table t_hash_bet (
     update_time timestamp null default null comment '更新时间',
     flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
-    is_offline tinyint(1) default 0 comment '是否离线注单(0:否, 1:是)',
-    algorithm varchar(10) comment '算法'
+    algorithm varchar(10) comment '算法',
+    UNIQUE KEY unique_sn (sn)
 ) comment '哈希注单';
+
+
+
+drop table if exists t_hash_offline_bet;
+create table t_hash_offline_bet (
+    id int primary key auto_increment,
+    sn varchar(100) comment '编号',
+    cate_id int comment '类目id',
+    cate_name varchar(50) comment '类目编码',
+    cate_name_zh varchar(50) comment '类目名称(中文)',
+    game_id int comment '彩种id',
+    game_name varchar(50) comment '类目编码',
+    game_name_zh varchar(50) comment '彩种名称(中文)',
+    transaction_id varchar(100) comment '交易id',
+    block_height varchar(50) comment '块高',
+    block_hash varchar(80) comment '开奖结果',
+    network varchar(50) comment '网络',
+    odds decimal(10,4) comment '赔率',
+    money decimal(10,4) comment '投注单价',
+    profit_money decimal(10,4) comment '赢利金额',
+    payout_money decimal(10,4) comment '派彩金额',
+    create_time timestamp null default null comment '创建时间',
+    create_timestamp bigint(20) comment '创建时间戳',
+    update_time timestamp null default null comment '更新时间',
+    update_timestamp bigint(20) comment '更新时间戳',
+    flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
+    status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
+    algorithm varchar(10) comment '算法',
+    UNIQUE KEY unique_transaction_id (transaction_id)
+) comment '哈希离线注单';
 
 
 drop table if exists t_draw_bet;
@@ -803,16 +833,35 @@ CREATE TABLE t_system_config(
     id        int primary key auto_increment,
     `key`     varchar(50) COMMENT '键',
     `value`   varchar(50) COMMENT '值',
-    `type`    int comment '数据类型(1: String 2:Integer, 3:Float, 4: Boolean, 5:Date)',
+    `type`    varchar(50) comment '数据类型(1: String 2:Integer, 3:Float, 4: Boolean, 5:Date)',
     `cate`    int comment '配置分类(1: 系统配置 2:会员配置, 3:游戏配置)',
     `comment` varchar(100) comment '备注'
 );
 insert into cb_v2.t_system_config(`key`, `value`, `type`, `cate`, `comment`) values
-('maintain', 'true', 4, 1, '开启网站'),
-('close_register', 'false', 4, 2, '关闭注册'),
-('close_register', 'false', 4, 2, '注册必填推荐码'),
-('withdraw_bet_mul', 'true', 4, 2, '提现打码倍数');
+('maintain', 'true', 'Boolean', 1, '开启网站'),
+('close_register', 'false', 'Boolean', 2, '关闭注册'),
+('close_register', 'false', 'Boolean', 2, '注册必填推荐码'),
+('withdraw_bet_mul', 'true', 'Boolean', 2, '提现打码倍数');
 
+
+
+drop table if exists t_system_flow;
+create table t_system_flow(
+  id int primary key auto_increment,
+  sn varchar(100) comment '订单号',
+  uid int(20) comment '用户i',
+  username varchar(50) comment '用户名',
+  before_money decimal(10,2) comment '帐变前金额',
+  after_money decimal(10,2) comment '帐变后金额',
+  flow_money decimal(10,2) comment '流水金额',
+  item varchar(100) comment '帐变项',
+  item_code int comment '帐变编码',
+  item_zh varchar(100) comment '帐变中文',
+  create_time timestamp null default null comment '创建时间',
+  create_timestamp bigint(20) comment '创建时间戳',
+  ext varchar(200) comment '扩展字段',
+  UNIQUE KEY unique_sn (sn)
+) comment '会员流水表';
 
 
 
