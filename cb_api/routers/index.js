@@ -25,6 +25,9 @@ router.post('/trx/getTransactionInfo', trxController.getTransactionInfo);
 //- 获取块哈希
 router.post('/trx/getBlockHash', trxController.getBlockHash);
 
+//- 根据交易id获取块哈希
+router.post('/trx/getBlockHashByTransactionId', trxController.getBlockHashByTransactionId);
+
 
  
 /*  ****** TRX API ****** */
