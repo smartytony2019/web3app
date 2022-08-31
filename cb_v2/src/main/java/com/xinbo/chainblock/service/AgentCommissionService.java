@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface AgentCommissionService {
     boolean insertOrUpdate(List<AgentCommissionEntity> list);
+
+    AgentCommissionEntity find(AgentCommissionEntity entity);
 }

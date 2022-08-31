@@ -13,4 +13,6 @@ public class MemberLoginVo {
 
     private String pwd;
 
+    private String captchaVerification;
+
 }

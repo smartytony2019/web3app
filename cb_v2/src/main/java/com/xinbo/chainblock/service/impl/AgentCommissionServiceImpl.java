@@ -29,6 +29,11 @@ public class AgentCommissionServiceImpl extends ServiceImpl<AgentCommissionMappe
         return agentCommissionMapper.insertOrUpdate(list) > 0;
     }
 
+    @Override
+    public AgentCommissionEntity find(AgentCommissionEntity entity) {
+        return agentCommissionMapper.selectOne(this.createWrapper(entity));
+    }
+
     /**
      * 创建查询条件
      *

@@ -3,6 +3,9 @@ package com.xinbo.chainblock.controller.api;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.anji.captcha.model.common.ResponseModel;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.bo.BaseApiBo;
 import com.xinbo.chainblock.bo.TransactionApiBo;
@@ -55,6 +58,9 @@ public class MemberController {
     private WalletService walletService;
 
     @Autowired
+    private CaptchaService captchaService;
+
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     @Value("${trx.token-info.contract-address}")
@@ -86,6 +92,19 @@ public class MemberController {
     @PostMapping("login")
     public R<Object> login(@RequestBody MemberLoginVo vo) {
         try {
+            CaptchaVO captchaVO = new CaptchaVO();
+            captchaVO.setCaptchaVerification(vo.getCaptchaVerification());
+            ResponseModel response = captchaService.verification(captchaVO);
+            if (!response.isSuccess()) {
+                //验证码校验失败，返回信息告诉前端
+                //repCode  0000  无异常，代表成功
+                //repCode  9999  服务器内部异常
+                //repCode  0011  参数不能为空
+                //repCode  6110  验证码已失效，请重新获取
+                //repCode  6111  验证失败
+                //repCode  6112  获取验证码失败,请联系管理员
+            }
+
             String username = vo.getUsername();
             String pwd = vo.getPwd();
 
@@ -135,9 +154,9 @@ public class MemberController {
         String key = String.format(RedisConst.MEMBER_BALANCE, uid);
 
         // deep为1则拿缓存数据
-        if(deep == 0) {
+        if (deep == 0) {
             String json = redisTemplate.opsForValue().get(key);
-            if(!StringUtils.isEmpty(json)) {
+            if (!StringUtils.isEmpty(json)) {
                 JSONObject object = JSONObject.parseObject(json);
                 return R.builder().code(StatusCode.SUCCESS).data(object).build();
             }
@@ -319,33 +338,33 @@ public class MemberController {
 
             int uid = 19;
             MemberEntity memberEntity = memberService.info(uid);
-            if(vo.getMoney()>memberEntity.getMoney()) {
+            if (vo.getMoney() > memberEntity.getMoney()) {
                 throw new BusinessException(1, "金额不足");
             }
 
-            if(!memberEntity.getIsEnable()) {
+            if (!memberEntity.getIsEnable()) {
                 throw new BusinessException(1, "帐户已冻结");
             }
 
-            if(memberEntity.getType() != MemberTypeEnum.NORMAL.getCode()) {
+            if (memberEntity.getType() != MemberTypeEnum.NORMAL.getCode()) {
                 throw new BusinessException(1, "此帐户禁提现");
             }
 
             WalletEntity mainWallet = walletService.findMain();
             BaseApiBo<TransactionApiBo> transaction = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberEntity.getWithdrawWallet());
-            if(ObjectUtils.isEmpty(transaction) || transaction.getCode() != StatusCode.SUCCESS) {
+            if (ObjectUtils.isEmpty(transaction) || transaction.getCode() != StatusCode.SUCCESS) {
                 throw new BusinessException(1, "提现失败，请重新提交!");
             }
 
             // tron调用失败
-            if(!transaction.getData().isResult()) {
+            if (!transaction.getData().isResult()) {
                 throw new BusinessException(1, "提现失败，请重新提交!!");
             }
 
             return R.builder().code(StatusCode.SUCCESS).build();
-        }catch (BusinessException ex) {
+        } catch (BusinessException ex) {
             return R.builder().code(StatusCode.FAILURE).msg(ex.getMsg()).build();
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             return R.builder().code(StatusCode.FAILURE).msg("执行异常").build();
         }
 

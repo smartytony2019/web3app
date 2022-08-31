@@ -21,32 +21,82 @@ public class AgentCommissionEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    /**
+     * 日期
+     */
+    @TableField("date")
     private String date;
 
+    /**
+     * 用户id
+     */
+    @TableField("uid")
     private Integer uid;
 
+    /**
+     * 用户名
+     */
+    @TableField("username")
     private String username;
 
-    private Double commission;
+    /**
+     * 总佣金
+     */
+    @TableField("total_commission")
+    private Float totalCommission;
 
+    /**
+     * 自营佣金
+     */
+    @TableField("self_commission")
+    private Float selfCommission;
+
+    /**
+     * 总业绩
+     */
     @TableField("total_performance")
-    private Double totalPerformance;
+    private Float totalPerformance;
 
-    @TableField("direct_performance")
-    private Double directPerformance;
-
+    /**
+     *自营业绩
+     */
     @TableField("self_performance")
-    private Double selfPerformance;
+    private Float selfPerformance;
 
+    /**
+     * 直属业绩
+     */
+    @TableField("direct_performance")
+    private Float directPerformance;
+
+    /**
+     * 团队业绩
+     */
     @TableField("team_performance")
-    private Double teamPerformance;
+    private Float teamPerformance;
 
+    /**
+     * 返佣比
+     */
+    @TableField("rebate")
     private Integer rebate;
 
+    /**
+     * 创建时间
+     */
     @TableField("create_time")
     private Date createTime;
 
-    @TableField("update_time")
-    private Date updateTime;
+    /**
+     * 创建时间戳
+     */
+    @TableField("create_timestamp")
+    private Long createTimestamp;
+
+    /**
+     * 是否入帐
+     */
+    @TableField("is_account")
+    private Boolean isAccount;
 
 }

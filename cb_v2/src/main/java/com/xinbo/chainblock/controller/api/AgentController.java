@@ -2,9 +2,11 @@ package com.xinbo.chainblock.controller.api;
 
 import cn.hutool.core.date.DateUtil;
 import com.xinbo.chainblock.consts.StatusCode;
+import com.xinbo.chainblock.entity.AgentCommissionEntity;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
+import com.xinbo.chainblock.service.AgentCommissionService;
 import com.xinbo.chainblock.service.AgentService;
 import com.xinbo.chainblock.service.StatisticsService;
 import com.xinbo.chainblock.utils.R;
@@ -27,6 +29,9 @@ public class AgentController {
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private AgentCommissionService agentCommissionService;
 
     @Autowired
     private StatisticsService statisticsService;
@@ -55,10 +60,6 @@ public class AgentController {
 
         List<StatisticsEntity> statisticsEntities = statisticsService.findByUidStr(date, childList);
         System.out.println(statisticsEntities);
-
-
-
-
 
         return null;
     }
@@ -112,7 +113,18 @@ public class AgentController {
         }
         map.put("dirPerformance", dirPerformance);
 
+        //昨日佣金
+        String yesterday = DateUtil.yesterday().toString("yyyyMMdd");
+        AgentCommissionEntity entity = AgentCommissionEntity.builder()
+                .uid(uid)
+                .date(yesterday)
+                .build();
+        AgentCommissionEntity entity1 = agentCommissionService.find(entity);
+        map.put("yesterdayCommission", entity1.getSelfCommission());
 
+
+        //昨日总佣金
+        map.put("yesterdayCommissionTotal", 0);
 
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
     }
