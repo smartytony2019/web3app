@@ -46,16 +46,16 @@ public class AgentCommissionEntity {
     private Float totalCommission;
 
     /**
-     * 自营佣金
-     */
-    @TableField("self_commission")
-    private Float selfCommission;
-
-    /**
      * 总业绩
      */
     @TableField("total_performance")
     private Float totalPerformance;
+
+    /**
+     * 自营佣金
+     */
+    @TableField("self_commission")
+    private Float selfCommission;
 
     /**
      *自营业绩
@@ -68,6 +68,12 @@ public class AgentCommissionEntity {
      */
     @TableField("direct_performance")
     private Float directPerformance;
+
+    /**
+     * 下属业绩
+     */
+    @TableField("sub_performance")
+    private Float subPerformance;
 
     /**
      * 团队业绩

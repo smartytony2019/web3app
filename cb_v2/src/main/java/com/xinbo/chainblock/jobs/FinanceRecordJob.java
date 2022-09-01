@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.*;
@@ -256,7 +257,7 @@ public class FinanceRecordJob {
                 StatisticsEntity statistics = StatisticsEntity.builder()
                         .uid(f.getUid())
                         .username(f.getUsername())
-                        .date(DateUtil.format(new Date(), "yyyyMMdd"))
+                        .date(DateUtil.format(new Date(), GlobalConst.DATE_YMD))
                         .betAmount(0F)
                         .profitAmount(0F)
                         .rechargeTrc20Amount(0F)

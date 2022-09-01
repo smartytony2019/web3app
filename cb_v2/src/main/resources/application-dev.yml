@@ -35,6 +35,9 @@ scheduled:
       flow: false
 
 
+upload:
+  path: '/Users/zhangjie/jack/web3app/web3app_2019/cb_v2/upload/images'
+
 
 spring:
   datasource:

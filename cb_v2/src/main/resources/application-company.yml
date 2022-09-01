@@ -24,7 +24,7 @@ scheduled:
     transfer: false
     settle: false
     agent:
-      commission: true
+      commission: false
     finance:
       record: false
       account: false

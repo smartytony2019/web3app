@@ -26,7 +26,8 @@ public enum MemberFlowItemEnum {
     TRANSFER_TRADING2FUNDING(500220,"500220", "转换(交易帐号=>资金帐户)"),
 
 
-    ACTIVITY_RECEIVE(500300,"500300", "活动领取")
+    ACTIVITY_RECEIVE(500310,"500310", "活动领取"),
+    AGENT_COMMISSION(500410,"500410", "代理佣金")
     ;
 
     int code;

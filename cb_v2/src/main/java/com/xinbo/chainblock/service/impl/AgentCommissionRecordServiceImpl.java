@@ -11,6 +11,7 @@ import com.xinbo.chainblock.mapper.AgentCommissionMapper;
 import com.xinbo.chainblock.mapper.AgentCommissionRecordMapper;
 import com.xinbo.chainblock.mapper.MemberFlowMapper;
 import com.xinbo.chainblock.mapper.MemberMapper;
+import com.xinbo.chainblock.service.AgentCommissionRecordService;
 import com.xinbo.chainblock.service.AgentCommissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,73 +28,11 @@ import java.util.List;
  * @desc file desc
  */
 @Service
-public class AgentCommissionServiceImpl extends ServiceImpl<AgentCommissionMapper, AgentCommissionEntity> implements AgentCommissionService {
+public class AgentCommissionRecordServiceImpl extends ServiceImpl<AgentCommissionRecordMapper, AgentCommissionRecordEntity> implements AgentCommissionRecordService {
 
-    @Autowired
-    private AgentCommissionMapper agentCommissionMapper;
     @Autowired
     private AgentCommissionRecordMapper agentCommissionRecordMapper;
 
-    @Autowired
-    private MemberMapper memberMapper;
-
-    @Autowired
-    private MemberFlowMapper memberFlowMapper;
-
-    public boolean insertOrUpdate(List<AgentCommissionEntity> list) {
-        return agentCommissionMapper.insertOrUpdate(list) > 0;
-    }
-
-    @Override
-    public AgentCommissionEntity find(int uid, String date) {
-        return agentCommissionMapper.find(uid, date);
-    }
-
-    @Override
-    public AgentCommissionEntity find(AgentCommissionEntity entity) {
-        return agentCommissionMapper.selectOne(this.createWrapper(entity));
-    }
-
-    @Override
-    public float findAvailableCommission(int uid) {
-        return agentCommissionMapper.findAvailableCommission(uid);
-    }
-
-    @Override
-    public float findCommissionTotal(int uid) {
-        return agentCommissionMapper.findCommissionTotal(uid);
-    }
-
-    @Transactional
-    @Override
-    public boolean applySubmit(int uid, AgentCommissionRecordEntity record, MemberEntity member, MemberFlowEntity memberFlow) {
-
-        // 代理佣金表
-        int rows = agentCommissionMapper.accounted(uid);
-        if (rows <= 0) {
-            return false;
-        }
-
-        rows = agentCommissionRecordMapper.insert(record);
-        if (rows <= 0) {
-            return false;
-        }
-
-
-        // 会员表
-        rows = memberMapper.increment(member);
-        if (rows <= 0) {
-            return false;
-        }
-
-        // 会员流水表
-        rows = memberFlowMapper.insert(memberFlow);
-        if (rows <= 0) {
-            return false;
-        }
-
-        return true;
-    }
 
 
     /**

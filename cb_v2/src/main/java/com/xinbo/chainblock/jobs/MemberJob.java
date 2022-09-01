@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.bo.AccountApiBo;
 import com.xinbo.chainblock.consts.ActivityConst;
+import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.consts.RedisConst;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.*;
@@ -88,9 +89,9 @@ public class MemberJob {
 
             // ******************************* - 查看是否有注册赠送彩金 -  ************************************************
             ActivityEntity activityEntity = activityService.findByType(ActivityConst.ACTIVITY_TYPE_REGISTER);
-            if(!ObjectUtils.isEmpty(activityEntity)) {
+            if (!ObjectUtils.isEmpty(activityEntity)) {
                 ActivityRuleEntity ruleEntity = activityRuleService.findBySn(activityEntity.getSn());
-                if(!ObjectUtils.isEmpty(ruleEntity)) {
+                if (!ObjectUtils.isEmpty(ruleEntity)) {
                     Float money = ruleEntity.getMoney();
 
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
@@ -131,7 +132,7 @@ public class MemberJob {
 
                     // 统计表
                     StatisticsEntity statistics = StatisticsEntity.builder()
-                            .date(DateUtil.format(new Date(), "yyyyMMdd"))
+                            .date(DateUtil.format(new Date(), GlobalConst.DATE_YMD))
                             .uid(entity.getId())
                             .username(entity.getUsername())
                             .activityAmount(money)
@@ -143,8 +144,6 @@ public class MemberJob {
                     }
                 }
             }
-
-
 
 
             // *********************************** - 创建数字钱包 -  ****************************************************
@@ -239,8 +238,8 @@ public class MemberJob {
                 return;
             }
 
-            String json  = redisTemplate.opsForList().rightPop(RedisConst.MEMBER_TRANSFER);
-            if(StringUtils.isEmpty(json)) {
+            String json = redisTemplate.opsForList().rightPop(RedisConst.MEMBER_TRANSFER);
+            if (StringUtils.isEmpty(json)) {
                 return;
             }
 
@@ -249,7 +248,7 @@ public class MemberJob {
             MemberFlowEntity flow = object.getObject("flow", MemberFlowEntity.class);
 
             boolean isSuccess = commonService.transfer(member, flow);
-            if(!isSuccess) {
+            if (!isSuccess) {
                 redisTemplate.opsForList().leftPush(RedisConst.MEMBER_TRANSFER, json);
             }
         } catch (Exception ex) {

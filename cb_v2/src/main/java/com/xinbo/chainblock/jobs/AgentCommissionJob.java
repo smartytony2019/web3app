@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.jobs;
 
 import cn.hutool.core.date.DateUtil;
+import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.entity.AgentCommissionEntity;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.AgentRebateEntity;
@@ -50,18 +51,25 @@ public class AgentCommissionJob {
 
     /**
      * 计算代理佣金
+     * <p>
+     * 10分钟执行一下 0 0/10 * * * ?
      */
     @Scheduled(cron = "0/5 * * * * ?")
     public void handle() {
-        if(!isAgentCommission) {
+        if (!isAgentCommission) {
             return;
         }
 
-        String date = "20220827";
+
+//        String date = "20220827";
+        String date = DateUtil.offsetMinute(DateUtil.date(), 30).toString(GlobalConst.DATE_YMD);
+
+        List<StatisticsEntity> statistics = statisticsService.findByDate(date);
+        if (CollectionUtils.isEmpty(statistics)) {
+            return;
+        }
 
         List<AgentRebateEntity> rebates = agentRebateService.findAll();
-        List<StatisticsEntity> statistics = statisticsService.findByDate(date);
-
 
         //Step 1: 获取代理层级表
         int page = 1;
@@ -89,7 +97,7 @@ public class AgentCommissionJob {
         Map<Integer, Float> map = new HashMap<>();
 //        List<AgentEntity> agentList = list.stream().filter(f -> !StringUtils.isEmpty(f.getChild())).collect(Collectors.toList());
         for (AgentEntity entity : list) {
-            if(entity.getLevel() == 0) {
+            if (entity.getLevel() == 0) {
                 continue;
             }
 
@@ -107,7 +115,7 @@ public class AgentCommissionJob {
                 List<StatisticsEntity> childStatistics = statisticsService.findByUidStr(date, childList);
 
                 double sum = childStatistics.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
-                map.put(entity.getUid(), (float)sum);
+                map.put(entity.getUid(), (float) sum);
             }
         }
 
@@ -171,7 +179,7 @@ public class AgentCommissionJob {
                 List<Integer> directList = betMoneyList.stream().map(AgentCommissionEntity::getUid).collect(Collectors.toList());
                 if (!CollectionUtils.isEmpty(directList)) {
 //                    List<StatisticsEntity> directStatistics = statisticsService.findByUidStr(date, directList);
-                    List<StatisticsEntity> directStatistics = statistics.stream().filter(f->directList.contains(f.getUid())).collect(Collectors.toList());
+                    List<StatisticsEntity> directStatistics = statistics.stream().filter(f -> directList.contains(f.getUid())).collect(Collectors.toList());
 
                     double sum = directStatistics.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
                     entity.setDirectPerformance((float) sum);
@@ -180,17 +188,20 @@ public class AgentCommissionJob {
 
                 //自营
 //                StatisticsEntity parentStatistics = statisticsService.findByUid(date, parent.getUid());
-                StatisticsEntity parentStatistics = statistics.stream().filter(f->f.getUid().equals(parent.getUid())).findFirst().orElse(null);
-                if(ObjectUtils.isEmpty(parentStatistics)) {
+                StatisticsEntity parentStatistics = statistics.stream().filter(f -> f.getUid().equals(parent.getUid())).findFirst().orElse(null);
+                if (ObjectUtils.isEmpty(parentStatistics)) {
                     continue;
                 }
 
                 float totalPerformance = 0F;
-                if(directList.size() == 0) {
+                if (directList.size() == 0) {
                     totalPerformance = map.get(parent.getUid());
                 } else {
                     totalPerformance = map.get(parent.getUid()) + parentStatistics.getBetAmount();
                 }
+
+
+
 
 //                float totalPerformance = map.get(parent.getUid()) + parentStatistics.getBetAmount();
                 AgentRebateEntity rebateEntity = this.getRebate(rebates, totalPerformance);
@@ -202,6 +213,7 @@ public class AgentCommissionJob {
                 entity.setTotalPerformance(totalPerformance);
                 entity.setSelfPerformance(parentStatistics.getBetAmount());
                 entity.setSelfCommission(parentStatistics.getBetAmount() * curRebate / UNIT);
+                entity.setSubPerformance(0F);
                 entity.setRebate(curRebate);
                 betMoneyList.add(entity);
 
@@ -233,13 +245,13 @@ public class AgentCommissionJob {
             self.setDate(date);
             self.setCreateTime(DateUtil.date());
             self.setCreateTimestamp(DateUtil.current());
+            self.setSubPerformance(self.getTeamPerformance() - self.getDirectPerformance());
             agentCommissionEntityList.add(self);
         }
 
         boolean isSuccess = agentCommissionService.insertOrUpdate(agentCommissionEntityList);
         System.out.println(isSuccess);
     }
-
 
 
     private AgentRebateEntity getRebate(List<AgentRebateEntity> list, double value) {

@@ -18,4 +18,16 @@ import java.util.List;
 @Mapper
 public interface AgentCommissionMapper extends BaseMapper<AgentCommissionEntity> {
     int insertOrUpdate(@Param("list") List<AgentCommissionEntity> list);
+
+    @Select("select IFNULL(sum(total_commission), 0) from t_agent_commission where uid = #{uid} and is_account = 0")
+    float findAvailableCommission(@Param("uid") int uid);
+
+    @Select("select IFNULL(sum(total_commission), 0) from t_agent_commission where uid = #{uid} and is_account = 1")
+    float findCommissionTotal(@Param("uid") int uid);
+
+    @Update("update t_agent_commission set is_account = 1 where uid = #{uid}")
+    int accounted(@Param("uid") int uid);
+
+    @Select("select * from t_agent_commission where uid = #{uid} and date = #{date} limit 1")
+    AgentCommissionEntity find(@Param("uid") int uid, @Param("date") String date);
 }

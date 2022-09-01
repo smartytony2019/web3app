@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.core.algorithm.AlgorithmCode;
 import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.SystemFlowEntity;
@@ -194,7 +195,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
 
         //更新统计
         StatisticsEntity statisticsEntity = StatisticsEntity.builder()
-                .date(DateUtil.format(new Date(), "yyyyMMdd"))
+                .date(DateUtil.format(new Date(), GlobalConst.DATE_YMD))
                 .uid(bet.getUid())
                 .username(bet.getUsername())
                 .betAmount(bet.getMoney())

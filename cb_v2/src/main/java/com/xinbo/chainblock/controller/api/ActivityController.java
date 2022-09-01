@@ -7,6 +7,7 @@ import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.consts.ActivityConst;
+import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.MemberEntity;
@@ -58,7 +59,6 @@ public class ActivityController {
     @Autowired
     private StatisticsService statisticsService;
 
-    private static final String FORMAT = "yyyyMMdd";
 
     @JwtIgnore
     @Operation(summary = "insert", description = "插入")
@@ -122,10 +122,10 @@ public class ActivityController {
 
 
             dateRangeBo.setStartTimeStr("20220101");
-            dateRangeBo.setEndTimeStr(DateUtil.yesterday().toString(FORMAT));
+            dateRangeBo.setEndTimeStr(DateUtil.yesterday().toString(GlobalConst.DATE_YMD));
             if (!ObjectUtils.isEmpty(recordEntity) && recordEntity.getId() > 0) {
                 // 判断今天是否领取一个
-                String startTimeStr = DateUtil.date(recordEntity.getCreateTime()).toString(FORMAT);
+                String startTimeStr = DateUtil.date(recordEntity.getCreateTime()).toString(GlobalConst.DATE_YMD);
 //                String todayStr = DateUtil.date(new Date()).toString("yyyyMMdd");
 //                if (startTimeStr.equals(todayStr)) {
 //                    throw new BusinessException(1, "已领取过");
@@ -149,8 +149,8 @@ public class ActivityController {
             // 一天一次
             if (cycle == ActivityRuleCycleEnum.ONE_TIME_DAY.getCode()) {
                 if (!ObjectUtils.isEmpty(recordEntity) && recordEntity.getId() > 0) {
-                    String s1 = DateUtil.date(recordEntity.getCreateTime()).toString(FORMAT);
-                    String s2 = DateUtil.yesterday().toString(FORMAT);
+                    String s1 = DateUtil.date(recordEntity.getCreateTime()).toString(GlobalConst.DATE_YMD);
+                    String s2 = DateUtil.yesterday().toString(GlobalConst.DATE_YMD);
                     if (s1.equals(s2)) {
                         throw new BusinessException(1, "已领取过");
                     }
@@ -368,7 +368,7 @@ public class ActivityController {
 
                 // 统计表
                 statistics = StatisticsEntity.builder()
-                        .date(DateUtil.format(new Date(), FORMAT))
+                        .date(DateUtil.format(new Date(), GlobalConst.DATE_YMD))
                         .uid(memberEntity.getId())
                         .username(memberEntity.getUsername())
                         .activityAmount(moneyAmount)

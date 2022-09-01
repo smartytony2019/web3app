@@ -5,21 +5,22 @@
 
     <!-- 更新赛事状态 -->
     <insert id="insertOrUpdate" parameterType="java.util.List">
-        insert into t_agent_commission(`date`, uid, username, total_commission, self_commission, total_performance,
-                                       self_performance, direct_performance, team_performance, rebate, create_time, create_timestamp)
+        insert into t_agent_commission(`date`, uid, username, total_commission, total_performance, self_commission,
+                                       self_performance, team_performance, direct_performance, sub_performance, rebate, create_time, create_timestamp)
         values
         <foreach collection="list" item="item" separator="," index="">
-            (#{item.date}, #{item.uid}, #{item.username}, #{item.totalCommission}, #{item.selfCommission}, #{item.totalPerformance},
-            #{item.selfPerformance}, #{item.directPerformance}, #{item.teamPerformance}, #{item.rebate}, #{item.createTime}, #{item.createTimestamp})
+            (#{item.date}, #{item.uid}, #{item.username}, #{item.totalCommission}, #{item.totalPerformance}, #{item.selfCommission},
+            #{item.selfPerformance}, #{item.teamPerformance}, #{item.directPerformance}, #{item.subPerformance}, #{item.rebate}, #{item.createTime}, #{item.createTimestamp})
         </foreach>
          ON DUPLICATE KEY
         UPDATE
         total_commission = VALUES (total_commission),
-        self_commission = VALUES (self_commission),
         total_performance = VALUES (total_performance),
+        self_commission = VALUES (self_commission),
         self_performance = VALUES (self_performance),
-        direct_performance = VALUES (direct_performance),
         team_performance = VALUES (team_performance),
+        direct_performance = VALUES (direct_performance),
+        sub_performance = VALUES (sub_performance),
         rebate = VALUES (rebate)
     </insert>
 

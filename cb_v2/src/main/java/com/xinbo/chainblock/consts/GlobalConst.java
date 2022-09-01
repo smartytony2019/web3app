@@ -38,4 +38,7 @@ public interface GlobalConst {
     String ROLE_TYPE_USER = "user";
     String ROLE_TYPE_ADMIN = "admin";
 
+    String DATE_YMD = "yyyyMMdd";
+    String DATE_NORM_YMD = "yyyy-MM-dd";
+
 }

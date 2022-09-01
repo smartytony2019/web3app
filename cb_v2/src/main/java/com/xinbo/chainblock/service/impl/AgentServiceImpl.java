@@ -9,7 +9,6 @@ import com.xinbo.chainblock.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -50,10 +49,11 @@ public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> impl
     }
 
 
+
     /**
      * 创建查询条件
      *
-     * @param entity  实体
+     * @param entity 实体
      * @return LambdaQueryWrapper
      */
     private LambdaQueryWrapper<AgentEntity> createWrapper(AgentEntity entity) {
