@@ -117,7 +117,7 @@ public class AgentController {
         if (!CollectionUtils.isEmpty(directList) && directList.size() > 0) {
             dirPerformance = directList.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
         }
-        result.put("dirPerformance", dirPerformance);
+        result.put("directPerformance", dirPerformance);
 
 
         String yesterday = DateUtil.yesterday().toString(GlobalConst.DATE_YMD);

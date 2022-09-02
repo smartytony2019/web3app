@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.controller.api;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xinbo.chainblock.annotation.JwtIgnore;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController("ApiHashBetController")
 @RequestMapping("/api/hashBet")
@@ -129,6 +131,8 @@ public class HashBetController {
             // Step 2: 构造数据
             // Step 2.1: 注单表
             String sn = IdUtil.getSnowflake().nextIdStr();
+            List<String> names = odds.stream().map(HashOddsEntity::getNameZh).collect(Collectors.toList());
+            String contentZh = String.join(",", names);
             HashBetEntity bet = HashBetEntity.builder()
                     .sn(sn)
                     .uid(memberEntity.getId())
@@ -143,13 +147,15 @@ public class HashBetController {
                     .playName(playEntity.getName())
                     .playNameZh(playEntity.getNameZh())
                     .content(vo.getCodes())
-                    .contentZh(odds.get(0).getNameZh())
+                    .contentZh(contentZh)
                     .odds(odds.get(0).getOdds())
                     .betAmount(betAmount)
                     .money(vo.getMoney())
                     .moneyAmount(moneyAmount)
-                    .createTime(new Date())
-                    .updateTime(new Date())
+                    .createTime(DateUtil.date())
+                    .createTimestamp(DateUtil.current())
+                    .updateTime(DateUtil.date())
+                    .updateTimestamp(DateUtil.current())
                     .algorithm(gameEntity.getAlgorithm())
                     .build();
 
@@ -173,7 +179,8 @@ public class HashBetController {
                     .item(MemberFlowItemEnum.HASH_BET.getName())
                     .itemCode(MemberFlowItemEnum.HASH_BET.getCode())
                     .itemZh(MemberFlowItemEnum.HASH_BET.getNameZh())
-                    .createTime(new Date())
+                    .createTime(DateUtil.date())
+                    .createTimestamp(DateUtil.current())
                     .build();
 
 
@@ -209,12 +216,11 @@ public class HashBetController {
     @GetMapping("findOrder/{sn}")
     public R<Object> findOrder(@PathVariable String sn) {
         HashBetEntity order = hashBetService.findOrder(sn);
-        if (!ObjectUtils.isEmpty(order) && order.getStatus() == BetStatus.SETTLE) {
+        if (!ObjectUtils.isEmpty(order)) {
             // 说明已开奖
-//            hashResultService.find
-
+            return R.builder().code(StatusCode.SUCCESS).data(order.getFlag()).build();
         }
-        return R.builder().code(StatusCode.SUCCESS).data(order.getFlag()).build();
+        return R.builder().code(StatusCode.SUCCESS).build();
     }
 
 

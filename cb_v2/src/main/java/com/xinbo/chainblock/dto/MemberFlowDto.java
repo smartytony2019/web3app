@@ -60,10 +60,15 @@ public class MemberFlowDto {
     private Integer itemCode;
 
     /**
-     * 用户名
+     * 创建时间
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+
+    /**
+     * 创建时间戳
+     */
+    private Long createTimestamp;
 
     /**
      * 扩展字段

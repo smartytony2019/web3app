@@ -87,6 +87,7 @@ public class HashBetSettleJob {
             bet.setStatus(1);
             bet.setProfitMoney(profileMoney);
             bet.setPayoutMoney(payoutMoney);
+            bet.setTransactionId(result.getTxID());
             bet.setBlockHash(result.getBlockHash());
             bet.setBlockHeight(result.getBlockHeight());
             bet.setNetwork(result.getNetwork());

@@ -83,10 +83,16 @@ public class MemberFlowEntity {
     private String itemZh;
 
     /**
-     * 用户名
+     * 创建时间
      */
     @TableField("create_time")
     private Date createTime;
+
+    /**
+     * 创建时间戳
+     */
+    @TableField("create_timestamp")
+    private Long createTimestamp;
 
     /**
      * 扩展字段

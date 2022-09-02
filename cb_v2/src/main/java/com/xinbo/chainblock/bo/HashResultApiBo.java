@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.bo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  */
 @Data
 @Builder
+@AllArgsConstructor
 public class HashResultApiBo {
 
     @JSONField(name="sn")

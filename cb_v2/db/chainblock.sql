@@ -196,7 +196,9 @@ create table t_hash_bet (
     profit_money decimal(10,4) comment '赢利金额',
     payout_money decimal(10,4) comment '派彩金额',
     create_time timestamp null default null comment '创建时间',
+    create_timestamp bigint(20) comment '创建时间戳',
     update_time timestamp null default null comment '更新时间',
+    update_timestamp bigint(20) comment '更新时间戳',
     flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
     algorithm varchar(10) comment '算法',
@@ -386,8 +388,8 @@ create table t_member_flow(
   item_code int comment '帐变编码',
   item_zh varchar(100) comment '帐变中文',
   create_time timestamp null default null comment '创建时间',
-  ext varchar(200) comment '扩展字段',
-  UNIQUE KEY unique_sn (sn)
+  create_timestamp bigint(20) comment '创建时间戳',
+  ext varchar(200) comment '扩展字段'
 ) comment '会员流水表';
 
 
