@@ -182,11 +182,11 @@ public class HashAlgorithm {
         AlgorithmResult ar = AlgorithmResult.builder().status(AlgorithmCode.LOST).build();
 
         Stack<String> stack = this.split(hashResult.getBlockHash(), false, 5);
-        String s1 = stack.pop();
-        String s2 = stack.pop();
-        String s3 = stack.pop();
-        String s4 = stack.pop();
         String s5 = stack.pop();
+        String s4 = stack.pop();
+        String s3 = stack.pop();
+        String s2 = stack.pop();
+        String s1 = stack.pop();
 
         int num1 = isNumeric(s1) ? Integer.parseInt(s1) : 10;
         int num2 = isNumeric(s2) ? Integer.parseInt(s2) : 10;

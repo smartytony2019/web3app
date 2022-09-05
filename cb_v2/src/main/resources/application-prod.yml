@@ -31,7 +31,7 @@ scheduled:
   enable:
     register: false
     transfer: false
-    settle: false
+    settle: true
     agent:
       commission: false
     finance:
