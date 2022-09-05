@@ -20,6 +20,8 @@ public interface AgentService {
 
     AgentEntity findByUid(int id);
 
+    AgentEntity findByUsername(String username);
+
     /**
      * 直属
      * @param uid

@@ -17,7 +17,7 @@ public interface MemberService {
 
     boolean increment(MemberEntity entity);
 
-    boolean register(MemberEntity entity, int code);
+    boolean register(MemberEntity entity, String code);
 
     BasePageBo findPage(MemberEntity entity, long current, long size);
 

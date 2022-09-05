@@ -68,8 +68,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
      */
     @Transactional
     @Override
-    public boolean register(MemberEntity entity, int code) {
-        AgentEntity pAgentEntity = agentService.findByUid(code);
+    public boolean register(MemberEntity entity, String code) {
+        AgentEntity pAgentEntity = agentService.findByUsername(code);
         if (ObjectUtils.isEmpty(pAgentEntity) || pAgentEntity.getId() <= 0) {
             return false;
         }

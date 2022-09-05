@@ -44,6 +44,11 @@ public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> impl
     }
 
     @Override
+    public AgentEntity findByUsername(String username) {
+        return agentMapper.findByUsername(username);
+    }
+
+    @Override
     public List<AgentEntity> direct(int uid) {
         return agentMapper.directly(uid);
     }

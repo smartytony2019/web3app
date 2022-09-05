@@ -27,4 +27,7 @@ public interface AgentMapper extends BaseMapper<AgentEntity> {
 
     @Select("select uid from t_agent where p_uid = #{uid}")
     List<AgentEntity> directly(@Param("uid") int uid);
+
+    @Select("select * from t_agent where username = #{username} limit 1")
+    AgentEntity findByUsername(@Param("username") String username);
 }

@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.controller.api;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -70,20 +71,56 @@ public class MemberController {
     @Operation(summary = "register", description = "注册")
     @PostMapping("register")
     public R<Object> register(@RequestBody RegisterVo vo) {
-        MemberEntity entity = MemberEntity.builder()
-                .username(vo.getUsername())
-                .pwd(vo.getPwd())
-                .version(1)
-                .salt("1234")
-                .money(0F)
-                .build();
+        try {
+            CaptchaVO captchaVO = new CaptchaVO();
+            captchaVO.setCaptchaVerification(vo.getCaptchaVerification());
+            ResponseModel response = captchaService.verification(captchaVO);
+            if (!response.isSuccess()) {
+                //验证码校验失败，返回信息告诉前端
+                //repCode  0000  无异常，代表成功
+                //repCode  9999  服务器内部异常
+                //repCode  0011  参数不能为空
+                //repCode  6110  验证码已失效，请重新获取
+                //repCode  6111  验证失败
+                //repCode  6112  获取验证码失败,请联系管理员
+                return R.builder().code(StatusCode.FAILURE).msg(response.getRepCode()).build();
+            }
 
-        boolean isSuccess = memberService.register(entity, vo.getCode());
-        if (isSuccess) {
-            redisTemplate.opsForList().leftPush(RedisConst.MEMBER_REGISTER, JSONObject.toJSONString(entity));
-            return R.builder().data(StatusCode.SUCCESS).build();
-        } else {
-            return R.builder().data(StatusCode.REGISTER_ERROR).build();
+            if (StringUtils.isEmpty(vo.getUsername()) ||
+                    StringUtils.isEmpty(vo.getWithdrawWallet()) ||
+                    StringUtils.isEmpty(vo.getPwd()) ||
+                    StringUtils.isEmpty(vo.getConfirmPwd())
+            ) {
+                return R.builder().code(StatusCode.FAILURE).msg("数据不合法").build();
+            }
+
+            MemberEntity entity = MemberEntity.builder()
+                    .username(vo.getUsername())
+                    .pwd(vo.getPwd())
+                    .version(1)
+                    .salt(IdUtil.nanoId(12))
+                    .money(0F)
+                    .withdrawPwd(vo.getWithdrawWallet())
+                    .build();
+
+            boolean isSuccess = memberService.register(entity, vo.getCode());
+            if (isSuccess) {
+                //生成token
+                JwtUserBo jwtUserBo = JwtUserBo.builder()
+                        .uid(entity.getId())
+                        .username(entity.getUsername())
+                        .build();
+                String token = JwtUtil.generateToken(jwtUserBo);
+                JSONObject result = new JSONObject();
+                result.put("token", String.format("Bearer %s", token));
+                result.put("info", MapperUtil.to(entity, MemberDto.class));
+                redisTemplate.opsForList().leftPush(RedisConst.MEMBER_REGISTER, JSONObject.toJSONString(entity));
+                return R.builder().data(StatusCode.SUCCESS).data(result).build();
+            } else {
+                return R.builder().data(StatusCode.REGISTER_ERROR).build();
+            }
+        } catch (Exception ex) {
+            return R.builder().data(StatusCode.FAILURE).build();
         }
     }
 
@@ -103,6 +140,7 @@ public class MemberController {
                 //repCode  6110  验证码已失效，请重新获取
                 //repCode  6111  验证失败
                 //repCode  6112  获取验证码失败,请联系管理员
+                return R.builder().code(StatusCode.FAILURE).msg(response.getRepCode()).build();
             }
 
             String username = vo.getUsername();
@@ -126,23 +164,14 @@ public class MemberController {
                     .username(entity.getUsername())
                     .build();
             String token = JwtUtil.generateToken(jwtUserBo);
-            Map<String, String> map = new HashMap<>();
-            map.put("token", String.format("Bearer %s", token));
-            return R.builder().code(StatusCode.SUCCESS).data(map).build();
+            JSONObject result = new JSONObject();
+            result.put("token", String.format("Bearer %s", token));
+            result.put("info", MapperUtil.to(entity, MemberDto.class));
+            return R.builder().code(StatusCode.SUCCESS).data(result).build();
         } catch (Exception ex) {
 
         }
         return R.builder().code(StatusCode.FAILURE).build();
-    }
-
-
-    @JwtIgnore
-    @Operation(summary = "balanceUSDT", description = "USDT余额")
-    @PostMapping("balanceUSDT")
-    public R<Object> balanceUSDT() {
-        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
-//        String balance = memberService.balanceUSDT(jwtUser.getUid());
-        return R.builder().code(StatusCode.SUCCESS).data(0).build();
     }
 
     @JwtIgnore

@@ -16,10 +16,14 @@ public class RegisterVo {
 
     private String username;
 
+    private String withdrawWallet;
+
     private String pwd;
 
     private String confirmPwd;
 
-    private int code;
+    private String code;
+
+    private String captchaVerification;
 
 }
