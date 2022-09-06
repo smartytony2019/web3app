@@ -40,6 +40,9 @@ public class HashBetSettleJob {
     @Value("${scheduled.enable.settle}")
     private boolean isSettle;
 
+    @Value("${trx.token-info.symbol}")
+    private String symbol;
+
 
     @Scheduled(cron = "0/2 * * * * ?")
     public void settle() {

@@ -40,5 +40,4 @@ public interface GlobalConst {
 
     String DATE_YMD = "yyyyMMdd";
     String DATE_NORM_YMD = "yyyy-MM-dd";
-
 }

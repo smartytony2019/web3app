@@ -25,6 +25,7 @@ import com.xinbo.chainblock.vo.BetSubmitVo;
 import com.xinbo.chainblock.vo.BetVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -58,8 +59,8 @@ public class HashBetController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    @Value("${trx.token-info.symbol}")
+    private String symbol;
 
     @Autowired
     private TrxApi trxApi;
@@ -181,6 +182,7 @@ public class HashBetController {
                     .itemZh(MemberFlowItemEnum.HASH_BET.getNameZh())
                     .createTime(DateUtil.date())
                     .createTimestamp(DateUtil.current())
+                    .ext(symbol)
                     .build();
 
 
