@@ -16,8 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class StatisticsVo {
 
-    private Date startTime;
+    private String startTime;
 
-    private Date endTime;
+    private String endTime;
 
 }

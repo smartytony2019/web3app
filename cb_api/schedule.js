@@ -77,6 +77,7 @@ class Result {
 
       let contractAddress = this.account.trx.contractAddress;
       let res = await trxModel.getEventResult(contractAddress, 'Transfer')
+      console.log('res', res)
       if(res === undefined || res.length <= 0) {
         return;
       }

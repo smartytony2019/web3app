@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.service;
 
 
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
@@ -24,4 +25,6 @@ public interface StatisticsService {
     List<StatisticsEntity> findByDate(String date);
 
     StatisticsEntity findTotal(DateRangeBo dateRangeBo, int uid);
+
+    BasePageBo findPage(DateRangeBo dateRangeBo, int uid, long current, long size);
 }

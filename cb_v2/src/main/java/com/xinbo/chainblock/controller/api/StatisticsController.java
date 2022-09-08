@@ -1,7 +1,9 @@
 package com.xinbo.chainblock.controller.api;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.consts.GlobalConst;
@@ -18,10 +20,8 @@ import com.xinbo.chainblock.vo.HashResultVo;
 import com.xinbo.chainblock.vo.StatisticsVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,18 +39,20 @@ public class StatisticsController {
 
     @JwtIgnore
     @Operation(summary = "financial", description = "财务报表")
-    @PostMapping("financial")
-    public R<Object> financial(@RequestBody StatisticsVo vo) {
+    @PostMapping("financial/{current}/{size}")
+    public R<Object> financial(@RequestBody StatisticsVo vo, @PathVariable long current, @PathVariable long size) {
         JwtUserBo jwtUser = JwtUtil.getJwtUser();
         DateRangeBo dateRangeBo = DateRangeBo.builder()
-                .startTimeStr(DateUtil.date(vo.getStartTime()).toString(GlobalConst.DATE_YMD))
-                .endTimeStr(DateUtil.date(vo.getEndTime()).toString(GlobalConst.DATE_YMD))
+                .startTimeStr(StringUtils.isEmpty(vo.getStartTime()) ? DateUtil.date().toString(GlobalConst.DATE_YMD) : vo.getStartTime())
+                .endTimeStr(StringUtils.isEmpty(vo.getEndTime()) ? DateUtil.date().toString(GlobalConst.DATE_YMD) : vo.getEndTime())
                 .build();
 
-        List<StatisticsEntity> list = statisticsService.findList(dateRangeBo, jwtUser.getUid());
-
+        BasePageBo basePageBo = statisticsService.findPage(dateRangeBo, jwtUser.getUid(), current, size);
         StatisticsEntity total = statisticsService.findTotal(dateRangeBo, jwtUser.getUid());
 
-        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.many(list, HashResultDto.class)).build();
+        JSONObject result = new JSONObject();
+        result.put("data", basePageBo);
+        result.put("total", total);
+        return R.builder().code(StatusCode.SUCCESS).data(result).build();
     }
 }

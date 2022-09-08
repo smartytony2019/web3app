@@ -214,7 +214,7 @@ module.exports = {
   async getEventResult(contractAddress, eventName) {
     let result = null;
     try {
-      result = await tronWeb.getEventResult(contractAddress, {eventName: eventName, size: 10})
+      result = await tronWeb.getEventResult(contractAddress, {eventName: eventName, size: 10, sort:'-block_timestamp'})
     }catch(error) {
       console.error("getEventResult error", error);
     }
@@ -227,9 +227,10 @@ module.exports = {
    * @param {String} eventName 事件名称
    * @returns Array
    */
-  async getEventByTransactionID(txID) {
+  async getEventByTransactionID(txID, privateKey) {
     let result = null;
     try {
+      tronWeb.setPrivateKey(privateKey);
       result = await tronWeb.getEventByTransactionID(txID)
     }catch(error) {
       console.error("getEventByTransactionID error", error);

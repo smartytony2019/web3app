@@ -824,13 +824,14 @@ create table t_statistics(
   `date` varchar(10) comment '日期',
   uid int comment '用户id',
   username varchar(100) comment '用户名',
-  bet_count decimal(20,2) default 0 comment '当日投注次数',
+  bet_count int default 0 comment '当日投注次数',
   bet_amount decimal(20,2) default 0 comment '当日投注总额',
   profit_amount decimal(20,2) default 0 comment '当日盈利总额',
-  recharge_trc20_count decimal(20,2) default 0 comment '充值trc20次数',
+  payout_amount decimal(20,2) default 0 comment '当日中奖总额',
+  recharge_trc20_count int default 0 comment '充值trc20次数',
   recharge_trc20_amount decimal(20,2) default 0 comment '充值trc20总额',
   withdraw_trc20_amount decimal(20,2) default 0 comment '提现trc20总额',
-  recharge_trx_count decimal(20,2) default 0 comment '充值trx次数',
+  recharge_trx_count int default 0 comment '充值trx次数',
   recharge_trx_amount decimal(20,2) default 0 comment '充值trx总额',
   withdraw_trx_amount decimal(20,2) default 0 comment '提现trx总额',
   activity_amount decimal(20,2) default 0 comment '活动总额',
@@ -838,6 +839,8 @@ create table t_statistics(
   update_time timestamp null default null comment '更新时间',
   UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '统计';
+
+
 
 #
 # INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amount`,
