@@ -32,11 +32,11 @@ create table t_game(
    pic varchar(100) comment '图片地址',
    sort int(5) comment '序号',
    address varchar(100) comment '投注地址',
-   algorithm varchar(10) comment '算法',
+   algorithm_code varchar(10) comment '算法',
    odds decimal(10,2) comment '赔率'
 ) comment '彩种游戏';
 
-insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`enable`,`pic`,`sort`,`address`, `algorithm`, `odds`) values
+insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`enable`,`pic`,`sort`,`address`, `algorithm_code`, `odds`) values
 ('1', '100010', '哈希', '200010', '哈希两面',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000', 1.95),
 ('1', '100010', '哈希', '200110', '哈希百家乐',1, 'http://xx/x.png', 1, '', '2000', 0),
 ('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuA', '3000', 1.98),
@@ -201,7 +201,7 @@ create table t_hash_bet (
     update_timestamp bigint(20) comment '更新时间戳',
     flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
-    algorithm varchar(10) comment '算法',
+    algorithm_code varchar(10) comment '算法',
     UNIQUE KEY unique_sn (sn)
 ) comment '哈希注单';
 
@@ -231,7 +231,7 @@ create table t_hash_offline_bet (
     update_timestamp bigint(20) comment '更新时间戳',
     flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
-    algorithm varchar(10) comment '算法',
+    algorithm_code varchar(10) comment '算法',
     UNIQUE KEY unique_transaction_id (transaction_id)
 ) comment '哈希离线注单';
 
@@ -361,8 +361,7 @@ insert into cb_v2.t_member_expand (uid, username, first_recharge_time, first_rec
 
 
 drop table if exists t_member_record;
-create table t_member_record
-(
+create table t_member_record(
   id int primary key auto_increment,
   uid int(20) comment '用户名',
   username varchar(50) comment '用户名',
@@ -371,7 +370,8 @@ create table t_member_record
   reg_ip varchar(50) comment '注册ip',
   reg_time timestamp null default null comment '注册时间',
   login_ip varchar(50) comment '登录ip',
-  login_time timestamp null default null comment '登录时间'
+  login_time timestamp null default null comment '登录时间',
+  type int comment '类型'
 ) comment '会员记录表';
 
 
@@ -559,8 +559,10 @@ create table t_wallet(
 insert into cb_v2.t_wallet(uid, username, type, private_key, public_key, address_base58, address_hex, is_main) values
 (0,'',1,'EDF5BE9D97DAF6024D3A8BE7ECEC38EB95AD1B47C4620BC8790C22F9FD297C93', '04CF51A868293145E64B064D659A39282D9F136FE6B1273B423B641C987419425E214BD41FBE858C4C4AA7E557EB2E4DD61AB031E9DE1B33B9253DC6AB3E189144', 'TLRPmBB3wL21kg51ZTqsQSwwnejtpxNaYq', '4172A50E2D18F6F11D74AE6AF8CF8C94D7085B4826', 1),
 (3, 'jackB2', 1, 'CCD3959D4551058E65F8984CBD5F5A8B406973F10754BCCDE4B640A1061E5A0E', '040AEF573326EBDC792082319F06164620244DFF38970F1454FD93D38C40E551A875C1D7CE7B88EA74AFCC004DAC943A7E3BFDF599AEA3CFB184EFA8813E6ADA21', 'TGJhRu9zaFxyyaSWq2iyXLovvq3baugy5U', '41458063833CE040B738F3BDE63BA6738DB2D29F68', 0),
+(18, 'jackE3',1,'F9E0FF36CD981085BA854FD062756E5D8CC6232752A4A6F3AB58BEEF33E0BFBC', '04CA3097E79A93B179043D583D8FB5FFCFB711EF0B24D7EC14AD11097C5AFEA9A15D496173AE56F1AB02877BC868CF17AD79F8AC192D5F1341C07E9D75ACDD86D3', 'TQ5NbDWu1fQgzhq1LE4ej37RyLmDphAKm2','419ABC42DC5374064B3896D3DD382AD2080B8FF84E', 0),
 (19, 'demo5566',1,'F9E0FF36CD981085BA854FD062756E5D8CC6232752A4A6F3AB58BEEF33E0BFBC', '04CA3097E79A93B179043D583D8FB5FFCFB711EF0B24D7EC14AD11097C5AFEA9A15D496173AE56F1AB02877BC868CF17AD79F8AC192D5F1341C07E9D75ACDD86D3', 'TQ5NbDWu1fQgzhq1LE4ej37RyLmDphAKm2','419ABC42DC5374064B3896D3DD382AD2080B8FF84E', 0),
-(20, 'demo7777',1,'EE6B3AEA3402574D9C8DE3B723AB821E6DFCAA5F84B0DFD6E359215C4DA45DC2', '048549964D49E72389AF88827F64AAFC35CD8A185D709FBD17E77D29D382A1761F7A44F3F3384353B41BC14779606D6C54ADC09E365C916F0DDD8D2C4875FA0C43', 'TWLWZiN9etaSuSXsFQ9xNNRxbuqUxmfzXq', '41DF69E967E600BE5638239319ECEF64B465F038FF',0)
+(20, 'demo7777',1,'EE6B3AEA3402574D9C8DE3B723AB821E6DFCAA5F84B0DFD6E359215C4DA45DC2', '048549964D49E72389AF88827F64AAFC35CD8A185D709FBD17E77D29D382A1761F7A44F3F3384353B41BC14779606D6C54ADC09E365C916F0DDD8D2C4875FA0C43', 'TWLWZiN9etaSuSXsFQ9xNNRxbuqUxmfzXq', '41DF69E967E600BE5638239319ECEF64B465F038FF',0),
+(21, 'demo8899',1,'EE6B3AEA3402574D9C8DE3B723AB821E6DFCAA5F84B0DFD6E359215C4DA45DC2', '048549964D49E72389AF88827F64AAFC35CD8A185D709FBD17E77D29D382A1761F7A44F3F3384353B41BC14779606D6C54ADC09E365C916F0DDD8D2C4875FA0C43', 'TWLWZiN9etaSuSXsFQ9xNNRxbuqUxmfzXq', '41DF69E967E600BE5638239319ECEF64B465F038FF',0)
 ;
 
 
@@ -668,6 +670,7 @@ create table t_agent_commission(
 ) comment '代理佣金表';
 
 
+
 drop table if exists t_agent_commission_record;
 create table t_agent_commission_record(
     id int primary key auto_increment,
@@ -677,6 +680,8 @@ create table t_agent_commission_record(
     money decimal(10,2) comment '总佣金',
     create_time timestamp null default null comment '创建时间',
     create_timestamp bigint(20) comment '创建时间戳',
+    `status` int default 0 comment '状态(0:申请 1:成功 2:驳回)',
+    remark varchar(200) comment '备注',
     UNIQUE KEY unique_date_uid (sn) comment '唯一索引'
 ) comment '代理佣金记录表';
 
@@ -829,35 +834,36 @@ create table t_statistics(
   recharge_trx_amount decimal(20,2) default 0 comment '充值trx总额',
   withdraw_trx_amount decimal(20,2) default 0 comment '提现trx总额',
   activity_amount decimal(20,2) default 0 comment '活动总额',
+  commission_amount decimal(20,2) default 0 comment '佣金总额',
   update_time timestamp null default null comment '更新时间',
   UNIQUE KEY unique_date_uid (`date`,uid) comment '联合索引(日期和用户id)'
 ) comment '统计';
 
-
-INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amount`,
-                                `profit_amount`, `recharge_trc20_count`, `recharge_trc20_amount`, `withdraw_trc20_amount`, `recharge_trx_count`,
-                                `recharge_trx_amount`, `withdraw_trx_amount`, `activity_amount`, `update_time`
-                                ) VALUES
-('20220901',2,'jackB1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',3,'jackB2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',4,'jackC1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',5,'jackC2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',6,'jackC3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',7,'jackC4',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',8,'jackD1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',9,'jackD2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',10,'jackD3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',11,'jackD4',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',12,'jackD5',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',13,'jackD6',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',14,'jackD7',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',15,'jackD8',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',16,'jackE1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',17,'jackE2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',18,'jackE3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',20,'demo7788',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
-('20220901',21,'demo8899',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43');
+#
+# INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amount`,
+#                                 `profit_amount`, `recharge_trc20_count`, `recharge_trc20_amount`, `withdraw_trc20_amount`, `recharge_trx_count`,
+#                                 `recharge_trx_amount`, `withdraw_trx_amount`, `activity_amount`, `update_time`
+#                                 ) VALUES
+# ('20220901',2,'jackB1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',3,'jackB2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',4,'jackC1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',5,'jackC2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',6,'jackC3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',7,'jackC4',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',8,'jackD1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',9,'jackD2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',10,'jackD3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',11,'jackD4',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',12,'jackD5',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',13,'jackD6',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',14,'jackD7',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',15,'jackD8',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',16,'jackE1',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',17,'jackE2',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',18,'jackE3',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',19,'demo5566',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',20,'demo7788',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43'),
+# ('20220901',21,'demo8899',1000.00,1000.00, 100000.00, 10, 1000, 1000, 10, 1000, 1000, 0, '2022-07-04 18:37:43');
 
 
 

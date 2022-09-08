@@ -20,6 +20,6 @@ public interface AgentCommissionService {
     float findAvailableCommission(int uid);
     float findCommissionTotal(int uid);
 
-    boolean applySubmit(int uid, AgentCommissionRecordEntity record, MemberEntity member, MemberFlowEntity memberFlow);
+    boolean applySubmit(AgentCommissionRecordEntity entity);
 
 }

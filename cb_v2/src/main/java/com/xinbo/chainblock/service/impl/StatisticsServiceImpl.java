@@ -46,6 +46,12 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
         return statisticsMapper.findByDate(date);
     }
 
+    @Override
+    public StatisticsEntity findTotal(DateRangeBo dateRangeBo, int uid) {
+        return statisticsMapper.findTotal(dateRangeBo, uid);
+    }
+
+
     /**
      * 创建查询条件
      *

@@ -96,6 +96,12 @@ public class StatisticsEntity {
     private Float withdrawTrxAmount;
 
     /**
+     * 佣金总额
+     */
+    @TableField("commission_amount")
+    private Float commissionAmount;
+
+    /**
      * 活动总额
      */
     @TableField("activity_amount")

@@ -1,11 +1,10 @@
 package com.xinbo.chainblock.service;
 
 
-import com.xinbo.chainblock.entity.AgentCommissionEntity;
+import com.xinbo.chainblock.entity.AgentCommissionRecordEntity;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
-
-import java.util.List;
+import com.xinbo.chainblock.entity.StatisticsEntity;
 
 /**
  * @author tony
@@ -13,4 +12,7 @@ import java.util.List;
  * @desc file desc
  */
 public interface AgentCommissionRecordService {
+    AgentCommissionRecordEntity findById(int id);
+
+    boolean handle(AgentCommissionRecordEntity entity, MemberEntity member, MemberFlowEntity memberFlow, StatisticsEntity statistics);
 }

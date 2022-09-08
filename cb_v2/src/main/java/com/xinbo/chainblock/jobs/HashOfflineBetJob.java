@@ -148,7 +148,7 @@ public class HashOfflineBetJob {
                                     .money(b3.floatValue())
                                     .createTime(DateUtil.date(blockTimestamp))
                                     .createTimestamp(DateUtil.current())
-                                    .algorithm(entity.getAlgorithm())
+                                    .algorithmCode(entity.getAlgorithmCode())
                                     .build();
                             bets.add(bet);
                         }

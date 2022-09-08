@@ -22,4 +22,6 @@ public interface StatisticsService {
     List<StatisticsEntity> findList(DateRangeBo dateRangeBo, int uid);
 
     List<StatisticsEntity> findByDate(String date);
+
+    StatisticsEntity findTotal(DateRangeBo dateRangeBo, int uid);
 }

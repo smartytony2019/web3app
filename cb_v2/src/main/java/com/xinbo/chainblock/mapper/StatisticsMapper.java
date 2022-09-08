@@ -32,4 +32,10 @@ public interface StatisticsMapper extends BaseMapper<StatisticsEntity> {
 
     @Select("select * from t_statistics where date between #{bo.startTimeStr} and #{bo.endTimeStr} and uid = #{uid}")
     List<StatisticsEntity> findList(@Param("bo") DateRangeBo dateRangeBo, @Param("uid") int uid);
+
+    @Select("select sum(recharge_trc20_count) recharge_trc20_count, " +
+            "sum(withdraw_trc20_amount) withdraw_trc20_amount,  " +
+            "sum(withdraw_trc20_amount) withdraw_trc20_amount,  " +
+            "from t_statistics where date between #{bo.startTimeStr} and #{bo.endTimeStr} and uid = #{uid}")
+    StatisticsEntity findTotal(DateRangeBo dateRangeBo, int uid);
 }

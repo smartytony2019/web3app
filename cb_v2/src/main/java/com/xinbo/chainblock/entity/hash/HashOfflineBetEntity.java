@@ -156,6 +156,6 @@ public class HashOfflineBetEntity {
     /**
      * 算法
      */
-    @TableField("algorithm")
-    private String algorithm;
+    @TableField("algorithm_code")
+    private String algorithmCode;
 }

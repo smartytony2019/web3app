@@ -66,28 +66,14 @@ public class AgentCommissionServiceImpl extends ServiceImpl<AgentCommissionMappe
 
     @Transactional
     @Override
-    public boolean applySubmit(int uid, AgentCommissionRecordEntity record, MemberEntity member, MemberFlowEntity memberFlow) {
-
+    public boolean applySubmit(AgentCommissionRecordEntity entity) {
         // 代理佣金表
-        int rows = agentCommissionMapper.accounted(uid);
+        int rows = agentCommissionMapper.accounted(entity.getUid());
         if (rows <= 0) {
             return false;
         }
 
-        rows = agentCommissionRecordMapper.insert(record);
-        if (rows <= 0) {
-            return false;
-        }
-
-
-        // 会员表
-        rows = memberMapper.increment(member);
-        if (rows <= 0) {
-            return false;
-        }
-
-        // 会员流水表
-        rows = memberFlowMapper.insert(memberFlow);
+        rows = agentCommissionRecordMapper.insert(entity);
         if (rows <= 0) {
             return false;
         }

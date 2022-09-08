@@ -250,7 +250,7 @@ public class HashOfflineAlgorithm {
 
 
     public AlgorithmResult settle(HashResultEntity hashResult, HashOfflineBetEntity bet) {
-        switch (bet.getAlgorithm()) {
+        switch (bet.getAlgorithmCode()) {
             case "1000":    //哈希两面
                 return this.hashComb(hashResult, bet);
 

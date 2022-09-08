@@ -12,8 +12,7 @@
             (#{item.date}, #{item.uid}, #{item.username}, #{item.totalCommission}, #{item.totalPerformance}, #{item.selfCommission},
             #{item.selfPerformance}, #{item.teamPerformance}, #{item.directPerformance}, #{item.subPerformance}, #{item.rebate}, #{item.createTime}, #{item.createTimestamp})
         </foreach>
-         ON DUPLICATE KEY
-        UPDATE
+        ON DUPLICATE KEY UPDATE
         total_commission = VALUES (total_commission),
         total_performance = VALUES (total_performance),
         self_commission = VALUES (self_commission),
