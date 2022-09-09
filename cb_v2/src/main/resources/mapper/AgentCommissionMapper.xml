@@ -6,11 +6,11 @@
     <!-- 更新赛事状态 -->
     <insert id="insertOrUpdate" parameterType="java.util.List">
         insert into t_agent_commission(`date`, uid, username, total_commission, total_performance, self_commission,
-                                       self_performance, team_performance, direct_performance, sub_performance, rebate, create_time, create_timestamp)
+                                       self_performance, team_performance, team_count, direct_performance, direct_count, sub_performance, rebate, create_time, create_timestamp)
         values
         <foreach collection="list" item="item" separator="," index="">
             (#{item.date}, #{item.uid}, #{item.username}, #{item.totalCommission}, #{item.totalPerformance}, #{item.selfCommission},
-            #{item.selfPerformance}, #{item.teamPerformance}, #{item.directPerformance}, #{item.subPerformance}, #{item.rebate}, #{item.createTime}, #{item.createTimestamp})
+            #{item.selfPerformance}, #{item.teamPerformance}, #{item.teamCount}, #{item.directPerformance}, #{item.directCount}, #{item.subPerformance}, #{item.rebate}, #{item.createTime}, #{item.createTimestamp})
         </foreach>
         ON DUPLICATE KEY UPDATE
         total_commission = VALUES (total_commission),
@@ -18,11 +18,20 @@
         self_commission = VALUES (self_commission),
         self_performance = VALUES (self_performance),
         team_performance = VALUES (team_performance),
+        team_count = VALUES (team_count),
         direct_performance = VALUES (direct_performance),
+        direct_count = VALUES (direct_count),
         sub_performance = VALUES (sub_performance),
         rebate = VALUES (rebate)
     </insert>
 
+
+    <select id="findTotal" resultType="com.xinbo.chainblock.entity.AgentCommissionEntity">
+        select
+            sum(total_commission) total_commission,
+            sum(total_performance) total_performance
+        from t_agent_commission where `date` between #{bo.startTimeStr} and #{bo.endTimeStr} and uid = #{uid}
+    </select>
 
 
 </mapper>

@@ -48,6 +48,7 @@ public class AgentCommissionJob {
     private boolean isAgentCommission;
 
     private static final int UNIT = 10000;
+    private static final String REGEX = ",";
 
     /**
      * 计算代理佣金
@@ -109,7 +110,7 @@ public class AgentCommissionJob {
                 map.put(entity.getUid(), ObjectUtils.isEmpty(statisticsEntity.getBetAmount()) ? 0 : statisticsEntity.getBetAmount());
             } else {
                 //下级
-                List<Integer> childList = Arrays.stream(entity.getChild().split(",")).map(Integer::parseInt).collect(Collectors.toList());
+                List<Integer> childList = Arrays.stream(entity.getChild().split(REGEX)).map(Integer::parseInt).collect(Collectors.toList());
                 childList.add(entity.getUid());
                 List<StatisticsEntity> childStatistics = statisticsService.findByUidStr(date, childList);
 
@@ -247,6 +248,15 @@ public class AgentCommissionJob {
             self.setCreateTime(DateUtil.date());
             self.setCreateTimestamp(DateUtil.current());
             self.setSubPerformance(self.getTeamPerformance() - self.getDirectPerformance());
+            //人数
+            AgentEntity agentEntity = list.stream().filter(f -> f.getUid().equals(key)).findFirst().orElse(null);
+            if(!ObjectUtils.isEmpty(agentEntity)) {
+                String child = agentEntity.getChild();
+                int count = StringUtils.isEmpty(child) ? 0 : child.split(REGEX).length;
+                self.setTeamCount(count);
+            }
+            List<AgentEntity> collect = list.stream().filter(f -> f.getPUid().equals(key)).collect(Collectors.toList());
+            self.setDirectCount(collect.size());
 
             // 判断没有直属佣金
             if (self.getDirectPerformance() <= 0 && self.getSelfPerformance() <= 0) {

@@ -1,6 +1,8 @@
 package com.xinbo.chainblock.service;
 
 
+import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.entity.*;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,4 +24,7 @@ public interface AgentCommissionService {
 
     boolean applySubmit(AgentCommissionRecordEntity entity);
 
+    BasePageBo findPage(DateRangeBo dateRangeBo, int uid, long current, long size);
+
+    AgentCommissionEntity findTotal(DateRangeBo dateRangeBo, int uid);
 }

@@ -1,3 +1,19 @@
+var request = require('request');
+var options = {
+  'method': 'GET',
+  'url': 'https://api.changenow.io/v2/exchange/estimated-amount?fromCurrency=btc&toCurrency=usdt&fromAmount=0.1&toAmount=&fromNetwork=btc&toNetwork=eth&flow=fixed-rate&type=&useRateId=true',
+  'headers': {
+    'x-changenow-api-key': '431311ffed06fc784ba0866faae501949f9ee25a1387204a2b2517cfa0bca709'
+  }
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+
+return;
+
+
 let instance = require("./getTronweb")
 
 

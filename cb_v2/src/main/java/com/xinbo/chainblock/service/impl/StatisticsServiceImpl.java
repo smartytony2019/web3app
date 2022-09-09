@@ -10,6 +10,7 @@ import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.dto.MemberFlowDto;
 import com.xinbo.chainblock.dto.StatisticsDto;
+import com.xinbo.chainblock.entity.AgentCommissionEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
 import com.xinbo.chainblock.mapper.StatisticsMapper;
@@ -65,6 +66,7 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
         page.addOrder(OrderItem.desc("date"));
 
         LambdaQueryWrapper<StatisticsEntity> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(StatisticsEntity::getUid, uid);
         wrapper.ge(StatisticsEntity::getDate, dateRangeBo.getStartTimeStr()).le(StatisticsEntity::getDate, dateRangeBo.getEndTimeStr());
 
         IPage<StatisticsEntity> iPage = statisticsMapper.selectPage(page, wrapper);
