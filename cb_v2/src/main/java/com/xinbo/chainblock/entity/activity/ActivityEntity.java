@@ -58,8 +58,8 @@ public class ActivityEntity {
     /**
      * 活动名称
      */
-    @TableField("name")
-    private String name;
+    @TableField("title")
+    private String title;
 
 
     /**

@@ -70,7 +70,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
     /**
      * 创建查询条件
      *
-     * @param entity  实体
+     * @param entity 实体
      * @return LambdaQueryWrapper
      */
     private LambdaQueryWrapper<ActivityEntity> createWrapper(ActivityEntity entity) {
@@ -79,7 +79,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
             return wrappers;
         }
 
-        if (!StringUtils.isEmpty(entity.getId())) {
+        if (!StringUtils.isEmpty(entity.getId()) && entity.getId() > 0) {
             wrappers.eq(ActivityEntity::getId, entity.getId());
         }
 

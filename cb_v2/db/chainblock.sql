@@ -422,7 +422,7 @@ create table t_activity
     cate_name varchar(50) comment '类目编码',
     cate_name_zh varchar(50) comment '类目中文',
     sn varchar(100) comment '编号',
-    name varchar(100) comment '活动名称',
+    title varchar(100) comment '活动名称',
     content text comment '内容',
     sorted int comment '序号',
     type int comment '限制项(1:首充, 2:注册送, 3:签到, 10:其它)',
@@ -432,7 +432,7 @@ create table t_activity
     create_time timestamp null default null comment '创建时间',
     is_enable tinyint comment '是否启用'
 ) comment '活动表';
-insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, sn, name, content, sorted, type, language, begin_time, finish_time, create_time, is_enable) values
+insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, sn, title, content, sorted, type, language, begin_time, finish_time, create_time, is_enable) values
 (1, '600010', '限时活动', '', '充值赠送', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
 (1, '600011', '新手活动', '', '首充赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
 (1, '600011', '新手活动', '', '新注册赠送', '', 1, 2, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),

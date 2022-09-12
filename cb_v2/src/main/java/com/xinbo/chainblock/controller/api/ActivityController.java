@@ -226,7 +226,7 @@ public class ActivityController {
                     int status = receiveMode == ActivityConst.RULE_ADMIN_CHECK ? ActivityConst.RECORD_UNHANDLED : ActivityConst.RECORD_COMPLETE;
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
-                            .activityName(activityEntity.getName())
+                            .activityTitle(activityEntity.getTitle())
                             .uid(memberEntity.getId())
                             .username(memberEntity.getUsername())
                             .money(money)
@@ -276,7 +276,7 @@ public class ActivityController {
 
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
-                            .activityName(activityEntity.getName())
+                            .activityTitle(activityEntity.getTitle())
                             .uid(memberEntity.getId())
                             .username(memberEntity.getUsername())
                             .money(money)
@@ -315,7 +315,7 @@ public class ActivityController {
 
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
-                            .activityName(activityEntity.getName())
+                            .activityTitle(activityEntity.getTitle())
                             .uid(memberEntity.getId())
                             .username(memberEntity.getUsername())
                             .money(money)

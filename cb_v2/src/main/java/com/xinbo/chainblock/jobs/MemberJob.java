@@ -96,7 +96,7 @@ public class MemberJob {
 
                     ActivityRecordEntity re = ActivityRecordEntity.builder()
                             .activityId(activityEntity.getId())
-                            .activityName(activityEntity.getName())
+                            .activityTitle(activityEntity.getTitle())
                             .uid(entity.getId())
                             .username(entity.getUsername())
                             .money(money)
