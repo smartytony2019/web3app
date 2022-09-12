@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.service;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.entity.MemberRecordEntity;
 
 import java.util.Date;
 
@@ -16,4 +17,9 @@ public interface MemberFlowService {
 
     BasePageBo findPage(MemberFlowEntity entity, long current, long size, Date start, Date end);
 
+    boolean insert(MemberFlowEntity entity);
+
+    boolean delete(Integer id);
+
+    boolean update(MemberFlowEntity entity);
 }

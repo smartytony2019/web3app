@@ -99,4 +99,20 @@ public class IndexController {
 
         return R.builder().code(StatusCode.SUCCESS).data(result).build();
     }
+
+    /**
+     *
+     * 获取角色菜单
+     *
+     * @return
+     */
+
+
+    @GetMapping("permissionMenu")
+    public R<Object> permissionMenu(){
+        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
+        List<PermissionEntity> list=userService.allMenu(jwtUserBo.getUid());
+        return R.builder().code(StatusCode.SUCCESS).data(list).build();
+    }
+
 }

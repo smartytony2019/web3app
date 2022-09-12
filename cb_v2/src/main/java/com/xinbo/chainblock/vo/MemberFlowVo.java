@@ -24,4 +24,6 @@ public class MemberFlowVo {
 
     private Date end;
 
+
+
 }

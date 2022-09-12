@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -44,7 +45,6 @@ public class RoleEntity {
      * 是否删除 1：已删除；0：未删除
      */
     @TableField("is_delete")
-    private Integer isDelete;
-
+    private Boolean isDelete;
 
 }

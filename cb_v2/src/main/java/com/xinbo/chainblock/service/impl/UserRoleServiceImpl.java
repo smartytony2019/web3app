@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.entity.admin.UserRoleEntity;
 import com.xinbo.chainblock.mapper.UserRoleMapper;
 import com.xinbo.chainblock.service.UserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,4 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRoleEntity> implements UserRoleService {
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Override
+    public boolean deleteByRole(int roleId) {
+        return userRoleMapper.deleteByRole(roleId)>=0;
+    }
 }

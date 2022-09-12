@@ -135,4 +135,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         return wrappers;
     }
+
+    /**
+     * 整个菜单树
+     *
+     * @param userId
+     * @return
+     */
+
+    @Override
+    public List<PermissionEntity> allMenu(int userId){
+        List<PermissionEntity> permission = this.getPermission(userId);
+
+        //获取最顶层的菜单
+        List<PermissionEntity> rootPermission=permission.stream().filter(item->0==item.getParentId())
+                .collect(Collectors.toList());
+        List<PermissionEntity> menuList=new ArrayList<>();
+        rootPermission.stream().forEach(rootItem->{
+            rootItem.setChildren(subMenu(permission,rootItem.getId()));
+            menuList.add(rootItem);
+        });
+
+        return menuList;
+    }
+
+
+
+    /**
+     * 遍历子菜单
+     * @param allPermission
+     * @param permissionId
+     * @return
+     */
+    public List<PermissionEntity> subMenu(List<PermissionEntity> allPermission,int permissionId){
+        List<PermissionEntity> children=new ArrayList<>();
+        allPermission.stream().forEach(item->{
+            if(permissionId==item.getParentId()){
+                children.add(item);
+            }
+        });
+        children.stream().forEach(item->{
+            item.setChildren(subMenu(allPermission,item.getId()));
+        });
+        return children;
+    }
+
 }

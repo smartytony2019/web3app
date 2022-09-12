@@ -12,4 +12,5 @@ import java.util.Date;
 public interface MemberRecordService {
     BasePageBo findPage(MemberRecordEntity entity, long current, long size);
     BasePageBo findPage(MemberRecordEntity entity, long current, long size, Date start, Date end);
+
 }

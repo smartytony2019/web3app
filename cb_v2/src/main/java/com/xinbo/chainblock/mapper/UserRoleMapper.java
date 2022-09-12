@@ -18,4 +18,5 @@ public interface UserRoleMapper extends BaseMapper<UserRoleEntity> {
 
     @Select("select * from t_user_role where user_id = #{userId}")
     List<UserRoleEntity> findByUserId(@Param("userId") int userId);
+    int deleteByRole(@Param("roleId") int roleId);
 }

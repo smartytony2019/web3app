@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.MemberFlowDto;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.entity.MemberRecordEntity;
 import com.xinbo.chainblock.mapper.MemberFlowMapper;
 import com.xinbo.chainblock.service.MemberFlowService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -50,6 +51,21 @@ public class MemberFlowServiceImpl extends ServiceImpl<MemberFlowMapper, MemberF
         }
         IPage<MemberFlowEntity> iPage = memberFlowMapper.selectPage(page, wrapper);
         return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
+    }
+
+    @Override
+    public boolean insert(MemberFlowEntity entity) {
+        return memberFlowMapper.insert(entity)>0;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        return memberFlowMapper.deleteById(id)>0;
+    }
+
+    @Override
+    public boolean update(MemberFlowEntity entity) {
+        return memberFlowMapper.updateById(entity)>0;
     }
 
 

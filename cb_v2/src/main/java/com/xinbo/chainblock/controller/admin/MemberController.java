@@ -1,11 +1,13 @@
 package com.xinbo.chainblock.controller.admin;
 
+import cn.hutool.core.date.DateUtil;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.MemberDto;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
+import com.xinbo.chainblock.entity.MemberRecordEntity;
 import com.xinbo.chainblock.service.MemberFlowService;
 import com.xinbo.chainblock.service.MemberService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -16,6 +18,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -60,7 +63,7 @@ public class MemberController {
         entity.setSalt("11111");
         entity.setVersion(1);
         boolean isSuccess = memberService.update(entity);
-        return R.builder().code(isSuccess?StatusCode.SUCCESS:StatusCode.FAILURE).build();
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
     @JwtIgnore
@@ -71,6 +74,5 @@ public class MemberController {
         BasePageBo basePageBo = memberFlowService.findPage(entity, current, size, vo.getStart(), vo.getEnd());
         return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
-
 
 }

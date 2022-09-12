@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity.activity;
+package com.xinbo.chainblock.entity.admin;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,18 +9,36 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@TableName("test")
-public class TestEntity {
+@TableName("t_lang")
+public class LangEntity {
+
+    /**
+     * 主键
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @TableField("a")
-    private String a;
+    /**
+     * 语言编码
+     */
+    @TableField("lang_code")
+    private String langCode;
 
-    @TableField("is_b")
-    private Boolean isb;
+    /**
+     * 语言名称
+     */
+    @TableField("lang_name")
+    private String langName;
+
+    /**
+     * 创建时间
+     */
+    @TableField("create_time")
+    private Date createTime;
 }

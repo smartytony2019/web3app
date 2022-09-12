@@ -1,23 +1,32 @@
 package com.xinbo.chainblock.controller.admin;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
+import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
+import com.xinbo.chainblock.entity.admin.RoleEntity;
+import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
-import com.xinbo.chainblock.service.UserService;
+import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
+import com.xinbo.chainblock.vo.PermissionVo;
+import com.xinbo.chainblock.vo.RolePermissionVo;
+import com.xinbo.chainblock.vo.RoleVo;
 import com.xinbo.chainblock.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController("adminUserController")
 @RequestMapping("/admin/user")
@@ -25,6 +34,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private PermissionService permissionService;
+    @Autowired
+    private RolePermissionService rolePermissionService;
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Operation(summary = "login", description = "后端登录")
     @PostMapping("login")
@@ -58,7 +75,7 @@ public class UserController {
         List<PermissionEntity> list = userService.menu(jwtUserBo.getUid());
 
         List<PermissionDto> result = new ArrayList<>();
-        for(PermissionEntity entity : list) {
+        for (PermissionEntity entity : list) {
             PermissionDto.Meta meta = PermissionDto.Meta.builder()
                     .title(entity.getTitle())
                     .icon(entity.getIcon())
@@ -111,4 +128,91 @@ public class UserController {
         return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(userService.findById(id), UserDto.class)).build();
     }
 
+    @Operation(summary = "insertRole", description = "新增角色")
+    @PostMapping("insertRole")
+    public R<Object> insertRole(@RequestBody RoleVo vo) {
+        RoleEntity entity = MapperUtil.to(vo, RoleEntity.class);
+        entity.setIsDelete(false);
+        boolean isSuccess = roleService.insert(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    @Operation(summary = "updateRole", description = "更新角色")
+    @PostMapping("updateRole")
+    public R<Object> updateRole(@RequestBody RoleVo vo) {
+        RoleEntity entity = MapperUtil.to(vo, RoleEntity.class);
+        boolean isSuccess = roleService.update(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    @Operation(summary = "deleteRole", description = "删除角色")
+    @Transactional
+    @PostMapping("deleteRole/{id}")
+    public R<Object> deleteRole(@PathVariable Integer id) {
+        RoleEntity entity = new RoleEntity();
+        entity.setId(id);
+        entity.setIsDelete(true);
+        boolean isSuccess = roleService.update(entity) && userRoleService.deleteByRole(id) && rolePermissionService.deleteByRole(id);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    @Operation(summary = "findAllRole", description = "获取所有角色")
+    @GetMapping("findAllRole")
+    public R<Object> findAllRole() {
+        List<RoleEntity> permissionEntityList = roleService.findAll().stream().filter(item -> false == item.getIsDelete())
+                .collect(Collectors.toList());
+        return R.builder().code(StatusCode.SUCCESS).data(permissionEntityList).build();
+    }
+
+    @Operation(summary = "insertPermission", description = "新增权限")
+    @PostMapping("insertPermission")
+    public R<Object> insertPermission(@RequestBody PermissionVo vo) {
+        PermissionEntity entity = MapperUtil.to(vo, PermissionEntity.class);
+        entity.setIsDelete(0);
+        boolean isSuccess = permissionService.insert(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    @Operation(summary = "updatePermission", description = "更新权限")
+    @PostMapping("updatePermission")
+    public R<Object> updatePermission(@RequestBody PermissionVo vo) {
+        PermissionEntity entity = MapperUtil.to(vo, PermissionEntity.class);
+        boolean isSuccess = permissionService.update(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    @Operation(summary = "deletePermission", description = "删除权限")
+    @Transactional
+    @PostMapping("deletePermission/{id}")
+    public R<Object> deletePermission(@PathVariable Integer id) {
+        PermissionEntity entity = new PermissionEntity();
+        entity.setId(id);
+        entity.setIsDelete(1);
+        boolean isSuccess = permissionService.update(entity) && rolePermissionService.deleteByPermission(id);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    @Operation(summary = "findAllPermission", description = "查询所有权限")
+    @GetMapping("findAllPermission")
+    public R<Object> findAllPermission() {
+        List<PermissionEntity> permissionEntityList = permissionService.findall().stream().filter(item -> 0 == item.getIsDelete())
+                .collect(Collectors.toList());
+        return R.builder().code(StatusCode.SUCCESS).data(permissionEntityList).build();
+    }
+
+    @Operation(summary = "insertRolePermission", description = "新增角色的权限")
+    @PostMapping("insertRolePermission")
+    public R<Object> insertRolePermission(@RequestBody RolePermissionVo vo) {
+        RolePermissionEntity entity = MapperUtil.to(vo, RolePermissionEntity.class);
+        boolean isSuccess = rolePermissionService.insert(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    @Operation(summary = "updateRolePermission", description = "更新角色的权限")
+    @PostMapping("updateRolePermission")
+    public R<Object> updateRolePermission(@RequestBody RolePermissionVo vo) {
+        RolePermissionEntity entity = MapperUtil.to(vo, RolePermissionEntity.class);
+        boolean isSuccess = rolePermissionService.update(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
 }

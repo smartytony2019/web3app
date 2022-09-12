@@ -17,5 +17,7 @@ import java.util.List;
 public interface RolePermissionMapper extends BaseMapper<RolePermissionEntity> {
 
     List<RolePermissionEntity> findByRoles(@Param("list") List<Integer> list);
+    int deleteByPermission(@Param("permissionId") int permissionId);
+    int deleteByRole(@Param("roleId") int roleId);
 
 }

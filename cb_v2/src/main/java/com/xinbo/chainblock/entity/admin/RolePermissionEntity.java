@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_role_menu")
+@TableName("t_role_permission")
 public class RolePermissionEntity {
 
     /**

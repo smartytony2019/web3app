@@ -9,4 +9,12 @@
         </foreach>
     </select>
 
+    <delete id="deleteByPermission" parameterType="int" >
+        delete from t_role_permission where permission_id=#{permissionId}
+    </delete>
+
+    <delete id="deleteByRole" parameterType="int" >
+        delete from t_role_permission where role_id=#{roleId}
+    </delete>
+
 </mapper>

@@ -28,7 +28,7 @@ public class PermissionEntity {
     /**
      * 主键
      */
-    @TableId("id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**

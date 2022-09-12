@@ -23,4 +23,6 @@ public interface UserService {
     UserEntity findById(int userId);
 
     BasePageBo findPage(UserEntity entity, long current, long size);
+
+     List<PermissionEntity> allMenu(int userId);
 }
