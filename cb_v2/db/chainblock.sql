@@ -897,5 +897,52 @@ create table t_system_flow(
 ) comment '会员流水表';
 
 
+DROP TABLE IF EXISTS `t_notice`;
+CREATE TABLE `t_notice`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `lang_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '语言编号',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '内容',
+  `operator` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作员',
+  `is_enable` tinyint NULL DEFAULT NULL COMMENT '是否启用：1启用 0关闭',
+  `is_top` tinyint NULL DEFAULT NULL COMMENT '是否置顶：1置顶 0不置顶',
+  `type` tinyint NULL DEFAULT NULL COMMENT '类型：1用户公告 2首页公告',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '公告表' ROW_FORMAT = Dynamic;
+
+
+DROP TABLE IF EXISTS `t_banner`;
+CREATE TABLE `t_banner`  (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `lang_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '语言表id',
+  `img` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片地址',
+  `href` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '跳转路径',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标题',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `is_enable` tinyint NULL DEFAULT NULL COMMENT '是否启用：1 启用 0 禁用',
+  `sort` int NULL DEFAULT NULL COMMENT '排序',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '轮播图表' ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `t_user_notice`;
+CREATE TABLE `t_user_notice`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `uid` int NULL DEFAULT NULL COMMENT '用户id',
+  `notice_id` int NULL DEFAULT NULL COMMENT '公告id',
+  `is_read` tinyint NULL DEFAULT NULL COMMENT '是否已读：1已读 0未读',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic COMMENT = '用户公告关系表，判断公告是否已读';
+
+DROP TABLE IF EXISTS `t_language`;
+CREATE TABLE `t_language`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `lang_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '语言编码',
+  `lang_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '语言名字',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic COMMENT = '语言表';
+
 
 

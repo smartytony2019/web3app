@@ -10,5 +10,5 @@ public interface BannerService {
 
     boolean update(BannerEntity entity);
 
-    List<BannerEntity> findall();
+    List<BannerEntity> findAll();
 }

@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("t_lang")
-public class LangEntity {
+public class LanguageEntity {
 
     /**
      * 主键

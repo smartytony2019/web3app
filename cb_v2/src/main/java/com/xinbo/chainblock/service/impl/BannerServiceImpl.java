@@ -29,7 +29,7 @@ public class BannerServiceImpl extends ServiceImpl<ActivityCateMapper, ActivityC
     }
 
     @Override
-    public List<BannerEntity> findall() {
+    public List<BannerEntity> findAll() {
         return bannerMapper.findAll();
     }
 }

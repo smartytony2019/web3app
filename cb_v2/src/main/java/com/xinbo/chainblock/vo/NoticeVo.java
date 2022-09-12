@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NoticeVo {
     private Integer id;
-    private Integer langId;
+    private String langCode;
     private String title;
     private String content;
     private String operator;

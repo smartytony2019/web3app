@@ -25,8 +25,8 @@ public class NoticeEntity {
     /**
      * 语言表id
      */
-    @TableField("lang_id")
-    private Integer langId;
+    @TableField("lang_code")
+    private String langCode;
 
     /**
      * 标题

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.dto.NoticeDto;
-import com.xinbo.chainblock.entity.admin.LangEntity;
+import com.xinbo.chainblock.entity.admin.LanguageEntity;
 import com.xinbo.chainblock.entity.admin.NoticeEntity;
 import com.xinbo.chainblock.mapper.LangMapper;
 import com.xinbo.chainblock.mapper.NoticeMapper;
@@ -44,11 +44,8 @@ public class NoticeServiceImpl implements NoticeService {
         List<NoticeDto> noticeDtoList=iPage.getRecords().stream()
                 .filter(item->1==item.getIsEnable())
                 .map(item->{
-                    if(item.getIsRead()==null) item.setIsRead(false);
-                   LangEntity langEntity = langMapper.selectById(item.getLangId());
-                   if(langEntity!=null)
-                   item.setLangName(langEntity.getLangName());
-                   return item;
+                    if(item != null && item.getIsRead()==null) item.setIsRead(false);
+                    return item;
                 }).collect(Collectors.toList());
         return BasePageBo.builder().total(iPage.getTotal()).records(noticeDtoList).build();
     }

@@ -27,8 +27,8 @@ public class BannerEntity {
     /**
      * 语言表id
      */
-    @TableField("lang_id")
-    private Integer langId;
+    @TableField("lang_code")
+    private String langCode;
 
     /**
      * 图片路径
@@ -72,9 +72,4 @@ public class BannerEntity {
     @TableField("create_time")
     private Date createTime;
 
-    /**
-     * 语言名字
-     */
-    @TableField(exist = false)
-    private String langName;
 }

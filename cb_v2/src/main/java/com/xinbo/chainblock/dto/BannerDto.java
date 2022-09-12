@@ -16,5 +16,5 @@ public class BannerDto {
     private String title;
     private String desc;
     private Integer sort;
-    private String langName;
+    private String langCode;
 }

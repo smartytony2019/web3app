@@ -1,13 +1,13 @@
 package com.xinbo.chainblock.service;
 
-import com.xinbo.chainblock.entity.admin.LangEntity;
+import com.xinbo.chainblock.entity.admin.LanguageEntity;
 
 import java.util.List;
 
 public interface LangService {
 
-    LangEntity find(int id);
-    boolean insert(LangEntity entity);
-    boolean update(LangEntity entity);
-    List<LangEntity> findAll();
+    LanguageEntity find(int id);
+    boolean insert(LanguageEntity entity);
+    boolean update(LanguageEntity entity);
+    List<LanguageEntity> findAll();
 }

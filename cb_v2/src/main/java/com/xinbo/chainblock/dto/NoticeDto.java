@@ -14,8 +14,7 @@ import java.util.Date;
 @Builder
 public class NoticeDto {
     private Integer id;
-    private Integer langId;
-    private String langName;
+    private String langCode;
     private String title;
     private String content;
     private String operator;

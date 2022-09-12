@@ -34,18 +34,18 @@ public class NoticeController {
         return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
-    @Operation(summary = "insertNotice", description = "新增公告")
+    @Operation(summary = "insert", description = "新增公告")
     @PostMapping("insert")
-    public R<Object> insertNotice(@RequestBody NoticeVo vo) {
+    public R<Object> insert(@RequestBody NoticeVo vo) {
         NoticeEntity entity = MapperUtil.to(vo, NoticeEntity.class);
         entity.setCreateTime(DateUtil.date());
         boolean isSuccess = noticeService.insert(entity);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
-    @Operation(summary = "updateOrDeleteNotice", description = "更新或删除公告")
+    @Operation(summary = "updateOrDelete", description = "更新或删除公告")
     @PostMapping("updateOrDelete")
-    public R<Object> updateOrDeleteNotice(@RequestBody NoticeVo vo) {
+    public R<Object> updateOrDelete(@RequestBody NoticeVo vo) {
         NoticeEntity entity = MapperUtil.to(vo, NoticeEntity.class);
         boolean isSuccess = noticeService.update(entity);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();

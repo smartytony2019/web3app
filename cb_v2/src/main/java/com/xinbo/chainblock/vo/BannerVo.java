@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class BannerVo {
 
     private  Integer id;
-    private Integer langId;
+    private String langCode;
     private String img;
     private String href;
     private String title;
