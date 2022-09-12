@@ -423,21 +423,22 @@ create table t_activity
     cate_name_zh varchar(50) comment '类目中文',
     sn varchar(100) comment '编号',
     title varchar(100) comment '活动名称',
+    img text comment '图片',
     content text comment '内容',
-    sorted int comment '序号',
-    type int comment '限制项(1:首充, 2:注册送, 3:签到, 10:其它)',
+    type int comment '限制项(1:首充, 2:注册送, 10:其它)',
     language varchar(20) comment '语言',
     begin_time timestamp null default null comment '开始时间',
     finish_time timestamp null default null comment '结束时间',
     create_time timestamp null default null comment '创建时间',
+    sorted int comment '序号',
     is_enable tinyint comment '是否启用'
 ) comment '活动表';
-insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, sn, title, content, sorted, type, language, begin_time, finish_time, create_time, is_enable) values
-(1, '600010', '限时活动', '', '充值赠送', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
-(1, '600011', '新手活动', '', '首充赠送', '', 1, 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
-(1, '600011', '新手活动', '', '新注册赠送', '', 1, 2, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
-(1, '600012', '限时活动', '', '打码返水', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1),
-(1, '600012', '限时活动', '', '打码次数', '', 1, 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1);
+insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, sn, title, img, content, type, language, begin_time, finish_time, create_time, sorted, is_enable) values
+(1, '600010', '限时活动', '', '充值赠送', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+(1, '600011', '新手活动', '', '首充赠送', '', '', 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+(1, '600011', '新手活动', '', '新注册赠送', '', '', 2, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+(1, '600012', '限时活动', '', '打码返水', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+(1, '600012', '限时活动', '', '打码次数', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1);
 
 
 
@@ -447,13 +448,13 @@ create table t_activity_rule(
     sn varchar(100) comment '编号',
     cycle int comment '周期(1:一次 2:不限次数 3:一天一次 4:一周一次 5:一月一次 6:自定义天数)',
     days int comment '天数',
-    limit_item int comment '限制项(1:充值, 2:首充, 3:打码, 4:打码次数, 5:注册)',
-    limit_lev int default 1 comment '限制等级(1: 包含项, 2: 必须项)',
     withdraw_bet_mul int comment '提现打码倍数',
     calc_mode int comment '计算方式(1:固定金额 2:百分比)',
     receive_mode int comment '领取方式(1:直接发放, 2:后端审核, 3:自动发放)',
     money decimal(10,2) comment '金额',
-    symbol varchar(50) comment '赠送币种'
+    symbol varchar(50) comment '赠送币种',
+    limit_item int comment '限制项(1:充值, 2:首充, 3:打码, 4:打码次数, 5:注册)',
+    limit_lev int default 1 comment '限制等级(1: 包含项, 2: 必须项)'
 ) comment '活动规则表';
 insert into cb_v2.t_activity_rule(sn, cycle,days,limit_item,limit_lev,withdraw_bet_mul,calc_mode,receive_mode,money, symbol) values
 ('1000', 2, 0, 1, 1, 1, 1, 1, 0,'USDT'),

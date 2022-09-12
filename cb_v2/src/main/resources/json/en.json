@@ -66,5 +66,9 @@
   "__comment6__": "-- 活动(Activity) --",
   "600010": "Limited time",
   "600011": "Newcomer",
-  "600012": "Daily"
+  "600012": "Daily",
+
+  "600020": "First recharge",
+  "600021": "Register",
+  "600022": "Other"
 }
