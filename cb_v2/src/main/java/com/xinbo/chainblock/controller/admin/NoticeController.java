@@ -55,7 +55,7 @@ public class NoticeController {
     @PostMapping("insertUserNotice/{noticeId}")
     public R<Object> insertUserNotice(@PathVariable int noticeId) {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
-        UserNoticeEntity entity = UserNoticeEntity.builder().isRead(true).noticeId(noticeId)
+        UserNoticeEntity entity = UserNoticeEntity.builder().noticeId(noticeId)
                 .uid(jwtUserBo.getUid()).build();
         boolean isSuccess = userNoticeService.insert(entity);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();

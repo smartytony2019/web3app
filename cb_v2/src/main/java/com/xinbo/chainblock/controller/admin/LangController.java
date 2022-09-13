@@ -24,7 +24,7 @@ public class LangController {
     @Autowired
     private LangService langService;
 
-    @Operation(summary = "insertLang", description = "新增语言")
+    @Operation(summary = "insert", description = "新增语言")
     @PostMapping("insert")
     public R<Object> insert(@RequestBody LangVo vo) {
         LanguageEntity entity = MapperUtil.to(vo, LanguageEntity.class);
@@ -33,7 +33,7 @@ public class LangController {
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
-    @Operation(summary = "updateLang", description = "更新语言")
+    @Operation(summary = "update", description = "更新语言")
     @PostMapping("update")
     public R<Object> update(@RequestBody LangVo vo) {
         LanguageEntity entity = MapperUtil.to(vo, LanguageEntity.class);

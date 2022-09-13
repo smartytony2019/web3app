@@ -33,9 +33,4 @@ public class UserNoticeEntity {
     @TableField("notice_id")
     private Integer noticeId;
 
-    /**
-     * 是否已读：1已读 0未读
-     */
-    @TableField("is_read")
-    private Boolean isRead;
 }

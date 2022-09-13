@@ -28,23 +28,29 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public boolean insert(NoticeEntity entity) {
-        return noticeMapper.insert(entity)>0;
+        return noticeMapper.insert(entity) > 0;
     }
 
     @Override
     public boolean update(NoticeEntity entity) {
-        return noticeMapper.updateById(entity)>0;
+        return noticeMapper.updateById(entity) > 0;
     }
 
     @Override
     public BasePageBo findNoticePage(long current, long size) {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
         Page<NoticeDto> page = new Page<>(current, size);
-        IPage<NoticeDto> iPage=noticeMapper.findNoticePage(page,jwtUserBo.getUid());
-        List<NoticeDto> noticeDtoList=iPage.getRecords().stream()
-                .filter(item->1==item.getIsEnable())
-                .map(item->{
-                    if(item != null && item.getIsRead()==null) item.setIsRead(false);
+        IPage<NoticeDto> iPage = noticeMapper.findNoticePage(page, jwtUserBo.getUid());
+        List<NoticeDto> noticeDtoList = iPage.getRecords().stream()
+                .filter(item -> 1 == item.getIsEnable())
+                .map(item -> {
+                    if (item != null) {
+                        if(item.getUserNoticeId() == null) {
+                            item.setIsRead(false);
+                        }else{
+                            item.setIsRead(true);
+                        }
+                    }
                     return item;
                 }).collect(Collectors.toList());
         return BasePageBo.builder().total(iPage.getTotal()).records(noticeDtoList).build();
