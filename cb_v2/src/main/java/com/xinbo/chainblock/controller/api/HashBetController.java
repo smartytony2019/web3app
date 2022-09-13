@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.bo.DateRangeBo;
+import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.consts.BetStatus;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.bo.BasePageBo;
@@ -19,6 +20,7 @@ import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.CommonUtils;
+import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import com.xinbo.chainblock.vo.BetSubmitVo;
@@ -84,11 +86,8 @@ public class HashBetController {
                 throw new BusinessException(0, "数据不合法");
             }
 
-            MemberEntity jwt = MemberEntity.builder()
-                    .username("jackB2")
-                    .id(3)
-                    .version(1)
-                    .build();
+
+            JwtUserBo jwtUser = JwtUtil.getJwtUser();
 
             HashPlayEntity playEntity = hashPlayService.findById(vo.getPlayId());
             if (ObjectUtils.isEmpty(playEntity) || playEntity.getId() <= 0) {
@@ -107,7 +106,7 @@ public class HashBetController {
                 throw new BusinessException(0, "赔率错误");
             }
 
-            MemberEntity memberEntity = memberService.findById(jwt.getId());
+            MemberEntity memberEntity = memberService.findById(jwtUser.getUid());
             if (ObjectUtils.isEmpty(memberEntity) || memberEntity.getId() <= 0) {
                 throw new BusinessException(0, "会员不存在");
             }
@@ -157,7 +156,7 @@ public class HashBetController {
                     .createTimestamp(DateUtil.current())
                     .updateTime(DateUtil.date())
                     .updateTimestamp(DateUtil.current())
-                    .algorithm(gameEntity.getAlgorithm())
+                    .algorithmCode(gameEntity.getAlgorithmCode())
                     .build();
 
 
@@ -206,6 +205,8 @@ public class HashBetController {
             }
 
             return R.builder().code(StatusCode.SUCCESS).data(sn).build();
+        } catch (BusinessException ex) {
+            return R.builder().code(StatusCode.FAILURE).data(ex.getMsg()).build();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return R.builder().code(StatusCode.FAILURE).data(ex.getMessage()).build();

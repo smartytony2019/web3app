@@ -199,7 +199,17 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
                 .uid(bet.getUid())
                 .username(bet.getUsername())
                 .betAmount(bet.getMoney())
+                .betCount(1)
                 .profitAmount(bet.getProfitMoney())
+                .payoutAmount(bet.getPayoutMoney())
+                .rechargeTrc20Count(0)
+                .rechargeTrc20Amount(0F)
+                .withdrawTrc20Amount(0F)
+                .rechargeTrxCount(0)
+                .rechargeTrxAmount(0F)
+                .withdrawTrxAmount(0F)
+                .commissionAmount(0F)
+                .activityAmount(0F)
                 .updateTime(new Date())
                 .build();
 

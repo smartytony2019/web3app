@@ -37,8 +37,8 @@ public class ActivityRecordEntity {
     /**
      * 类目编码
      */
-    @TableField("activity_name")
-    private String activityName;
+    @TableField("activity_title")
+    private String activityTitle;
 
 
 

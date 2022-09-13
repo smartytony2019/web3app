@@ -1,3 +1,19 @@
+var request = require('request');
+var options = {
+  'method': 'GET',
+  'url': 'https://api.changenow.io/v2/exchange/estimated-amount?fromCurrency=btc&toCurrency=usdt&fromAmount=0.1&toAmount=&fromNetwork=btc&toNetwork=eth&flow=fixed-rate&type=&useRateId=true',
+  'headers': {
+    'x-changenow-api-key': '431311ffed06fc784ba0866faae501949f9ee25a1387204a2b2517cfa0bca709'
+  }
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+
+return;
+
+
 let instance = require("./getTronweb")
 
 
@@ -263,8 +279,8 @@ const Web3 = require('web3');
     let tronWeb = instance;
     let contractAddress = 'TQcF1rd1BiSFm7F5S6QsZNGZ2vp2rho846';
 
-    tronWeb.setPrivateKey('0d35dba8af935d575924cd0d3afd2479248de12aa0f13f547e2e9debcdd025c5')
-    let contract = await tronWeb.contract().at(contractAddress);
+    // tronWeb.setPrivateKey('0d35dba8af935d575924cd0d3afd2479248de12aa0f13f547e2e9debcdd025c5')
+    // let contract = await tronWeb.contract().at(contractAddress);
 
     // 查询合约余额
     // let t1 = await contract.getBalanceOfContract().call();
@@ -280,8 +296,8 @@ const Web3 = require('web3');
     let r = await tronWeb.getEventResult(contractAddress, {eventName: 'Transfer', size: 2})
     console.log(r)
 
-    let t = await tronWeb.getEventByTransactionID('273e5251515532ed5865971c0eec8b661c7dd9b6614b0d372688a108f99bfa21')
-    console.log('t',t);
+    // let t = await tronWeb.getEventByTransactionID('273e5251515532ed5865971c0eec8b661c7dd9b6614b0d372688a108f99bfa21')
+    // console.log('t',t);
     // let tmp = await instance.trx.getBlock(28946780);
     // console.log(tmp);
 

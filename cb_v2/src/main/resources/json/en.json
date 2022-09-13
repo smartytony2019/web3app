@@ -55,5 +55,20 @@
   "500100": "Recharge",
   "500110": "Withdraw",
   "500210": "Transfer(Funding=>Trading)",
-  "500220": "Transfer(Trading=>Funding)"
+  "500220": "Transfer(Trading=>Funding)",
+
+  "500310": "Recharge",
+  "500320": "First recharge",
+  "500330": "Bet",
+  "500340": "Bet Count",
+  "500350": "Register",
+
+  "__comment6__": "-- 活动(Activity) --",
+  "600010": "Limited time",
+  "600011": "Newcomer",
+  "600012": "Daily",
+
+  "600020": "First recharge",
+  "600021": "Register",
+  "600022": "Other"
 }

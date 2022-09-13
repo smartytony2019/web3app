@@ -48,6 +48,7 @@ public class AgentCommissionJob {
     private boolean isAgentCommission;
 
     private static final int UNIT = 10000;
+    private static final String REGEX = ",";
 
     /**
      * 计算代理佣金
@@ -95,7 +96,6 @@ public class AgentCommissionJob {
         }
 
         Map<Integer, Float> map = new HashMap<>();
-//        List<AgentEntity> agentList = list.stream().filter(f -> !StringUtils.isEmpty(f.getChild())).collect(Collectors.toList());
         for (AgentEntity entity : list) {
             if (entity.getLevel() == 0) {
                 continue;
@@ -103,18 +103,18 @@ public class AgentCommissionJob {
 
             if (StringUtils.isEmpty(entity.getChild())) {
                 // 自己
-                StatisticsEntity statisticsEntity = statistics.stream().filter(f -> f.getUid().equals(f.getUid())).findFirst().orElse(null);
+                StatisticsEntity statisticsEntity = statistics.stream().filter(f -> f.getUid().equals(entity.getUid())).findFirst().orElse(null);
                 if (ObjectUtils.isEmpty(statisticsEntity)) {
                     continue;
                 }
-                map.put(entity.getUid(), statisticsEntity.getBetAmount());
+                map.put(entity.getUid(), ObjectUtils.isEmpty(statisticsEntity.getBetAmount()) ? 0 : statisticsEntity.getBetAmount());
             } else {
                 //下级
-                List<Integer> childList = Arrays.stream(entity.getChild().split(",")).map(Integer::parseInt).collect(Collectors.toList());
-//            childList.add(entity.getUid());
+                List<Integer> childList = Arrays.stream(entity.getChild().split(REGEX)).map(Integer::parseInt).collect(Collectors.toList());
+                childList.add(entity.getUid());
                 List<StatisticsEntity> childStatistics = statisticsService.findByUidStr(date, childList);
 
-                double sum = childStatistics.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
+                double sum = childStatistics.stream().mapToDouble(m -> ObjectUtils.isEmpty(m.getBetAmount()) ? 0 : m.getBetAmount()).sum();
                 map.put(entity.getUid(), (float) sum);
             }
         }
@@ -172,13 +172,12 @@ public class AgentCommissionJob {
                         .totalCommission(0F)
                         .selfCommission(0F)
                         .directPerformance(0F)
-                        .teamPerformance(map.get(parent.getUid()))
+//                        .teamPerformance(map.get(parent.getUid()))
                         .build();
 
                 //直属
                 List<Integer> directList = betMoneyList.stream().map(AgentCommissionEntity::getUid).collect(Collectors.toList());
                 if (!CollectionUtils.isEmpty(directList)) {
-//                    List<StatisticsEntity> directStatistics = statisticsService.findByUidStr(date, directList);
                     List<StatisticsEntity> directStatistics = statistics.stream().filter(f -> directList.contains(f.getUid())).collect(Collectors.toList());
 
                     double sum = directStatistics.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
@@ -187,20 +186,22 @@ public class AgentCommissionJob {
 
 
                 //自营
-//                StatisticsEntity parentStatistics = statisticsService.findByUid(date, parent.getUid());
                 StatisticsEntity parentStatistics = statistics.stream().filter(f -> f.getUid().equals(parent.getUid())).findFirst().orElse(null);
-                if (ObjectUtils.isEmpty(parentStatistics)) {
-                    continue;
+                float betAmount = 0F;
+                if (!ObjectUtils.isEmpty(parentStatistics) && !ObjectUtils.isEmpty(parentStatistics.getBetAmount())) {
+                    betAmount = parentStatistics.getBetAmount();
                 }
 
+                //总业绩
                 float totalPerformance = 0F;
                 if (directList.size() == 0) {
                     totalPerformance = map.get(parent.getUid());
                 } else {
-                    totalPerformance = map.get(parent.getUid()) + parentStatistics.getBetAmount();
+                    totalPerformance = map.get(parent.getUid()) + betAmount;
                 }
 
-
+                // 团队业绩
+                float teamPerformance = totalPerformance - betAmount;
 
 
 //                float totalPerformance = map.get(parent.getUid()) + parentStatistics.getBetAmount();
@@ -211,8 +212,9 @@ public class AgentCommissionJob {
                 Integer curRebate = rebateEntity.getRebate();
 
                 entity.setTotalPerformance(totalPerformance);
-                entity.setSelfPerformance(parentStatistics.getBetAmount());
-                entity.setSelfCommission(parentStatistics.getBetAmount() * curRebate / UNIT);
+                entity.setTeamPerformance(teamPerformance);
+                entity.setSelfPerformance(betAmount);
+                entity.setSelfCommission(betAmount * curRebate / UNIT);
                 entity.setSubPerformance(0F);
                 entity.setRebate(curRebate);
                 betMoneyList.add(entity);
@@ -246,11 +248,31 @@ public class AgentCommissionJob {
             self.setCreateTime(DateUtil.date());
             self.setCreateTimestamp(DateUtil.current());
             self.setSubPerformance(self.getTeamPerformance() - self.getDirectPerformance());
+            //人数
+            AgentEntity agentEntity = list.stream().filter(f -> f.getUid().equals(key)).findFirst().orElse(null);
+            if(!ObjectUtils.isEmpty(agentEntity)) {
+                String child = agentEntity.getChild();
+                int count = StringUtils.isEmpty(child) ? 0 : child.split(REGEX).length;
+                self.setTeamCount(count);
+            }
+            List<AgentEntity> collect = list.stream().filter(f -> f.getPUid().equals(key)).collect(Collectors.toList());
+            self.setDirectCount(collect.size());
+
+            // 判断没有直属佣金
+            if (self.getDirectPerformance() <= 0 && self.getSelfPerformance() <= 0) {
+                continue;
+            }
+
+
             agentCommissionEntityList.add(self);
         }
 
+        if (agentCommissionEntityList.size() <= 0) {
+            return;
+        }
+
         boolean isSuccess = agentCommissionService.insertOrUpdate(agentCommissionEntityList);
-        System.out.println(isSuccess);
+//        System.out.println(isSuccess);
     }
 
 

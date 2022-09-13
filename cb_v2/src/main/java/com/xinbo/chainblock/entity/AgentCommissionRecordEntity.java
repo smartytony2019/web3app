@@ -57,4 +57,16 @@ public class AgentCommissionRecordEntity {
     @TableField("create_timestamp")
     private Long createTimestamp;
 
+    /**
+     * 状态(0:申请 1:成功 2:驳回)
+     */
+    @TableField("status")
+    private Integer status;
+
+    /**
+     * 备注
+     */
+    @TableField("remark")
+    private String remark;
+
 }

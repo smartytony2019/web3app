@@ -28,10 +28,7 @@ import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
-import com.xinbo.chainblock.vo.MemberLoginVo;
-import com.xinbo.chainblock.vo.TransferVo;
-import com.xinbo.chainblock.vo.RegisterVo;
-import com.xinbo.chainblock.vo.WithdrawVo;
+import com.xinbo.chainblock.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -93,14 +90,17 @@ public class MemberController {
             ) {
                 return R.builder().code(StatusCode.FAILURE).msg("数据不合法").build();
             }
-
+            String salt = IdUtil.nanoId(12);
+            String encodePwd = DigestUtil.md5Hex(DigestUtil.md5Hex(vo.getPwd()) + salt);
+            String encodeWithdrawPwd = DigestUtil.md5Hex(DigestUtil.md5Hex(vo.getWithdrawWallet()) + salt);
             MemberEntity entity = MemberEntity.builder()
                     .username(vo.getUsername())
-                    .pwd(vo.getPwd())
+                    .pwd(encodePwd)
                     .version(1)
-                    .salt(IdUtil.nanoId(12))
+                    .salt(salt)
                     .money(0F)
-                    .withdrawPwd(vo.getWithdrawWallet())
+                    .withdrawWallet(vo.getWithdrawWallet())
+                    .withdrawPwd(encodeWithdrawPwd)
                     .build();
 
             boolean isSuccess = memberService.register(entity, vo.getCode());
@@ -167,12 +167,71 @@ public class MemberController {
             JSONObject result = new JSONObject();
             result.put("token", String.format("Bearer %s", token));
             result.put("info", MapperUtil.to(entity, MemberDto.class));
+
+            String key = String.format(RedisConst.MEMBER_TOKEN, entity.getUsername());
+            redisTemplate.opsForValue().set(key, token);
+
             return R.builder().code(StatusCode.SUCCESS).data(result).build();
         } catch (Exception ex) {
 
         }
         return R.builder().code(StatusCode.FAILURE).build();
     }
+
+    @JwtIgnore
+    @Operation(summary = "logout", description = "登出")
+    @PostMapping("logout")
+    public R<Object> logout() {
+        JwtUserBo jwtUser = JwtUtil.getJwtUser();
+        String key = String.format(RedisConst.MEMBER_TOKEN, jwtUser.getUsername());
+        Boolean delete = redisTemplate.delete(key);
+        if (!ObjectUtils.isEmpty(delete) && delete) {
+            return R.builder().code(StatusCode.SUCCESS).build();
+        }
+        return R.builder().code(StatusCode.FAILURE).build();
+    }
+
+
+    @JwtIgnore
+    @Operation(summary = "changePwd", description = "更改密码")
+    @PostMapping("changePwd")
+    public R<Object> changePwd(@RequestBody MemberChangePasswordVo vo) {
+
+        JwtUserBo jwtUser = JwtUtil.getJwtUser();
+
+        MemberEntity entity = memberService.findById(jwtUser.getUid());
+        if (ObjectUtils.isEmpty(entity) || entity.getId() <= 0) {
+            return R.builder().code(StatusCode.FAILURE).msg("数据不合法").build();
+        }
+
+        if (!vo.getNewPwd().equals(vo.getConfirmPwd())) {
+            return R.builder().code(StatusCode.FAILURE).msg("确认密码与新密码不一致").build();
+        }
+
+        String encodePwd = DigestUtil.md5Hex(DigestUtil.md5Hex(vo.getOldPwd()) + entity.getSalt());
+        if (vo.getType() == 1 && !encodePwd.equals(entity.getPwd())) {
+            return R.builder().code(StatusCode.FAILURE).msg("原密码不正确").build();
+        }
+        if (vo.getType() == 2 && !encodePwd.equals(entity.getWithdrawPwd())) {
+            return R.builder().code(StatusCode.FAILURE).msg("原密码不正确").build();
+        }
+
+
+        String genNewPwd = DigestUtil.md5Hex(DigestUtil.md5Hex(vo.getNewPwd()) + entity.getSalt());
+        // 登录密码
+        if (vo.getType() == 1) {
+            entity.setPwd(genNewPwd);
+        }
+
+        // 提现密码
+        if (vo.getType() == 2) {
+            entity.setWithdrawPwd(genNewPwd);
+        }
+
+        boolean isSuccess = memberService.update(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
 
     @JwtIgnore
     @Operation(summary = "balance", description = "TRX&USDT余额")

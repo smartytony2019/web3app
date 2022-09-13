@@ -1,8 +1,10 @@
 package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xinbo.chainblock.bo.DateRangeBo;
 import com.xinbo.chainblock.entity.AgentCommissionEntity;
 import com.xinbo.chainblock.entity.AgentEntity;
+import com.xinbo.chainblock.entity.StatisticsEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -30,4 +32,6 @@ public interface AgentCommissionMapper extends BaseMapper<AgentCommissionEntity>
 
     @Select("select * from t_agent_commission where uid = #{uid} and date = #{date} limit 1")
     AgentCommissionEntity find(@Param("uid") int uid, @Param("date") String date);
+
+    AgentCommissionEntity findTotal(@Param("bo") DateRangeBo dateRangeBo, @Param("uid") int uid);
 }

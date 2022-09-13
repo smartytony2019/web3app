@@ -228,7 +228,7 @@ public class HashAlgorithm {
 
 
     public AlgorithmResult settle(HashResultEntity hashResult, HashBetEntity bet) {
-        switch (bet.getAlgorithm()) {
+        switch (bet.getAlgorithmCode()) {
             case "1000":    //哈希两面
                 return this.hashComb(hashResult, bet);
 
