@@ -1,16 +1,13 @@
-package com.xinbo.chainblock.entity.activity;
+package com.xinbo.chainblock.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 /**
  * @author tony
@@ -21,31 +18,38 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_activity_cate")
-public class ActivityCateEntity {
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+@TableName("t_activity_rule_item")
+public class ActivityRuleItemVo {
 
     /**
-     * 类目id
+     * 编号
      */
-    @TableField("cate_id")
-    private Integer cateId;
+    private String sn;
 
 
     /**
-     * 类目编码
+     * 类型
      */
-    @TableField("name")
-    private String name;
+    private Integer type;
 
 
     /**
-     * 类目中文
+     * 最小值
      */
-    @TableField("name_zh")
-    private String nameZh;
+    private Integer min;
+
+
+    /**
+     * 最大值
+     */
+    private Integer max;
+
+
+    /**
+     * 赠送比例
+     */
+    private Float ratio;
+
 
 
 }

@@ -55,8 +55,8 @@ public class ActivityRuleServiceImpl extends ServiceImpl<ActivityRuleMapper, Act
             wrappers.eq(ActivityRuleEntity::getId, entity.getId());
         }
 
-        if (!StringUtils.isEmpty(entity.getActivityId()) && entity.getActivityId() > 0) {
-            wrappers.eq(ActivityRuleEntity::getActivityId, entity.getActivityId());
+        if (!StringUtils.isEmpty(entity.getSn())) {
+            wrappers.eq(ActivityRuleEntity::getSn, entity.getSn());
         }
 
         return wrappers;

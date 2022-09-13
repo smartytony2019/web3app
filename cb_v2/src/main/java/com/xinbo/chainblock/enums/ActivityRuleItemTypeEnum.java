@@ -13,17 +13,16 @@ import java.util.Map;
 /**
  * @author tony
  * @date 8/9/22 10:21 下午
- * @desc 活动规则限制项
+ * @desc 活动规则项类型
  */
 @AllArgsConstructor
-public enum ActivityRuleCycleEnum {
-    ONE_TIME(1,"600030", "一次"),
-    UNLIMITED(2,"600031", "不限次数"),
-
-    ONE_TIME_DAY(3,"600032", "一天一次"),
-    ONE_TIME_WEEK(4,"600033", "一周一次"),
-    ONE_TIME_MONTH(5,"600034", "一月一次"),
-    CUSTOM(6,"600035", "自定义天数")
+public enum ActivityRuleItemTypeEnum {
+    RANGE(1,"600070", "范围"),
+    EQUAL(2,"600071", "等于"),
+    GREAT_THAN(3,"600072", "大于"),
+    GREAT_THAN_EQUAL(4,"600073", "大于等于"),
+    LESS_THAN(5,"600074", "小于"),
+    LESS_THAN_EQUAL(6,"600075", "小于等于")
     ;
 
     int code;
@@ -41,7 +40,7 @@ public enum ActivityRuleCycleEnum {
     }
 
     public static EnumItemBo valueOf(int code) {
-        for (ActivityRuleCycleEnum e: values()) {
+        for (ActivityRuleItemTypeEnum e: values()) {
             if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
@@ -51,18 +50,18 @@ public enum ActivityRuleCycleEnum {
 
     public static Map<Integer, EnumItemBo> toMap() {
         Map<Integer, EnumItemBo> map = new HashMap<>();
-        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleCycleEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleItemTypeEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), ActivityRuleCycleEnum.valueOf((int) code));
+            map.put(Integer.parseInt(code.toString()), ActivityRuleItemTypeEnum.valueOf((int) code));
         }
         return map;
     }
 
     public static List<EnumItemBo> toList() {
         List<EnumItemBo> list = new ArrayList<>();
-        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleCycleEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleItemTypeEnum.class, "code");
         for (Object code : codes) {
-            list.add(ActivityRuleCycleEnum.valueOf((int) code));
+            list.add(ActivityRuleItemTypeEnum.valueOf((int) code));
         }
         return list;
     }

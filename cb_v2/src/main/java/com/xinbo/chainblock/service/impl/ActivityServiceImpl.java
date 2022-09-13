@@ -11,11 +11,16 @@ import com.xinbo.chainblock.dto.ActivityDto;
 import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.activity.ActivityEntity;
+import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
+import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
 import com.xinbo.chainblock.mapper.ActivityMapper;
+import com.xinbo.chainblock.mapper.ActivityRuleItemMapper;
+import com.xinbo.chainblock.mapper.ActivityRuleMapper;
 import com.xinbo.chainblock.service.ActivityService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -31,6 +36,13 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
 
     @Autowired
     private ActivityMapper activityMapper;
+
+    @Autowired
+    private ActivityRuleMapper activityRuleMapper;
+
+    @Autowired
+    private ActivityRuleItemMapper activityRuleItemMapper;
+
 
     @Override
     public boolean insert(ActivityEntity entity) {
@@ -66,6 +78,28 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
         return activityMapper.findByType(type);
     }
 
+    @Transactional
+    @Override
+    public boolean create(ActivityEntity entity, ActivityRuleEntity ruleEntity, List<ActivityRuleItemEntity> itemEntities) {
+        int rows = activityMapper.insert(entity);
+        if (rows <= 0) {
+            return false;
+        }
+        rows = activityRuleMapper.insert(ruleEntity);
+        if (rows <= 0) {
+            return false;
+        }
+
+        for (ActivityRuleItemEntity item : itemEntities) {
+            rows = activityRuleItemMapper.insert(item);
+            if (rows <= 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     /**
      * 创建查询条件
@@ -83,8 +117,8 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
             wrappers.eq(ActivityEntity::getId, entity.getId());
         }
 
-        if (!StringUtils.isEmpty(entity.getCateId()) && entity.getCateId() > 0) {
-            wrappers.eq(ActivityEntity::getCateId, entity.getCateId());
+        if (!StringUtils.isEmpty(entity.getCateCode()) && entity.getCateCode() > 0) {
+            wrappers.eq(ActivityEntity::getCateCode, entity.getCateCode());
         }
 
         if (!StringUtils.isEmpty(entity.getType()) && entity.getType() > 0) {

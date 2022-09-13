@@ -13,17 +13,12 @@ import java.util.Map;
 /**
  * @author tony
  * @date 8/9/22 10:21 下午
- * @desc 活动规则限制项
+ * @desc 计算方式
  */
 @AllArgsConstructor
-public enum ActivityRuleCycleEnum {
-    ONE_TIME(1,"600030", "一次"),
-    UNLIMITED(2,"600031", "不限次数"),
-
-    ONE_TIME_DAY(3,"600032", "一天一次"),
-    ONE_TIME_WEEK(4,"600033", "一周一次"),
-    ONE_TIME_MONTH(5,"600034", "一月一次"),
-    CUSTOM(6,"600035", "自定义天数")
+public enum ActivityCalcModeEnum {
+    FIXED(1,"600040", "固定金额"),
+    PERCENT(2,"600041", "百分比")
     ;
 
     int code;
@@ -41,7 +36,7 @@ public enum ActivityRuleCycleEnum {
     }
 
     public static EnumItemBo valueOf(int code) {
-        for (ActivityRuleCycleEnum e: values()) {
+        for (ActivityCalcModeEnum e: values()) {
             if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
@@ -51,18 +46,18 @@ public enum ActivityRuleCycleEnum {
 
     public static Map<Integer, EnumItemBo> toMap() {
         Map<Integer, EnumItemBo> map = new HashMap<>();
-        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleCycleEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(ActivityCalcModeEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), ActivityRuleCycleEnum.valueOf((int) code));
+            map.put(Integer.parseInt(code.toString()), ActivityCalcModeEnum.valueOf((int) code));
         }
         return map;
     }
 
     public static List<EnumItemBo> toList() {
         List<EnumItemBo> list = new ArrayList<>();
-        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleCycleEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(ActivityCalcModeEnum.class, "code");
         for (Object code : codes) {
-            list.add(ActivityRuleCycleEnum.valueOf((int) code));
+            list.add(ActivityCalcModeEnum.valueOf((int) code));
         }
         return list;
     }
