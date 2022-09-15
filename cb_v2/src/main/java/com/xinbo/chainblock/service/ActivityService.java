@@ -27,5 +27,7 @@ public interface ActivityService {
 
     ActivityEntity findByType(int type);
 
-    boolean create(ActivityEntity entity, ActivityRuleEntity ruleEntity, List<ActivityRuleItemEntity> itemEntities);
+    boolean create(ActivityEntity entity);
+
+    boolean update(ActivityEntity entity);
 }

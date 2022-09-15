@@ -43,17 +43,27 @@ public enum ActivityRuleCycleEnum {
     public static EnumItemBo valueOf(int code) {
         for (ActivityRuleCycleEnum e: values()) {
             if(e.getCode() == code){
+                return  EnumItemBo.builder().code(code).name(e.getName()).nameZh(e.getNameZh()).build();
+            }
+        }
+        return EnumItemBo.builder().build();
+    }
+
+    public static EnumItemBo valueOfTranslate(int code) {
+        for (ActivityRuleCycleEnum e: values()) {
+            if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
         }
         return EnumItemBo.builder().build();
     }
 
+
     public static Map<Integer, EnumItemBo> toMap() {
         Map<Integer, EnumItemBo> map = new HashMap<>();
         List<Object> codes = EnumUtil.getFieldValues(ActivityRuleCycleEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), ActivityRuleCycleEnum.valueOf((int) code));
+            map.put(Integer.parseInt(code.toString()), ActivityRuleCycleEnum.valueOfTranslate((int) code));
         }
         return map;
     }
@@ -62,7 +72,7 @@ public enum ActivityRuleCycleEnum {
         List<EnumItemBo> list = new ArrayList<>();
         List<Object> codes = EnumUtil.getFieldValues(ActivityRuleCycleEnum.class, "code");
         for (Object code : codes) {
-            list.add(ActivityRuleCycleEnum.valueOf((int) code));
+            list.add(ActivityRuleCycleEnum.valueOfTranslate((int) code));
         }
         return list;
     }

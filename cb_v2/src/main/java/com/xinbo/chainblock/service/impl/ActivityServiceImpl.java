@@ -37,12 +37,6 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
     @Autowired
     private ActivityMapper activityMapper;
 
-    @Autowired
-    private ActivityRuleMapper activityRuleMapper;
-
-    @Autowired
-    private ActivityRuleItemMapper activityRuleItemMapper;
-
 
     @Override
     public boolean insert(ActivityEntity entity) {
@@ -68,7 +62,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
     @Override
     public BasePageBo findPage(ActivityEntity entity, long current, long size) {
         Page<ActivityEntity> page = new Page<>(current, size);
-        page.addOrder(OrderItem.asc("create_time"));
+        page.addOrder(OrderItem.asc("sorted"));
         IPage<ActivityEntity> iPage = activityMapper.selectPage(page, this.createWrapper(entity));
         return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), ActivityDto.class)).build();
     }
@@ -78,26 +72,14 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
         return activityMapper.findByType(type);
     }
 
-    @Transactional
     @Override
-    public boolean create(ActivityEntity entity, ActivityRuleEntity ruleEntity, List<ActivityRuleItemEntity> itemEntities) {
-        int rows = activityMapper.insert(entity);
-        if (rows <= 0) {
-            return false;
-        }
-        rows = activityRuleMapper.insert(ruleEntity);
-        if (rows <= 0) {
-            return false;
-        }
+    public boolean create(ActivityEntity entity) {
+        return activityMapper.insert(entity) > 0;
+    }
 
-        for (ActivityRuleItemEntity item : itemEntities) {
-            rows = activityRuleItemMapper.insert(item);
-            if (rows <= 0) {
-                return false;
-            }
-        }
-
-        return true;
+    @Override
+    public boolean update(ActivityEntity entity) {
+        return activityMapper.updateById(entity) > 0;
     }
 
 

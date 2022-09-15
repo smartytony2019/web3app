@@ -7,6 +7,7 @@ import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.consts.StatusCode;
+import com.xinbo.chainblock.dto.ActivityDto;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.activity.ActivityEntity;
@@ -26,6 +27,7 @@ import com.xinbo.chainblock.vo.ActivityVo;
 import com.xinbo.chainblock.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -37,8 +39,15 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
+    @Operation(summary = "find", description = "查找单条")
+    @PostMapping("find")
+    public R<Object> find(@RequestBody ActivityVo vo) {
+        ActivityEntity entity = MapperUtil.to(vo, ActivityEntity.class);
+        ActivityEntity result = activityService.find(entity);
+        return R.builder().code(StatusCode.SUCCESS).data(MapperUtil.to(result, ActivityDto.class)).build();
+    }
 
-    @Operation(summary = "findPage", description = "会员列表")
+    @Operation(summary = "findPage", description = "查找分页")
     @PostMapping("findPage/{current}/{size}")
     public R<Object> findPage(@RequestBody ActivityVo vo, @PathVariable long current, @PathVariable long size) {
         ActivityEntity entity = MapperUtil.to(vo, ActivityEntity.class);
@@ -90,13 +99,13 @@ public class ActivityController {
     }
 
 
-    @Operation(summary = "create", description = "创建")
-    @PostMapping("create")
-    public R<Object> create(@RequestBody ActivityVo vo) {
-        System.out.println(vo);
 
+
+
+    @Operation(summary = "operate", description = "操作(添加|修改)")
+    @PostMapping("operate")
+    public R<Object> operate(@RequestBody ActivityVo vo) {
         EnumItemBo cateEnum = ActivityCategoryEnum.valueOf(vo.getCateCode());
-
         String sn = IdUtil.getSnowflake().nextIdStr();
         ActivityEntity entity = ActivityEntity.builder()
                 .cateCode(cateEnum.getCode())
@@ -114,38 +123,14 @@ public class ActivityController {
                 .createTime(DateUtil.date())
                 .isEnable(vo.getIsEnable())
                 .build();
-        System.out.println(entity);
 
-        ActivityRuleEntity ruleEntity = ActivityRuleEntity.builder()
-                .sn(sn)
-                .cycle(vo.getCycle())
-                .days(vo.getDays())
-                .limitItem(vo.getLimitItem())
-                .limitLev(0)
-                .withdrawBetMul(vo.getWithdrawBetMul())
-                .jackpotBetMul(vo.getJackpotBetMul())
-                .calcMode(vo.getCalcMode())
-                .receiveMode(vo.getReceiveMode())
-                .money(vo.getMoney())
-                .symbol(vo.getSymbol())
-                .build();
-        System.out.println(ruleEntity);
-
-        List<ActivityRuleItemVo> items = vo.getItems();
-        List<ActivityRuleItemEntity> itemEntities = new ArrayList<>();
-        for (ActivityRuleItemVo item : items) {
-            ActivityRuleItemEntity itemEntity = ActivityRuleItemEntity.builder()
-                    .sn(sn)
-                    .type(item.getType())
-                    .min(item.getMin())
-                    .max(item.getMax())
-                    .ratio(item.getRatio())
-                    .build();
-            itemEntities.add(itemEntity);
+        boolean isSuccess;
+        if(ObjectUtils.isEmpty(vo.getId()) || vo.getId()<=0) {
+            isSuccess = activityService.create(entity);
+        } else {
+            entity.setId(vo.getId());
+            isSuccess = activityService.update(entity);
         }
-
-        boolean isSuccess = activityService.create(entity, ruleEntity, itemEntities);
-
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 

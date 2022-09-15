@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActivityVo extends ActivityRuleVo {
+public class ActivityVo {
 
     private Integer id;
 
@@ -80,14 +80,7 @@ public class ActivityVo extends ActivityRuleVo {
 
 
     /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
      * 限制项(1:首充, 2:注册送, 10:其它)
      */
     private Boolean isEnable;
-
-    private List<ActivityRuleItemVo> items;
 }

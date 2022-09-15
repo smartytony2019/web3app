@@ -29,7 +29,7 @@ public class ActivityDto {
     /**
      * 类目id
      */
-    private Integer cateId;
+    private Integer cateCode;
 
 
     /**
@@ -40,9 +40,21 @@ public class ActivityDto {
 
 
     /**
+     * 编号
+     */
+    private String sn;
+
+
+    /**
      * 标题
      */
     private String title;
+
+
+    /**
+     * 图片
+     */
+    private String img;
 
 
     /**

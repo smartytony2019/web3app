@@ -38,6 +38,9 @@ public class MapperUtil {
      * @return
      */
     public static <Source, Target> Target to(Source source, Class<Target> target) {
+        if (ObjectUtils.isEmpty(source)) {
+            return null;
+        }
         Target convert = Convert.convert(target, source);
         return translate(convert);
     }
@@ -52,9 +55,10 @@ public class MapperUtil {
      * @return
      */
     public static <Source, Target> List<Target> many(List<Source> source, Class<Target> target) {
-        if (source == null) {
+        if (ObjectUtils.isEmpty(source)) {
             return null;
         }
+
         if (source.size() == 0) {
             return new ArrayList<>();
         }

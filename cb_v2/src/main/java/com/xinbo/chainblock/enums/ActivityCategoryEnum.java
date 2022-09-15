@@ -40,6 +40,15 @@ public enum ActivityCategoryEnum {
     public static EnumItemBo valueOf(int code) {
         for (ActivityCategoryEnum e: values()) {
             if(e.getCode() == code){
+                return  EnumItemBo.builder().code(code).name(e.getName()).nameZh(e.getNameZh()).build();
+            }
+        }
+        return EnumItemBo.builder().build();
+    }
+
+    public static EnumItemBo valueOfTranslate(int code) {
+        for (ActivityCategoryEnum e: values()) {
+            if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
         }
@@ -50,7 +59,7 @@ public enum ActivityCategoryEnum {
         Map<Integer, EnumItemBo> map = new HashMap<>();
         List<Object> codes = EnumUtil.getFieldValues(ActivityCategoryEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), ActivityCategoryEnum.valueOf((int) code));
+            map.put(Integer.parseInt(code.toString()), ActivityCategoryEnum.valueOfTranslate((int) code));
         }
         return map;
     }
@@ -59,7 +68,7 @@ public enum ActivityCategoryEnum {
         List<EnumItemBo> list = new ArrayList<>();
         List<Object> codes = EnumUtil.getFieldValues(ActivityCategoryEnum.class, "code");
         for (Object code : codes) {
-            list.add(ActivityCategoryEnum.valueOf((int) code));
+            list.add(ActivityCategoryEnum.valueOfTranslate((int) code));
         }
         return list;
     }

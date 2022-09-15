@@ -40,6 +40,15 @@ public enum ActivityRuleLimitItemEnum {
     public static EnumItemBo valueOf(int code) {
         for (ActivityRuleLimitItemEnum e: values()) {
             if(e.getCode() == code){
+                return  EnumItemBo.builder().code(code).name(e.getName()).nameZh(e.getNameZh()).build();
+            }
+        }
+        return EnumItemBo.builder().build();
+    }
+
+    public static EnumItemBo valueOfTranslate(int code) {
+        for (ActivityRuleLimitItemEnum e: values()) {
+            if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
         }
@@ -50,7 +59,7 @@ public enum ActivityRuleLimitItemEnum {
         Map<Integer, EnumItemBo> map = new HashMap<>();
         List<Object> codes = EnumUtil.getFieldValues(ActivityRuleLimitItemEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), ActivityRuleLimitItemEnum.valueOf((int) code));
+            map.put(Integer.parseInt(code.toString()), ActivityRuleLimitItemEnum.valueOfTranslate((int) code));
         }
         return map;
     }
@@ -59,7 +68,7 @@ public enum ActivityRuleLimitItemEnum {
         List<EnumItemBo> list = new ArrayList<>();
         List<Object> codes = EnumUtil.getFieldValues(ActivityRuleLimitItemEnum.class, "code");
         for (Object code : codes) {
-            list.add(ActivityRuleLimitItemEnum.valueOf((int) code));
+            list.add(ActivityRuleLimitItemEnum.valueOfTranslate((int) code));
         }
         return list;
     }

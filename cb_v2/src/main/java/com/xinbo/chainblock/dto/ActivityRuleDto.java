@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.vo;
+package com.xinbo.chainblock.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @author tony
  * @date 6/25/22 4:10 下午
@@ -20,15 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ActivityRuleVo {
-
+public class ActivityRuleDto {
 
     private Integer id;
 
-    /**
-     * 编号
-     */
-    private Integer type;
 
     /**
      * 编号
@@ -93,6 +86,4 @@ public class ActivityRuleVo {
      */
     private Integer symbol;
 
-
-    private List<ActivityRuleItemVo> items;
 }

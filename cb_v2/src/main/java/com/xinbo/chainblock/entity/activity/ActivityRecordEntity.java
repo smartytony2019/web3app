@@ -67,7 +67,7 @@ public class ActivityRecordEntity {
      * 赠送币种
      */
     @TableField("symbol")
-    private String symbol;
+    private Integer symbol;
 
 
     /**
