@@ -67,7 +67,7 @@ public class ActivityRuleServiceImpl extends ServiceImpl<ActivityRuleMapper, Act
             return false;
         }
 
-        activityRuleItemMapper.deleteAll(entity.getSn());
+        activityRuleItemMapper.deleteBySn(entity.getSn());
         for (ActivityRuleItemEntity item : itemEntities) {
             if(ObjectUtils.isEmpty(item.getMin()) || ObjectUtils.isEmpty(item.getMax())) {
                 continue;

@@ -36,6 +36,10 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
 
     @Autowired
     private ActivityMapper activityMapper;
+    @Autowired
+    private ActivityRuleMapper activityRuleMapper;
+    @Autowired
+    private ActivityRuleItemMapper activityRuleItemMapper;
 
 
     @Override
@@ -80,6 +84,15 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
     @Override
     public boolean update(ActivityEntity entity) {
         return activityMapper.updateById(entity) > 0;
+    }
+
+    @Transactional
+    @Override
+    public boolean delete(String sn) {
+        activityMapper.deleteBySn(sn);
+        activityRuleMapper.deleteBySn(sn);
+        activityRuleItemMapper.deleteBySn(sn);
+        return true;
     }
 
 

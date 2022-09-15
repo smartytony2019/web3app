@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.ActivityDto;
+import com.xinbo.chainblock.dto.ActivityRecordDto;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
@@ -90,6 +91,14 @@ public class ActivityRecordServiceImpl extends ServiceImpl<ActivityRecordMapper,
         }
 
         return true;
+    }
+
+    @Override
+    public BasePageBo findPage(ActivityRecordEntity entity, long current, long size) {
+        Page<ActivityRecordEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.desc("id"));
+        IPage<ActivityRecordEntity> iPage = activityRecordMapper.selectPage(page, this.createWrapper(entity));
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), ActivityRecordDto.class)).build();
     }
 
     /**

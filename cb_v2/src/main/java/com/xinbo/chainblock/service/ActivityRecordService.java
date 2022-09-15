@@ -1,9 +1,11 @@
 package com.xinbo.chainblock.service;
 
 
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
+import com.xinbo.chainblock.entity.activity.ActivityEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRecordEntity;
 
 import java.util.List;
@@ -23,4 +25,5 @@ public interface ActivityRecordService {
 
     boolean submit(List<ActivityRecordEntity> list, MemberEntity member, MemberFlowEntity memberFlow, StatisticsEntity statistics);
 
+    BasePageBo findPage(ActivityRecordEntity entity, long current, long size);
 }

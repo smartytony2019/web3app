@@ -30,4 +30,6 @@ public interface ActivityService {
     boolean create(ActivityEntity entity);
 
     boolean update(ActivityEntity entity);
+
+    boolean delete(String sn);
 }

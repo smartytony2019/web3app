@@ -8,6 +8,7 @@ import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.enums.ActivityCalcModeEnum;
+import com.xinbo.chainblock.enums.LanguageEnum;
 import com.xinbo.chainblock.enums.SymbolEnum;
 import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.bo.JwtUserBo;
@@ -107,6 +108,13 @@ public class IndexController {
     @PostMapping("symbol")
     public R<Object> symbol() {
         return R.builder().code(StatusCode.SUCCESS).data(SymbolEnum.toList()).build();
+    }
+
+
+    @Operation(summary = "language", description = "语言")
+    @PostMapping("language")
+    public R<Object> language() {
+        return R.builder().code(StatusCode.SUCCESS).data(LanguageEnum.toList()).build();
     }
 
 }

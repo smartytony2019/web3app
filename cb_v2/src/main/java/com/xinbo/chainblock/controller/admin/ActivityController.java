@@ -55,6 +55,46 @@ public class ActivityController {
         return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
+    @Operation(summary = "operate", description = "操作(添加|修改)")
+    @PostMapping("operate")
+    public R<Object> operate(@RequestBody ActivityVo vo) {
+        EnumItemBo cateEnum = ActivityCategoryEnum.valueOf(vo.getCateCode());
+        String sn = IdUtil.getSnowflake().nextIdStr();
+        ActivityEntity entity = ActivityEntity.builder()
+                .cateCode(cateEnum.getCode())
+                .cateName(cateEnum.getName())
+                .cateNameZh(cateEnum.getNameZh())
+                .sn(sn)
+                .title(vo.getTitle())
+                .img(vo.getImg())
+                .content(vo.getContent())
+                .sorted(vo.getSorted())
+                .type(vo.getType())
+                .language(vo.getLanguage())
+                .beginTime(vo.getBeginTime())
+                .finishTime(vo.getFinishTime())
+                .createTime(DateUtil.date())
+                .isEnable(vo.getIsEnable())
+                .build();
+
+        boolean isSuccess;
+        if(ObjectUtils.isEmpty(vo.getId()) || vo.getId()<=0) {
+            isSuccess = activityService.create(entity);
+        } else {
+            entity.setId(vo.getId());
+            isSuccess = activityService.update(entity);
+        }
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+
+    @Operation(summary = "delete", description = "删除")
+    @PostMapping("delete/{sn}")
+    public R<Object> delete(@PathVariable String sn) {
+        boolean isSuccess = activityService.delete(sn);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
 
     @Operation(summary = "findCate", description = "类目")
     @PostMapping("findCate")
@@ -100,39 +140,6 @@ public class ActivityController {
 
 
 
-
-
-    @Operation(summary = "operate", description = "操作(添加|修改)")
-    @PostMapping("operate")
-    public R<Object> operate(@RequestBody ActivityVo vo) {
-        EnumItemBo cateEnum = ActivityCategoryEnum.valueOf(vo.getCateCode());
-        String sn = IdUtil.getSnowflake().nextIdStr();
-        ActivityEntity entity = ActivityEntity.builder()
-                .cateCode(cateEnum.getCode())
-                .cateName(cateEnum.getName())
-                .cateNameZh(cateEnum.getNameZh())
-                .sn(sn)
-                .title(vo.getTitle())
-                .img(vo.getImg())
-                .content(vo.getContent())
-                .sorted(vo.getSorted())
-                .type(vo.getType())
-                .language(vo.getLanguage())
-                .beginTime(vo.getBeginTime())
-                .finishTime(vo.getFinishTime())
-                .createTime(DateUtil.date())
-                .isEnable(vo.getIsEnable())
-                .build();
-
-        boolean isSuccess;
-        if(ObjectUtils.isEmpty(vo.getId()) || vo.getId()<=0) {
-            isSuccess = activityService.create(entity);
-        } else {
-            entity.setId(vo.getId());
-            isSuccess = activityService.update(entity);
-        }
-        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
-    }
 
 
 }

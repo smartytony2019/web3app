@@ -23,5 +23,5 @@ public interface ActivityRuleItemMapper extends BaseMapper<ActivityRuleItemEntit
 
 
     @Delete("delete from t_activity_rule_item where sn = #{sn}")
-    int deleteAll(@Param("sn") String sn);
+    int deleteBySn(@Param("sn") String sn);
 }
