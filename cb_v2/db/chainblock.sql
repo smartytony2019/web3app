@@ -298,50 +298,52 @@ create table t_member(
   pwd varchar(100) comment '密码',
   money decimal(10,4) comment '金额',
   salt varchar(100) comment '盐',
+  deposit_wallet varchar(100) comment '存款钱包地址',
   withdraw_wallet varchar(100) comment '提现钱包地址',
   withdraw_pwd varchar(100) comment '提现钱包密码',
   version int comment '版本',
-  type int default 1 comment '类型(1:正常会员, 2:测试会员)',
+  type int default 1 comment '类型(1:正常会员, 2:测试会员, 3:虚拟会员)',
   is_enable tinyint(1) default 1 comment '是否冻结(1:正常, 0:冻结)',
   UNIQUE KEY unique_username (username)
 ) comment '会员表';
 
 
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`, `withdraw_wallet`,`withdraw_pwd`,`version`,`type`,`is_enable`) values
-('jack','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackB1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackB2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD5','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD6','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD7','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD8','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo5566','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo8899','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`deposit_wallet`, `withdraw_wallet`,`withdraw_pwd`,`version`,`type`,`is_enable`) values
+('jack','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackB1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackB2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD5','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD6','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD7','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD8','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo5566','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo8899','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
 ;
 
-drop table if exists t_member_group;
-create table t_member_group(
-  id int primary key auto_increment,
-  name varchar(50) comment '编码',
-  name_zh varchar(50) comment '中文'
-) comment '会员组表';
-insert into cb_v2.t_member_group (name, name_zh) VALUES
-('600010', '正式会员组'),
-('600011', '测试会员组'),
-('600012', '虚拟会员组')
-;
+
+# drop table if exists t_member_group;
+# create table t_member_group(
+#   id int primary key auto_increment,
+#   name varchar(50) comment '编码',
+#   name_zh varchar(50) comment '中文'
+# ) comment '会员组表';
+# insert into cb_v2.t_member_group (name, name_zh) VALUES
+# ('600010', '正式会员组'),
+# ('600011', '测试会员组'),
+# ('600012', '虚拟会员组')
+# ;
 
 drop table if exists t_member_expand;
 create table t_member_expand(

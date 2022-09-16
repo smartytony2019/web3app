@@ -34,24 +34,15 @@ public class ApiController {
     @Operation(summary = "genMainAccount", description = "生成主帐号")
     @GetMapping("genMainAccount")
     public R<Object> genMainAccount() {
-        AccountApiBo account = trxApi.createAccount();
-        WalletEntity entity = WalletEntity.builder()
-                .addressHex(account.getAddress().getHex())
-                .addressBase58(account.getAddress().getBase58())
-                .publicKey(account.getPublicKey())
-                .privateKey(account.getPrivateKey())
-                .type(1)
-                .isMain(true)
-                .build();
-        boolean insert = walletService.insert(entity);
-        return R.builder().code(StatusCode.SUCCESS).data(insert).build();
+        String account = trxApi.createAccount();
+        return R.builder().code(StatusCode.SUCCESS).data(account).build();
     }
 
 
     @Operation(summary = "createAccount")
     @GetMapping("createAccount")
     public R<Object> createAccount() {
-        AccountApiBo account = trxApi.createAccount();
+        String account = trxApi.createAccount();
         return R.builder().code(StatusCode.SUCCESS).data(account).build();
     }
 
