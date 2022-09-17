@@ -88,6 +88,11 @@ public class HashBetDto {
     private String blockHeight;
 
     /**
+     * 结果
+     */
+    private Integer result;
+
+    /**
      * 网络
      */
     private String network;

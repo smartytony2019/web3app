@@ -5,9 +5,9 @@
 
     <!-- 插入 -->
     <insert id="batchInsert" parameterType="java.util.List">
-        insert into t_activity_record(activity_id, activity_name, uid, username, money, symbol, status, create_time, remark) VALUES
+        insert into t_activity_record(activity_id, activity_title, uid, username, money, symbol, status, create_time, remark) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.activityId}, #{item.activityName}, #{item.uid}, #{item.username}, #{item.money},
+            (#{item.activityId}, #{item.activityTitle}, #{item.uid}, #{item.username}, #{item.money},
             #{item.symbol}, #{item.status}, #{item.createTime}, #{item.remark})
         </foreach>
     </insert>

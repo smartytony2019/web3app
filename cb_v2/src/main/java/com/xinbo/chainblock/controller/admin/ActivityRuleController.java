@@ -64,6 +64,8 @@ public class ActivityRuleController {
     public R<Object> operate(@RequestBody ActivityRuleVo vo) {
         ActivityRuleEntity entity;
         List<ActivityRuleItemEntity> itemEntities = new ArrayList<>();
+        boolean isCreate = !ObjectUtils.isEmpty(vo.getId()) && vo.getId() >0;
+
         if (vo.getType() == ActivityTypeEnum.REGISTER.getCode()) {
             entity = ActivityRuleEntity.builder()
                     .sn(vo.getSn())

@@ -117,8 +117,8 @@ public class AgentController {
         //今日直属业绩
         double dirPerformance = 0;
         List<Integer> collect = direct.stream().map(AgentEntity::getUid).collect(Collectors.toList());
-        List<StatisticsEntity> directList = statisticsService.findByUidStr(date, collect);
-        if (!CollectionUtils.isEmpty(directList) && directList.size() > 0) {
+        if (!CollectionUtils.isEmpty(collect) && collect.size() > 0) {
+            List<StatisticsEntity> directList = statisticsService.findByUidStr(date, collect);
             dirPerformance = directList.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();
         }
         result.put("directPerformance", dirPerformance);

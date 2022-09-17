@@ -22,9 +22,9 @@ scheduled:
   enable:
     register: false
     transfer: false
-    settle: false
+    settle: true
     agent:
-      commission: true
+      commission: false
     finance:
       record: false
       account: false

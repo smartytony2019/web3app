@@ -48,6 +48,11 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, ActivityEnt
     }
 
     @Override
+    public List<ActivityEntity> findAll() {
+        return activityMapper.selectList(this.createWrapper(ActivityEntity.builder().isEnable(true).build()));
+    }
+
+    @Override
     public List<ActivityEntity> findAll(int skip, int size) {
         return activityMapper.findAll(skip, size);
     }
