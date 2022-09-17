@@ -6,6 +6,7 @@ import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.GameEntity;
 import com.xinbo.chainblock.entity.activity.ActivityEntity;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashOfflineBetEntity;
 import com.xinbo.chainblock.entity.hash.HashPlayEntity;
 import com.xinbo.chainblock.enums.HashBetResultEnum;
 import com.xinbo.chainblock.enums.HashBetStatusEnum;
@@ -55,6 +56,17 @@ public class HashController {
     @Operation(summary = "findBetPage", description = "查找分页")
     @PostMapping("findBetPage/{current}/{size}")
     public R<Object> findBetPage(@RequestBody HashBetVo vo, @PathVariable long current, @PathVariable long size) {
+        HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
+        BasePageBo basePageBo = hashBetService.findPage(entity, current, size);
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
+    }
+
+
+    @JwtIgnore
+    @Operation(summary = "findOfflineBetPage", description = "查找分页")
+    @PostMapping("findOfflineBetPage/{current}/{size}")
+    public R<Object> findOfflineBetPage(@RequestBody HashBetVo vo, @PathVariable long current, @PathVariable long size) {
+
         HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
         BasePageBo basePageBo = hashBetService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
