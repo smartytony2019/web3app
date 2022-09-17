@@ -37,13 +37,12 @@ public class TrxApi {
      *
      * @return
      */
-    public AccountApiBo createAccount() {
-        AccountApiBo result = null;
+    public String createAccount() {
+        String result = null;
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.CREATE_ACCOUNT);
             String res = restTemplate.postForObject(url, "", String.class);
-            BaseApiBo<AccountApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<AccountApiBo>>() {
-            });
+            BaseApiBo<String> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<String>>() {});
             if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0 && !ObjectUtils.isEmpty(entity.getData())) {
                 result = entity.getData();
             }

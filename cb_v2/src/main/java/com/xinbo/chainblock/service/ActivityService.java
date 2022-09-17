@@ -3,6 +3,8 @@ package com.xinbo.chainblock.service;
 
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.activity.ActivityEntity;
+import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
+import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
 
 import java.util.List;
 
@@ -24,4 +26,10 @@ public interface ActivityService {
     BasePageBo findPage(ActivityEntity entity, long current, long size);
 
     ActivityEntity findByType(int type);
+
+    boolean create(ActivityEntity entity);
+
+    boolean update(ActivityEntity entity);
+
+    boolean delete(String sn);
 }

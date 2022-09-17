@@ -3,10 +3,7 @@ package com.xinbo.chainblock.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xinbo.chainblock.entity.AgentEntity;
 import com.xinbo.chainblock.entity.activity.ActivityEntity;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,4 +22,7 @@ public interface ActivityMapper extends BaseMapper<ActivityEntity> {
 
     @Select("select * from t_activity where type = #{type} and is_enable = 1 limit 1 ")
     ActivityEntity findByType(@Param("type") int type);
+
+    @Delete("delete from t_activity where sn = #{sn} limit 1")
+    int deleteBySn(@Param("sn") String sn);
 }

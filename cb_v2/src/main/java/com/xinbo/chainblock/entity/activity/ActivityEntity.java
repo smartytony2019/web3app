@@ -30,8 +30,8 @@ public class ActivityEntity {
     /**
      * 类目id
      */
-    @TableField("cate_id")
-    private Integer cateId;
+    @TableField("cate_code")
+    private Integer cateCode;
 
 
     /**
@@ -60,6 +60,13 @@ public class ActivityEntity {
      */
     @TableField("title")
     private String title;
+
+
+    /**
+     * 图片
+     */
+    @TableField("img")
+    private String img;
 
 
     /**

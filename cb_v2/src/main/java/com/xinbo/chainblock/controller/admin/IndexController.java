@@ -7,6 +7,9 @@ import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
+import com.xinbo.chainblock.enums.ActivityCalcModeEnum;
+import com.xinbo.chainblock.enums.LanguageEnum;
+import com.xinbo.chainblock.enums.SymbolEnum;
 import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
@@ -106,13 +109,24 @@ public class IndexController {
      *
      * @return
      */
-
-
     @GetMapping("permissionMenu")
-    public R<Object> permissionMenu(){
+    public R<Object> permissionMenu() {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
-        List<PermissionEntity> list=userService.allMenu(jwtUserBo.getUid());
+        List<PermissionEntity> list = userService.allMenu(jwtUserBo.getUid());
         return R.builder().code(StatusCode.SUCCESS).data(list).build();
+    }
+
+    @Operation(summary = "symbol", description = "币种")
+    @PostMapping("symbol")
+    public R<Object> symbol() {
+        return R.builder().code(StatusCode.SUCCESS).data(SymbolEnum.toList()).build();
+    }
+
+
+    @Operation(summary = "language", description = "语言")
+    @PostMapping("language")
+    public R<Object> language() {
+        return R.builder().code(StatusCode.SUCCESS).data(LanguageEnum.toList()).build();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity.activity;
+package com.xinbo.chainblock.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -20,32 +20,46 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@TableName("t_activity_cate")
-public class ActivityCateEntity {
+public class ActivityRecordVo {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
-    /**
-     * 类目id
-     */
-    @TableField("cate_id")
-    private Integer cateId;
 
 
     /**
      * 类目编码
      */
-    @TableField("name")
-    private String name;
+    private String activityTitle;
+
+
 
 
     /**
-     * 类目中文
+     * 内容
      */
-    @TableField("name_zh")
-    private String nameZh;
+    private String username;
 
+
+    /**
+     * 金额
+     */
+    private Float money;
+
+
+    /**
+     * 赠送币种
+     */
+    private Integer symbol;
+
+
+    /**
+     * 状态(0:未处理 1:成功 2:驳回)
+     */
+    private Integer status;
+
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
 }

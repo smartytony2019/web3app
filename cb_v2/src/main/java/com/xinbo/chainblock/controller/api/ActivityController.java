@@ -239,8 +239,8 @@ public class ActivityController {
                 }
             }
 
-            // 首充
-            if (ruleEntity.getLimitItem() == ActivityRuleLimitItemEnum.FIRST_RECHARGE.getCode()) {
+            // 签到
+            if (ruleEntity.getLimitItem() == ActivityRuleLimitItemEnum.SIGN.getCode()) {
             }
 
             // 打码
@@ -328,9 +328,6 @@ public class ActivityController {
                 }
             }
 
-            // 注册
-            if (ruleEntity.getLimitItem() == ActivityRuleLimitItemEnum.REGISTER.getCode()) {
-            }
 
             if (recordEntityList.size() <= 0) {
                 throw new BusinessException(1, "不符合");

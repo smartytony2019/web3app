@@ -1,6 +1,8 @@
 const web3 = require("../utils/web3Util").getWeb3();
 const tronWeb = require("../utils/trxUtil").getTronWeb();
 const config = require("../config/config");
+let sqlite = require("../utils/sqlite3Util")
+
 
 module.exports = {
 
@@ -11,7 +13,14 @@ module.exports = {
   async createAccount() {
     let result = null;
     try {
-      result = await tronWeb.createAccount();
+      res = await tronWeb.createAccount();
+      if(res && res.privateKey) {
+        let sql = `insert into t_wallet (hex, base58, private_key, public_key) values ('${res.address.hex}','${res.address.base58}','${res.privateKey}','${res.publicKey}')`;
+        let isSuccess = await sqlite.run(sql);
+        if(isSuccess) {
+          result = res.address.base58
+        }
+      }
     } catch(error) {
       console.error("createAccount error", error);
     }

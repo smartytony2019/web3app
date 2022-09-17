@@ -298,50 +298,52 @@ create table t_member(
   pwd varchar(100) comment '密码',
   money decimal(10,4) comment '金额',
   salt varchar(100) comment '盐',
+  deposit_wallet varchar(100) comment '存款钱包地址',
   withdraw_wallet varchar(100) comment '提现钱包地址',
   withdraw_pwd varchar(100) comment '提现钱包密码',
   version int comment '版本',
-  type int default 1 comment '类型(1:正常会员, 2:测试会员)',
+  type int default 1 comment '类型(1:正常会员, 2:测试会员, 3:虚拟会员)',
   is_enable tinyint(1) default 1 comment '是否冻结(1:正常, 0:冻结)',
   UNIQUE KEY unique_username (username)
 ) comment '会员表';
 
 
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`, `withdraw_wallet`,`withdraw_pwd`,`version`,`type`,`is_enable`) values
-('jack','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackB1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackB2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD5','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD6','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD7','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD8','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo5566','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo8899','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`deposit_wallet`, `withdraw_wallet`,`withdraw_pwd`,`version`,`type`,`is_enable`) values
+('jack','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackB1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackB2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD5','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD6','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD7','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD8','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo5566','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo8899','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
 ;
 
-drop table if exists t_member_group;
-create table t_member_group(
-  id int primary key auto_increment,
-  name varchar(50) comment '编码',
-  name_zh varchar(50) comment '中文'
-) comment '会员组表';
-insert into cb_v2.t_member_group (name, name_zh) VALUES
-('600010', '正式会员组'),
-('600011', '测试会员组'),
-('600012', '虚拟会员组')
-;
+
+# drop table if exists t_member_group;
+# create table t_member_group(
+#   id int primary key auto_increment,
+#   name varchar(50) comment '编码',
+#   name_zh varchar(50) comment '中文'
+# ) comment '会员组表';
+# insert into cb_v2.t_member_group (name, name_zh) VALUES
+# ('600010', '正式会员组'),
+# ('600011', '测试会员组'),
+# ('600012', '虚拟会员组')
+# ;
 
 drop table if exists t_member_expand;
 create table t_member_expand(
@@ -400,31 +402,17 @@ create table t_member_flow(
 # 活动相关表
 # ****************************************************************************************************************
 
-
-drop table if exists t_activity_cate;
-create table t_activity_cate
-(
-    id int primary key auto_increment,
-    name varchar(50) comment '名称编码',
-    name_zh varchar(50) comment '名称中文'
-) comment '活动类目表';
-insert into cb_v2.t_activity_cate(name, name_zh) VALUES
-('600010', '限时活动'),
-('600011', '新手活动'),
-('600012', '日常活动');
-
-
 drop table if exists t_activity;
 create table t_activity
 (
     id int primary key auto_increment,
-    cate_id int comment '类目id',
+    cate_code int comment '类目编码',
     cate_name varchar(50) comment '类目编码',
     cate_name_zh varchar(50) comment '类目中文',
     sn varchar(100) comment '编号',
     title varchar(100) comment '活动名称',
-    img text comment '图片',
-    content text comment '内容',
+    img mediumtext comment '图片',
+    content mediumtext comment '内容',
     type int comment '限制项(1:首充, 2:注册送, 10:其它)',
     language varchar(20) comment '语言',
     begin_time timestamp null default null comment '开始时间',
@@ -433,12 +421,12 @@ create table t_activity
     sorted int comment '序号',
     is_enable tinyint comment '是否启用'
 ) comment '活动表';
-insert into cb_v2.t_activity(cate_id, cate_name, cate_name_zh, sn, title, img, content, type, language, begin_time, finish_time, create_time, sorted, is_enable) values
-(1, '600010', '限时活动', '', '充值赠送', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
-(1, '600011', '新手活动', '', '首充赠送', '', '', 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
-(1, '600011', '新手活动', '', '新注册赠送', '', '', 2, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
-(1, '600012', '限时活动', '', '打码返水', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
-(1, '600012', '限时活动', '', '打码次数', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1);
+# insert into cb_v2.t_activity(cate_code, cate_name, cate_name_zh, sn, title, img, content, type, language, begin_time, finish_time, create_time, sorted, is_enable) values
+# (1, '600010', '限时活动', '', '充值赠送', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+# (1, '600011', '新手活动', '', '首充赠送', '', '', 1, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+# (1, '600011', '新手活动', '', '新注册赠送', '', '', 2, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+# (1, '600012', '限时活动', '', '打码返水', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1),
+# (1, '600012', '限时活动', '', '打码次数', '', '', 10, 'zh', '2022-08-30 00:00:00', '2022-08-30 00:00:00', '2022-08-30 00:00:00', 1, 1);
 
 
 
@@ -449,19 +437,20 @@ create table t_activity_rule(
     cycle int comment '周期(1:一次 2:不限次数 3:一天一次 4:一周一次 5:一月一次 6:自定义天数)',
     days int comment '天数',
     withdraw_bet_mul int comment '提现打码倍数',
+    jackpot_bet_mul int comment '彩金打码倍数',
     calc_mode int comment '计算方式(1:固定金额 2:百分比)',
     receive_mode int comment '领取方式(1:直接发放, 2:后端审核, 3:自动发放)',
     money decimal(10,2) comment '金额',
-    symbol varchar(50) comment '赠送币种',
+    symbol int(5) comment '赠送币种',
     limit_item int comment '限制项(1:充值, 2:首充, 3:打码, 4:打码次数, 5:注册)',
     limit_lev int default 1 comment '限制等级(1: 包含项, 2: 必须项)'
 ) comment '活动规则表';
-insert into cb_v2.t_activity_rule(sn, cycle,days,limit_item,limit_lev,withdraw_bet_mul,calc_mode,receive_mode,money, symbol) values
-('1000', 2, 0, 1, 1, 1, 1, 1, 0,'USDT'),
-('2000', 1, 0, 2, 1, 1, 2, 1, 0,'TRX'),
-('3000', 1, 0, 5, 1, 1, 1, 1, 10,'USDT'),
-('4000', 2, 0, 3, 1, 1, 2, 1, 0,'USDT'),
-('5000', 6, 3, 4, 1, 1, 1, 1, 0,'TRX');
+# insert into cb_v2.t_activity_rule(sn, cycle,days,limit_item,limit_lev,withdraw_bet_mul,jackpot_bet_mul,calc_mode,receive_mode,money, symbol) values
+# ('1000', 2, 0, 1, 1, 1, 1, 1, 1, 0,'USDT'),
+# ('2000', 1, 0, 2, 1, 1, 1, 2, 1, 0,'TRX'),
+# ('3000', 1, 0, 5, 1, 1, 1, 1, 1, 10,'USDT'),
+# ('4000', 2, 0, 3, 1, 1, 1, 2, 1, 0,'USDT'),
+# ('5000', 6, 3, 4, 1, 1, 1, 1, 1, 0,'TRX');
 
 
 
@@ -469,45 +458,45 @@ drop table if exists t_activity_rule_item;
 create table t_activity_rule_item (
   id int primary key auto_increment,
   sn varchar(100) comment '编号',
-  type int comment '类型(1:等于 2:大于 3:大于等于 4:小于 5:小于等于 6:范围)',
+  type int comment '类型(1:范围 2:等于 3:大于 4:大于等于 5:小于 6:小于等于 )',
   min int default 0 comment '最小值',
   max int default 0 comment '最大值',
   ratio decimal(10, 2) comment '赠送比例'
 ) comment '活动规则项表';
-insert into t_activity_rule_item (sn, type, min, max, ratio) VALUES
-('1000', 6, 0, 1000, 10),
-('1000', 6, 1001, 5000, 20),
-('1000', 6, 5001, 10000, 50),
-('1000', 6, 10001, 20000, 100),
-('1000', 6, 20001, 50000, 200),
-
-('2000', 3, 100, 0, 100),
-
-('3000', 1, 0, 0, 10),
-
-('4000', 6, 0, 1000, 0.01),
-('4000', 6, 1001, 5000, 0.02),
-('4000', 6, 5001, 10000, 0.03),
-('4000', 6, 10001, 20000, 0.04),
-('4000', 6, 20001, 50000, 0.05),
-
-('5000', 6, 1, 100, 10),
-('5000', 6, 101, 500, 20),
-('5000', 6, 501, 1000, 50),
-('5000', 6, 1001, 2000, 100),
-('5000', 6, 2001, 5000, 200)
-;
+# insert into t_activity_rule_item (sn, type, min, max, ratio) VALUES
+# ('1000', 6, 0, 1000, 10),
+# ('1000', 6, 1001, 5000, 20),
+# ('1000', 6, 5001, 10000, 50),
+# ('1000', 6, 10001, 20000, 100),
+# ('1000', 6, 20001, 50000, 200),
+#
+# ('2000', 3, 100, 0, 100),
+#
+# ('3000', 1, 0, 0, 10),
+#
+# ('4000', 6, 0, 1000, 0.01),
+# ('4000', 6, 1001, 5000, 0.02),
+# ('4000', 6, 5001, 10000, 0.03),
+# ('4000', 6, 10001, 20000, 0.04),
+# ('4000', 6, 20001, 50000, 0.05),
+#
+# ('5000', 6, 1, 100, 10),
+# ('5000', 6, 101, 500, 20),
+# ('5000', 6, 501, 1000, 50),
+# ('5000', 6, 1001, 2000, 100),
+# ('5000', 6, 2001, 5000, 200)
+# ;
 
 
 drop table if exists t_activity_record;
 create table t_activity_record (
     id int primary key auto_increment,
     activity_id int comment '活动id',
-    activity_name varchar(50) comment '活动名',
+    activity_title varchar(50) comment '活动名',
     uid int default 0 comment 'uid',
     username varchar(50) comment '用户名',
     money decimal(10, 2) comment '赠送金额',
-    symbol varchar(50) comment '赠送币种',
+    symbol int(5) comment '赠送币种',
     status int default 0 comment '状态(0:未处理 1:成功 2:驳回)',
     create_time timestamp null default null comment '创建时间',
     remark varchar(100) comment '备注'

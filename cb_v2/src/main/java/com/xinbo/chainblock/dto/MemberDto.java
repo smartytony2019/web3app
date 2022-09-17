@@ -38,12 +38,17 @@ public class MemberDto {
     private Float money;
 
     /**
+     * 存款钱包地址
+     */
+    private String depositWallet;
+
+    /**
      * 提现钱包地址
      */
     private String withdrawWallet;
 
     /**
-     * 类型(1:正常会员, 2:测试会员)
+     * 类型(1:正常会员, 2:测试会员, 3:虚拟会员)
      */
     private Integer type;
 

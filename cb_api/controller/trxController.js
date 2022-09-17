@@ -13,6 +13,7 @@ module.exports = {
    */
   async createAccount (ctx) {
     let result = await trxModel.createAccount();
+    
     ctx.body = R.success(result)
   },
 

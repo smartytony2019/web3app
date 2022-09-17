@@ -13,14 +13,13 @@ import java.util.Map;
 /**
  * @author tony
  * @date 8/9/22 10:21 下午
- * @desc 活动规则限制项
+ * @desc 领取方式
  */
 @AllArgsConstructor
-public enum ActivityRuleLimitItemEnum {
-    RECHARGE(1,"600060", "充值"),
-    BET(2,"600061", "打码"),
-    SIGN(3,"600062", "签到"),
-    BET_COUNT(4,"600063", "打码次数")
+public enum ActivityReceiveModeEnum {
+    SEND(1,"600050", "直接发放"),
+    CHECK(2,"600051", "后端审核"),
+    AUTO(3,"600052", "自动发放")
     ;
 
     int code;
@@ -37,8 +36,9 @@ public enum ActivityRuleLimitItemEnum {
         return nameZh;
     }
 
+
     public static EnumItemBo valueOf(int code) {
-        for (ActivityRuleLimitItemEnum e: values()) {
+        for (ActivityReceiveModeEnum e: values()) {
             if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(e.getName()).nameZh(e.getNameZh()).build();
             }
@@ -47,7 +47,7 @@ public enum ActivityRuleLimitItemEnum {
     }
 
     public static EnumItemBo valueOfTranslate(int code) {
-        for (ActivityRuleLimitItemEnum e: values()) {
+        for (ActivityReceiveModeEnum e: values()) {
             if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
@@ -57,18 +57,18 @@ public enum ActivityRuleLimitItemEnum {
 
     public static Map<Integer, EnumItemBo> toMap() {
         Map<Integer, EnumItemBo> map = new HashMap<>();
-        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleLimitItemEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(ActivityReceiveModeEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), ActivityRuleLimitItemEnum.valueOfTranslate((int) code));
+            map.put(Integer.parseInt(code.toString()), ActivityReceiveModeEnum.valueOfTranslate((int) code));
         }
         return map;
     }
 
     public static List<EnumItemBo> toList() {
         List<EnumItemBo> list = new ArrayList<>();
-        List<Object> codes = EnumUtil.getFieldValues(ActivityRuleLimitItemEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(ActivityReceiveModeEnum.class, "code");
         for (Object code : codes) {
-            list.add(ActivityRuleLimitItemEnum.valueOfTranslate((int) code));
+            list.add(ActivityReceiveModeEnum.valueOfTranslate((int) code));
         }
         return list;
     }

@@ -3,6 +3,7 @@ package com.xinbo.chainblock.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,4 +20,8 @@ public interface ActivityRuleItemMapper extends BaseMapper<ActivityRuleItemEntit
 
     @Select("select * from t_activity_rule_item where sn = #{sn}")
     List<ActivityRuleItemEntity> findBySn(@Param("sn") String sn);
+
+
+    @Delete("delete from t_activity_rule_item where sn = #{sn}")
+    int deleteBySn(@Param("sn") String sn);
 }

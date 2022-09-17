@@ -1,4 +1,4 @@
-package com.xinbo.chainblock.entity.activity;
+package com.xinbo.chainblock.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -21,23 +21,19 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_activity_record")
-public class ActivityRecordEntity {
+public class ActivityRecordDto {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 类目id
      */
-    @TableField("activity_id")
     private Integer activityId;
 
 
     /**
      * 类目编码
      */
-    @TableField("activity_title")
     private String activityTitle;
 
 
@@ -45,42 +41,36 @@ public class ActivityRecordEntity {
     /**
      * 标题
      */
-    @TableField("uid")
     private Integer uid;
 
 
     /**
      * 内容
      */
-    @TableField("username")
     private String username;
 
 
     /**
      * 金额
      */
-    @TableField("money")
     private Float money;
 
 
     /**
      * 赠送币种
      */
-    @TableField("symbol")
     private Integer symbol;
 
 
     /**
      * 状态(0:未处理 1:成功 2:驳回)
      */
-    @TableField("status")
     private Integer status;
 
 
     /**
      * 创建时间
      */
-    @TableField("create_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
@@ -88,6 +78,5 @@ public class ActivityRecordEntity {
     /**
      * 备注
      */
-    @TableField("remark")
     private String remark;
 }

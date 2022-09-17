@@ -54,6 +54,12 @@ public class MemberEntity {
     private String salt;
 
     /**
+     * 存款钱包地址
+     */
+    @TableField("deposit_wallet")
+    private String depositWallet;
+
+    /**
      * 提现钱包地址
      */
     @TableField("withdraw_wallet")
