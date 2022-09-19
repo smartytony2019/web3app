@@ -19,6 +19,7 @@
     "koa-router": "^7.4.0",
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.18",
+    "request": "^2.88.2",
     "sqlite3": "^5.0.8",
     "tronweb": "^4.2.0",
     "web3": "^1.0.0-beta.34",

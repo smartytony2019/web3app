@@ -74,7 +74,7 @@ public class BetTest {
             payoutMoney = 0;
         } else {
         }
-        bet.setFlag(algorithmResult.getStatus());
+        bet.setResult(algorithmResult.getStatus());
         bet.setStatus(1);
         bet.setProfitMoney(profileMoney);
         bet.setPayoutMoney(payoutMoney);

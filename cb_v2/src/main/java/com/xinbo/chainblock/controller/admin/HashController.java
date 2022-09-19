@@ -10,14 +10,12 @@ import com.xinbo.chainblock.entity.hash.HashOfflineBetEntity;
 import com.xinbo.chainblock.entity.hash.HashPlayEntity;
 import com.xinbo.chainblock.enums.HashBetResultEnum;
 import com.xinbo.chainblock.enums.HashBetStatusEnum;
-import com.xinbo.chainblock.service.GameService;
-import com.xinbo.chainblock.service.HashBetService;
-import com.xinbo.chainblock.service.HashOddsService;
-import com.xinbo.chainblock.service.HashPlayService;
+import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
 import com.xinbo.chainblock.vo.ActivityVo;
 import com.xinbo.chainblock.vo.HashBetVo;
+import com.xinbo.chainblock.vo.HashOfflineBetVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +33,9 @@ public class HashController {
 
     @Autowired
     private HashBetService hashBetService;
+
+    @Autowired
+    private HashOfflineBetService hashOfflineBetService;
 
 
     @JwtIgnore
@@ -65,10 +66,9 @@ public class HashController {
     @JwtIgnore
     @Operation(summary = "findOfflineBetPage", description = "查找分页")
     @PostMapping("findOfflineBetPage/{current}/{size}")
-    public R<Object> findOfflineBetPage(@RequestBody HashBetVo vo, @PathVariable long current, @PathVariable long size) {
-
-        HashBetEntity entity = MapperUtil.to(vo, HashBetEntity.class);
-        BasePageBo basePageBo = hashBetService.findPage(entity, current, size);
+    public R<Object> findOfflineBetPage(@RequestBody HashOfflineBetVo vo, @PathVariable long current, @PathVariable long size) {
+        HashOfflineBetEntity entity = MapperUtil.to(vo, HashOfflineBetEntity.class);
+        BasePageBo basePageBo = hashOfflineBetService.findPage(entity, current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 

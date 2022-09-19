@@ -5,16 +5,16 @@
 
     <!-- 插入或更新 -->
     <insert id="batchInsert" parameterType="java.util.List">
-        insert into t_hash_offline_bet(`sn`, cate_id, cate_name, cate_name_zh, game_id,
-        game_name, game_name_zh, transaction_id, network, odds,
-        money, create_time, create_timestamp, algorithm) values
+        insert into t_hash_offline_bet(`sn`, `username`, cate_id, cate_name, cate_name_zh, game_id,
+        game_name, game_name_zh, transaction_id, network, content, content_zh, odds,
+        money, create_time, create_timestamp, algorithm_code) values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.sn}, #{item.cateId}, #{item.cateName}, #{item.cateNameZh}, #{item.gameId},
-            #{item.gameName}, #{item.gameNameZh}, #{item.transactionId}, #{item.network}, #{item.odds},
-            #{item.money}, #{item.createTime}, #{item.createTimestamp}, #{item.algorithm})
+            (#{item.sn}, #{item.username}, #{item.cateId}, #{item.cateName}, #{item.cateNameZh}, #{item.gameId},
+            #{item.gameName}, #{item.gameNameZh}, #{item.transactionId}, #{item.network}, #{item.content}, #{item.contentZh}, #{item.odds},
+            #{item.money}, #{item.createTime}, #{item.createTimestamp}, #{item.algorithmCode})
         </foreach>
         ON DUPLICATE KEY UPDATE
-        algorithm = VALUES(algorithm)
+        algorithm_code = VALUES(algorithm_code)
     </insert>
 
 </mapper>

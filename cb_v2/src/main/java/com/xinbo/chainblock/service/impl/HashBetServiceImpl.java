@@ -120,7 +120,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     @Override
     public BasePageBo findPage(HashBetEntity entity, long current, long size) {
         Page<HashBetEntity> page = new Page<>(current, size);
-        page.addOrder(OrderItem.asc("create_time"));
+        page.addOrder(OrderItem.desc("create_time"));
         IPage<HashBetEntity> iPage = hashBetMapper.selectPage(page, this.createWrapper(entity));
         return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), HashBetDto.class)).build();
     }
@@ -128,7 +128,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
     @Override
     public BasePageBo findPage(HashBetEntity entity, long current, long size, Date start, Date end) {
         Page<HashBetEntity> page = new Page<>(current, size);
-        page.addOrder(OrderItem.asc("create_time"));
+        page.addOrder(OrderItem.desc("create_time"));
         LambdaQueryWrapper<HashBetEntity> wrapper = this.createWrapper(entity);
         if (!ObjectUtils.isEmpty(start) && !ObjectUtils.isEmpty(end)) {
             wrapper.ge(HashBetEntity::getCreateTime, start).le(HashBetEntity::getCreateTime, end);
@@ -172,7 +172,7 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         }
 
         // 订单为赢才添加帐变
-        if (bet.getFlag() == AlgorithmCode.WIN) {
+        if (bet.getResult() == AlgorithmCode.WIN) {
             //添加帐变
             MemberFlowEntity userFlowEntity = MemberFlowEntity.builder()
                     .sn(bet.getSn())
@@ -257,8 +257,8 @@ public class HashBetServiceImpl extends ServiceImpl<HashBetMapper, HashBetEntity
         if (!StringUtils.isEmpty(entity.getPlayId()) && entity.getPlayId() > 0) {
             wrappers.eq(HashBetEntity::getPlayId, entity.getPlayId());
         }
-        if (!StringUtils.isEmpty(entity.getFlag()) && entity.getFlag() > 0) {
-            wrappers.eq(HashBetEntity::getFlag, entity.getFlag());
+        if (!StringUtils.isEmpty(entity.getResult()) && entity.getResult() > 0) {
+            wrappers.eq(HashBetEntity::getResult, entity.getResult());
         }
         if (!StringUtils.isEmpty(entity.getStatus()) && entity.getStatus() > 0) {
             wrappers.eq(HashBetEntity::getStatus, entity.getStatus());

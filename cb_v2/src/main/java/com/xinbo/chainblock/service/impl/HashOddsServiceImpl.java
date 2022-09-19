@@ -42,6 +42,11 @@ public class HashOddsServiceImpl extends ServiceImpl<HashOddsMapper, HashOddsEnt
         return hashOddsMapper.findByCode(codes);
     }
 
+    @Override
+    public HashOddsEntity find(int gameId, String nameZh) {
+        return hashOddsMapper.find(gameId, nameZh);
+    }
+
 
     /**
      * 创建查询条件

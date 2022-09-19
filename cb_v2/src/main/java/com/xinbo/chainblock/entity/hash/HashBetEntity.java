@@ -202,12 +202,6 @@ public class HashBetEntity {
     private Long updateTimestamp;
 
     /**
-     * 标记(1:赢, 2:输, 3: 和)
-     */
-    @TableField("flag")
-    private Integer flag;
-
-    /**
      * 状态(0:未结算,1:已结算,2:作废)
      */
     @TableField("status")

@@ -39,9 +39,9 @@ create table t_game(
 insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`enable`,`pic`,`sort`,`address`, `algorithm_code`, `odds`) values
 ('1', '100010', '哈希', '200010', '哈希两面',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000', 1.95),
 ('1', '100010', '哈希', '200110', '哈希百家乐',1, 'http://xx/x.png', 1, '', '2000', 0),
-('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuA', '3000', 1.98),
-('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuB', '4000', 1.98),
-('1', '100010', '哈希', '200410', '哈希牛牛',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nuC', '5000', 0),
+('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TSpbRADBCTZCNNTwqzoHVQoRHyuRYiyu5y', '3000', 1.98),
+('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TSpbRADBCTZCNNTwqzoHVQoRHyuRYiyu5y', '4000', 1.98),
+('1', '100010', '哈希', '200410', '哈希牛牛',1, 'http://xx/x.png', 1, 'TSpbRADBCTZCNNTwqzoHVQoRHyuRYiyu5y', '5000', 0),
 ('2', '100110', '彩票', '200510', 'XB彩票',1, 'http://xx/x.png', 1, '', '', 0),
 ('3', '100210', '体育', '200610', '皇冠体育',1, 'http://xx/x.png', 1, '', '', 0);
 
@@ -200,7 +200,6 @@ create table t_hash_bet (
     create_timestamp bigint(20) comment '创建时间戳',
     update_time timestamp null default null comment '更新时间',
     update_timestamp bigint(20) comment '更新时间戳',
-    flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
     algorithm_code varchar(10) comment '算法',
     UNIQUE KEY unique_sn (sn)
@@ -212,6 +211,7 @@ drop table if exists t_hash_offline_bet;
 create table t_hash_offline_bet (
     id int primary key auto_increment,
     sn varchar(100) comment '编号',
+    username varchar(50) comment '会员名',
     cate_id int comment '类目id',
     cate_name varchar(50) comment '类目编码',
     cate_name_zh varchar(50) comment '类目名称(中文)',
@@ -222,6 +222,8 @@ create table t_hash_offline_bet (
     block_height varchar(50) comment '块高',
     block_hash varchar(80) comment '开奖结果',
     network varchar(50) comment '网络',
+    content varchar(100) comment '投注内容',
+    content_zh varchar(100) comment '投注内容(中文)',
     odds decimal(10,4) comment '赔率',
     money decimal(10,4) comment '投注单价',
     profit_money decimal(10,4) comment '赢利金额',
@@ -230,7 +232,7 @@ create table t_hash_offline_bet (
     create_timestamp bigint(20) comment '创建时间戳',
     update_time timestamp null default null comment '更新时间',
     update_timestamp bigint(20) comment '更新时间戳',
-    flag int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
+    result int(5) default 0 comment '标记(1:赢, 2:输, 3: 和)',
     status int default 0 comment '状态(0:未结算,1:已结算,2:作废)',
     algorithm_code varchar(10) comment '算法',
     UNIQUE KEY unique_transaction_id (transaction_id)

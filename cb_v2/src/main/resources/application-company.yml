@@ -29,8 +29,8 @@ scheduled:
       record: false
       account: false
     offline:
-      bet: false
-      settle: false
+      bet: true
+      settle: true
     system:
       flow: false
 

@@ -213,7 +213,7 @@ public class HashBetController {
         HashBetEntity order = hashBetService.findOrder(sn);
         if (!ObjectUtils.isEmpty(order)) {
             // 说明已开奖
-            return R.builder().code(StatusCode.SUCCESS).data(order.getFlag()).build();
+            return R.builder().code(StatusCode.SUCCESS).data(order.getResult()).build();
         }
         return R.builder().code(StatusCode.SUCCESS).build();
     }

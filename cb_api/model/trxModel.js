@@ -223,12 +223,14 @@ module.exports = {
   async getEventResult(contractAddress, eventName) {
     let result = null;
     try {
-      result = await tronWeb.getEventResult(contractAddress, {eventName: eventName, size: 10, sort:'-block_timestamp'})
+      result = await tronWeb.getEventResult(contractAddress, {eventName: eventName, size: 20, onlyComfired:false, onlyUncomfired:false, sort:'-block_timestamp'})
     }catch(error) {
       console.error("getEventResult error", error);
     }
     return result;
   },
+
+
 
   /**
    * 获取事件信息根据交易ID

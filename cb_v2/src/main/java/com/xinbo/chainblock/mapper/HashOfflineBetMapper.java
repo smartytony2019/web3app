@@ -21,7 +21,7 @@ public interface HashOfflineBetMapper extends BaseMapper<HashOfflineBetEntity> {
     @Select("select * from t_hash_offline_bet where status = 0 limit 5")
     List<HashOfflineBetEntity> unsettle();
 
-    @Update("update t_hash_offline_bet set block_hash=#{entity.blockHash},block_height=#{entity.blockHeight},network=#{entity.network},profit_money=#{entity.profitMoney},payout_money=#{entity.payoutMoney},update_time=#{entity.updateTime},update_timestamp=#{entity.updateTimestamp},flag=#{entity.flag},status=#{entity.status} where id = #{entity.id}")
+    @Update("update t_hash_offline_bet set block_hash=#{entity.blockHash},block_height=#{entity.blockHeight},network=#{entity.network},profit_money=#{entity.profitMoney},payout_money=#{entity.payoutMoney},update_time=#{entity.updateTime},update_timestamp=#{entity.updateTimestamp},result=#{entity.result},status=#{entity.status} where id = #{entity.id}")
     int settle(@Param("entity") HashOfflineBetEntity entity);
 
     int batchInsert(@Param("list") List<HashOfflineBetEntity> list);

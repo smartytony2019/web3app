@@ -14,6 +14,7 @@ import com.xinbo.chainblock.core.algorithm.HashAlgorithm;
 import com.xinbo.chainblock.core.algorithm.HashOfflineAlgorithm;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.entity.hash.HashBetEntity;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 import com.xinbo.chainblock.entity.hash.HashOfflineBetEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
 import com.xinbo.chainblock.enums.SystemFlowItemEnum;
@@ -31,9 +32,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author tony
@@ -67,6 +66,9 @@ public class HashOfflineBetJob {
 
     @Autowired
     private HashOfflineBetService hashOfflineBetService;
+
+    @Autowired
+    private HashOddsService hashOddsService;
 
     @Autowired
     private HashOfflineAlgorithm hashOfflineAlgorithm;
@@ -116,6 +118,9 @@ public class HashOfflineBetJob {
                             BigInteger value = jsonObject.getBigInteger("value");
 
                             JSONObject tokenInfo = jsonObject.getJSONObject("token_info");
+                            if(ObjectUtils.isEmpty(tokenInfo) || tokenInfo.size()<=0) {
+                                continue;
+                            }
                             String symbol = tokenInfo.getString("symbol");
                             int decimals = tokenInfo.getInteger("decimals");
                             String name = tokenInfo.getString("name");
@@ -132,9 +137,47 @@ public class HashOfflineBetJob {
                             BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
 
 
+                            int i1 = b3.intValue();
+                            int mod = i1%10;
+
+                            String content = null;
+                            String contentZh = null;
+                            switch (entity.getId()) {
+                                case 1:
+
+                                    if(!Arrays.asList(1,2,3,4).contains(mod)) {
+                                        // TODO: 9/19/22 投注不合规 退本金
+                                        continue;
+                                    }
+
+                                    Map<Integer, String> kv= new HashMap<>();
+                                    kv.put(1,"小");
+                                    kv.put(2,"大");
+                                    kv.put(3,"单");
+                                    kv.put(4,"双");
+
+                                    contentZh = kv.get(mod);
+                                    HashOddsEntity oddsEntity = hashOddsService.find(entity.getId(), contentZh);
+                                    content = oddsEntity.getName();
+                                    break;
+
+                                case 3:
+                                    contentZh = String.valueOf(mod);
+                                    oddsEntity = hashOddsService.find(entity.getId(), contentZh);
+                                    content = oddsEntity.getName();
+                                    break;
+                                case 4:
+                                    break;
+                                case 5:
+                                    break;
+                                default:
+                                    break;
+                            }
+
                             String sn = IdUtil.getSnowflake().nextIdStr();
                             HashOfflineBetEntity bet = HashOfflineBetEntity.builder()
                                     .sn(sn)
+                                    .username(fromAddress)
                                     .cateId(entity.getCateId())
                                     .cateName(entity.getCateName())
                                     .cateNameZh(entity.getCateNameZh())
@@ -144,6 +187,8 @@ public class HashOfflineBetJob {
 
                                     .transactionId(transactionId)
                                     .network(network)
+                                    .content(content)
+                                    .contentZh(contentZh)
                                     .odds(entity.getOdds())
                                     .money(b3.floatValue())
                                     .createTime(DateUtil.date(blockTimestamp))
@@ -208,7 +253,7 @@ public class HashOfflineBetJob {
                 }
 
                 // 系统帐变 & 注单状态
-                bet.setFlag(algorithmResult.getStatus());
+                bet.setResult(algorithmResult.getStatus());
                 bet.setStatus(1);
                 bet.setUpdateTime(DateUtil.date());
                 bet.setUpdateTimestamp(DateUtil.current());
@@ -236,7 +281,6 @@ public class HashOfflineBetJob {
         } catch (Exception ex) {
             log.error("handleSettleBet exception", ex);
         }
-
 
     }
 
