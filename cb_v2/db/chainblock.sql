@@ -39,9 +39,9 @@ create table t_game(
 insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`enable`,`pic`,`sort`,`address`, `algorithm_code`, `odds`) values
 ('1', '100010', '哈希', '200010', '哈希两面',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000', 1.95),
 ('1', '100010', '哈希', '200110', '哈希百家乐',1, 'http://xx/x.png', 1, '', '2000', 0),
-('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TSpbRADBCTZCNNTwqzoHVQoRHyuRYiyu5y', '3000', 1.98),
-('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TSpbRADBCTZCNNTwqzoHVQoRHyuRYiyu5y', '4000', 1.98),
-('1', '100010', '哈希', '200410', '哈希牛牛',1, 'http://xx/x.png', 1, 'TSpbRADBCTZCNNTwqzoHVQoRHyuRYiyu5y', '5000', 0),
+('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TLw9HJ2tHGPQhtb2XZ9CS1pAyfH54oFYhE', '3000', 1.98),
+('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TSfBua8fL3g8NUwqmJR9oMRvk4ZdTU3bo3', '4000', 1.98),
+('1', '100010', '哈希', '200410', '哈希牛牛',1, 'http://xx/x.png', 1, 'TTs48KdXPTouSSia4LTKGUnqHD7YhZ3hjs', '5000', 0),
 ('2', '100110', '彩票', '200510', 'XB彩票',1, 'http://xx/x.png', 1, '', '', 0),
 ('3', '100210', '体育', '200610', '皇冠体育',1, 'http://xx/x.png', 1, '', '', 0);
 

@@ -156,8 +156,8 @@ public class HashOfflineAlgorithm {
     private AlgorithmResult hashPK10(HashResultEntity hashResult, HashOfflineBetEntity bet) {
         AlgorithmResult ar = AlgorithmResult.builder().status(AlgorithmCode.LOST).build();
 
-//        String content = bet.getContentZh();
-        String content = "";
+        String content = bet.getContentZh();
+//        String content = "";
         Stack<String> stack = this.split(hashResult.getBlockHash(), true, 1);
         int num = Integer.parseInt(stack.pop());
 
