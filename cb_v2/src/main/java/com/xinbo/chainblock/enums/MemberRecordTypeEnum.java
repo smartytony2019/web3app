@@ -16,10 +16,10 @@ import java.util.Map;
  * @desc file desc
  */
 @AllArgsConstructor
-public enum MemberTypeEnum {
-    NORMAL(1, "700010", "正常会员"),
-    TEST_ACCOUNT(2, "700011", "测试帐号"),
-    VIRTUAL(3, "700012", "虚拟帐号")
+public enum MemberRecordTypeEnum {
+    LOGIN(1, "700110", "登录"),
+    REGISTER(2, "700111", "注册"),
+    SIGN(3, "700112", "签到")
     ;
 
     int code;
@@ -37,7 +37,7 @@ public enum MemberTypeEnum {
     }
 
     public static EnumItemBo valueOf(int code) {
-        for (MemberTypeEnum e: values()) {
+        for (MemberRecordTypeEnum e: values()) {
             if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(e.getName()).nameZh(e.getNameZh()).build();
             }
@@ -46,7 +46,7 @@ public enum MemberTypeEnum {
     }
 
     public static EnumItemBo valueOfTranslate(int code) {
-        for (MemberTypeEnum e: values()) {
+        for (MemberRecordTypeEnum e: values()) {
             if(e.getCode() == code){
                 return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
@@ -57,18 +57,18 @@ public enum MemberTypeEnum {
 
     public static Map<Integer, EnumItemBo> toMap() {
         Map<Integer, EnumItemBo> map = new HashMap<>();
-        List<Object> codes = EnumUtil.getFieldValues(MemberTypeEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(MemberRecordTypeEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), MemberTypeEnum.valueOfTranslate((int) code));
+            map.put(Integer.parseInt(code.toString()), MemberRecordTypeEnum.valueOfTranslate((int) code));
         }
         return map;
     }
 
     public static List<EnumItemBo> toList() {
         List<EnumItemBo> list = new ArrayList<>();
-        List<Object> codes = EnumUtil.getFieldValues(MemberTypeEnum.class, "code");
+        List<Object> codes = EnumUtil.getFieldValues(MemberRecordTypeEnum.class, "code");
         for (Object code : codes) {
-            list.add(MemberTypeEnum.valueOfTranslate((int) code));
+            list.add(MemberRecordTypeEnum.valueOfTranslate((int) code));
         }
         return list;
     }

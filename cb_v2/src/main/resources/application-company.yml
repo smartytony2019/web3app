@@ -22,11 +22,11 @@ scheduled:
   enable:
     register: false
     transfer: false
-    settle: true
+    settle: false
     agent:
       commission: false
     finance:
-      record: false
+      record: true
       account: false
     offline:
       bet: true

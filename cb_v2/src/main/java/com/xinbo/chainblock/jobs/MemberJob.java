@@ -148,8 +148,9 @@ public class MemberJob {
 
             // *********************************** - 创建数字钱包 -  ****************************************************
             // Step 1: 创建数字钱包
-            String account = trxApi.createAccount();
-            entity.setDepositWallet(account);
+            AccountApiBo account = trxApi.createAccount();
+            entity.setBase58(account.getBase58());
+            entity.setHex(account.getHex());
             memberService.update(entity);
 //            if (ObjectUtils.isEmpty(account)) {
 //                // @todo

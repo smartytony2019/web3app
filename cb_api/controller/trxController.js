@@ -13,7 +13,6 @@ module.exports = {
    */
   async createAccount (ctx) {
     let result = await trxModel.createAccount();
-    
     ctx.body = R.success(result)
   },
 
@@ -57,13 +56,7 @@ module.exports = {
       return;
     }
 
-    let privateKey = await trxModel.decodePrivateKey(data.privateKey);
-    if(privateKey == null) {
-      ctx.body = R.fail('私钥不合法')
-      return;
-    }
-
-    let result = await trxModel.getBalanceOfTrc20(contractAddress, fromAddress, privateKey);
+    let result = await trxModel.getBalanceOfTrc20(contractAddress, fromAddress);
     ctx.body = R.success(result)
   },
 

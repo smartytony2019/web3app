@@ -179,14 +179,14 @@ public class HashBetController {
 
             HashResultEntity result = HashResultEntity.builder()
                     .sn(bet.getSn())
-                    .toAddress(memberEntity.getDepositWallet())
+                    .toAddress(memberEntity.getBase58())
                     .gameId(playEntity.getGameId())
                     .playId(playEntity.getId())
                     .uid(memberEntity.getId())
                     .username(memberEntity.getUsername())
                     .build();
 
-            boolean isSuccess = trxApi.resultOpen(sn, memberEntity.getDepositWallet());
+            boolean isSuccess = trxApi.resultOpen(sn, memberEntity.getBase58());
             if (!isSuccess) {
                 throw new BusinessException(1000, "终端生成开奖结果失败");
             }

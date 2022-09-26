@@ -37,7 +37,7 @@ create table t_game(
 ) comment '彩种游戏';
 
 insert into cb_v2.t_game(`cate_id`,`cate_name`,`cate_name_zh`,`name`,`name_zh`,`enable`,`pic`,`sort`,`address`, `algorithm_code`, `odds`) values
-('1', '100010', '哈希', '200010', '哈希两面',1, 'http://xx/x.png', 1, 'TDJJqGNpkZpSioBegZM8yyq1K7YnZA17nu', '1000', 1.95),
+('1', '100010', '哈希', '200010', '哈希两面',1, 'http://xx/x.png', 1, 'TZ7LeheexzZmSwMHS6Q737esFio6RJUxSj', '1000', 1.95),
 ('1', '100010', '哈希', '200110', '哈希百家乐',1, 'http://xx/x.png', 1, '', '2000', 0),
 ('1', '100010', '哈希', '200210', '哈希PK拾',1, 'http://xx/x.png', 1, 'TLw9HJ2tHGPQhtb2XZ9CS1pAyfH54oFYhE', '3000', 1.98),
 ('1', '100010', '哈希', '200310', '幸运哈希',1, 'http://xx/x.png', 1, 'TSfBua8fL3g8NUwqmJR9oMRvk4ZdTU3bo3', '4000', 1.98),
@@ -301,7 +301,8 @@ create table t_member(
   pwd varchar(100) comment '密码',
   money decimal(10,4) comment '金额',
   salt varchar(100) comment '盐',
-  deposit_wallet varchar(100) comment '存款钱包地址',
+  hex varchar(100) comment 'hex地址',
+  base58 varchar(100) comment 'base58地址',
   withdraw_wallet varchar(100) comment '提现钱包地址',
   withdraw_pwd varchar(100) comment '提现钱包密码',
   version int comment '版本',
@@ -311,28 +312,28 @@ create table t_member(
 ) comment '会员表';
 
 
-insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`deposit_wallet`, `withdraw_wallet`,`withdraw_pwd`,`version`,`type`,`is_enable`) values
-('jack','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackB1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackB2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackC4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD5','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD6','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD7','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackD8','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('jackE3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo5566','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
-('demo8899','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
+insert into cb_v2.t_member (`username`,`pwd`,`money`,`salt`,`hex` ,`base58`, `withdraw_wallet`,`withdraw_pwd`,`version`,`type`,`is_enable`) values
+('jack','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 2, 1),
+('jackB1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 3, 1),
+('jackB2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackC4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD4','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD5','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD6','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F', 'TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD7','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackD8','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE1','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE2','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('jackE3','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo5566','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo7788','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1),
+('demo8899','2311519d5e6c7785c41cc712f273d77f',10000,'Br2m9o6J', '41E419F5A7FC45A82CD3900F23C1AD92678BFE281C', 'TWmJAVzDGquB7Gk8SpDwP8g4xH9a7wxc7F','TEuyVZdSXR8PaFmB8wX1LiZ3getos5Yuwe', '123456',1, 1, 1)
 ;
 
 
@@ -371,12 +372,12 @@ create table t_member_record(
   uid int(20) comment '用户名',
   username varchar(50) comment '用户名',
   domain varchar(50) comment '域名',
-  device timestamp null default null comment '设备',
+  device varchar(50) comment '设备',
   reg_ip varchar(50) comment '注册ip',
   reg_time timestamp null default null comment '注册时间',
   login_ip varchar(50) comment '登录ip',
   login_time timestamp null default null comment '登录时间',
-  type int comment '类型'
+  type int comment '类型(1:登录 2:注册 3:签到)'
 ) comment '会员记录表';
 
 
