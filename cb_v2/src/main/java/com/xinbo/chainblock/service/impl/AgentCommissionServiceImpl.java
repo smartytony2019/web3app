@@ -100,6 +100,16 @@ public class AgentCommissionServiceImpl extends ServiceImpl<AgentCommissionMappe
     }
 
     @Override
+    public BasePageBo findPage(AgentCommissionEntity entity, long current, long size) {
+        Page<AgentCommissionEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.desc("date"));
+
+        IPage<AgentCommissionEntity> iPage = agentCommissionMapper.selectPage(page, this.createWrapper(entity));
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), AgentCommissionDto.class)).build();
+    }
+
+
+    @Override
     public AgentCommissionEntity findTotal(DateRangeBo dateRangeBo, int uid) {
         return agentCommissionMapper.findTotal(dateRangeBo, uid);
     }

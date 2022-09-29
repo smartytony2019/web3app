@@ -1,10 +1,5 @@
-package com.xinbo.chainblock.dto;
+package com.xinbo.chainblock.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +11,9 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgentCommissionDto {
+public class AgentCommissionVo {
+
+    private Integer id;
 
     /**
      * 日期
@@ -86,7 +83,6 @@ public class AgentCommissionDto {
     /**
      * 创建时间
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**

@@ -26,11 +26,11 @@ scheduled:
     agent:
       commission: false
     finance:
-      record: true
+      record: false
       account: false
     offline:
-      bet: true
-      settle: true
+      bet: false
+      settle: false
     system:
       flow: false
 

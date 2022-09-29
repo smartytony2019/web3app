@@ -562,7 +562,6 @@ insert into cb_v2.t_wallet(uid, username, type, private_key, public_key, address
 
 
 
-
 drop table if exists t_agent;
 create table t_agent(
   id int primary key auto_increment,
@@ -602,47 +601,6 @@ insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (19,2
 insert into cb_v2.t_agent(`p_uid`,`uid`,`username`,`level`,`child`) values (19,21,'demo8899',5,'');
 
 
-
-
-
-
-drop table if exists t_agent_rebate;
-create table t_agent_rebate(
-                               id int primary key auto_increment,
-                               min int comment '最低业绩',
-                               max int comment '最高业绩',
-                               rebate int comment '额度'
-) comment '代理返佣比表';
-
-insert into cb_v2.t_agent_rebate(`min`,`max`,`rebate`) values
-(0,2000,50),
-(2001,5000,55),
-(5001,10000,60),
-(10001,20000,80),
-(20001,50000,90),
-(50001,100000,110),
-(100001,150000,130),
-(150001,200000,135),
-(200001,250000,140),
-(250001,300000,145),
-(300001,400000,150),
-(400001,500000,155),
-(500001,600000,160),
-(600001,800000,170),
-(800001,1000000,180),
-(1000001,1500000,190),
-(1500001,2000000,195),
-(2000001,2500000,200),
-(2500001,3000000,205),
-(3000001,3500000,210),
-(3500001,4000000,215),
-(4000001,5000000,220),
-(5000001,10000000,230);
-
-
-
-
-
 drop table if exists t_agent_commission;
 create table t_agent_commission(
     id int primary key auto_increment,
@@ -678,8 +636,60 @@ create table t_agent_commission_record(
     create_timestamp bigint(20) comment '创建时间戳',
     `status` int default 0 comment '状态(0:申请 1:成功 2:驳回)',
     remark varchar(200) comment '备注',
-    UNIQUE KEY unique_date_uid (sn) comment '唯一索引'
+    UNIQUE KEY unique_sn (sn) comment '唯一索引'
 ) comment '代理佣金记录表';
+
+
+
+drop table if exists t_agent_domain;
+create table t_agent_domain(
+  id int primary key auto_increment,
+  uid int comment '用户id',
+  username varchar(100) comment '用户名',
+  domain varchar(100) comment '域名',
+  enable tinyint(1) comment '是否启用(1:启用 0:禁用)'
+) comment '代理推广域名';
+
+insert into cb_v2.t_agent_domain (uid, username, domain, enable) VALUES (18,'demo5566', 'localhost', 1);
+
+
+
+drop table if exists t_agent_rebate;
+create table t_agent_rebate(
+   id int primary key auto_increment,
+   min int comment '最低业绩',
+   max int comment '最高业绩',
+   rebate int comment '额度'
+) comment '代理返佣比表';
+
+insert into cb_v2.t_agent_rebate(`min`,`max`,`rebate`) values
+(0,2000,50),
+(2001,5000,55),
+(5001,10000,60),
+(10001,20000,80),
+(20001,50000,90),
+(50001,100000,110),
+(100001,150000,130),
+(150001,200000,135),
+(200001,250000,140),
+(250001,300000,145),
+(300001,400000,150),
+(400001,500000,155),
+(500001,600000,160),
+(600001,800000,170),
+(800001,1000000,180),
+(1000001,1500000,190),
+(1500001,2000000,195),
+(2000001,2500000,200),
+(2500001,3000000,205),
+(3000001,3500000,210),
+(3500001,4000000,215),
+(4000001,5000000,220),
+(5000001,10000000,230);
+
+
+
+
 
 
 

@@ -16,12 +16,14 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgentCommissionDto {
+public class AgentCommissionRecordDto {
+
+    private Integer id;
 
     /**
      * 日期
      */
-    private String date;
+    private String sn;
 
     /**
      * 用户id
@@ -34,54 +36,9 @@ public class AgentCommissionDto {
     private String username;
 
     /**
-     * 总佣金
+     * 佣金
      */
-    private Float totalCommission;
-
-    /**
-     * 总业绩
-     */
-    private Float totalPerformance;
-
-    /**
-     * 自营佣金
-     */
-    private Float selfCommission;
-
-    /**
-     *自营业绩
-     */
-    private Float selfPerformance;
-
-    /**
-     * 团队业绩
-     */
-    private Float teamPerformance;
-
-    /**
-     * 团队人数
-     */
-    private Integer teamCount;
-
-    /**
-     * 直属人数
-     */
-    private Integer directCount;
-
-    /**
-     * 直属业绩
-     */
-    private Float directPerformance;
-
-    /**
-     * 下属业绩
-     */
-    private Float subPerformance;
-
-    /**
-     * 返佣比
-     */
-    private Integer rebate;
+    private Float money;
 
     /**
      * 创建时间
@@ -95,8 +52,13 @@ public class AgentCommissionDto {
     private Long createTimestamp;
 
     /**
-     * 是否入帐
+     * 状态(0:申请 1:成功 2:驳回)
      */
-    private Boolean isAccount;
+    private Integer status;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
 }

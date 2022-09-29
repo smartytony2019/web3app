@@ -1,6 +1,8 @@
 package com.xinbo.chainblock.service;
 
 
+import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.entity.AgentCommissionEntity;
 import com.xinbo.chainblock.entity.AgentEntity;
 
 import java.util.List;
@@ -28,4 +30,6 @@ public interface AgentService {
      * @return
      */
     List<AgentEntity> direct(int uid);
+
+    BasePageBo findPage(AgentEntity entity, long current, long size);
 }

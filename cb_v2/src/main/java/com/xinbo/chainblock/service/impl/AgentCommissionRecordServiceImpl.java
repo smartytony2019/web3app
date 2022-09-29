@@ -1,12 +1,19 @@
 package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.dto.AgentCommissionDto;
+import com.xinbo.chainblock.dto.AgentCommissionRecordDto;
 import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.mapper.*;
 import com.xinbo.chainblock.service.AgentCommissionRecordService;
 import com.xinbo.chainblock.service.AgentCommissionService;
+import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +79,15 @@ public class AgentCommissionRecordServiceImpl extends ServiceImpl<AgentCommissio
         return true;
     }
 
+    @Override
+    public BasePageBo findPage(AgentCommissionRecordEntity entity, long current, long size) {
+        Page<AgentCommissionRecordEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.desc("create_timestamp"));
+
+        IPage<AgentCommissionRecordEntity> iPage = agentCommissionRecordMapper.selectPage(page, this.createWrapper(entity));
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), AgentCommissionRecordDto.class)).build();
+    }
+
 
     /**
      * 创建查询条件
@@ -79,19 +95,16 @@ public class AgentCommissionRecordServiceImpl extends ServiceImpl<AgentCommissio
      * @param entity 实体
      * @return LambdaQueryWrapper
      */
-    private LambdaQueryWrapper<AgentCommissionEntity> createWrapper(AgentCommissionEntity entity) {
-        LambdaQueryWrapper<AgentCommissionEntity> wrappers = Wrappers.lambdaQuery();
+    private LambdaQueryWrapper<AgentCommissionRecordEntity> createWrapper(AgentCommissionRecordEntity entity) {
+        LambdaQueryWrapper<AgentCommissionRecordEntity> wrappers = Wrappers.lambdaQuery();
         if (ObjectUtils.isEmpty(entity)) {
             return wrappers;
         }
         if (!StringUtils.isEmpty(entity.getUsername())) {
-            wrappers.eq(AgentCommissionEntity::getUsername, entity.getUsername());
+            wrappers.eq(AgentCommissionRecordEntity::getUsername, entity.getUsername());
         }
         if (!StringUtils.isEmpty(entity.getUid()) && entity.getUid() > 0) {
-            wrappers.eq(AgentCommissionEntity::getUid, entity.getUid());
-        }
-        if (!StringUtils.isEmpty(entity.getDate())) {
-            wrappers.eq(AgentCommissionEntity::getDate, entity.getDate());
+            wrappers.eq(AgentCommissionRecordEntity::getUid, entity.getUid());
         }
         return wrappers;
     }

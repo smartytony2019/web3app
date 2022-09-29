@@ -1,15 +1,26 @@
 package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.dto.AgentDto;
+import com.xinbo.chainblock.dto.HashBetDto;
 import com.xinbo.chainblock.entity.AgentEntity;
+import com.xinbo.chainblock.entity.FinanceEntity;
+import com.xinbo.chainblock.entity.hash.HashBetEntity;
 import com.xinbo.chainblock.mapper.AgentMapper;
 import com.xinbo.chainblock.service.AgentService;
+import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,6 +33,7 @@ public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> impl
 
     @Autowired
     private AgentMapper agentMapper;
+
 
     @Override
     public boolean insert(AgentEntity entity) {
@@ -53,6 +65,27 @@ public class AgentServiceImpl extends ServiceImpl<AgentMapper, AgentEntity> impl
         return agentMapper.directly(uid);
     }
 
+    @Override
+    public BasePageBo findPage(AgentEntity entity, long current, long size) {
+        Page<AgentEntity> page = new Page<>(current, size);
+        page.addOrder(OrderItem.desc("id"));
+        LambdaQueryWrapper<AgentEntity> wrapper = this.createWrapper(entity);
+
+        if (StringUtils.isEmpty(entity.getChild()) && (StringUtils.isEmpty(entity.getPUid()) || entity.getPUid() <= 0)) {
+            wrapper.ne(AgentEntity::getChild, "");
+        }
+
+        if (!StringUtils.isEmpty(entity.getPUid()) && entity.getPUid() > 0) {
+            wrapper.eq(AgentEntity::getUid, entity.getPUid());
+        }
+
+        if (!StringUtils.isEmpty(entity.getChild())) {
+            wrapper.in(AgentEntity::getUid, Arrays.asList(entity.getChild().split(",")));
+        }
+
+        IPage<AgentEntity> iPage = agentMapper.selectPage(page, wrapper);
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), AgentDto.class)).build();
+    }
 
 
     /**

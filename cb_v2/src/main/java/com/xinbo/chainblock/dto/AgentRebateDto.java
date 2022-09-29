@@ -1,7 +1,6 @@
-package com.xinbo.chainblock.entity;
+package com.xinbo.chainblock.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -18,28 +17,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_agent_rebate")
-public class AgentRebateEntity {
+public class AgentRebateDto {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 最低业绩
      */
-    @TableField(value = "min")
     private Integer min;
-
     /**
      * 最高业绩
      */
-    @TableField(value = "max")
     private Integer max;
-
     /**
      * 回扣
      */
-    @TableField(value = "rebate")
     private Integer rebate;
 
 

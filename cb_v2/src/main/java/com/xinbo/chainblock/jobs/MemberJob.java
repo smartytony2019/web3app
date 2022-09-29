@@ -12,7 +12,6 @@ import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.entity.activity.ActivityEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRecordEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
-import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
 import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.service.*;
 import lombok.extern.slf4j.Slf4j;

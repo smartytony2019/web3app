@@ -18,40 +18,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_agent")
-public class AgentEntity {
+@TableName("t_agent_domain")
+public class AgentDomainEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 上级用户id
-     */
-    @TableField("p_uid")
-    private Integer pUid;
-
-    /**
      * 用户id
      */
-    @TableField("uid")
+    @TableField(value = "uid")
     private Integer uid;
 
     /**
      * 用户名
      */
-    @TableField("username")
+    @TableField(value = "username")
     private String username;
 
     /**
-     * 层级
+     * 域名
      */
-    @TableField("level")
-    private Integer level;
+    @TableField(value = "domain")
+    private String domain;
 
     /**
-     * 下级用户
+     * 是否启用(1:启用 0:禁用)
      */
-    @TableField("child")
-    private String child;
+    @TableField(value = "enable")
+    private Boolean enable;
+
 
 }

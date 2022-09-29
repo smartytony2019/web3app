@@ -207,7 +207,7 @@ public class FinanceRecordJob {
                 }
             }
 
-            /***************************** 保存数据库  **********************************/
+            /* **************************** 保存数据库  ********************************* */
             if (financeEntityList.size() > 0) {
                 financeService.batchInsert(financeEntityList);
             }
