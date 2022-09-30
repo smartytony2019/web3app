@@ -1,18 +1,16 @@
 package com.xinbo.chainblock.controller.admin;
 
 
-import cn.hutool.core.date.DateUtil;
-import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.bo.JwtUserBo;
+import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
-import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.RoleEntity;
 import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.service.*;
-import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -26,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController("adminUserController")
 @RequestMapping("/admin/user")
@@ -67,6 +64,8 @@ public class UserController {
         UserDto dto = MapperUtil.to(entity, UserDto.class);
         return R.builder().code(StatusCode.SUCCESS).data(dto).build();
     }
+
+
 
     @Operation(summary = "menu", description = "菜单")
     @GetMapping("menu")
@@ -156,14 +155,6 @@ public class UserController {
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
-    @Operation(summary = "findAllRole", description = "获取所有角色")
-    @GetMapping("findAllRole")
-    public R<Object> findAllRole() {
-        List<RoleEntity> permissionEntityList = roleService.findAll().stream().filter(item -> false == item.getIsDelete())
-                .collect(Collectors.toList());
-        return R.builder().code(StatusCode.SUCCESS).data(permissionEntityList).build();
-    }
-
     @Operation(summary = "insertPermission", description = "新增权限")
     @PostMapping("insertPermission")
     public R<Object> insertPermission(@RequestBody PermissionVo vo) {
@@ -192,14 +183,6 @@ public class UserController {
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
-    @Operation(summary = "findAllPermission", description = "查询所有权限")
-    @GetMapping("findAllPermission")
-    public R<Object> findAllPermission() {
-        List<PermissionEntity> permissionEntityList = permissionService.findall().stream().filter(item -> 0 == item.getIsDelete())
-                .collect(Collectors.toList());
-        return R.builder().code(StatusCode.SUCCESS).data(permissionEntityList).build();
-    }
-
     @Operation(summary = "insertRolePermission", description = "新增角色的权限")
     @PostMapping("insertRolePermission")
     public R<Object> insertRolePermission(@RequestBody RolePermissionVo vo) {
@@ -214,5 +197,49 @@ public class UserController {
         RolePermissionEntity entity = MapperUtil.to(vo, RolePermissionEntity.class);
         boolean isSuccess = rolePermissionService.update(entity);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    /**
+     * 更新用户信息
+     * @param vo
+     * @return
+     */
+
+    @Operation(summary = "update", description = "更新用户信息")
+    @PostMapping("update")
+    public R<Object> update(@RequestBody UserVo vo){
+        UserEntity entity = MapperUtil.to(vo, UserEntity.class);
+        boolean isSuccess = userService.update(entity);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    @Operation(summary = "delete", description = "删除用户")
+    @PostMapping("delete/{id}")
+    public R<Object> delete(@PathVariable Integer id){
+        boolean isSuccess=userService.delete(id);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
+
+    /**
+     * 添加用户
+     * @param vo
+     * @return
+     */
+    @Operation(summary = "insert", description = "添加用户")
+    @PostMapping("insert")
+    public R<Object> insert(@RequestBody UserVo vo){
+        UserEntity entity = MapperUtil.to(vo, UserEntity.class);
+        boolean isUserNameExist = userService.isUserNameExist(entity.getUsername());
+        if(!isUserNameExist){
+            return R.builder().code(StatusCode.FAILURE).msg("用户名重复").build();
+        }else{
+            boolean isSuccess = userService.insert(entity);
+            return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+        }
     }
 }

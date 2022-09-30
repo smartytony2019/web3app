@@ -13,8 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserVo {
-
+    private int id;
     private String username;
-
+    private String pwd;
+    private String avatar;
+    private Boolean isDelete;
 
 }

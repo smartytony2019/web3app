@@ -1,6 +1,5 @@
 package com.xinbo.chainblock.entity.admin;
 
-import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -49,12 +48,6 @@ public class BannerEntity {
     private String title;
 
     /**
-     * 描述
-     */
-    @TableField("description")
-    private String desc;
-
-    /**
      * 是否启用：1 启用 0 禁用
      */
     @TableField("is_enable")
@@ -71,5 +64,8 @@ public class BannerEntity {
      */
     @TableField("create_time")
     private Date createTime;
+
+    @TableField(exist = false)
+    private String langName;
 
 }

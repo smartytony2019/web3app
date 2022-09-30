@@ -2,6 +2,7 @@ package com.xinbo.chainblock.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xinbo.chainblock.entity.admin.UserRoleEntity;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,4 +20,7 @@ public interface UserRoleMapper extends BaseMapper<UserRoleEntity> {
     @Select("select * from t_user_role where user_id = #{userId}")
     List<UserRoleEntity> findByUserId(@Param("userId") int userId);
     int deleteByRole(@Param("roleId") int roleId);
+
+    @Delete("delete from t_user_role where user_id = #{userId}")
+    int deleteByUser(@Param("userId") int userId);
 }

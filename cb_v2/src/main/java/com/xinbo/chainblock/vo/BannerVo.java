@@ -14,7 +14,7 @@ public class BannerVo {
     private String img;
     private String href;
     private String title;
-    private String desc;
+    private String description;
     private Boolean isEnable;
     private Integer sort;
 }

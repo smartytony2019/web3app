@@ -22,4 +22,14 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRoleEnt
     public boolean deleteByRole(int roleId) {
         return userRoleMapper.deleteByRole(roleId)>=0;
     }
+
+    @Override
+    public boolean deleteByUser(int userId) {
+        return userRoleMapper.deleteByUser(userId)>=0;
+    }
+
+    @Override
+    public boolean insert(UserRoleEntity entity) {
+        return userRoleMapper.insert(entity)>0;
+    }
 }

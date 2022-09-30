@@ -5,6 +5,4 @@
     <select id="findAll" resultType="com.xinbo.chainblock.entity.admin.RoleEntity">
         select * from t_role
     </select>
-
-
 </mapper>

@@ -8,5 +8,7 @@ public interface NoticeService {
 
     boolean insert(NoticeEntity entity);
     boolean update(NoticeEntity entity);
-    BasePageBo findNoticePage(long current, long size);
+    BasePageBo findNoticePage(NoticeEntity entity,long current, long size);
+    NoticeEntity find(int id);
+    boolean delete(int id);
 }

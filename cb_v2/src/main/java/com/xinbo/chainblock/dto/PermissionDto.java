@@ -1,8 +1,11 @@
 package com.xinbo.chainblock.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
-import lombok.experimental.Accessors;
+import com.xinbo.chainblock.entity.admin.PermissionEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +23,11 @@ public class PermissionDto implements Serializable {
     private String component;
     private String redirect;
     private String name;
+    private Integer sort;
+    private Integer id;
     private Meta meta;
+    private List<PermissionEntity> allPermissions;
+    private List<PermissionEntity> ownPermissions;
 
     @Data
     @Builder

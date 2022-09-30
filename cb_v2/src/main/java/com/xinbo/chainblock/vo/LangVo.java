@@ -11,4 +11,6 @@ public class LangVo {
     private Integer id;
     private String langCode;
     private String langName;
+    private Boolean isEnable;
+
 }

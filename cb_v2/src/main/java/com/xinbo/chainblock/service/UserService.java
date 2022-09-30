@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.service;
 
 import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 
@@ -24,5 +25,14 @@ public interface UserService {
 
     BasePageBo findPage(UserEntity entity, long current, long size);
 
-     List<PermissionEntity> allMenu(int userId);
+     List<PermissionDto> allMenu(int userId);
+
+    List<PermissionEntity> AllMenuExcludeButton(int userId);
+
+    boolean update(UserEntity entity);
+
+    boolean delete(int id);
+
+    boolean isUserNameExist(String userName);
+    boolean insert(UserEntity entity);
 }

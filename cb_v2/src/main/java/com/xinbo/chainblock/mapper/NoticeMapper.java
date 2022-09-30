@@ -11,6 +11,12 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface NoticeMapper extends BaseMapper<NoticeEntity> {
 
+    /**
+     * 会员用户
+     * @param page
+     * @param id
+     * @return
+     */
     @Select("select n.*,un.id as user_notice_id from t_notice n left join t_user_notice un on n.id=un.notice_id and n.is_enable=1 and un.uid=#{id}")
     Page<NoticeDto> findNoticePage(Page<NoticeDto> page, @Param("id") int id);
 

@@ -5,9 +5,11 @@ import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.admin.NoticeEntity;
+import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.entity.admin.UserNoticeEntity;
 import com.xinbo.chainblock.service.NoticeService;
 import com.xinbo.chainblock.service.UserNoticeService;
+import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -26,27 +28,38 @@ public class NoticeController {
     @Autowired
     private UserNoticeService userNoticeService;
 
+    @Autowired
+    private UserService userService;
 
-    @Operation(summary = "findPage", description = "会员列表")
+
+    @Operation(summary = "findPage", description = "公告列表")
     @PostMapping("findPage/{current}/{size}")
-    public R<Object> findPage(@PathVariable long current, @PathVariable long size) {
-        BasePageBo basePageBo = noticeService.findNoticePage(current, size);
+    public R<Object> findPage(@RequestBody NoticeVo vo,@PathVariable long current, @PathVariable long size) {
+        NoticeEntity entity = MapperUtil.to(vo, NoticeEntity.class);
+        BasePageBo basePageBo = noticeService.findNoticePage(entity,current, size);
         return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
     @Operation(summary = "insert", description = "新增公告")
     @PostMapping("insert")
-    public R<Object> insert(@RequestBody NoticeVo vo) {
+    public R<Object> insert(@RequestBody NoticeVo vo) {System.out.println(vo);
+        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
+        UserEntity userEntity = userService.findById(jwtUserBo.getUid());
+        vo.setOperator(userEntity.getUsername());
         NoticeEntity entity = MapperUtil.to(vo, NoticeEntity.class);
         entity.setCreateTime(DateUtil.date());
         boolean isSuccess = noticeService.insert(entity);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
-    @Operation(summary = "updateOrDelete", description = "更新或删除公告")
-    @PostMapping("updateOrDelete")
-    public R<Object> updateOrDelete(@RequestBody NoticeVo vo) {
+    @Operation(summary = "update", description = "更新或删除公告")
+    @PostMapping("update")
+    public R<Object> update(@RequestBody NoticeVo vo) {
+        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
+        UserEntity userEntity = userService.findById(jwtUserBo.getUid());
+        vo.setOperator(userEntity.getUsername());
         NoticeEntity entity = MapperUtil.to(vo, NoticeEntity.class);
+        entity.setCreateTime(DateUtil.date());
         boolean isSuccess = noticeService.update(entity);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
@@ -61,4 +74,17 @@ public class NoticeController {
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
+    @Operation(summary = "find", description = "查找单条记录")
+    @PostMapping("find/{noticeId}")
+    public R<Object> find(@PathVariable int noticeId) {
+        NoticeEntity entity = noticeService.find(noticeId);
+        return R.builder().code(StatusCode.SUCCESS).data(entity).build();
+    }
+
+    @Operation(summary = "delete", description = "删除")
+    @PostMapping("delete/{noticeId}")
+    public R<Object> delete(@PathVariable int noticeId) {
+        boolean isSuccess = noticeService.delete(noticeId);
+        return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
+    }
 }

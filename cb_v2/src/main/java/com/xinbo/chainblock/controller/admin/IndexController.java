@@ -2,16 +2,15 @@ package com.xinbo.chainblock.controller.admin;
 
 
 import com.xinbo.chainblock.annotation.JwtIgnore;
+import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
-import com.xinbo.chainblock.enums.ActivityCalcModeEnum;
 import com.xinbo.chainblock.enums.LanguageEnum;
 import com.xinbo.chainblock.enums.SymbolEnum;
 import com.xinbo.chainblock.service.UserService;
-import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -22,7 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController("adminIndex")
 @RequestMapping("/admin")
@@ -63,56 +64,20 @@ public class IndexController {
     @GetMapping("menu")
     public R<Object> menu() {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
-        List<PermissionEntity> list = userService.menu(jwtUserBo.getUid());
-
-        List<PermissionDto> result = new ArrayList<>();
-        for(PermissionEntity entity : list) {
-            PermissionDto.Meta meta = PermissionDto.Meta.builder()
-                    .title(entity.getTitle())
-                    .icon(entity.getIcon())
-                    .alwaysShow(true)
-                    .build();
-            PermissionDto dto = PermissionDto.builder()
-                    .path(entity.getPath())
-                    .component(entity.getComponent())
-                    .redirect(entity.getRedirect())
-                    .name(entity.getName())
-                    .meta(meta)
-                    .build();
-
-            List<PermissionDto> childrenList = new ArrayList<>();
-            List<PermissionEntity> children = entity.getChildren();
-            for (PermissionEntity c : children) {
-                PermissionDto.Meta childrenMeta = PermissionDto.Meta.builder()
-                        .title(c.getTitle())
-                        .noCache(true)
-                        .build();
-                PermissionDto childrenDto = PermissionDto.builder()
-                        .path(c.getPath())
-                        .component(c.getComponent())
-                        .name(c.getName())
-                        .meta(childrenMeta)
-                        .build();
-                childrenList.add(childrenDto);
-            }
-            dto.setChildren(childrenList);
-
-            result.add(dto);
-        }
-
-        return R.builder().code(StatusCode.SUCCESS).data(result).build();
+        List<PermissionDto> list = userService.allMenu(jwtUserBo.getUid());
+        return R.builder().code(StatusCode.SUCCESS).data(list.get(0).getChildren()).build();
     }
 
     /**
      *
-     * 获取角色菜单
-     *
+     * 获取除了按钮外的整个菜单树
      * @return
      */
-    @GetMapping("permissionMenu")
-    public R<Object> permissionMenu() {
+    @Operation(summary = "menuExcludeBtn", description = "除了按钮外的菜单树")
+    @GetMapping("menuExcludeBtn")
+    public R<Object> menuExcludeBtn() {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
-        List<PermissionEntity> list = userService.allMenu(jwtUserBo.getUid());
+        List<PermissionEntity> list = userService.AllMenuExcludeButton(jwtUserBo.getUid());
         return R.builder().code(StatusCode.SUCCESS).data(list).build();
     }
 

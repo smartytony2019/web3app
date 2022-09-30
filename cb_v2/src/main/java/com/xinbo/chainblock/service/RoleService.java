@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.service;
 
 import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.entity.admin.NoticeEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.RoleEntity;
 
@@ -21,5 +22,12 @@ public interface RoleService {
 
     boolean update(RoleEntity entity);
 
+    BasePageBo findPage(RoleEntity entity, long current, long size);
+
+    RoleEntity find(int id);
+
+    boolean delete(int id);
+
     List<RoleEntity> findAll();
+    List<RoleEntity> getRoles(int userId);
 }

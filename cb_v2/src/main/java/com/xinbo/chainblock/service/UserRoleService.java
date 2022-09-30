@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.service;
 
+import com.xinbo.chainblock.entity.admin.UserRoleEntity;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -13,4 +14,8 @@ import org.apache.ibatis.annotations.Param;
 public interface UserRoleService {
 
     boolean deleteByRole(int roleId);
+
+    boolean deleteByUser(int userId);
+
+    boolean insert(UserRoleEntity entity);
 }

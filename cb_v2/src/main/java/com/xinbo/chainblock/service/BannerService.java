@@ -10,5 +10,9 @@ public interface BannerService {
 
     boolean update(BannerEntity entity);
 
-    List<BannerEntity> findAll();
+    List<BannerEntity> findAll(BannerEntity entity);
+
+    boolean delete(int id);
+
+    BannerEntity find(int id);
 }

@@ -1,16 +1,10 @@
 package com.xinbo.chainblock.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * <p>
@@ -43,4 +37,6 @@ public class UserDto {
      * 头像
      */
     private String avatar;
+
+    private Boolean isDelete;
 }

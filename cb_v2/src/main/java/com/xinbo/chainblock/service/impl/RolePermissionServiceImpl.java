@@ -7,6 +7,8 @@ import com.xinbo.chainblock.service.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 6/24/22 4:31 下午
@@ -37,4 +39,5 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
     public boolean update(RolePermissionEntity entity) {
         return rolePermissionMapper.updateById(entity)>0;
     }
+
 }

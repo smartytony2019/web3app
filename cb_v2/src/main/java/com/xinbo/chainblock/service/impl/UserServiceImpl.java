@@ -6,15 +6,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
-import com.xinbo.chainblock.entity.admin.PermissionEntity;
-import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
-import com.xinbo.chainblock.entity.admin.UserEntity;
-import com.xinbo.chainblock.entity.admin.UserRoleEntity;
-import com.xinbo.chainblock.mapper.PermissionMapper;
-import com.xinbo.chainblock.mapper.RolePermissionMapper;
-import com.xinbo.chainblock.mapper.UserMapper;
-import com.xinbo.chainblock.mapper.UserRoleMapper;
+import com.xinbo.chainblock.entity.admin.*;
+import com.xinbo.chainblock.mapper.*;
 import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +41,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Autowired
     private PermissionMapper permissionMapper;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
 
     @Override
     public List<Integer> findPermission(int userId) {
@@ -55,18 +53,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     private List<PermissionEntity> getPermission(int userId) {
-
         //Step 1: 根据用户id获取到角色
         List<UserRoleEntity> roleEntityList = userRoleMapper.findByUserId(userId);
 
         //Step 2: 根据角色获取到权限
-        List<Integer> roles = roleEntityList.stream().map(UserRoleEntity::getRoleId).collect(Collectors.toList());
+        List<Integer> roles = roleEntityList.stream().
+                filter(item->{
+                    if(item != null){
+                      RoleEntity entity= roleMapper.selectById(item.getRoleId());
+                      return entity.getIsDelete(); //返回未禁用的角色
+                    }
+                    return true;
+                }).
+                map(UserRoleEntity::getRoleId).collect(Collectors.toList());
         List<RolePermissionEntity> rolePermissionEntityList = rolePermissionMapper.findByRoles(roles);
 
-        List<Integer> permissions = rolePermissionEntityList.stream().map(RolePermissionEntity::getPermissionId).distinct().collect(Collectors.toList());
+       List<Integer>  permissions = rolePermissionEntityList.stream().
+                filter(item->{
+                    if(item != null){
+                        PermissionEntity entity =permissionMapper.selectById(item.getPermissionId());
+                        return entity.getIsDelete()==1; //返回未禁用的权限
+                    }
+                    return true;
+                }).
+                 map(RolePermissionEntity::getPermissionId).distinct().collect(Collectors.toList());
 
         return permissionMapper.findByIds(permissions);
+
     }
+
+
 
 
     @Override
@@ -98,6 +114,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         return folders;
     }
+
+
 
 
     @Override
@@ -144,8 +162,65 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      */
 
     @Override
-    public List<PermissionEntity> allMenu(int userId){
-        List<PermissionEntity> permission = this.getPermission(userId);
+    public List<PermissionDto> allMenu(int userId){
+        List<PermissionEntity> permission = this.getPermission(userId).stream()
+                .map(item->{
+                    if(item!=null&&item.getParentId()!=0){
+                        String parentName=permissionMapper.selectById(item.getParentId()).getNameDefault();
+                        item.setParentName(parentName);
+                    }
+                    return item;
+                })
+                .collect(Collectors.toList());
+
+        //获取最顶层的菜单
+        List<PermissionEntity> rootPermission=permission.stream().filter(item->0==item.getParentId())
+                .collect(Collectors.toList());
+        List<PermissionDto> menuList=new ArrayList<>();
+        rootPermission.stream().forEach(item->{
+
+            PermissionDto.Meta meta = PermissionDto.Meta.builder()
+                    .title(item.getTitle())
+                    .icon(item.getIcon())
+                    .alwaysShow(true)
+                    .build();
+            PermissionDto dto =PermissionDto.builder()
+                    .path(item.getPath())
+                    .component(item.getComponent())
+                    .redirect(item.getRedirect())
+                    .name(item.getName())
+                    .meta(meta)
+                    .sort(item.getSort())
+                    .id(item.getId())
+                    .build();
+            dto.setChildren(subMenuDto(permission,dto.getId()));
+            menuList.add(dto);
+        });
+
+        return menuList;
+    }
+
+    /**
+     * 除了按钮外的整个菜单树
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<PermissionEntity> AllMenuExcludeButton(int userId) {
+        List<PermissionEntity> permission = this.getPermission(userId).stream()
+                .map(item->{
+                    if(item!=null&&item.getParentId()!=0){
+                    String parentName=permissionMapper.selectById(item.getParentId()).getNameDefault();
+                    item.setParentName(parentName);
+                    }
+                    return item;
+                })
+                .filter(item->{
+                    if(item!=null && item.getNodeType()!=null){
+                        return item.getNodeType()!=3;
+                    }
+                    return true;
+                }).collect(Collectors.toList());
 
         //获取最顶层的菜单
         List<PermissionEntity> rootPermission=permission.stream().filter(item->0==item.getParentId())
@@ -159,7 +234,66 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return menuList;
     }
 
+    @Override
+    public boolean update(UserEntity entity) {
+        return userMapper.updateById(entity)>0;
+    }
 
+    @Override
+    public boolean delete(int id) {
+        return userMapper.deleteById(id)>0;
+    }
+
+    @Override
+    public boolean isUserNameExist(String userName) {
+      UserEntity entity = userMapper.findByUserName(userName);
+      if(ObjectUtils.isEmpty(entity)){
+          return true;
+      }else{
+          return false;
+      }
+
+    }
+
+    @Override
+    public boolean insert(UserEntity entity) {
+        return userMapper.insert(entity)>0;
+    }
+
+
+    /**
+     * 遍历子菜单
+     * @param allPermission
+     * @param permissionId
+     * @return
+     */
+    public List<PermissionDto> subMenuDto(List<PermissionEntity> allPermission,int permissionId){
+        List<PermissionDto> children=new ArrayList<>();
+        allPermission.stream().forEach(item->{
+            if(permissionId==item.getParentId()){
+                PermissionDto.Meta meta = PermissionDto.Meta.builder()
+                        .title(item.getTitle())
+                        .icon(item.getIcon())
+                        .alwaysShow(true)
+                        .build();
+                PermissionDto dto =PermissionDto.builder()
+                        .path(item.getPath())
+                        .component(item.getComponent())
+                        .redirect(item.getRedirect())
+                        .name(item.getName())
+                        .meta(meta)
+                        .sort(item.getSort())
+                        .id(item.getId())
+                        .build();
+                children.add(dto);
+            }
+        });
+        Collections.sort(children,(obj1,obj2)->obj1.getSort()-obj2.getSort());
+        children.stream().forEach(item->{
+            item.setChildren(subMenuDto(allPermission,item.getId()));
+        });
+        return children;
+    }
 
     /**
      * 遍历子菜单
@@ -174,6 +308,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 children.add(item);
             }
         });
+        Collections.sort(children,(obj1, obj2)->obj1.getSort()-obj2.getSort());
         children.stream().forEach(item->{
             item.setChildren(subMenu(allPermission,item.getId()));
         });

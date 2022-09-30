@@ -9,13 +9,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_lang")
+@TableName("t_language")
 public class LanguageEntity {
 
     /**
@@ -37,8 +35,8 @@ public class LanguageEntity {
     private String langName;
 
     /**
-     * 创建时间
+     * 1 启用 0禁用
      */
-    @TableField("create_time")
-    private Date createTime;
+    @TableField("is_enable")
+    private Boolean isEnable;
 }
