@@ -196,6 +196,11 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         }
     }
 
+    @Override
+    public List<PermissionEntity> findByIds(List<Integer> ids) {
+        return permissionMapper.findByIds(ids);
+    }
+
     /**
      * 遍历子菜单
      * @param allPermission

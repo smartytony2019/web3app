@@ -7,6 +7,8 @@ import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.consts.StatusCode;
+import com.xinbo.chainblock.entity.admin.PermissionEntity;
+import com.xinbo.chainblock.service.PermissionService;
 import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
@@ -25,12 +27,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -101,7 +107,11 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
                 if (CollectionUtils.isEmpty(permission)) {
                     return false;
                 }
-                return permission.contains(requiredPermission.value().getCode());
+                List<PermissionEntity> permissionEntities = permissionService.findByIds(permission);
+                List<String> names = permissionEntities.stream()
+                        .map(PermissionEntity :: getName)
+                        .collect(Collectors.toList());
+                return names.contains(requiredPermission.value().getNameZh());
             }
         }
 

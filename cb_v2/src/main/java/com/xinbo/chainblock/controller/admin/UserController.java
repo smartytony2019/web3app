@@ -159,7 +159,7 @@ public class UserController {
     @PostMapping("insertPermission")
     public R<Object> insertPermission(@RequestBody PermissionVo vo) {
         PermissionEntity entity = MapperUtil.to(vo, PermissionEntity.class);
-        entity.setIsDelete(0);
+        entity.setIsDelete(true);
         boolean isSuccess = permissionService.insert(entity);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
@@ -178,7 +178,7 @@ public class UserController {
     public R<Object> deletePermission(@PathVariable Integer id) {
         PermissionEntity entity = new PermissionEntity();
         entity.setId(id);
-        entity.setIsDelete(1);
+        entity.setIsDelete(false);
         boolean isSuccess = permissionService.update(entity) && rolePermissionService.deleteByPermission(id);
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }

@@ -14,6 +14,7 @@ import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -49,7 +50,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     public List<Integer> findPermission(int userId) {
         //根据用户id拿到权限
         List<PermissionEntity> permission = this.getPermission(userId);
-        return permission.stream().map(PermissionEntity::getCode).distinct().collect(Collectors.toList());
+        if(CollectionUtils.isEmpty(permission)){
+            return null;
+        }
+        return permission.stream().map(PermissionEntity::getId).distinct().collect(Collectors.toList());
     }
 
     private List<PermissionEntity> getPermission(int userId) {
@@ -72,14 +76,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 filter(item->{
                     if(item != null){
                         PermissionEntity entity =permissionMapper.selectById(item.getPermissionId());
-                        return entity.getIsDelete()==1; //返回未禁用的权限
+                        return entity.getIsDelete()==true; //返回未禁用的权限
                     }
                     return true;
                 }).
                  map(RolePermissionEntity::getPermissionId).distinct().collect(Collectors.toList());
-
+       if(CollectionUtils.isEmpty(permissions)){
+           return null;
+       }
         return permissionMapper.findByIds(permissions);
-
     }
 
 
@@ -171,11 +176,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                     }
                     return item;
                 })
+                .filter(item->{
+                    if(item!=null && item.getNodeType()!=null){
+                        return item.getNodeType()!=3;
+                    }
+                    return true;
+                })
                 .collect(Collectors.toList());
 
         //获取最顶层的菜单
         List<PermissionEntity> rootPermission=permission.stream().filter(item->0==item.getParentId())
                 .collect(Collectors.toList());
+
+        Collections.sort(rootPermission,(obj1,obj2)->obj1.getSort()-obj2.getSort());
+
         List<PermissionDto> menuList=new ArrayList<>();
         rootPermission.stream().forEach(item->{
 
@@ -193,7 +207,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                     .sort(item.getSort())
                     .id(item.getId())
                     .build();
-            dto.setChildren(subMenuDto(permission,dto.getId()));
+            List<PermissionDto> permissionDtos=subMenuDto(permission,dto.getId());
+
+            Collections.sort(permissionDtos,(obj1,obj2)->obj1.getSort()-obj2.getSort());
+
+            dto.setChildren(permissionDtos);
             menuList.add(dto);
         });
 

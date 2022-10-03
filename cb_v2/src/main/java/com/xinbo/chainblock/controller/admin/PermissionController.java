@@ -1,8 +1,10 @@
 package com.xinbo.chainblock.controller.admin;
 
+import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
+import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.PermissionService;
 import com.xinbo.chainblock.service.RolePermissionService;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -25,11 +27,12 @@ public class PermissionController {
     @Autowired
     private RolePermissionService rolePermissionService;
 
+    //@RequiredPermission()
     @Operation(summary = "find", description = "查找单条记录")
     @PostMapping("find/{id}")
     public R<Object> find(@PathVariable int id) {
         PermissionEntity entity = permissionService.find(id);
-        entity.setParentName(permissionService.find(entity.getParentId()).getNameDefault());
+        entity.setParentName(permissionService.find(entity.getParentId()).getTitle());
         return R.builder().code(StatusCode.SUCCESS).data(entity).build();
     }
 
@@ -76,6 +79,7 @@ public class PermissionController {
     }
 
     @Operation(summary = "delete", description = "删除权限")
+    @RequiredPermission(PermissionCodeEnum.permission_del)
     @Transactional
     @PostMapping("delete/{id}")
     public R<Object> delete(@PathVariable int id){

@@ -112,10 +112,10 @@ public class PermissionEntity {
 
 
     /**
-     * 是否删除 1：已删除；0：未删除
+     * 是否删除 1：未删除；0：已删除
      */
     @TableField("is_delete")
-    private Integer isDelete;
+    private Boolean isDelete;
 
     @TableField(exist = false)
     private String parentName;

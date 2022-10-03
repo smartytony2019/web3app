@@ -1,9 +1,11 @@
 package com.xinbo.chainblock.controller.admin;
 
+import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.RoleDto;
 import com.xinbo.chainblock.entity.admin.RoleEntity;
+import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.RolePermissionService;
 import com.xinbo.chainblock.service.RoleService;
 import com.xinbo.chainblock.service.UserRoleService;
@@ -37,6 +39,7 @@ public class RoleController {
     }
 
     @Operation(summary = "insert", description = "新增角色")
+    @RequiredPermission(PermissionCodeEnum.role_add)
     @PostMapping("insert")
     public R<Object> insert(@RequestBody RoleVo vo){
         RoleEntity entity = MapperUtil.to(vo, RoleEntity.class);
@@ -45,6 +48,7 @@ public class RoleController {
     }
 
     @Operation(summary = "update", description = "修改角色")
+    @RequiredPermission(PermissionCodeEnum.role_edit)
     @PostMapping("update")
     public R<Object> update(@RequestBody RoleVo vo){
         RoleEntity entity = MapperUtil.to(vo, RoleEntity.class);
@@ -60,6 +64,7 @@ public class RoleController {
     }
 
     @Operation(summary = "delete", description = "删除")
+    @RequiredPermission(PermissionCodeEnum.role_del)
     @Transactional
     @PostMapping("delete/{roleId}")
     public R<Object> delete(@PathVariable int roleId){

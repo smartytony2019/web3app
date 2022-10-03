@@ -26,4 +26,5 @@ public interface PermissionService {
     List<PermissionEntity> AllMenuExcludeButton();
     List<PermissionEntity> roleMenu(int roleId);
     List<PermissionEntity> getRolePermission(int roleId);
+    List<PermissionEntity> findByIds(List<Integer> ids);
 }

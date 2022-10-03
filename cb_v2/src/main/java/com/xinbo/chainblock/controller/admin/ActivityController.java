@@ -3,6 +3,7 @@ package com.xinbo.chainblock.controller.admin;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
+import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.bo.JwtUserBo;
@@ -87,7 +88,7 @@ public class ActivityController {
         return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
     }
 
-
+    @RequiredPermission(PermissionCodeEnum.ACTIVITY_DEL)
     @Operation(summary = "delete", description = "删除")
     @PostMapping("delete/{sn}")
     public R<Object> delete(@PathVariable String sn) {

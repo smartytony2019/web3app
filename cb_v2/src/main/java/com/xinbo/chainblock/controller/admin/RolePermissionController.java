@@ -1,7 +1,9 @@
 package com.xinbo.chainblock.controller.admin;
 
+import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
+import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.RolePermissionService;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +21,7 @@ public class RolePermissionController {
     private RolePermissionService rolePermissionService;
 
     @Operation(summary = "insertBatch", description = "批量角色权限")
+   // @RequiredPermission(PermissionCodeEnum.role_permission_add)
     @Transactional
     @PostMapping("insertBatch/{roleId}")
     public R<Object> insertBatch(@PathVariable int roleId, @RequestBody List<Integer> permissions){
