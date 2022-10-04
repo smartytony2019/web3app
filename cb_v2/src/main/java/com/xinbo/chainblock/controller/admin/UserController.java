@@ -23,6 +23,7 @@ import com.xinbo.chainblock.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController("adminUserController")
 @RequestMapping("/admin/user")
@@ -138,6 +140,29 @@ public class UserController {
         }
 
         return R.builder().code(StatusCode.SUCCESS).data(result).build();
+    }
+
+    @Operation(summary = "findUserPermission", description = "查询用户权限")
+    @PostMapping("findUserPermission")
+    public R<Object> findUserPermission(){
+        JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
+        List<PermissionEntity> permissionEntityList=null;
+
+        if(jwtUserBo.getRoleType() == RoleTypeConst.NORMAL){
+            permissionEntityList=userService.getPermission(jwtUserBo.getUid());
+        }
+
+        if(jwtUserBo.getRoleType() == RoleTypeConst.ADMINISTRATOR){
+            permissionEntityList=permissionService.findAll();
+        }
+
+        if (CollectionUtils.isEmpty(permissionEntityList)) {
+            return R.builder().code(StatusCode.SUCCESS).data(null).build();
+        }
+
+        List<String> path = permissionEntityList.stream()
+                .map(PermissionEntity::getPath).collect(Collectors.toList());
+        return R.builder().code(StatusCode.SUCCESS).data(path).build();
     }
 
 

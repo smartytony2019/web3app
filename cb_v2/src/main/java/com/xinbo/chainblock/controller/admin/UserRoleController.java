@@ -1,7 +1,9 @@
 package com.xinbo.chainblock.controller.admin;
 
+import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.admin.UserRoleEntity;
+import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.UserRoleService;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +20,7 @@ public class UserRoleController {
     @Autowired
     private UserRoleService userRoleService;
 
+    @RequiredPermission(PermissionCodeEnum.user_role_add)
     @Operation(summary = "insertBatch", description = "批量新增用户角色")
     @Transactional
     @PostMapping("insertBatch/{userId}")

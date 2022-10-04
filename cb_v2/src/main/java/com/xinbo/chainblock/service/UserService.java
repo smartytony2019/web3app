@@ -40,5 +40,7 @@ public interface UserService {
     boolean isUserNameExist(String userName);
     boolean insert(UserEntity entity);
 
-    UserEntity findByName( @Param("userName") String userName);
+    UserEntity findByName(String userName);
+
+    List<PermissionEntity> getPermission(int userId);
 }

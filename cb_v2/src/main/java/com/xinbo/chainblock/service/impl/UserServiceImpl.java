@@ -56,7 +56,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return permission.stream().map(PermissionEntity::getId).distinct().collect(Collectors.toList());
     }
 
-    private List<PermissionEntity> getPermission(int userId) {
+    @Override
+    public  List<PermissionEntity> getPermission(int userId) {
         //Step 1: 根据用户id获取到角色
         List<UserRoleEntity> roleEntityList = userRoleMapper.findByUserId(userId);
 

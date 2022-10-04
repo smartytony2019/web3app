@@ -27,7 +27,6 @@ public class PermissionController {
     @Autowired
     private RolePermissionService rolePermissionService;
 
-    //@RequiredPermission()
     @Operation(summary = "find", description = "查找单条记录")
     @PostMapping("find/{id}")
     public R<Object> find(@PathVariable int id) {
