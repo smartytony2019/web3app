@@ -71,13 +71,11 @@ public class ActivityVo {
     /**
      * 开始时间
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
 
     /**
      * 结束时间
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date finishTime;
 
 

@@ -79,23 +79,22 @@ public class FinanceRecordJob {
                 return;
             }
 
-
             String json = redisTemplate.opsForSet().pop(RedisConst.MEMBER_FINANCE);
             if (StringUtils.isEmpty(json)) {
                 return;
             }
 
-            WalletEntity walletEntity = JSON.parseObject(json, WalletEntity.class);
-            if (ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
+            MemberEntity memberEntity = JSON.parseObject(json, MemberEntity.class);
+            if (ObjectUtils.isEmpty(memberEntity) || memberEntity.getId() <= 0) {
                 return;
             }
 
             List<FinanceEntity> financeEntityList = new ArrayList<>();
-            String base58Address = walletEntity.getAddressBase58();
-            String hexAddress = walletEntity.getAddressHex();
+            String base58Address = memberEntity.getBase58();
+            String hexAddress = memberEntity.getHex();
             /* **************************** 处理Trc20记录  ********************************* */
-//            long minTimestamp = 0;
-            long minTimestamp = new Date().getTime() - (3 * 60 * 60 * 1000);
+            long minTimestamp = 0;
+//            long minTimestamp = new Date().getTime() - (3 * 60 * 60 * 1000);
             JSONObject trc20Record = trxApi.getTrc20Record(base58Address, minTimestamp);
             JSONArray trc20Data = trc20Record.getJSONArray("data");
 
@@ -118,6 +117,9 @@ public class FinanceRecordJob {
                     BigInteger value = jsonObject.getBigInteger("value");
 
                     JSONObject tokenInfo = jsonObject.getJSONObject("token_info");
+                    if(ObjectUtils.isEmpty(tokenInfo) || ObjectUtils.isEmpty(tokenInfo.getString("symbol"))) {
+                        continue;
+                    }
                     String symbol = tokenInfo.getString("symbol");
                     int decimals = tokenInfo.getInteger("decimals");
                     String name = tokenInfo.getString("name");
@@ -138,8 +140,8 @@ public class FinanceRecordJob {
                     BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
                     int type = base58Address.toUpperCase(Locale.ROOT).equals(toAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
                     FinanceEntity fe = FinanceEntity.builder()
-                            .uid(walletEntity.getUid())
-                            .username(walletEntity.getUsername())
+                            .uid(memberEntity.getId())
+                            .username(memberEntity.getUsername())
                             .transactionId(transactionId)
                             .fromAddress(fromAddress)
                             .toAddress(toAddress)
@@ -189,8 +191,8 @@ public class FinanceRecordJob {
 
                     int t = toAddress.toUpperCase(Locale.ROOT).equals(hexAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
                     FinanceEntity fe = FinanceEntity.builder()
-                            .uid(walletEntity.getUid())
-                            .username(walletEntity.getUsername())
+                            .uid(memberEntity.getId())
+                            .username(memberEntity.getUsername())
                             .transactionId(txID)
                             .fromAddress(ownerAddress)
                             .toAddress(toAddress)
@@ -205,7 +207,7 @@ public class FinanceRecordJob {
                 }
             }
 
-            /***************************** 保存数据库  **********************************/
+            /* **************************** 保存数据库  ********************************* */
             if (financeEntityList.size() > 0) {
                 financeService.batchInsert(financeEntityList);
             }

@@ -44,9 +44,6 @@ import java.util.stream.Collectors;
 public class HashBetController {
 
     @Autowired
-    private WalletService walletService;
-
-    @Autowired
     private GameService gameService;
 
     @Autowired
@@ -109,11 +106,6 @@ public class HashBetController {
             MemberEntity memberEntity = memberService.findById(jwtUser.getUid());
             if (ObjectUtils.isEmpty(memberEntity) || memberEntity.getId() <= 0) {
                 throw new BusinessException(0, "会员不存在");
-            }
-
-            WalletEntity walletEntity = walletService.findByUid(memberEntity.getId());
-            if (ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
-                throw new BusinessException(0, "数字钱包不存在");
             }
 
             //投注数量
@@ -187,14 +179,14 @@ public class HashBetController {
 
             HashResultEntity result = HashResultEntity.builder()
                     .sn(bet.getSn())
-                    .toAddress(walletEntity.getAddressBase58())
+                    .toAddress(memberEntity.getBase58())
                     .gameId(playEntity.getGameId())
                     .playId(playEntity.getId())
                     .uid(memberEntity.getId())
                     .username(memberEntity.getUsername())
                     .build();
 
-            boolean isSuccess = trxApi.resultOpen(sn, walletEntity.getAddressBase58());
+            boolean isSuccess = trxApi.resultOpen(sn, memberEntity.getBase58());
             if (!isSuccess) {
                 throw new BusinessException(1000, "终端生成开奖结果失败");
             }
@@ -221,7 +213,7 @@ public class HashBetController {
         HashBetEntity order = hashBetService.findOrder(sn);
         if (!ObjectUtils.isEmpty(order)) {
             // 说明已开奖
-            return R.builder().code(StatusCode.SUCCESS).data(order.getFlag()).build();
+            return R.builder().code(StatusCode.SUCCESS).data(order.getResult()).build();
         }
         return R.builder().code(StatusCode.SUCCESS).build();
     }

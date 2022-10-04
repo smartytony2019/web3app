@@ -20,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("t_hash_bet")
+@TableName("t_hash_offline_bet")
 public class HashOfflineBetEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
@@ -31,6 +31,12 @@ public class HashOfflineBetEntity {
      */
     @TableField("sn")
     private String sn;
+
+    /**
+     * 用户名
+     */
+    @TableField("username")
+    private String username;
 
     /**
      * 彩种id
@@ -93,6 +99,18 @@ public class HashOfflineBetEntity {
     private String network;
 
     /**
+     * 投注内容
+     */
+    @TableField("content")
+    private String content;
+
+    /**
+     * 投注内容(中文)
+     */
+    @TableField("content_zh")
+    private String contentZh;
+
+    /**
      * 注单赔率
      */
     @TableField("odds")
@@ -144,8 +162,8 @@ public class HashOfflineBetEntity {
     /**
      * 标记(1:赢, 2:输, 3: 和)
      */
-    @TableField("flag")
-    private Integer flag;
+    @TableField("result")
+    private Integer result;
 
     /**
      * 状态(0:未结算,1:已结算,2:作废)

@@ -10,6 +10,7 @@ import com.xinbo.chainblock.consts.ActivityConst;
 import com.xinbo.chainblock.consts.GlobalConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.dto.ActivityDto;
 import com.xinbo.chainblock.entity.MemberEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
@@ -17,9 +18,7 @@ import com.xinbo.chainblock.entity.activity.ActivityEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRecordEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
-import com.xinbo.chainblock.enums.ActivityRuleCycleEnum;
-import com.xinbo.chainblock.enums.ActivityRuleLimitItemEnum;
-import com.xinbo.chainblock.enums.MemberFlowItemEnum;
+import com.xinbo.chainblock.enums.*;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.*;
 import com.xinbo.chainblock.utils.MapperUtil;
@@ -68,6 +67,26 @@ public class ActivityController {
         return isSuccess ? R.builder().data(StatusCode.SUCCESS).build() : R.builder().data(StatusCode.FAILURE).build();
     }
 
+    @Operation(summary = "findCate", description = "类目")
+    @PostMapping("findCate")
+    public R<Object> findCate() {
+        return R.builder().code(StatusCode.SUCCESS).data(ActivityCategoryEnum.toList()).build();
+    }
+
+    @Operation(summary = "findType", description = "类型")
+    @PostMapping("findType")
+    public R<Object> findType() {
+        return R.builder().code(StatusCode.SUCCESS).data(ActivityTypeEnum.toList()).build();
+    }
+
+
+    @JwtIgnore
+    @Operation(summary = "findAll", description = "所有")
+    @PostMapping("findAll")
+    public R<Object> findAll() {
+        List<ActivityEntity> list = activityService.findAll();
+        return R.builder().data(StatusCode.SUCCESS).data(MapperUtil.many(list, ActivityDto.class)).build();
+    }
 
     @JwtIgnore
     @Operation(summary = "find", description = "插入")
@@ -122,7 +141,8 @@ public class ActivityController {
 
 
             dateRangeBo.setStartTimeStr("20220101");
-            dateRangeBo.setEndTimeStr(DateUtil.yesterday().toString(GlobalConst.DATE_YMD));
+//            dateRangeBo.setEndTimeStr(DateUtil.yesterday().toString(GlobalConst.DATE_YMD));
+            dateRangeBo.setEndTimeStr(DateUtil.date().toString(GlobalConst.DATE_YMD));
             if (!ObjectUtils.isEmpty(recordEntity) && recordEntity.getId() > 0) {
                 // 判断今天是否领取一个
                 String startTimeStr = DateUtil.date(recordEntity.getCreateTime()).toString(GlobalConst.DATE_YMD);

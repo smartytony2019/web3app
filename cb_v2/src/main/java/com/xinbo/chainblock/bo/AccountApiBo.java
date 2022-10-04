@@ -12,17 +12,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 public class AccountApiBo {
-
-    private String privateKey;
-
-    private String publicKey;
-
-    private Address address;
-
-
-    @Data
-    public class Address {
-        private String base58;
-        private String hex;
-    }
+    private String base58;
+    private String hex;
 }

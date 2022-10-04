@@ -51,7 +51,6 @@ public class SystemFLowJob {
      */
     @Scheduled(cron = "0/5 * * * * ?")
     public void handleSystemFlowQueue() {
-
         try {
             if (!isSystemFlow) {
                 return;
@@ -64,7 +63,7 @@ public class SystemFLowJob {
 
             WalletEntity main = walletService.findMain();
 
-            String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, main.getAddressBase58(), main.getPrivateKey());
+            String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, main.getAddressBase58());
             if(StringUtils.isEmpty(balanceOfTrc20)) {
                 return;
             }

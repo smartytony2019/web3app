@@ -46,12 +46,10 @@ public class ActivityController {
     @PostMapping("operate")
     public R<Object> operate(@RequestBody ActivityVo vo) {
         EnumItemBo cateEnum = ActivityCategoryEnum.valueOf(vo.getCateCode());
-        String sn = IdUtil.getSnowflake().nextIdStr();
         ActivityEntity entity = ActivityEntity.builder()
                 .cateCode(cateEnum.getCode())
                 .cateName(cateEnum.getName())
                 .cateNameZh(cateEnum.getNameZh())
-                .sn(sn)
                 .title(vo.getTitle())
                 .img(vo.getImg())
                 .content(vo.getContent())
@@ -66,6 +64,7 @@ public class ActivityController {
 
         boolean isSuccess;
         if(ObjectUtils.isEmpty(vo.getId()) || vo.getId()<=0) {
+            entity.setSn(IdUtil.getSnowflake().nextIdStr());
             isSuccess = activityService.create(entity);
         } else {
             entity.setId(vo.getId());

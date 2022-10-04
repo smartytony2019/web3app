@@ -7,6 +7,7 @@ let dayjs = require('dayjs')
 let sqlite = require("./utils/sqlite3Util")
 let config = require("./config/config")
 let trxModel = require("./model/trxModel")
+let request = require('request');
 
 
 
@@ -24,7 +25,6 @@ class Result {
   async open() {
     console.log(` ************** 开奖 - 开始...  ${dayjs().format("YYYY-MM-DD HH:mm:ss")}`);
     try {
-  
   
       //Step 2: 查询是否已开奖
       let query = `select * from t_hash_result where txID = ''`;
@@ -75,8 +75,9 @@ class Result {
       }
     
 
-      let contractAddress = this.account.trx.contractAddress;
-      let res = await trxModel.getEventResult(contractAddress, 'Transfer')
+      // let contractAddress = this.account.trx.contractAddress;
+      // let res = await trxModel.getEventResult(contractAddress, 'Transfer')
+      let res = await this.record()
       console.log('res', res)
       if(res === undefined || res.length <= 0) {
         return;
@@ -84,7 +85,7 @@ class Result {
 
       let event = null;
       for(let t = 0; t < res.length; t++ ){
-        if(result.txID === res[t].transaction){
+        if(result.txID === res[t].transaction_id){
           event = res[t];
           break;
         }
@@ -100,7 +101,7 @@ class Result {
       //   return;
       // }
 
-      let blockInfo = await trxModel.getBlockHash(event.block);
+      let blockInfo = await trxModel.getBlockHash(event.block_number);
       console.log("blockInfo", blockInfo);
       if(blockInfo == undefined || blockInfo.blockID == undefined) {
         return;
@@ -108,7 +109,8 @@ class Result {
     
       let open_time = dayjs().format("YYYY-MM-DD HH:mm:ss");
       let open_timestamp = await common.parseTimestamp(open_time);
-      let sql = `update t_hash_result set block_height = '${event.block}', block_hash = '${blockInfo.blockID}', open_time='${open_time}', open_timestamp='${open_timestamp}' where txID = '${event.transaction}'`;
+      let sql = `update t_hash_result set block_height = '${event.block_number}', block_hash = '${blockInfo.blockID}', open_time='${open_time}', open_timestamp='${open_timestamp}' where txID = '${result.txID}'`;
+      console.log('sql',sql)
       await sqlite.run(sql);
     
       console.log('************** 查询块高度   -    end...  ' + event.block);
@@ -116,19 +118,37 @@ class Result {
       console.error(error);
     }
   }
+
+  async record() {
+    const req = (url) => {
+      return new Promise((resolve, reject) =>{
+        request.get(url, { json: true }, (err, res, body) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(body.data)
+        });
+      })
+    }
+
+    const url = `${this.account.trx.api}/v1/contracts/${this.account.trx.contractAddress}/events`
+    return await req(url)
+  }
 }
 
 
 
 //开奖
-schedule.scheduleJob('0/2 * * * * *', async function(){
+schedule.scheduleJob('0/3 * * * * *', async function(){
   let result = new Result();
   await result.open();
 });
 
 
 //***********************  查询块信息  ***********************
-schedule.scheduleJob('0/2 * * * * *', async function() {
+schedule.scheduleJob('0/3 * * * * *', async function() {
   let result = new Result();
   await result.queryBlockInfo();
 });
+
+

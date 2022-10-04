@@ -7,11 +7,11 @@
     <insert id="batchInsert" parameterType="java.util.List">
         insert into t_hash_bet(`sn`, cate_id, cate_name, cate_name_zh, game_id,
         game_name, game_name_zh, transaction_id, network, odds,
-        money_amount, create_time, is_offline, algorithm) values
+        money_amount, create_time, algorithm_code) values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.sn}, #{item.cateId}, #{item.cateName}, #{item.cateNameZh}, #{item.gameId},
             #{item.gameName}, #{item.gameNameZh}, #{item.transactionId}, #{item.network}, #{item.odds},
-            #{item.moneyAmount}, #{item.createTime}, #{item.isOffline}, #{item.algorithm})
+            #{item.moneyAmount}, #{item.createTime}, #{item.algorithmCode})
         </foreach>
     </insert>
 

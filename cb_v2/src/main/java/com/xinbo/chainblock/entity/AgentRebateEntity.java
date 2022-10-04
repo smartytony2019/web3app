@@ -27,14 +27,19 @@ public class AgentRebateEntity {
     /**
      * 最低业绩
      */
+    @TableField(value = "min")
     private Integer min;
+
     /**
      * 最高业绩
      */
+    @TableField(value = "max")
     private Integer max;
+
     /**
      * 回扣
      */
+    @TableField(value = "rebate")
     private Integer rebate;
 
 

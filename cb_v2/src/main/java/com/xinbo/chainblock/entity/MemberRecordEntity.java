@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author tony
  * @date 6/24/22 4:21 下午
@@ -40,7 +42,7 @@ public class MemberRecordEntity {
      * 设备
      */
     @TableField("device")
-    private Float device;
+    private String device;
 
 
     /**
@@ -53,19 +55,26 @@ public class MemberRecordEntity {
      * 注册时间
      */
     @TableField("reg_time")
-    private Float regTime;
+    private Date regTime;
 
     /**
      * 登录ip
      */
     @TableField("login_ip")
-    private Float loginIp;
+    private String loginIp;
 
 
     /**
      * 登录时间
      */
     @TableField("login_time")
-    private Integer loginTime;
+    private Date loginTime;
+
+
+    /**
+     * 类型(1:登录 2:注册 3:签到)
+     */
+    @TableField("type")
+    private Integer type;
 
 }

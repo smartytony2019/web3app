@@ -37,12 +37,12 @@ public class TrxApi {
      *
      * @return
      */
-    public String createAccount() {
-        String result = null;
+    public AccountApiBo createAccount() {
+        AccountApiBo result = null;
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.CREATE_ACCOUNT);
             String res = restTemplate.postForObject(url, "", String.class);
-            BaseApiBo<String> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<String>>() {});
+            BaseApiBo<AccountApiBo> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<AccountApiBo>>() {});
             if (!ObjectUtils.isEmpty(entity) && entity.getCode() == 0 && !ObjectUtils.isEmpty(entity.getData())) {
                 result = entity.getData();
             }
@@ -83,17 +83,15 @@ public class TrxApi {
      *
      * @param contractAddress 合约地址
      * @param fromAddress     查询地址
-     * @param privateKey      私钥
      * @return String
      */
-    public String getBalanceOfTrc20(String contractAddress, String fromAddress, String privateKey) {
+    public String getBalanceOfTrc20(String contractAddress, String fromAddress) {
         String result = null;
         try {
             String url = String.format("%s%s", terminalUrl, TrxApiConst.GET_BALANCE_TRC20);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("contractAddress", contractAddress);
             jsonObject.put("fromAddress", fromAddress);
-            jsonObject.put("privateKey", privateKey);
             String res = restTemplate.postForObject(url, jsonObject, String.class);
             BaseApiBo<String> entity = JSON.parseObject(res, new TypeReference<BaseApiBo<String>>() {
             });

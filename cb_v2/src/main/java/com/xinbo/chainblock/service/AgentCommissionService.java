@@ -26,5 +26,7 @@ public interface AgentCommissionService {
 
     BasePageBo findPage(DateRangeBo dateRangeBo, int uid, long current, long size);
 
+    BasePageBo findPage(AgentCommissionEntity entity, long current, long size);
+
     AgentCommissionEntity findTotal(DateRangeBo dateRangeBo, int uid);
 }

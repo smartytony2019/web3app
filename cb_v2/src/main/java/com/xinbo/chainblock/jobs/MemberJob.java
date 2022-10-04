@@ -12,7 +12,6 @@ import com.xinbo.chainblock.entity.*;
 import com.xinbo.chainblock.entity.activity.ActivityEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRecordEntity;
 import com.xinbo.chainblock.entity.activity.ActivityRuleEntity;
-import com.xinbo.chainblock.entity.activity.ActivityRuleItemEntity;
 import com.xinbo.chainblock.enums.MemberFlowItemEnum;
 import com.xinbo.chainblock.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -148,8 +147,9 @@ public class MemberJob {
 
             // *********************************** - 创建数字钱包 -  ****************************************************
             // Step 1: 创建数字钱包
-            String account = trxApi.createAccount();
-            entity.setDepositWallet(account);
+            AccountApiBo account = trxApi.createAccount();
+            entity.setBase58(account.getBase58());
+            entity.setHex(account.getHex());
             memberService.update(entity);
 //            if (ObjectUtils.isEmpty(account)) {
 //                // @todo

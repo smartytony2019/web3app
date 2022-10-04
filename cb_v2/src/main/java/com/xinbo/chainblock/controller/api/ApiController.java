@@ -34,7 +34,7 @@ public class ApiController {
     @Operation(summary = "genMainAccount", description = "生成主帐号")
     @GetMapping("genMainAccount")
     public R<Object> genMainAccount() {
-        String account = trxApi.createAccount();
+        AccountApiBo account = trxApi.createAccount();
         return R.builder().code(StatusCode.SUCCESS).data(account).build();
     }
 
@@ -42,7 +42,7 @@ public class ApiController {
     @Operation(summary = "createAccount")
     @GetMapping("createAccount")
     public R<Object> createAccount() {
-        String account = trxApi.createAccount();
+        AccountApiBo account = trxApi.createAccount();
         return R.builder().code(StatusCode.SUCCESS).data(account).build();
     }
 
@@ -56,7 +56,7 @@ public class ApiController {
     @Operation(summary = "getBalanceOfTrc20")
     @GetMapping("getBalanceOfTrc20/{fromAddress}/{privateKey}")
     public R<Object> getBalanceOfTrc20(@PathVariable String fromAddress, @PathVariable String privateKey) {
-        String balanceOfTrx = trxApi.getBalanceOfTrc20("", fromAddress, privateKey);
+        String balanceOfTrx = trxApi.getBalanceOfTrc20("", fromAddress);
         return R.builder().code(StatusCode.SUCCESS).data(balanceOfTrx).build();
     }
 

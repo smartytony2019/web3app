@@ -52,4 +52,9 @@ public class MemberDto {
      */
     private Integer type;
 
+    /**
+     * 是否冻结(1:正常, 0:冻结)
+     */
+    private Boolean isEnable;
+
 }

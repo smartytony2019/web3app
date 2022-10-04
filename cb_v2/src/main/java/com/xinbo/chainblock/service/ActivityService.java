@@ -17,6 +17,8 @@ public interface ActivityService {
 
     boolean insert(ActivityEntity entity);
 
+    List<ActivityEntity> findAll();
+
     List<ActivityEntity> findAll(int skip, int size);
 
     ActivityEntity findById(int id);

@@ -5,6 +5,7 @@ import com.xinbo.chainblock.bo.EnumItemBo;
 import com.xinbo.chainblock.utils.TranslateUtil;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,20 +46,39 @@ public enum MemberFlowItemEnum {
     }
 
     public static EnumItemBo valueOf(int code) {
-        for (MemberFlowItemEnum  e: values()) {
+        for (MemberFlowItemEnum e: values()) {
             if(e.getCode() == code){
-                return  EnumItemBo.builder().code(code).name(String.valueOf(code)).nameZh(TranslateUtil.translate(e.getName())).build();
+                return  EnumItemBo.builder().code(code).name(e.getName()).nameZh(e.getNameZh()).build();
             }
         }
         return EnumItemBo.builder().build();
     }
 
+    public static EnumItemBo valueOfTranslate(int code) {
+        for (MemberFlowItemEnum e: values()) {
+            if(e.getCode() == code){
+                return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
+            }
+        }
+        return EnumItemBo.builder().build();
+    }
+
+
     public static Map<Integer, EnumItemBo> toMap() {
         Map<Integer, EnumItemBo> map = new HashMap<>();
         List<Object> codes = EnumUtil.getFieldValues(MemberFlowItemEnum.class, "code");
         for (Object code : codes) {
-            map.put(Integer.parseInt(code.toString()), MemberFlowItemEnum.valueOf((int) code));
+            map.put(Integer.parseInt(code.toString()), MemberFlowItemEnum.valueOfTranslate((int) code));
         }
         return map;
+    }
+
+    public static List<EnumItemBo> toList() {
+        List<EnumItemBo> list = new ArrayList<>();
+        List<Object> codes = EnumUtil.getFieldValues(MemberFlowItemEnum.class, "code");
+        for (Object code : codes) {
+            list.add(MemberFlowItemEnum.valueOfTranslate((int) code));
+        }
+        return list;
     }
 }

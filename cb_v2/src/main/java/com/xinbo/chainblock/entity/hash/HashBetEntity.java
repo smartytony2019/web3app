@@ -117,6 +117,12 @@ public class HashBetEntity {
     private String blockHeight;
 
     /**
+     * 结果
+     */
+    @TableField("result")
+    private Integer result;
+
+    /**
      * 网络
      */
     @TableField("network")
@@ -194,12 +200,6 @@ public class HashBetEntity {
      */
     @TableField("update_timestamp")
     private Long updateTimestamp;
-
-    /**
-     * 标记(1:赢, 2:输, 3: 和)
-     */
-    @TableField("flag")
-    private Integer flag;
 
     /**
      * 状态(0:未结算,1:已结算,2:作废)

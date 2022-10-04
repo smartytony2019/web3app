@@ -86,7 +86,8 @@ public class HashBetSettleJob {
             }
             result.setFlag(algorithmResult.getStatus());
 
-            bet.setFlag(algorithmResult.getStatus());
+
+            bet.setResult(algorithmResult.getStatus());
             bet.setStatus(1);
             bet.setProfitMoney(profileMoney);
             bet.setPayoutMoney(payoutMoney);

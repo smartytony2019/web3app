@@ -177,7 +177,7 @@ public class AgentCommissionJob {
 
                 //直属
                 List<Integer> directList = betMoneyList.stream().map(AgentCommissionEntity::getUid).collect(Collectors.toList());
-                if (!CollectionUtils.isEmpty(directList)) {
+                if (!CollectionUtils.isEmpty(directList) && directList.size()>0) {
                     List<StatisticsEntity> directStatistics = statistics.stream().filter(f -> directList.contains(f.getUid())).collect(Collectors.toList());
 
                     double sum = directStatistics.stream().mapToDouble(StatisticsEntity::getBetAmount).sum();

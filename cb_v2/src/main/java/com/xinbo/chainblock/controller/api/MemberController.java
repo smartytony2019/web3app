@@ -64,6 +64,7 @@ public class MemberController {
     @Value("${trx.token-info.contract-address}")
     private String contractAddress;
 
+
     @JwtIgnore
     @Operation(summary = "register", description = "注册")
     @PostMapping("register")
@@ -124,6 +125,7 @@ public class MemberController {
         }
     }
 
+
     @JwtIgnore
     @Operation(summary = "login", description = "注册")
     @PostMapping("login")
@@ -177,6 +179,7 @@ public class MemberController {
         }
         return R.builder().code(StatusCode.FAILURE).build();
     }
+
 
     @JwtIgnore
     @Operation(summary = "logout", description = "登出")
@@ -237,9 +240,8 @@ public class MemberController {
     @Operation(summary = "balance", description = "TRX&USDT余额")
     @PostMapping("balance/{deep}")
     public R<Object> balance(@PathVariable int deep) {
-
-        int uid = 19;
-        String key = String.format(RedisConst.MEMBER_BALANCE, uid);
+        JwtUserBo jwtUser = JwtUtil.getJwtUser();
+        String key = String.format(RedisConst.MEMBER_BALANCE, jwtUser.getUid());
 
         // deep为1则拿缓存数据
         if (deep == 0) {
@@ -250,19 +252,18 @@ public class MemberController {
             }
         }
 
-
         JSONObject object = new JSONObject();
-        WalletEntity walletEntity = walletService.findByUid(uid);
+        MemberEntity entity = memberService.findById(jwtUser.getUid());
 
         // 资金帐户余额
-        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getAddressBase58(), walletEntity.getPrivateKey());
-        String trx = trxApi.getBalanceOfTrx(walletEntity.getAddressBase58());
+        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, entity.getBase58());
+        String trx = trxApi.getBalanceOfTrx(entity.getBase58());
         object.put("fundingAccount", Float.parseFloat(trc20));
         object.put("trx", Float.parseFloat(trx));
 
 
         // 交易帐户余额
-        MemberEntity memberEntity = memberService.findById(uid);
+        MemberEntity memberEntity = memberService.findById(jwtUser.getUid());
         object.put("tradingAccount", memberEntity.getMoney());
 
         // 总资产
@@ -272,7 +273,7 @@ public class MemberController {
         redisTemplate.opsForValue().set(key, JSON.toJSONString(object), 5, TimeUnit.MINUTES);
 
         // Step 1: 获取资金帐号转帐记录@todo
-        redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(walletEntity));
+        redisTemplate.opsForSet().add(RedisConst.MEMBER_FINANCE, JSON.toJSONString(entity));
         return R.builder().code(StatusCode.SUCCESS).data(object).build();
     }
 
@@ -323,7 +324,7 @@ public class MemberController {
                     throw new BusinessException(1, "主数字钱包不存在!!");
                 }
 
-                String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, memberWallet.getAddressBase58(), memberWallet.getPrivateKey());
+                String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, memberWallet.getAddressBase58());
                 if (StringUtils.isEmpty(balanceOfTrc20)) {
                     throw new BusinessException(1, "Trx20余额未查找到");
                 }

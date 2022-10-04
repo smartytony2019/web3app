@@ -22,4 +22,6 @@ public interface HashOfflineBetService {
     boolean settle(HashOfflineBetEntity bet);
 
     boolean batchInsert(List<HashOfflineBetEntity> list);
+
+    BasePageBo findPage(HashOfflineBetEntity entity, long current, long size);
 }

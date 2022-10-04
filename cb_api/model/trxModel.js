@@ -2,7 +2,7 @@ const web3 = require("../utils/web3Util").getWeb3();
 const tronWeb = require("../utils/trxUtil").getTronWeb();
 const config = require("../config/config");
 let sqlite = require("../utils/sqlite3Util")
-
+const table = 't_wallet'
 
 module.exports = {
 
@@ -15,10 +15,13 @@ module.exports = {
     try {
       res = await tronWeb.createAccount();
       if(res && res.privateKey) {
-        let sql = `insert into t_wallet (hex, base58, private_key, public_key) values ('${res.address.hex}','${res.address.base58}','${res.privateKey}','${res.publicKey}')`;
+        let sql = `insert into ${table} (hex, base58, private_key, public_key) values ('${res.address.hex}','${res.address.base58}','${res.privateKey}','${res.publicKey}')`;
         let isSuccess = await sqlite.run(sql);
         if(isSuccess) {
-          result = res.address.base58
+          result = {
+            hex: res.address.hex,
+            base58: res.address.base58
+          }
         }
       }
     } catch(error) {
@@ -53,10 +56,15 @@ module.exports = {
    * @param {string} privateKey 私钥
    * @returns USDT余额
    */
-  async getBalanceOfTrc20(contractAddress, address, privateKey) {
+  async getBalanceOfTrc20(contractAddress, address) {
     let result = 0;
     try {
-      tronWeb.setPrivateKey(privateKey);
+      const row = await sqlite.get(`select * from ${table} where base58 = '${address}' limit 1`)
+      if(!row || !row.base58) {
+        return result
+      }
+
+      tronWeb.setPrivateKey(row.private_key);
       let contract = await tronWeb.contract().at(contractAddress);
       let balance = await contract.balanceOf(address).call();
       result = web3.utils.fromWei(`${balance.toString()}`, "ether");
@@ -223,12 +231,14 @@ module.exports = {
   async getEventResult(contractAddress, eventName) {
     let result = null;
     try {
-      result = await tronWeb.getEventResult(contractAddress, {eventName: eventName, size: 10, sort:'-block_timestamp'})
+      result = await tronWeb.getEventResult(contractAddress, {eventName: eventName, size: 20, onlyComfired:false, onlyUncomfired:false, sort:'-block_timestamp'})
     }catch(error) {
       console.error("getEventResult error", error);
     }
     return result;
   },
+
+
 
   /**
    * 获取事件信息根据交易ID

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.MemberFlowDto;
+import com.xinbo.chainblock.dto.MemberRecordDto;
 import com.xinbo.chainblock.entity.MemberRecordEntity;
 import com.xinbo.chainblock.mapper.MemberRecordMapper;
 import com.xinbo.chainblock.service.MemberRecordService;
@@ -30,14 +31,12 @@ public class MemberRecordServiceImpl extends ServiceImpl<MemberRecordMapper, Mem
     @Autowired
     private MemberRecordMapper memberRecordMapper;
 
-
-
     @Override
     public BasePageBo findPage(MemberRecordEntity entity, long current, long size) {
         Page<MemberRecordEntity> page = new Page<>(current, size);
-        page.addOrder(OrderItem.asc("login_time"));
+        page.addOrder(OrderItem.desc("login_time"));
         IPage<MemberRecordEntity> iPage = memberRecordMapper.selectPage(page, this.createWrapper(entity));
-        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberFlowDto.class)).build();
+        return BasePageBo.builder().total(iPage.getTotal()).records(MapperUtil.many(iPage.getRecords(), MemberRecordDto.class)).build();
     }
 
     @Override

@@ -33,21 +33,25 @@ public class AgentEntity {
     /**
      * 用户id
      */
+    @TableField("uid")
     private Integer uid;
 
     /**
      * 用户名
      */
+    @TableField("username")
     private String username;
 
     /**
      * 层级
      */
+    @TableField("level")
     private Integer level;
 
     /**
      * 下级用户
      */
+    @TableField("child")
     private String child;
 
 }
