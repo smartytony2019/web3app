@@ -3,6 +3,7 @@ package com.xinbo.chainblock.controller.admin;
 
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.bo.JwtUserBo;
+import com.xinbo.chainblock.consts.RoleTypeConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
@@ -64,7 +65,14 @@ public class IndexController {
     @GetMapping("menu")
     public R<Object> menu() {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
-        List<PermissionDto> list = userService.allMenu(jwtUserBo.getUid());
+        List<PermissionDto> list=null;
+        if(jwtUserBo.getRoleType() == RoleTypeConst.NORMAL) {
+            list = userService.allMenu(jwtUserBo.getUid());
+        }
+
+        if(jwtUserBo.getRoleType() == RoleTypeConst.ADMINISTRATOR){
+            list=userService.superAdminMenu();
+        }
         return R.builder().code(StatusCode.SUCCESS).data(list.get(0).getChildren()).build();
     }
 

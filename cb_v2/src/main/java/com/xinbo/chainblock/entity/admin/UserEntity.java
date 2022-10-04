@@ -53,5 +53,14 @@ public class UserEntity {
     @TableField("is_delete")
     private Boolean isDelete;
 
+    /**
+     *
+     * 管理员类型： 1 超级管理员  2普通管理员
+     *
+     *
+     */
+
+    @TableField("role_type")
+    private Integer roleType;
 
 }

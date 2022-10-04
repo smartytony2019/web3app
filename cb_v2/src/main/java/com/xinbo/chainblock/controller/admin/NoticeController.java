@@ -1,12 +1,14 @@
 package com.xinbo.chainblock.controller.admin;
 
 import cn.hutool.core.date.DateUtil;
+import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.admin.NoticeEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.entity.admin.UserNoticeEntity;
+import com.xinbo.chainblock.enums.PermissionCodeEnum;
 import com.xinbo.chainblock.service.NoticeService;
 import com.xinbo.chainblock.service.UserNoticeService;
 import com.xinbo.chainblock.service.UserService;
@@ -82,6 +84,7 @@ public class NoticeController {
     }
 
     @Operation(summary = "delete", description = "删除")
+    @RequiredPermission(PermissionCodeEnum.notice_del)
     @PostMapping("delete/{noticeId}")
     public R<Object> delete(@PathVariable int noticeId) {
         boolean isSuccess = noticeService.delete(noticeId);

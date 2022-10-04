@@ -23,4 +23,5 @@ public interface UserRoleMapper extends BaseMapper<UserRoleEntity> {
 
     @Delete("delete from t_user_role where user_id = #{userId}")
     int deleteByUser(@Param("userId") int userId);
+
 }

@@ -77,7 +77,7 @@ class ChainblockApplicationTests {
                 .username("demo5566")
                 .device("pc")
                 .language("zh")
-                .roleType("member")
+                .roleType(1)
                 .build();
 
         String sign = JWT.create().setSigner(jwtSigner)

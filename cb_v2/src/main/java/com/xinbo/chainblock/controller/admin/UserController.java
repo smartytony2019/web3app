@@ -1,8 +1,10 @@
 package com.xinbo.chainblock.controller.admin;
 
 
+import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.bo.JwtUserBo;
+import com.xinbo.chainblock.consts.RoleTypeConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.dto.UserDto;
@@ -21,9 +23,14 @@ import com.xinbo.chainblock.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController("adminUserController")
 @RequestMapping("/admin/user")
@@ -41,18 +48,39 @@ public class UserController {
     private UserRoleService userRoleService;
 
     @Operation(summary = "login", description = "后端登录")
+    @JwtIgnore
     @PostMapping("login")
-    public R<Object> login() {
-        List<String> authority = Arrays.asList("index:test");
+    public R<Object> login(@RequestBody UserVo vo, HttpSession session) {
+
+        UserEntity entity = userService.findByName(vo.getUsername());
+
+        if(ObjectUtils.isEmpty(entity)){
+            return R.builder().code(StatusCode.FAILURE).msg("用户名不存在").build();
+        }
+
+        if(!entity.getPwd().equals(vo.getPwd())){
+            return R.builder().code(StatusCode.FAILURE).msg("密码不正确").build();
+        }
         //Step4: 生成token
         JwtUserBo jwtUserBo = JwtUserBo.builder()
-                .uid(1)
-                .username("admin")
+                .uid(entity.getId())
+                .username(entity.getUsername())
+                .roleType(entity.getRoleType())
                 .build();
         String token = JwtUtil.generateToken(jwtUserBo);
+        session.setAttribute("token",token);
         Map<String, String> map = new HashMap<>();
         map.put("token", String.format("Bearer %s", token));
         return R.builder().code(StatusCode.SUCCESS).data(map).build();
+    }
+
+    @Operation(summary = "logout", description = "退出")
+    @PostMapping("logout")
+    public R<Object> logout(HttpSession session) {
+
+        session.removeAttribute("token");
+
+        return R.builder().code(StatusCode.SUCCESS).build();
     }
 
 
@@ -61,6 +89,7 @@ public class UserController {
     public R<Object> find() {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
         UserEntity entity = userService.findById(jwtUserBo.getUid());
+        System.out.println(entity);
         UserDto dto = MapperUtil.to(entity, UserDto.class);
         return R.builder().code(StatusCode.SUCCESS).data(dto).build();
     }
@@ -238,6 +267,7 @@ public class UserController {
         if(!isUserNameExist){
             return R.builder().code(StatusCode.FAILURE).msg("用户名重复").build();
         }else{
+            entity.setRoleType(RoleTypeConst.NORMAL);
             boolean isSuccess = userService.insert(entity);
             return R.builder().code(isSuccess ? StatusCode.SUCCESS : StatusCode.FAILURE).build();
         }

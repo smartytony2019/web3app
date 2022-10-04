@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.annotation.RequiredPermission;
 import com.xinbo.chainblock.consts.GlobalConst;
+import com.xinbo.chainblock.consts.RoleTypeConst;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.service.PermissionService;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class SecurityInterceptor extends HandlerInterceptorAdapter {
+public class SecurityInterceptor extends HandlerInterceptorAdapter{
 
     @Autowired
     private UserService userService;
@@ -51,6 +53,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
+        HttpSession session=request.getSession();
+        String value =(String)session.getAttribute("token");
+        if(value == null){
+            this.returnJson(response, R.builder().code(StatusCode.FAILURE).msg("已经退出登录").build());
+            return false;
+        }
 
         // 获取请求头信息authorization信息
         final String authHeader = request.getHeader(GlobalConst.TOKEN_HEADER);
@@ -90,6 +98,13 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
      * @return
      */
     private boolean hasPermission(Object handler, JwtUserBo jwtUserBo) {
+
+        //超级管理员拥有所有权限
+
+        if(jwtUserBo.getRoleType()== RoleTypeConst.ADMINISTRATOR){
+            return true;
+        }
+
         // 忽略带JwtIgnore注解的请求, 不做后续token认证校验
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -108,10 +123,10 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
                     return false;
                 }
                 List<PermissionEntity> permissionEntities = permissionService.findByIds(permission);
-                List<String> names = permissionEntities.stream()
-                        .map(PermissionEntity :: getName)
+                List<Integer> codes = permissionEntities.stream()
+                        .map(PermissionEntity :: getCode)
                         .collect(Collectors.toList());
-                return names.contains(requiredPermission.value().getNameZh());
+                return codes.contains(requiredPermission.value().getCode());
             }
         }
 

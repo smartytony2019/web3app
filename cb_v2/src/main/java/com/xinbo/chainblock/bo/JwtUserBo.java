@@ -23,7 +23,7 @@ public class JwtUserBo implements Serializable {
 
     private String username;
 
-    private String roleType;
+    private Integer roleType;
 
     private String salt;
 

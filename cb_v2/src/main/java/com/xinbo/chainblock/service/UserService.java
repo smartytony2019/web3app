@@ -4,6 +4,8 @@ import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -27,6 +29,8 @@ public interface UserService {
 
      List<PermissionDto> allMenu(int userId);
 
+    List<PermissionDto> superAdminMenu();
+
     List<PermissionEntity> AllMenuExcludeButton(int userId);
 
     boolean update(UserEntity entity);
@@ -35,4 +39,6 @@ public interface UserService {
 
     boolean isUserNameExist(String userName);
     boolean insert(UserEntity entity);
+
+    UserEntity findByName( @Param("userName") String userName);
 }
