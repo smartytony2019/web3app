@@ -878,18 +878,23 @@ INSERT INTO cb_v2.t_statistics (`date`, `uid`, `username`, `bet_count`, `bet_amo
 
 drop table if exists t_system_config;
 CREATE TABLE t_system_config(
-    id        int primary key auto_increment,
-    `key`     varchar(50) COMMENT '键',
-    `value`   varchar(50) COMMENT '值',
-    `type`    varchar(50) comment '数据类型(1: String 2:Integer, 3:Float, 4: Boolean, 5:Date)',
-    `cate`    int comment '配置分类(1: 系统配置 2:会员配置, 3:游戏配置)',
-    `comment` varchar(100) comment '备注'
+  id        int primary key auto_increment,
+  `key`     varchar(50) COMMENT '键',
+  `value`   varchar(50) COMMENT '值',
+  `type`    varchar(50) comment '数据类型(1: String 2:Integer, 3:Float, 4: Boolean, 5:Date)',
+  `cate`    int comment '配置分类(1: 系统配置 3:会员配置, 5:提现配置, 7:公共配置)',
+  `comment`    varchar(100) comment '备注'
 );
 insert into cb_v2.t_system_config(`key`, `value`, `type`, `cate`, `comment`) values
-('maintain', 'true', 'Boolean', 1, '开启网站'),
-('close_register', 'false', 'Boolean', 2, '关闭注册'),
-('close_register', 'false', 'Boolean', 2, '注册必填推荐码'),
-('withdraw_bet_mul', 'true', 'Boolean', 2, '提现打码倍数');
+('maintain', 'true', 'Boolean', 1, '是否开启网站'),
+('version', 'v1.0.0', 'String', 1, '版本'),
+('closeRegister', 'false', 'Boolean', 3, '是否关闭注册'),
+('requireRecommendCode', 'false', 'Boolean', 3, '注册必填推荐码'),
+('withdrawBetMul', '0', 'Integer', 5, '提现打码倍数'),
+('withdrawMin', '0', 'Integer', 5, '提现最小金额'),
+('withdrawMax', '0', 'Integer', 5, '提现最大金额'),
+('withdrawAmount', '0', 'Integer', 5, '提现每天次数'),
+('terminalAddress', '0', 'String', 7, '终端地址');
 
 
 

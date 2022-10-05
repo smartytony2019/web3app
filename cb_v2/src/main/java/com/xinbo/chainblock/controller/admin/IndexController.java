@@ -1,15 +1,20 @@
 package com.xinbo.chainblock.controller.admin;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.xinbo.chainblock.annotation.JwtIgnore;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
+import com.xinbo.chainblock.dto.SystemConfigDto;
 import com.xinbo.chainblock.dto.UserDto;
+import com.xinbo.chainblock.entity.SystemConfigEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.UserEntity;
 import com.xinbo.chainblock.enums.ActivityCalcModeEnum;
 import com.xinbo.chainblock.enums.LanguageEnum;
 import com.xinbo.chainblock.enums.SymbolEnum;
+import com.xinbo.chainblock.enums.SystemConfigCateEnum;
+import com.xinbo.chainblock.service.SystemConfigService;
 import com.xinbo.chainblock.service.UserService;
 import com.xinbo.chainblock.bo.JwtUserBo;
 import com.xinbo.chainblock.utils.JwtUtil;
@@ -30,6 +35,23 @@ public class IndexController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SystemConfigService systemConfigService;
+
+
+    @JwtIgnore
+    @Operation(summary = "config", description = "系统配置")
+    @PostMapping("config")
+    public R<Object> config() {
+        JSONObject object = new JSONObject();
+        object.put("cate", SystemConfigCateEnum.toList());
+
+        List<SystemConfigEntity> list = systemConfigService.findAll();
+        object.put("list", MapperUtil.many(list, SystemConfigDto.class));
+        return R.builder().data(StatusCode.SUCCESS).data(object).build();
+    }
+
 
     @JwtIgnore
     @Operation(summary = "login", description = "后端登录")
@@ -66,7 +88,7 @@ public class IndexController {
         List<PermissionEntity> list = userService.menu(jwtUserBo.getUid());
 
         List<PermissionDto> result = new ArrayList<>();
-        for(PermissionEntity entity : list) {
+        for (PermissionEntity entity : list) {
             PermissionDto.Meta meta = PermissionDto.Meta.builder()
                     .title(entity.getTitle())
                     .icon(entity.getIcon())
@@ -116,5 +138,6 @@ public class IndexController {
     public R<Object> language() {
         return R.builder().code(StatusCode.SUCCESS).data(LanguageEnum.toList()).build();
     }
+
 
 }

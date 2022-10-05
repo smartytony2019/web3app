@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.service;
 
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.GameEntity;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface GameService {
     List<GameEntity> findAll();
 
     List<GameEntity> findOffline();
+
+    boolean update(GameEntity entity);
+
+    BasePageBo findPage(GameEntity entity, long current, long size);
 }

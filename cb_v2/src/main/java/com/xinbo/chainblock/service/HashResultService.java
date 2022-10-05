@@ -1,5 +1,7 @@
 package com.xinbo.chainblock.service;
 
+import com.xinbo.chainblock.bo.BasePageBo;
+import com.xinbo.chainblock.entity.hash.HashOddsEntity;
 import com.xinbo.chainblock.entity.hash.HashResultEntity;
 
 import java.util.List;
@@ -18,4 +20,6 @@ public interface HashResultService {
     HashResultEntity unsettle();
 
     boolean settled(int id);
+
+    BasePageBo findPage(HashResultEntity entity, long current, long size);
 }
