@@ -526,6 +526,24 @@ create table t_finance(
 ) comment '资金表';
 
 
+drop table if exists t_finance_audit;
+create table t_finance_audit(
+  id int primary key auto_increment,
+  uid int(20) comment 'uid',
+  username varchar(50) comment '用户名',
+  sn varchar(100) comment '订单号',
+  amount decimal(10,2) comment '打码量',
+  before_amount decimal(10,2) comment '之前打码量',
+  require_amount decimal(10,2) comment '要求打码量',
+  finish_amount decimal(10,2) comment '完成打码量',
+  status int(10) comment '状态(1:已完成,0:未完成)',
+  create_time timestamp null default null comment '创建时间',
+  update_time timestamp null default null comment '更新时间',
+  UNIQUE KEY unique_sn (sn)
+) comment '资金审计表';
+
+
+
 
 
 create table t_operation_log(
