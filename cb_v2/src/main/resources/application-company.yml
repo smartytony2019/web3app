@@ -26,7 +26,7 @@ scheduled:
     agent:
       commission: false
     finance:
-      record: false
+      record: true
       account: false
     offline:
       bet: false

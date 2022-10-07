@@ -1,4 +1,5 @@
 package com.xinbo.chainblock.service;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.FinanceEntity;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.StatisticsEntity;
@@ -30,4 +31,6 @@ public interface FinanceService {
     boolean account(List<FinanceEntity> financeList, List<MemberFlowEntity> flowList, List<StatisticsEntity> statisticsList);
 
     int batchInsert(List<FinanceEntity> list);
+
+    BasePageBo findPage(FinanceEntity entity, long current, long size);
 }

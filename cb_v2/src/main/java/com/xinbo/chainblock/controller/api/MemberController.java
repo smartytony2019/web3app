@@ -23,8 +23,8 @@ import com.xinbo.chainblock.enums.MemberTypeEnum;
 import com.xinbo.chainblock.enums.TransferEnum;
 import com.xinbo.chainblock.exception.BusinessException;
 import com.xinbo.chainblock.service.MemberService;
-import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.bo.JwtUserBo;
+import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.JwtUtil;
 import com.xinbo.chainblock.utils.MapperUtil;
 import com.xinbo.chainblock.utils.R;
@@ -252,12 +252,14 @@ public class MemberController {
             }
         }
 
+        WalletEntity walletEntity = walletService.findByUid(jwtUser.getUid());
+
         JSONObject object = new JSONObject();
         MemberEntity entity = memberService.findById(jwtUser.getUid());
 
         // 资金帐户余额
-        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, entity.getBase58());
-        String trx = trxApi.getBalanceOfTrx(entity.getBase58());
+        String trc20 = trxApi.getBalanceOfTrc20(contractAddress, walletEntity.getBase58());
+        String trx = trxApi.getBalanceOfTrx(walletEntity.getBase58());
         object.put("fundingAccount", Float.parseFloat(trc20));
         object.put("trx", Float.parseFloat(trx));
 
@@ -284,7 +286,7 @@ public class MemberController {
     public R<Object> wallet() {
         int uid = 19;
         WalletEntity entity = walletService.findByUid(uid);
-        String result = !ObjectUtils.isEmpty(entity) ? entity.getAddressBase58() : "";
+        String result = !ObjectUtils.isEmpty(entity) ? entity.getBase58() : "";
         return R.builder().code(StatusCode.SUCCESS).data(result).build();
     }
 
@@ -324,7 +326,7 @@ public class MemberController {
                     throw new BusinessException(1, "主数字钱包不存在!!");
                 }
 
-                String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, memberWallet.getAddressBase58());
+                String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, memberWallet.getBase58());
                 if (StringUtils.isEmpty(balanceOfTrc20)) {
                     throw new BusinessException(1, "Trx20余额未查找到");
                 }
@@ -334,7 +336,7 @@ public class MemberController {
                     throw new BusinessException(1, "余额不足");
                 }
 
-                result = trxApi.transactionOfTrc20(contractAddress, memberWallet.getAddressBase58(), memberWallet.getPrivateKey(), String.valueOf(vo.getMoney()), mainWallet.getAddressBase58());
+//                result = trxApi.transactionOfTrc20(contractAddress, memberWallet.getBase58(), memberWallet.getPrivateKey(), String.valueOf(vo.getMoney()), mainWallet.getBase58());
             }
 
             // Step 2.2 交易帐户 => 资金帐户
@@ -353,7 +355,7 @@ public class MemberController {
                     throw new BusinessException(1, "余额不足!!");
                 }
 
-                result = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberWallet.getAddressBase58());
+//                result = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberWallet.getAddressBase58());
             }
 
             if (ObjectUtils.isEmpty(result)) {
@@ -440,7 +442,8 @@ public class MemberController {
             }
 
             WalletEntity mainWallet = walletService.findMain();
-            BaseApiBo<TransactionApiBo> transaction = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberEntity.getWithdrawWallet());
+//            BaseApiBo<TransactionApiBo> transaction = trxApi.transactionOfTrc20(contractAddress, mainWallet.getAddressBase58(), mainWallet.getPrivateKey(), String.valueOf(vo.getMoney()), memberEntity.getWithdrawWallet());
+            BaseApiBo<TransactionApiBo> transaction = null;
             if (ObjectUtils.isEmpty(transaction) || transaction.getCode() != StatusCode.SUCCESS) {
                 throw new BusinessException(1, "提现失败，请重新提交!");
             }

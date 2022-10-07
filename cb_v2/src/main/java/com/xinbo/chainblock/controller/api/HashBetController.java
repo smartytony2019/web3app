@@ -56,6 +56,10 @@ public class HashBetController {
     private HashBetService hashBetService;
 
     @Autowired
+    private WalletService walletService;
+
+
+    @Autowired
     private MemberService memberService;
 
     @Value("${trx.token-info.symbol}")
@@ -107,6 +111,12 @@ public class HashBetController {
             if (ObjectUtils.isEmpty(memberEntity) || memberEntity.getId() <= 0) {
                 throw new BusinessException(0, "会员不存在");
             }
+
+            WalletEntity walletEntity = walletService.findByUid(jwtUser.getUid());
+            if (ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
+                throw new BusinessException(0, "钱包不存在");
+            }
+
 
             //投注数量
             int betAmount = codes.size();
@@ -179,14 +189,14 @@ public class HashBetController {
 
             HashResultEntity result = HashResultEntity.builder()
                     .sn(bet.getSn())
-                    .toAddress(memberEntity.getBase58())
+                    .toAddress(walletEntity.getBase58())
                     .gameId(playEntity.getGameId())
                     .playId(playEntity.getId())
                     .uid(memberEntity.getId())
                     .username(memberEntity.getUsername())
                     .build();
 
-            boolean isSuccess = trxApi.resultOpen(sn, memberEntity.getBase58());
+            boolean isSuccess = trxApi.resultOpen(sn, walletEntity.getBase58());
             if (!isSuccess) {
                 throw new BusinessException(1000, "终端生成开奖结果失败");
             }

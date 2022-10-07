@@ -24,7 +24,7 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> i
 
 
     public WalletEntity findByAddress(String address) {
-        WalletEntity entity = WalletEntity.builder().addressHex(address).build();
+        WalletEntity entity = WalletEntity.builder().hex(address).build();
         LambdaQueryWrapper<WalletEntity> wrappers = this.createWrapper(entity);
         return walletMapper.selectOne(wrappers);
     }
@@ -63,8 +63,8 @@ public class WalletServiceImpl extends ServiceImpl<WalletMapper, WalletEntity> i
         if (!StringUtils.isEmpty(entity.getUsername())) {
             wrappers.eq(WalletEntity::getUsername, entity.getUsername());
         }
-        if (!StringUtils.isEmpty(entity.getAddressBase58())) {
-            wrappers.eq(WalletEntity::getAddressBase58, entity.getAddressBase58());
+        if (!StringUtils.isEmpty(entity.getBase58())) {
+            wrappers.eq(WalletEntity::getBase58, entity.getBase58());
         }
         return wrappers;
     }

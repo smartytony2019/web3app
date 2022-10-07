@@ -17,13 +17,13 @@
     }
 
     //202207010143
-    // query = `SELECT name FROM sqlite_master WHERE type='table' AND name='t_hash_result'`;
-    // result = await sqlite.hasTable(query);
-    // if(result == false) {
-    //     query = 'CREATE TABLE t_hash_result(game_id int, num varchar(20), txID varchar(70), block_hash varchar(70), block_height varchar(70), open_time timestamp, open_timestamp bigint, network varchar(20))';
-    //     let r = await sqlite.run(query)
-    //     if(r) console.log("t_hash_result table created")
-    // }
+    query = `SELECT name FROM sqlite_master WHERE type='table' AND name='t_wallet'`;
+    result = await sqlite.hasTable(query);
+    if(result == false) {
+        query = 'CREATE TABLE t_wallet(base58 varchar(100), hex varchar(70), private_key varchar(200), public_key varchar(200), platform_num int(20))';
+        let r = await sqlite.run(query)
+        if(r) console.log("t_wallet table created")
+    }
 
 
 

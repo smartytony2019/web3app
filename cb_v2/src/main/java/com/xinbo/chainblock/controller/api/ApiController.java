@@ -8,7 +8,6 @@ import com.xinbo.chainblock.bo.TransactionInfoApiBo;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.WalletEntity;
-import com.xinbo.chainblock.service.WalletService;
 import com.xinbo.chainblock.utils.R;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class ApiController {
 
     @Autowired
     private TrxApi trxApi;
-
-    @Autowired
-    private WalletService walletService;
 
     @JwtIgnore
     @Operation(summary = "genMainAccount", description = "生成主帐号")

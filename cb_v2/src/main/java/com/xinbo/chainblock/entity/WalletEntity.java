@@ -45,26 +45,14 @@ public class WalletEntity {
     /**
      * 地址
      */
-    @TableField("private_key")
-    private String privateKey;
+    @TableField("base58")
+    private String base58;
 
     /**
      * 地址
      */
-    @TableField("public_key")
-    private String publicKey;
-
-    /**
-     * 地址
-     */
-    @TableField("address_base58")
-    private String addressBase58;
-
-    /**
-     * 地址
-     */
-    @TableField("address_hex")
-    private String addressHex;
+    @TableField("hex")
+    private String hex;
 
     /**
      * 主钱包

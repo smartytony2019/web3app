@@ -7,7 +7,6 @@ import com.xinbo.chainblock.core.TrxApi;
 import com.xinbo.chainblock.entity.SystemFlowEntity;
 import com.xinbo.chainblock.entity.WalletEntity;
 import com.xinbo.chainblock.service.SystemFlowService;
-import com.xinbo.chainblock.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +35,6 @@ public class SystemFLowJob {
     @Autowired
     private SystemFlowService systemFlowService;
 
-    @Autowired
-    private WalletService walletService;
-
 
     @Value("${scheduled.enable.system.flow}")
     private boolean isSystemFlow;
@@ -61,9 +57,9 @@ public class SystemFLowJob {
                 return;
             }
 
-            WalletEntity main = walletService.findMain();
+            WalletEntity main = null;
 
-            String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, main.getAddressBase58());
+            String balanceOfTrc20 = trxApi.getBalanceOfTrc20(contractAddress, main.getBase58());
             if(StringUtils.isEmpty(balanceOfTrc20)) {
                 return;
             }

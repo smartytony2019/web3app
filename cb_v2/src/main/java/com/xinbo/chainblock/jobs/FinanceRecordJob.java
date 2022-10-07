@@ -89,9 +89,15 @@ public class FinanceRecordJob {
                 return;
             }
 
+            WalletEntity walletEntity = walletService.findByUid(memberEntity.getId());
+            if (ObjectUtils.isEmpty(walletEntity) || walletEntity.getId() <= 0) {
+                return;
+            }
+
+
             List<FinanceEntity> financeEntityList = new ArrayList<>();
-            String base58Address = memberEntity.getBase58();
-            String hexAddress = memberEntity.getHex();
+            String base58Address = walletEntity.getBase58();
+            String hexAddress = walletEntity.getHex();
             /* **************************** 处理Trc20记录  ********************************* */
             long minTimestamp = 0;
 //            long minTimestamp = new Date().getTime() - (3 * 60 * 60 * 1000);
@@ -124,7 +130,7 @@ public class FinanceRecordJob {
                     int decimals = tokenInfo.getInteger("decimals");
                     String name = tokenInfo.getString("name");
 
-                    if (fromAddress.equals(mainWallet.getAddressBase58()) || toAddress.equals(mainWallet.getAddressBase58())) {
+                    if (fromAddress.equals(mainWallet.getBase58()) || toAddress.equals(mainWallet.getBase58())) {
                         continue;
                     }
 

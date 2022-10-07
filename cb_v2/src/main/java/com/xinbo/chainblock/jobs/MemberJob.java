@@ -44,6 +44,9 @@ public class MemberJob {
     private MemberService memberService;
 
     @Autowired
+    private WalletService walletService;
+
+    @Autowired
     private AgentService agentService;
 
     @Autowired
@@ -81,10 +84,12 @@ public class MemberJob {
             if (StringUtils.isEmpty(json)) {
                 return;
             }
+
             MemberEntity entity = JSON.parseObject(json, MemberEntity.class);
             if (ObjectUtils.isEmpty(entity) || entity.getId() <= 0) {
                 return;
             }
+
 
             // ******************************* - 查看是否有注册赠送彩金 -  ************************************************
             ActivityEntity activityEntity = activityService.findByType(ActivityConst.ACTIVITY_TYPE_REGISTER);
@@ -148,28 +153,24 @@ public class MemberJob {
             // *********************************** - 创建数字钱包 -  ****************************************************
             // Step 1: 创建数字钱包
             AccountApiBo account = trxApi.createAccount();
-            entity.setBase58(account.getBase58());
-            entity.setHex(account.getHex());
-            memberService.update(entity);
-//            if (ObjectUtils.isEmpty(account)) {
-//                // @todo
-//                throw new RuntimeException("生成数字钱包失败");
-//            }
+            if (ObjectUtils.isEmpty(account)) {
+                // 重新入栈
+                redisTemplate.opsForList().leftPush(RedisConst.MEMBER_REGISTER, json);
+                throw new RuntimeException("生成数字钱包失败");
+            }
 
-//            WalletEntity walletEntity = WalletEntity.builder()
-//                    .uid(entity.getId())
-//                    .username(entity.getUsername())
-//                    .type(1)
-//                    .privateKey(account.getPrivateKey())
-//                    .publicKey(account.getPublicKey())
-//                    .addressBase58(account.getAddress().getBase58())
-//                    .addressHex(account.getAddress().getHex())
-//                    .isMain(false)
-//                    .build();
-//            boolean isSuccess = walletService.insert(walletEntity);
-//            if (!isSuccess) {
-//                throw new RuntimeException("保存数字钱包失败");
-//            }
+            WalletEntity walletEntity = WalletEntity.builder()
+                    .uid(entity.getId())
+                    .username(entity.getUsername())
+                    .type(1)
+                    .base58(account.getBase58())
+                    .hex(account.getHex())
+                    .isMain(false)
+                    .build();
+            boolean isSuccess = walletService.insert(walletEntity);
+            if (!isSuccess) {
+                throw new RuntimeException("保存数字钱包失败");
+            }
 
 
             // *********************************** - 更新代理层级 -  ****************************************************
@@ -218,7 +219,7 @@ public class MemberJob {
 
 
                     String collect1 = collect.stream().map(Objects::toString).collect(Collectors.joining(","));
-                    boolean isSuccess = agentService.setChild(e.getId(), collect1);
+                    isSuccess = agentService.setChild(e.getId(), collect1);
                     if (isSuccess) {
                         log.info("update child success");
                     } else {

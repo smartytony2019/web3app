@@ -54,18 +54,6 @@ public class MemberEntity {
     private String salt;
 
     /**
-     * hex
-     */
-    @TableField("hex")
-    private String hex;
-
-    /**
-     * base58
-     */
-    @TableField("base58")
-    private String base58;
-
-    /**
      * 提现钱包地址
      */
     @TableField("withdraw_wallet")
