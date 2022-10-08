@@ -2,7 +2,7 @@ package com.xinbo.chainblock.enums;
 
 import cn.hutool.core.util.EnumUtil;
 import com.xinbo.chainblock.bo.EnumItemBo;
-import com.xinbo.chainblock.utils.TranslateUtil;
+import com.xinbo.chainblock.utils.LanguageUtil;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public enum MemberFlowItemEnum {
     public static EnumItemBo valueOfTranslate(int code) {
         for (MemberFlowItemEnum e: values()) {
             if(e.getCode() == code){
-                return  EnumItemBo.builder().code(code).name(TranslateUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
+                return  EnumItemBo.builder().code(code).name(LanguageUtil.translate(e.getName())).nameZh(e.getNameZh()).build();
             }
         }
         return EnumItemBo.builder().build();

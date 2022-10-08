@@ -35,7 +35,7 @@ import java.util.*;
  */
 @Slf4j
 @Component
-public class FinanceRecordJob {
+public class FinanceJob {
 
     @Autowired
     private TrxApi trxApi;
@@ -98,120 +98,131 @@ public class FinanceRecordJob {
             List<FinanceEntity> financeEntityList = new ArrayList<>();
             String base58Address = walletEntity.getBase58();
             String hexAddress = walletEntity.getHex();
-            /* **************************** 处理Trc20记录  ********************************* */
             long minTimestamp = 0;
 //            long minTimestamp = new Date().getTime() - (3 * 60 * 60 * 1000);
-            JSONObject trc20Record = trxApi.getTrc20Record(base58Address, minTimestamp);
-            JSONArray trc20Data = trc20Record.getJSONArray("data");
+            /* **************************** 处理Trc20记录  ********************************* */
+            try {
+                JSONObject trc20Record = trxApi.getTrc20Record(base58Address, minTimestamp);
+                JSONArray trc20Data = trc20Record.getJSONArray("data");
 
-            if (!ObjectUtils.isEmpty(trc20Data)) {
-                WalletEntity mainWallet = walletService.findMain();
-                if (ObjectUtils.isEmpty(mainWallet)) {
-                    return;
+                if (!ObjectUtils.isEmpty(trc20Data)) {
+                    WalletEntity mainWallet = walletService.findMain();
+                    if (ObjectUtils.isEmpty(mainWallet)) {
+                        return;
+                    }
+
+                    for (int i = 0; i < trc20Data.size(); i++) {
+                        JSONObject jsonObject = trc20Data.getJSONObject(i);
+                        if (ObjectUtils.isEmpty(jsonObject)) {
+                            continue;
+                        }
+
+                        String transactionId = jsonObject.getString("transaction_id");
+                        long blockTimestamp = jsonObject.getLong("block_timestamp");
+                        String fromAddress = jsonObject.getString("from");
+                        String toAddress = jsonObject.getString("to");
+                        BigInteger value = jsonObject.getBigInteger("value");
+
+                        JSONObject tokenInfo = jsonObject.getJSONObject("token_info");
+                        if(ObjectUtils.isEmpty(tokenInfo) || ObjectUtils.isEmpty(tokenInfo.getString("symbol"))) {
+                            continue;
+                        }
+                        String symbol = tokenInfo.getString("symbol");
+                        int decimals = tokenInfo.getInteger("decimals");
+                        String name = tokenInfo.getString("name");
+
+                        if (fromAddress.equals(mainWallet.getBase58()) || toAddress.equals(mainWallet.getBase58())) {
+                            continue;
+                        }
+
+                        if (StringUtils.isEmpty(symbol) || !symbol.equals(tokenSymbol)) {
+                            continue;
+                        }
+
+                        if (StringUtils.isEmpty(name) || !name.equals(tokenName)) {
+                            continue;
+                        }
+                        BigDecimal b1 = new BigDecimal(value);
+                        BigDecimal b2 = new BigDecimal(String.format("%s", Math.pow(10, decimals)));
+                        BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
+                        int type = base58Address.toUpperCase(Locale.ROOT).equals(toAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
+                        FinanceEntity fe = FinanceEntity.builder()
+                                .uid(memberEntity.getId())
+                                .username(memberEntity.getUsername())
+                                .transactionId(transactionId)
+                                .fromAddress(fromAddress)
+                                .toAddress(toAddress)
+                                .money(b3.floatValue())
+                                .blockTime(DateUtil.date(blockTimestamp))
+                                .blockTimestamp(blockTimestamp)
+                                .symbol(symbol)
+                                .type(type)
+                                .isAccount(false)
+                                .build();
+                        financeEntityList.add(fe);
+                    }
                 }
+            }catch (Exception ex) {
+                log.error("处理Trc20记录-异常", ex);
+            }
 
-                for (int i = 0; i < trc20Data.size(); i++) {
-                    JSONObject jsonObject = trc20Data.getJSONObject(i);
-                    if (ObjectUtils.isEmpty(jsonObject)) {
-                        continue;
+
+            /* **************************** 处理Trx记录  ********************************* */
+            try {
+                JSONObject trxRecord = trxApi.getTrxRecord(base58Address, minTimestamp);
+                JSONArray trxData = trxRecord.getJSONArray("data");
+                if (!ObjectUtils.isEmpty(trxData)) {
+                    for (int i = 0; i < trxData.size(); i++) {
+                        JSONObject jsonObject = trxData.getJSONObject(i);
+                        if (ObjectUtils.isEmpty(jsonObject)) {
+                            continue;
+                        }
+
+                        String txID = jsonObject.getString("txID");
+                        if (StringUtils.isEmpty(txID)) {
+                            continue;
+                        }
+
+                        JSONObject rawData = jsonObject.getObject("raw_data", JSONObject.class);
+                        if (ObjectUtils.isEmpty(rawData)) {
+                            continue;
+                        }
+
+                        long timestamp = rawData.getLong("timestamp");
+                        JSONObject contract = rawData.getJSONArray("contract").getJSONObject(0);
+                        JSONObject parameter = contract.getObject("parameter", JSONObject.class);
+                        String type = contract.getString("type");
+                        if (!type.equals("TransferContract")) {
+                            continue;
+                        }
+                        JSONObject value = parameter.getObject("value", JSONObject.class);
+                        BigDecimal amount = value.getBigDecimal("amount");
+                        String ownerAddress = value.getString("owner_address");
+                        String toAddress = value.getString("to_address");
+
+
+                        int t = toAddress.toUpperCase(Locale.ROOT).equals(hexAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
+                        FinanceEntity fe = FinanceEntity.builder()
+                                .uid(memberEntity.getId())
+                                .username(memberEntity.getUsername())
+                                .transactionId(txID)
+                                .fromAddress(ownerAddress)
+                                .toAddress(toAddress)
+                                .money(CommonUtils.fromTrx(amount.floatValue()))
+                                .blockTime(DateUtil.date(timestamp))
+                                .blockTimestamp(timestamp)
+                                .symbol(trxSymbol)
+                                .type(t)
+                                .isAccount(false)
+                                .build();
+                        financeEntityList.add(fe);
                     }
-
-                    String transactionId = jsonObject.getString("transaction_id");
-                    long blockTimestamp = jsonObject.getLong("block_timestamp");
-                    String fromAddress = jsonObject.getString("from");
-                    String toAddress = jsonObject.getString("to");
-                    BigInteger value = jsonObject.getBigInteger("value");
-
-                    JSONObject tokenInfo = jsonObject.getJSONObject("token_info");
-                    if(ObjectUtils.isEmpty(tokenInfo) || ObjectUtils.isEmpty(tokenInfo.getString("symbol"))) {
-                        continue;
-                    }
-                    String symbol = tokenInfo.getString("symbol");
-                    int decimals = tokenInfo.getInteger("decimals");
-                    String name = tokenInfo.getString("name");
-
-                    if (fromAddress.equals(mainWallet.getBase58()) || toAddress.equals(mainWallet.getBase58())) {
-                        continue;
-                    }
-
-                    if (StringUtils.isEmpty(symbol) || !symbol.equals(tokenSymbol)) {
-                        continue;
-                    }
-
-                    if (StringUtils.isEmpty(name) || !name.equals(tokenName)) {
-                        continue;
-                    }
-                    BigDecimal b1 = new BigDecimal(value);
-                    BigDecimal b2 = new BigDecimal(String.format("%s", Math.pow(10, decimals)));
-                    BigDecimal b3 = b1.divide(b2, 2, RoundingMode.DOWN);
-                    int type = base58Address.toUpperCase(Locale.ROOT).equals(toAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
-                    FinanceEntity fe = FinanceEntity.builder()
-                            .uid(memberEntity.getId())
-                            .username(memberEntity.getUsername())
-                            .transactionId(transactionId)
-                            .fromAddress(fromAddress)
-                            .toAddress(toAddress)
-                            .money(b3.floatValue())
-                            .blockTime(DateUtil.date(blockTimestamp))
-                            .blockTimestamp(blockTimestamp)
-                            .symbol(symbol)
-                            .type(type)
-                            .isAccount(false)
-                            .build();
-                    financeEntityList.add(fe);
                 }
+            } catch (Exception ex) {
+                log.error("处理Trx记录-异常", ex);
             }
 
             /* **************************** 处理Trx记录  ********************************* */
-            JSONObject trxRecord = trxApi.getTrxRecord(base58Address, minTimestamp);
-            JSONArray trxData = trxRecord.getJSONArray("data");
-            if (!ObjectUtils.isEmpty(trxData)) {
-                for (int i = 0; i < trxData.size(); i++) {
-                    JSONObject jsonObject = trxData.getJSONObject(i);
-                    if (ObjectUtils.isEmpty(jsonObject)) {
-                        continue;
-                    }
-
-                    String txID = jsonObject.getString("txID");
-                    if (StringUtils.isEmpty(txID)) {
-                        continue;
-                    }
-
-                    JSONObject rawData = jsonObject.getObject("raw_data", JSONObject.class);
-                    if (ObjectUtils.isEmpty(rawData)) {
-                        continue;
-                    }
-
-                    long timestamp = rawData.getLong("timestamp");
-                    JSONObject contract = rawData.getJSONArray("contract").getJSONObject(0);
-                    JSONObject parameter = contract.getObject("parameter", JSONObject.class);
-                    String type = contract.getString("type");
-                    if (!type.equals("TransferContract")) {
-                        continue;
-                    }
-                    JSONObject value = parameter.getObject("value", JSONObject.class);
-                    BigDecimal amount = value.getBigDecimal("amount");
-                    String ownerAddress = value.getString("owner_address");
-                    String toAddress = value.getString("to_address");
-
-
-                    int t = toAddress.toUpperCase(Locale.ROOT).equals(hexAddress.toUpperCase(Locale.ROOT)) ? 1 : 2;
-                    FinanceEntity fe = FinanceEntity.builder()
-                            .uid(memberEntity.getId())
-                            .username(memberEntity.getUsername())
-                            .transactionId(txID)
-                            .fromAddress(ownerAddress)
-                            .toAddress(toAddress)
-                            .money(CommonUtils.fromTrx(amount.floatValue()))
-                            .blockTime(DateUtil.date(timestamp))
-                            .blockTimestamp(timestamp)
-                            .symbol(trxSymbol)
-                            .type(t)
-                            .isAccount(false)
-                            .build();
-                    financeEntityList.add(fe);
-                }
-            }
 
             /* **************************** 保存数据库  ********************************* */
             if (financeEntityList.size() > 0) {
@@ -304,4 +315,8 @@ public class FinanceRecordJob {
             log.error("handleAccount", ex);
         }
     }
+
+
+
+
 }

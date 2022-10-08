@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @desc file desc
  */
 @Component
-public class TranslateUtil {
+public class LanguageUtil {
 
     @Autowired
     private HttpServletRequest httpServletRequest;

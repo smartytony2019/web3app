@@ -2,16 +2,11 @@ package com.xinbo.chainblock.utils;
 
 import cn.hutool.core.convert.Convert;
 import com.xinbo.chainblock.annotation.Translate;
-import com.xinbo.chainblock.consts.GlobalConst;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +71,7 @@ public class MapperUtil {
             if (annotationOptional.isPresent()) {    // 判断注解是否存在
                 try {
                     Object o = fields[i].get(t);
-                    String value = TranslateUtil.translate(o.toString());
+                    String value = LanguageUtil.translate(o.toString());
                     fields[i].set(t, value);     // 给字段赋值
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

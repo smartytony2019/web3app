@@ -2,7 +2,6 @@ package com.xinbo.chainblock.enums;
 
 import cn.hutool.core.util.EnumUtil;
 import com.xinbo.chainblock.bo.EnumItemBo;
-import com.xinbo.chainblock.utils.TranslateUtil;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;

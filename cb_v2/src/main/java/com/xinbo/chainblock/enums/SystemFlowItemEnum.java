@@ -2,7 +2,7 @@ package com.xinbo.chainblock.enums;
 
 import cn.hutool.core.util.EnumUtil;
 import com.xinbo.chainblock.bo.EnumItemBo;
-import com.xinbo.chainblock.utils.TranslateUtil;
+import com.xinbo.chainblock.utils.LanguageUtil;
 import lombok.AllArgsConstructor;
 
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public enum SystemFlowItemEnum {
     public static EnumItemBo valueOf(int code) {
         for (SystemFlowItemEnum e: values()) {
             if(e.getCode() == code){
-                return  EnumItemBo.builder().code(code).name(String.valueOf(code)).nameZh(TranslateUtil.translate(e.getName())).build();
+                return  EnumItemBo.builder().code(code).name(String.valueOf(code)).nameZh(LanguageUtil.translate(e.getName())).build();
             }
         }
         return EnumItemBo.builder().build();
