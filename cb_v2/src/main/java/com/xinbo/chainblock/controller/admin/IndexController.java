@@ -73,7 +73,7 @@ public class IndexController {
         if(jwtUserBo.getRoleType() == RoleTypeConst.ADMINISTRATOR){
             list=userService.superAdminMenu();
         }
-        return R.builder().code(StatusCode.SUCCESS).data(list.get(0).getChildren()).build();
+        return R.builder().code(StatusCode.SUCCESS).data(list).build();
     }
 
     /**

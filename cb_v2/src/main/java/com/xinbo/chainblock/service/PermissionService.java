@@ -1,5 +1,6 @@
 package com.xinbo.chainblock.service;
 
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.MemberFlowEntity;
 import com.xinbo.chainblock.entity.admin.BannerEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
@@ -27,4 +28,5 @@ public interface PermissionService {
     List<PermissionEntity> roleMenu(int roleId);
     List<PermissionEntity> getRolePermission(int roleId);
     List<PermissionEntity> findByIds(List<Integer> ids);
+    BasePageBo findPageByParentId(int parentId,long current,long size);
 }

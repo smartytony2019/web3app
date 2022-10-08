@@ -1,9 +1,13 @@
 package com.xinbo.chainblock.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.entity.admin.BannerEntity;
+import com.xinbo.chainblock.entity.admin.NoticeEntity;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
 import com.xinbo.chainblock.entity.admin.RolePermissionEntity;
 import com.xinbo.chainblock.mapper.PermissionMapper;
@@ -199,6 +203,14 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     @Override
     public List<PermissionEntity> findByIds(List<Integer> ids) {
         return permissionMapper.findByIds(ids);
+    }
+
+    @Override
+    public BasePageBo findPageByParentId(int parentId,long current,long size) {
+        Page<PermissionEntity> page = new Page<>(current, size);
+        IPage<PermissionEntity> iPage = permissionMapper.selectByParentId(page,parentId);
+        List<PermissionEntity> permissionEntityList = iPage.getRecords();
+        return BasePageBo.builder().total(iPage.getTotal()).records(permissionEntityList).build();
     }
 
     /**

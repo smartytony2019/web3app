@@ -1,6 +1,7 @@
 package com.xinbo.chainblock.controller.admin;
 
 import com.xinbo.chainblock.annotation.RequiredPermission;
+import com.xinbo.chainblock.bo.BasePageBo;
 import com.xinbo.chainblock.consts.StatusCode;
 import com.xinbo.chainblock.dto.PermissionDto;
 import com.xinbo.chainblock.entity.admin.PermissionEntity;
@@ -31,7 +32,12 @@ public class PermissionController {
     @PostMapping("find/{id}")
     public R<Object> find(@PathVariable int id) {
         PermissionEntity entity = permissionService.find(id);
-        entity.setParentName(permissionService.find(entity.getParentId()).getTitle());
+        if(entity !=null) {
+            int parentId = entity.getParentId();
+            if (parentId != 0) {
+                entity.setParentName(permissionService.find(parentId).getTitle());
+            }
+        }
         return R.builder().code(StatusCode.SUCCESS).data(entity).build();
     }
 
@@ -119,6 +125,19 @@ public class PermissionController {
         List<PermissionEntity> allPermissions=permissionService.allMenu();
         PermissionDto permissionDto=PermissionDto.builder().ownPermissions(ownPermissions).allPermissions(allPermissions).build();
         return R.builder().code(StatusCode.SUCCESS).data(permissionDto).build();
+    }
+
+    /**
+     * 获取菜单页
+     *
+     * @param parentId
+     * @return
+     */
+    @Operation(summary = "getMenuPage", description = "查询菜单页")
+    @GetMapping("getMenuPage/{parentId}/{current}/{size}")
+    public R<Object> getMenuPage(@PathVariable int parentId,@PathVariable long current, @PathVariable long size) {
+        BasePageBo basePageBo =permissionService.findPageByParentId(parentId,current,size);
+        return R.builder().code(StatusCode.SUCCESS).data(basePageBo).build();
     }
 
 }

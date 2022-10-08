@@ -70,6 +70,7 @@ public class UserController {
                 .roleType(entity.getRoleType())
                 .build();
         String token = JwtUtil.generateToken(jwtUserBo);
+        session.setMaxInactiveInterval(2*60*60);
         session.setAttribute("token",token);
         Map<String, String> map = new HashMap<>();
         map.put("token", String.format("Bearer %s", token));
@@ -91,7 +92,6 @@ public class UserController {
     public R<Object> find() {
         JwtUserBo jwtUserBo = JwtUtil.getJwtUser();
         UserEntity entity = userService.findById(jwtUserBo.getUid());
-        System.out.println(entity);
         UserDto dto = MapperUtil.to(entity, UserDto.class);
         return R.builder().code(StatusCode.SUCCESS).data(dto).build();
     }
